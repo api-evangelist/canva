@@ -1,0 +1,76 @@
+name: Canva APIs
+description: APIs for the Canva design platform, enabling developers to integrate Canva's design tools and functionality into their applications
+image: https://www.canva.com/favicon.ico
+created: '2024'
+modified: '2024'
+specificationVersion: '0.18'
+url: https://www.canva.com/developers/apis.json
+apis:
+- name: Canva Connect API
+  description: Enables users to create and edit Canva designs directly from your application, with support for templates, autofill, and design management
+  image: https://www.canva.com/favicon.ico
+  humanURL: https://www.canva.com/developers/
+  baseURL: https://api.canva.com
+  tags:
+  - Design
+  - Templates
+  - Graphics
+  - Collaboration
+  properties:
+  - type: Documentation
+    url: https://www.canva.com/developers/docs/connect-api/
+  - type: OpenAPI
+    url: https://www.canva.com/developers/docs/connect-api/openapi/
+  - type: Authentication
+    url: https://www.canva.com/developers/docs/connect-api/authentication/
+  - type: Getting Started
+    url: https://www.canva.com/developers/docs/connect-api/get-started/
+  - type: API Reference
+    url: https://www.canva.com/developers/docs/connect-api/api-reference/
+- name: Canva Apps SDK
+  description: Build apps that extend Canva's editor with custom functionality, content, and integrations
+  image: https://www.canva.com/favicon.ico
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - Apps
+  - Extensions
+  - Integrations
+  - SDK
+  properties:
+  - type: Documentation
+    url: https://www.canva.com/developers/docs/apps/
+  - type: Getting Started
+    url: https://www.canva.com/developers/docs/apps/quickstart/
+  - type: API Reference
+    url: https://www.canva.com/developers/docs/apps/api/
+  - type: Examples
+    url: https://www.canva.com/developers/docs/apps/examples/
+common:
+- type: Developer Portal
+  url: https://www.canva.com/developers/
+- type: Authentication
+  url: https://www.canva.com/developers/docs/authentication/
+- type: Support
+  url: https://www.canva.com/developers/support/
+- type: Terms of Service
+  url: https://www.canva.com/policies/developer-terms/
+- type: Privacy Policy
+  url: https://www.canva.com/policies/privacy-policy/
+- type: Community
+  url: https://community.canva.com/developers
+- type: Blog
+  url: https://www.canva.com/newsroom/developers/
+- type: Status
+  url: https://status.canva.com/
+maintainers:
+- FN: Canva
+  email: developers@canva.com
+  url: https://www.canva.com/developers/
+tags:
+- Design
+- Graphics
+- Templates
+- Collaboration
+- Visual Content
+- Marketing
