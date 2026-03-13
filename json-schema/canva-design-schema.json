@@ -1,0 +1,571 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.canva.com/schemas/canva-design.json",
+  "title": "Canva Connect API Core Models",
+  "description": "JSON Schema defining the core data models for the Canva Connect API, including designs, assets, folders, exports, comments, brand templates, and related resources.",
+  "type": "object",
+  "$defs": {
+    "Design": {
+      "type": "object",
+      "description": "A Canva design containing visual content across one or more pages",
+      "required": ["id", "title", "owner", "urls", "created_at", "updated_at"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the design"
+        },
+        "title": {
+          "type": "string",
+          "description": "The display title of the design",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "urls": {
+          "$ref": "#/$defs/DesignUrls"
+        },
+        "created_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the design was created"
+        },
+        "updated_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the design was last modified"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "page_count": {
+          "type": "integer",
+          "description": "The number of pages in the design. Some design types may not have pages.",
+          "minimum": 0
+        }
+      }
+    },
+    "Owner": {
+      "type": "object",
+      "description": "The owner of a Canva resource, identified by user and team",
+      "required": ["user_id", "team_id"],
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "The unique identifier of the owning user"
+        },
+        "team_id": {
+          "type": "string",
+          "description": "The unique identifier of the owning team"
+        }
+      }
+    },
+    "DesignUrls": {
+      "type": "object",
+      "description": "Temporary URLs for accessing a design, valid for 30 days",
+      "required": ["edit_url", "view_url"],
+      "properties": {
+        "edit_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to open the design in the Canva editor (expires in 30 days)"
+        },
+        "view_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to view the design in read-only mode (expires in 30 days)"
+        }
+      }
+    },
+    "Thumbnail": {
+      "type": "object",
+      "description": "A thumbnail image representation of a Canva resource. The URL expires after 15 minutes.",
+      "required": ["width", "height", "url"],
+      "properties": {
+        "width": {
+          "type": "integer",
+          "description": "Thumbnail width in pixels",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "description": "Thumbnail height in pixels",
+          "minimum": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the thumbnail image (expires in 15 minutes)"
+        }
+      }
+    },
+    "Asset": {
+      "type": "object",
+      "description": "An uploaded image or video asset in a user's Canva account",
+      "required": ["id", "type", "name", "created_at", "updated_at", "owner"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the asset"
+        },
+        "type": {
+          "type": "string",
+          "description": "The media type of the asset",
+          "enum": ["image", "video"]
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the asset",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "tags": {
+          "type": "array",
+          "description": "User-facing tags associated with the asset",
+          "items": {
+            "type": "string"
+          }
+        },
+        "created_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the asset was uploaded"
+        },
+        "updated_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the asset was last modified"
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "import_status": {
+          "$ref": "#/$defs/ImportStatus"
+        }
+      }
+    },
+    "ImportStatus": {
+      "type": "object",
+      "description": "The processing status of an imported asset (deprecated)",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "The current import processing state",
+          "enum": ["failed", "in_progress", "success"]
+        },
+        "error": {
+          "type": "object",
+          "description": "Error details if the import failed",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Human-readable error description"
+            },
+            "code": {
+              "type": "string",
+              "description": "Machine-readable error code",
+              "enum": ["file_too_big", "import_failed"]
+            }
+          },
+          "required": ["message", "code"]
+        }
+      }
+    },
+    "Folder": {
+      "type": "object",
+      "description": "A folder for organizing designs and assets in Canva",
+      "required": ["id", "name", "created_at", "updated_at"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the folder"
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the folder"
+        },
+        "created_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the folder was created"
+        },
+        "updated_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the folder was last modified"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        }
+      }
+    },
+    "FolderItem": {
+      "type": "object",
+      "description": "An item contained within a folder, which can be a design, subfolder, or image asset",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of the folder item",
+          "enum": ["design", "folder", "image"]
+        },
+        "design": {
+          "$ref": "#/$defs/Design"
+        },
+        "folder": {
+          "$ref": "#/$defs/Folder"
+        },
+        "image": {
+          "$ref": "#/$defs/Asset"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": { "type": { "const": "design" } },
+          "required": ["type", "design"]
+        },
+        {
+          "properties": { "type": { "const": "folder" } },
+          "required": ["type", "folder"]
+        },
+        {
+          "properties": { "type": { "const": "image" } },
+          "required": ["type", "image"]
+        }
+      ]
+    },
+    "ExportJob": {
+      "type": "object",
+      "description": "An asynchronous job for exporting a design to a downloadable format such as PDF, PNG, JPG, GIF, PPTX, or MP4",
+      "required": ["id", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the export job"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current processing status of the export",
+          "enum": ["in_progress", "success", "failed"]
+        },
+        "urls": {
+          "type": "array",
+          "description": "Download URLs for the exported files, one per page. Valid for 24 hours. Present only when status is success.",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "error": {
+          "$ref": "#/$defs/ExportError"
+        }
+      }
+    },
+    "ExportError": {
+      "type": "object",
+      "description": "Error details for a failed export job",
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Machine-readable error code indicating the failure reason",
+          "enum": ["license_required", "approval_required", "internal_failure"]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description"
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "description": "A comment on a Canva design, either a top-level parent comment or a reply",
+      "required": ["type", "id", "message", "author", "created_at", "updated_at"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Whether this is a top-level comment or a reply",
+          "enum": ["parent", "reply"]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the comment"
+        },
+        "message": {
+          "type": "string",
+          "description": "The comment text. User mentions use the format [user_id:team_id].",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "author": {
+          "$ref": "#/$defs/CommentUser"
+        },
+        "created_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the comment was created"
+        },
+        "updated_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the comment was last updated"
+        },
+        "assignee": {
+          "$ref": "#/$defs/CommentUser",
+          "description": "The user assigned to resolve this comment (deprecated)"
+        },
+        "resolver": {
+          "$ref": "#/$defs/CommentUser",
+          "description": "The user who resolved this comment (deprecated)"
+        },
+        "mentions": {
+          "type": "object",
+          "description": "Dictionary of users mentioned in the comment, keyed by mention identifier",
+          "additionalProperties": {
+            "$ref": "#/$defs/MentionedUser"
+          }
+        },
+        "attached_to": {
+          "$ref": "#/$defs/CommentAttachment"
+        }
+      }
+    },
+    "CommentUser": {
+      "type": "object",
+      "description": "A user referenced in a comment (as author, assignee, or resolver)",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The user ID"
+        },
+        "display_name": {
+          "type": "string",
+          "description": "The user display name (deprecated)"
+        }
+      }
+    },
+    "MentionedUser": {
+      "type": "object",
+      "description": "A user mentioned in a comment message",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "The mentioned user's ID"
+        },
+        "team_id": {
+          "type": "string",
+          "description": "The mentioned user's team ID"
+        },
+        "display_name": {
+          "type": "string",
+          "description": "The mentioned user's display name"
+        }
+      }
+    },
+    "CommentAttachment": {
+      "type": "object",
+      "description": "The design that a comment is attached to",
+      "required": ["type", "design_id"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The attachment type",
+          "const": "design"
+        },
+        "design_id": {
+          "type": "string",
+          "description": "The ID of the design the comment is attached to"
+        }
+      }
+    },
+    "BrandTemplate": {
+      "type": "object",
+      "description": "A Canva brand template that can be used for autofilling designs. Requires Canva Enterprise.",
+      "required": ["id", "title", "created_at", "updated_at"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the brand template"
+        },
+        "title": {
+          "type": "string",
+          "description": "The display title of the brand template"
+        },
+        "view_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to view the brand template"
+        },
+        "create_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to create a new design from this brand template"
+        },
+        "created_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the template was created"
+        },
+        "updated_at": {
+          "type": "integer",
+          "description": "Unix timestamp in seconds when the template was last modified"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        }
+      }
+    },
+    "DatasetField": {
+      "type": "object",
+      "description": "A data field within a brand template dataset, defining what type of content can be autofilled",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The data type this field accepts",
+          "enum": ["image", "text", "chart"]
+        }
+      }
+    },
+    "TeamUser": {
+      "type": "object",
+      "description": "The authenticated user and their associated Canva team",
+      "required": ["user_id", "team_id"],
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "The unique identifier of the authenticated user"
+        },
+        "team_id": {
+          "type": "string",
+          "description": "The unique identifier of the user's Canva team"
+        }
+      }
+    },
+    "AutofillJob": {
+      "type": "object",
+      "description": "An asynchronous job for creating a design by autofilling a brand template with data",
+      "required": ["id", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the autofill job"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current processing status",
+          "enum": ["in_progress", "success", "failed"]
+        },
+        "result": {
+          "type": "object",
+          "description": "The result of a successful autofill, containing the generated design",
+          "required": ["type", "design"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "create_design"
+            },
+            "design": {
+              "$ref": "#/$defs/Design"
+            }
+          }
+        },
+        "error": {
+          "type": "object",
+          "description": "Error details for a failed autofill job",
+          "required": ["code", "message"],
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": ["autofill_error", "thumbnail_generation_error", "create_design_error"]
+            },
+            "message": {
+              "type": "string",
+              "description": "Human-readable error description"
+            }
+          }
+        }
+      }
+    },
+    "ResizeJob": {
+      "type": "object",
+      "description": "An asynchronous job for resizing a design to new dimensions or a preset type",
+      "required": ["id", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the resize job"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current processing status",
+          "enum": ["in_progress", "success", "failed"]
+        },
+        "result": {
+          "type": "object",
+          "description": "The result of a successful resize, containing the new design",
+          "properties": {
+            "design": {
+              "$ref": "#/$defs/Design"
+            }
+          }
+        },
+        "error": {
+          "type": "object",
+          "description": "Error details for a failed resize job",
+          "required": ["code", "message"],
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string",
+              "description": "Human-readable error description"
+            }
+          }
+        }
+      }
+    },
+    "DesignType": {
+      "oneOf": [
+        { "$ref": "#/$defs/PresetDesignType" },
+        { "$ref": "#/$defs/CustomDesignType" }
+      ],
+      "description": "Specifies the type and dimensions for a new or resized design"
+    },
+    "PresetDesignType": {
+      "type": "object",
+      "description": "A preset design type such as document, whiteboard, or presentation",
+      "required": ["type", "name"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "preset"
+        },
+        "name": {
+          "type": "string",
+          "description": "The preset design type",
+          "enum": ["doc", "whiteboard", "presentation"]
+        }
+      }
+    },
+    "CustomDesignType": {
+      "type": "object",
+      "description": "A custom design type with explicit pixel dimensions",
+      "required": ["type", "width", "height"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "custom"
+        },
+        "width": {
+          "type": "integer",
+          "description": "Design width in pixels",
+          "minimum": 40,
+          "maximum": 8000
+        },
+        "height": {
+          "type": "integer",
+          "description": "Design height in pixels",
+          "minimum": 40,
+          "maximum": 8000
+        }
+      }
+    }
+  }
+}

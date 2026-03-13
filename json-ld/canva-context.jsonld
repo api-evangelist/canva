@@ -1,0 +1,204 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "canva": "https://api.canva.com/rest/v1/schemas/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Design": {
+      "@id": "canva:Design",
+      "@context": {
+        "id": "@id",
+        "title": "schema:name",
+        "owner": "canva:owner",
+        "urls": "canva:designUrls",
+        "edit_url": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "view_url": {
+          "@id": "canva:viewUrl",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:integer"
+        },
+        "updated_at": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:integer"
+        },
+        "thumbnail": "canva:thumbnail",
+        "page_count": "canva:pageCount"
+      }
+    },
+
+    "Asset": {
+      "@id": "canva:Asset",
+      "@context": {
+        "id": "@id",
+        "type": "canva:assetType",
+        "name": "schema:name",
+        "tags": {
+          "@id": "schema:keywords",
+          "@container": "@set"
+        },
+        "owner": "canva:owner",
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:integer"
+        },
+        "updated_at": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:integer"
+        },
+        "thumbnail": "canva:thumbnail",
+        "import_status": "canva:importStatus"
+      }
+    },
+
+    "Folder": {
+      "@id": "canva:Folder",
+      "@context": {
+        "id": "@id",
+        "name": "schema:name",
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:integer"
+        },
+        "updated_at": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:integer"
+        },
+        "thumbnail": "canva:thumbnail"
+      }
+    },
+
+    "FolderItem": {
+      "@id": "canva:FolderItem",
+      "@context": {
+        "type": "canva:itemType",
+        "design": "canva:design",
+        "folder": "canva:folder",
+        "image": "canva:image"
+      }
+    },
+
+    "ExportJob": {
+      "@id": "canva:ExportJob",
+      "@context": {
+        "id": "@id",
+        "status": "canva:jobStatus",
+        "urls": {
+          "@id": "schema:contentUrl",
+          "@container": "@list"
+        },
+        "error": "canva:error"
+      }
+    },
+
+    "Comment": {
+      "@id": "canva:Comment",
+      "@context": {
+        "id": "@id",
+        "type": "canva:commentType",
+        "message": "schema:text",
+        "author": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:integer"
+        },
+        "updated_at": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:integer"
+        },
+        "mentions": "canva:mentions",
+        "attached_to": "canva:attachedTo"
+      }
+    },
+
+    "BrandTemplate": {
+      "@id": "canva:BrandTemplate",
+      "@context": {
+        "id": "@id",
+        "title": "schema:name",
+        "view_url": {
+          "@id": "canva:viewUrl",
+          "@type": "@id"
+        },
+        "create_url": {
+          "@id": "canva:createUrl",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:integer"
+        },
+        "updated_at": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:integer"
+        },
+        "thumbnail": "canva:thumbnail"
+      }
+    },
+
+    "AutofillJob": {
+      "@id": "canva:AutofillJob",
+      "@context": {
+        "id": "@id",
+        "status": "canva:jobStatus",
+        "result": "canva:jobResult",
+        "error": "canva:error"
+      }
+    },
+
+    "ResizeJob": {
+      "@id": "canva:ResizeJob",
+      "@context": {
+        "id": "@id",
+        "status": "canva:jobStatus",
+        "result": "canva:jobResult",
+        "error": "canva:error"
+      }
+    },
+
+    "Owner": {
+      "@id": "canva:Owner",
+      "@context": {
+        "user_id": "canva:userId",
+        "team_id": "canva:teamId"
+      }
+    },
+
+    "TeamUser": {
+      "@id": "canva:TeamUser",
+      "@context": {
+        "user_id": "canva:userId",
+        "team_id": "canva:teamId"
+      }
+    },
+
+    "Thumbnail": {
+      "@id": "canva:Thumbnail",
+      "@context": {
+        "width": "schema:width",
+        "height": "schema:height",
+        "url": {
+          "@id": "schema:contentUrl",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "DatasetField": {
+      "@id": "canva:DatasetField",
+      "@context": {
+        "type": "canva:fieldType"
+      }
+    }
+  }
+}
