@@ -25,24 +25,24 @@ servers:
 security:
   - oauth2: []
 tags:
-  - name: Designs
-    description: Create, retrieve, and list designs
   - name: Assets
     description: Upload and manage image and video assets
-  - name: Folders
-    description: Retrieve folders and list folder contents
-  - name: Exports
-    description: Export designs to PDF, PNG, JPG, GIF, PPTX, and MP4
-  - name: Comments
-    description: Create and manage comments on designs
-  - name: Users
-    description: Retrieve information about the authenticated user
-  - name: Brand Templates
-    description: List and retrieve brand templates and their datasets
   - name: Autofills
     description: Create designs from brand templates using autofill data
+  - name: Brand Templates
+    description: List and retrieve brand templates and their datasets
+  - name: Comments
+    description: Create and manage comments on designs
+  - name: Designs
+    description: Create, retrieve, and list designs
+  - name: Exports
+    description: Export designs to PDF, PNG, JPG, GIF, PPTX, and MP4
+  - name: Folders
+    description: Retrieve folders and list folder contents
   - name: Resizes
     description: Resize designs to different dimensions or preset types
+  - name: Users
+    description: Retrieve information about the authenticated user
 paths:
   /designs:
     get:

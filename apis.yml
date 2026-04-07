@@ -16,20 +16,20 @@ apis:
     humanURL: https://www.canva.com/developers/
     baseURL: https://api.canva.com
     tags:
-      - Design
-      - Templates
-      - Graphics
-      - Collaboration
       - Assets
-      - Exports
-      - Folders
-      - Comments
-      - Webhooks
       - Autofill
       - Brand Templates
+      - Collaboration
+      - Comments
+      - Design
       - Design Import
+      - Exports
+      - Folders
+      - Graphics
       - Resizes
+      - Templates
       - Users
+      - Webhooks
     properties:
       - type: Documentation
         url: https://www.canva.com/developers/docs/connect-api/
@@ -68,28 +68,23 @@ apis:
       - type: Integrations
         url: https://www.canva.dev/docs/connect/creating-integrations/
       - type: Postman Collection
-        url: 
-          https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+        url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
       - type: GitHub Repository
         url: https://github.com/canva-sdks/canva-connect-api-starter-kit
       - type: Brand Templates
         url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
       - type: Design Import
-        url: 
-          https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+        url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
       - type: Resizes
-        url: 
-          https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
+        url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
       - type: Users
         url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
       - type: Assets
         url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
       - type: Folders
-        url: 
-          https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
+        url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
       - type: Exports
-        url: 
-          https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
+        url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
       - type: MCP Server
         url: https://www.canva.dev/docs/connect/mcp-server/
       - type: OpenAPI
@@ -107,13 +102,13 @@ apis:
     baseURL: https://api.canva.com
     tags:
       - Apps
+      - Content Publishing
+      - Data Connectors
+      - Design Editing
       - Extensions
       - Integrations
-      - SDK
-      - Design Editing
-      - Data Connectors
-      - Content Publishing
       - Intents
+      - SDK
       - Tables
     properties:
       - type: Documentation
@@ -145,8 +140,7 @@ apis:
       - type: App Templates
         url: https://www.canva.dev/docs/apps/app-templates/content-publisher/
       - type: Content Publishing
-        url: 
-          https://www.canva.dev/docs/apps/design-guidelines/content-publisher/
+        url: https://www.canva.dev/docs/apps/design-guidelines/content-publisher/
       - type: Data Connectors
         url: https://www.canva.dev/docs/apps/design-guidelines/data-connector/
       - type: Authentication
@@ -168,40 +162,31 @@ apis:
     humanURL: https://www.canva.dev/docs/print-partnerships/
     baseURL: https://api.canva.com
     tags:
-      - Print
-      - Partnerships
       - Design
       - E-Commerce
+      - Partnerships
+      - Print
     properties:
       - type: Documentation
         url: https://www.canva.dev/docs/print-partnerships/
       - type: JavaScript API
-        url: 
-          https://www.canva.dev/docs/print-partnerships/javascript-api/create-design/
+        url: https://www.canva.dev/docs/print-partnerships/javascript-api/create-design/
       - type: REST API
-        url: 
-          https://www.canva.dev/docs/print-partnerships/rest-api/purchase-artwork/
+        url: https://www.canva.dev/docs/print-partnerships/rest-api/purchase-artwork/
       - type: Getting Started
-        url: 
-          https://www.canva.dev/docs/print-partnerships/tutorial/getting-started/
+        url: https://www.canva.dev/docs/print-partnerships/tutorial/getting-started/
       - type: Edit Design
-        url: 
-          https://www.canva.dev/docs/print-partnerships/javascript-api/edit-design/
+        url: https://www.canva.dev/docs/print-partnerships/javascript-api/edit-design/
       - type: On Design Open
-        url: 
-          https://www.canva.dev/docs/print-partnerships/javascript-api/on-design-open/
+        url: https://www.canva.dev/docs/print-partnerships/javascript-api/on-design-open/
       - type: On Product Select
-        url: 
-          https://www.canva.dev/docs/print-partnerships/javascript-api/on-product-select/
+        url: https://www.canva.dev/docs/print-partnerships/javascript-api/on-product-select/
       - type: On Artwork Create
-        url: 
-          https://www.canva.dev/docs/print-partnerships/javascript-api/on-artwork-create/
+        url: https://www.canva.dev/docs/print-partnerships/javascript-api/on-artwork-create/
       - type: Initialize
-        url: 
-          https://www.canva.dev/docs/print-partnerships/javascript-api/initialize/
+        url: https://www.canva.dev/docs/print-partnerships/javascript-api/initialize/
       - type: Initialize SDK Tutorial
-        url: 
-          https://www.canva.dev/docs/print-partnerships/tutorial/initialize-partnership-sdk/
+        url: https://www.canva.dev/docs/print-partnerships/tutorial/initialize-partnership-sdk/
   - name: Canva Button API
     description: >-
       Enables embedding Canva design capabilities directly into websites and applications
@@ -211,21 +196,19 @@ apis:
     baseURL: https://api.canva.com
     tags:
       - Button
-      - Embed
-      - Widget
       - Design
+      - Embed
       - Integration
+      - Widget
     properties:
       - type: Documentation
         url: https://www.canva.dev/docs/button/
       - type: Getting Started
         url: https://www.canva.dev/docs/button/html/getting-started/
       - type: JavaScript API
-        url: 
-          https://www.canva.dev/docs/button/javascript/api-reference/initialize/
+        url: https://www.canva.dev/docs/button/javascript/api-reference/initialize/
       - type: HTML API vs JavaScript API
-        url: 
-          https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/
+        url: https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/
 common:
   - type: Developer Portal
     url: https://www.canva.com/developers/
@@ -252,8 +235,7 @@ common:
   - type: GitHub Organization
     url: https://github.com/canva-sdks
   - type: Postman Collection
-    url: 
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: Changelog
     url: https://www.canva.dev/docs/connect/changelog/
   - type: Security
@@ -273,8 +255,7 @@ common:
   - type: Innovation Fund
     url: https://www.canva.dev/docs/apps/innovation-fund/
   - type: Deprecation Policy
-    url: 
-      https://www.canva.dev/docs/extensions/platform-concepts/deprecation-policy/
+    url: https://www.canva.dev/docs/extensions/platform-concepts/deprecation-policy/
   - type: Help Center
     url: https://www.canva.com/help/canva-api/
   - type: Events
@@ -289,13 +270,13 @@ maintainers:
     email: kin@apievangelist.com
     url: https://apievangelist.com
 tags:
-  - Design
-  - Graphics
-  - Templates
-  - Collaboration
-  - Visual Content
-  - Marketing
+  - Apps
   - Automation
   - Brand Management
+  - Collaboration
+  - Design
+  - Graphics
+  - Marketing
   - Print
-  - Apps
+  - Templates
+  - Visual Content
