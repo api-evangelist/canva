@@ -47,7 +47,7 @@ paths:
   /designs:
     get:
       operationId: listDesigns
-      summary: List designs
+      summary: Canva List designs
       description: >-
         Lists designs accessible to the authenticated user. Supports
         searching by query, filtering by ownership, sorting, and
@@ -116,7 +116,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
     post:
       operationId: createDesign
-      summary: Create a design
+      summary: Canva Create a design
       description: >-
         Creates a new design in Canva. The design can use a preset type
         (doc, whiteboard, or presentation) or custom dimensions. An
@@ -150,7 +150,7 @@ paths:
   /designs/{designId}:
     get:
       operationId: getDesign
-      summary: Get a design
+      summary: Canva Get a design
       description: >-
         Retrieves metadata for a specific design, including title, owner,
         URLs, timestamps, thumbnail, and page count.
@@ -179,7 +179,7 @@ paths:
   /assets/{assetId}:
     get:
       operationId: getAsset
-      summary: Get an asset
+      summary: Canva Get an asset
       description: >-
         Retrieves metadata for a specific asset, including type, name,
         tags, owner, timestamps, thumbnail, and import status.
@@ -207,7 +207,7 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
     delete:
       operationId: deleteAsset
-      summary: Delete an asset
+      summary: Canva Delete an asset
       description: Deletes an asset from the authenticated user's account.
       tags:
         - Assets
@@ -230,7 +230,7 @@ paths:
   /asset-uploads:
     post:
       operationId: createAssetUploadJob
-      summary: Upload an asset
+      summary: Canva Upload an asset
       description: >-
         Uploads an image or video asset to the authenticated user's
         Canva account. The asset name is provided as a Base64-encoded
@@ -275,7 +275,7 @@ paths:
   /asset-uploads/{jobId}:
     get:
       operationId: getAssetUploadJob
-      summary: Get asset upload job
+      summary: Canva Get asset upload job
       description: >-
         Retrieves the status of an asset upload job. When complete,
         includes the uploaded asset metadata.
@@ -302,7 +302,7 @@ paths:
   /folders/{folderId}:
     get:
       operationId: getFolder
-      summary: Get a folder
+      summary: Canva Get a folder
       description: >-
         Retrieves metadata for a specific folder, including name,
         timestamps, and thumbnail.
@@ -331,7 +331,7 @@ paths:
   /folders/{folderId}/items:
     get:
       operationId: listFolderItems
-      summary: List folder items
+      summary: Canva List folder items
       description: >-
         Lists items within a folder, including designs, subfolders, and
         images. Supports filtering by item type, sorting, pin status
@@ -408,7 +408,7 @@ paths:
   /folders/{folderId}/items:move:
     post:
       operationId: moveFolderItem
-      summary: Move an item to a folder
+      summary: Canva Move an item to a folder
       description: Moves a design, folder, or image into the specified folder.
       tags:
         - Folders
@@ -439,7 +439,7 @@ paths:
   /exports:
     post:
       operationId: createDesignExportJob
-      summary: Create a design export job
+      summary: Canva Create a design export job
       description: >-
         Creates an asynchronous job to export a design from Canva.
         Supported formats include PDF, JPG, PNG, GIF, PPTX, and MP4.
@@ -474,7 +474,7 @@ paths:
   /exports/{exportId}:
     get:
       operationId: getDesignExportJob
-      summary: Get a design export job
+      summary: Canva Get a design export job
       description: >-
         Retrieves the status and results of an export job. When the job
         completes successfully, the response includes download URLs for
@@ -502,7 +502,7 @@ paths:
   /comments:
     post:
       operationId: createComment
-      summary: Create a comment
+      summary: Canva Create a comment
       description: >-
         Creates a new top-level comment on a design. Supports mentioning
         users using the [user_id:team_id] format in the message text.
@@ -537,7 +537,7 @@ paths:
   /comments/{commentId}/replies:
     post:
       operationId: createReply
-      summary: Create a reply to a comment
+      summary: Canva Create a reply to a comment
       description: Creates a reply to an existing comment thread on a design.
       tags:
         - Comments
@@ -577,7 +577,7 @@ paths:
   /users/me:
     get:
       operationId: getUsersMe
-      summary: Get current user
+      summary: Canva Get current user
       description: >-
         Retrieves the user ID and team ID for the currently authenticated
         user.
@@ -597,7 +597,7 @@ paths:
   /brand-templates:
     get:
       operationId: listBrandTemplates
-      summary: List brand templates
+      summary: Canva List brand templates
       description: >-
         Lists brand templates available to the authenticated user.
         Supports searching, filtering by ownership and dataset
@@ -674,7 +674,7 @@ paths:
   /brand-templates/{brandTemplateId}:
     get:
       operationId: getBrandTemplate
-      summary: Get a brand template
+      summary: Canva Get a brand template
       description: >-
         Retrieves metadata for a specific brand template. Requires
         Canva Enterprise membership.
@@ -703,7 +703,7 @@ paths:
   /brand-templates/{brandTemplateId}/dataset:
     get:
       operationId: getBrandTemplateDataset
-      summary: Get a brand template dataset
+      summary: Canva Get a brand template dataset
       description: >-
         Retrieves the autofill dataset for a brand template, listing the
         available data fields and their types (image, text, or chart).
@@ -733,7 +733,7 @@ paths:
   /autofills:
     post:
       operationId: createDesignAutofillJob
-      summary: Create a design autofill job
+      summary: Canva Create a design autofill job
       description: >-
         Creates an asynchronous job to generate a new design by
         autofilling a brand template with provided data. Supports
@@ -769,7 +769,7 @@ paths:
   /autofills/{jobId}:
     get:
       operationId: getDesignAutofillJob
-      summary: Get a design autofill job
+      summary: Canva Get a design autofill job
       description: >-
         Retrieves the status and results of a design autofill job.
         When successful, includes the generated design metadata.
@@ -796,7 +796,7 @@ paths:
   /resizes:
     post:
       operationId: createDesignResizeJob
-      summary: Create a design resize job
+      summary: Canva Create a design resize job
       description: >-
         Creates an asynchronous job to resize a design to different
         dimensions or a preset type (doc, whiteboard, or presentation).
@@ -831,7 +831,7 @@ paths:
   /resizes/{jobId}:
     get:
       operationId: getDesignResizeJob
-      summary: Get a design resize job
+      summary: Canva Get a design resize job
       description: >-
         Retrieves the status and results of a design resize job.
         When successful, includes the newly created design metadata.
