@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ListFolderItemsResponse",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array"
+    },
+    "continuation": {
+      "type": "string",
+      "description": "Continuation token for the next page of results"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateCommentRequest",
+  "type": "object",
+  "description": "Request body for creating a comment",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "Comment text (1-2048 characters). Mention users with [user_id:team_id] format."
+    },
+    "assignee_id": {
+      "type": "string",
+      "description": "User ID to assign the comment to"
+    }
+  }
+}

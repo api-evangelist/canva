@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comment",
+  "type": "object",
+  "description": "A comment on a design",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The comment type"
+    },
+    "id": {
+      "type": "string",
+      "description": "The comment ID"
+    },
+    "message": {
+      "type": "string",
+      "description": "The comment text. User mentions use the format [user_id:team_id]."
+    },
+    "created_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the comment was created"
+    },
+    "updated_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the comment was last updated"
+    },
+    "mentions": {
+      "type": "object",
+      "description": "Dictionary of mentioned users, keyed by their mention identifier"
+    }
+  }
+}

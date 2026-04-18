@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "CreateCommentRequest",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "assignee_id": {
+      "type": "string"
+    }
+  }
+}

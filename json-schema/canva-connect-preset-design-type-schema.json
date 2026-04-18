@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PresetDesignType",
+  "type": "object",
+  "description": "A preset design type",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": "The preset design type name"
+    }
+  }
+}

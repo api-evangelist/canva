@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FolderItem",
+  "type": "object",
+  "description": "An item within a folder (design, folder, or image)",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of folder item"
+    }
+  }
+}

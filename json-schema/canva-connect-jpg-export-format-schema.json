@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JpgExportFormat",
+  "type": "object",
+  "description": "JPG export format options",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "quality": {
+      "type": "integer",
+      "description": "JPG compression quality (1-100)"
+    },
+    "export_quality": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer",
+      "description": "Output width in pixels"
+    },
+    "height": {
+      "type": "integer",
+      "description": "Output height in pixels"
+    },
+    "pages": {
+      "type": "array",
+      "description": "Page indices to export"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateExportJobRequest",
+  "type": "object",
+  "description": "Request body for creating an export job",
+  "properties": {
+    "design_id": {
+      "type": "string",
+      "description": "The design ID to export"
+    }
+  }
+}

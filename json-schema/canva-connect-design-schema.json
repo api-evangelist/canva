@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design",
+  "type": "object",
+  "description": "A Canva design",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The design ID"
+    },
+    "title": {
+      "type": "string",
+      "description": "The design title"
+    },
+    "created_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the design was created"
+    },
+    "updated_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the design was last updated"
+    },
+    "page_count": {
+      "type": "integer",
+      "description": "The number of pages in the design"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BrandTemplate",
+  "type": "object",
+  "description": "A Canva brand template (requires Enterprise)",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The brand template ID"
+    },
+    "title": {
+      "type": "string",
+      "description": "The brand template title"
+    },
+    "view_url": {
+      "type": "string",
+      "description": "URL to view the brand template"
+    },
+    "create_url": {
+      "type": "string",
+      "description": "URL to create a design from the brand template"
+    },
+    "created_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the template was created"
+    },
+    "updated_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the template was last updated"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Folder",
+  "type": "object",
+  "description": "A Canva folder",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The folder ID"
+    },
+    "name": {
+      "type": "string",
+      "description": "The folder name"
+    },
+    "created_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the folder was created"
+    },
+    "updated_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the folder was last updated"
+    }
+  }
+}

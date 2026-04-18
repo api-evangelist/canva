@@ -1,0 +1,312 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Canva Design Management"
+  description: "Unified design management workflow combining design creation, asset management, brand templates, autofill, exports, and collaboration for marketing teams and content creators."
+  tags:
+    - Canva
+    - Design
+    - Marketing
+    - Brand Management
+    - Content Creation
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      CANVA_ACCESS_TOKEN: CANVA_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - import: connect-api
+      location: ./shared/connect-api.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: design-management-api
+      description: "Unified REST API for Canva design management."
+      resources:
+        - path: /v1/designs
+          name: designs
+          description: "Design creation and management."
+          operations:
+            - method: GET
+              name: list-designs
+              description: "List designs."
+              call: "connect-api.list-designs"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-design
+              description: "Create a design."
+              call: "connect-api.create-design"
+              with:
+                design_type: "rest.design_type"
+                title: "rest.title"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/assets
+          name: assets
+          description: "Asset management."
+          operations:
+            - method: GET
+              name: get-asset
+              description: "Get an asset."
+              call: "connect-api.get-asset"
+              with:
+                assetId: "rest.assetId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: delete-asset
+              description: "Delete an asset."
+              call: "connect-api.delete-asset"
+              with:
+                assetId: "rest.assetId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/exports
+          name: exports
+          description: "Design exports."
+          operations:
+            - method: POST
+              name: create-export-job
+              description: "Export a design."
+              call: "connect-api.create-export-job"
+              with:
+                design_id: "rest.design_id"
+                format: "rest.format"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/brand-templates
+          name: brand-templates
+          description: "Brand template access."
+          operations:
+            - method: GET
+              name: list-brand-templates
+              description: "List brand templates."
+              call: "connect-api.list-brand-templates"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/autofills
+          name: autofills
+          description: "Design autofill."
+          operations:
+            - method: POST
+              name: create-autofill-job
+              description: "Create autofill job."
+              call: "connect-api.create-autofill-job"
+              with:
+                brand_template_id: "rest.brand_template_id"
+                data: "rest.data"
+                title: "rest.title"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: design-management-mcp
+      transport: http
+      description: "MCP server for AI-assisted Canva design management, brand templates, and content creation."
+      tools:
+        - name: list-designs
+          description: "List Canva designs accessible to the user."
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "connect-api.list-designs"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-design
+          description: "Create a new Canva design."
+          hints:
+            readOnly: false
+          call: "connect-api.create-design"
+          with:
+            design_type: "tools.design_type"
+            title: "tools.title"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-design
+          description: "Get a specific design by ID."
+          hints:
+            readOnly: true
+          call: "connect-api.get-design"
+          with:
+            designId: "tools.designId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-asset
+          description: "Get an asset by ID."
+          hints:
+            readOnly: true
+          call: "connect-api.get-asset"
+          with:
+            assetId: "tools.assetId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: delete-asset
+          description: "Delete an asset."
+          hints:
+            readOnly: false
+            destructive: true
+          call: "connect-api.delete-asset"
+          with:
+            assetId: "tools.assetId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: upload-asset
+          description: "Upload an asset to Canva."
+          hints:
+            readOnly: false
+          call: "connect-api.create-asset-upload-job"
+          with:
+            name: "tools.name"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-folder
+          description: "Get a folder by ID."
+          hints:
+            readOnly: true
+          call: "connect-api.get-folder"
+          with:
+            folderId: "tools.folderId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-folder-items
+          description: "List items in a folder."
+          hints:
+            readOnly: true
+          call: "connect-api.list-folder-items"
+          with:
+            folderId: "tools.folderId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-export-job
+          description: "Export a design to PDF, PNG, JPG, GIF, PPTX, or MP4."
+          hints:
+            readOnly: false
+          call: "connect-api.create-export-job"
+          with:
+            design_id: "tools.design_id"
+            format: "tools.format"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-export-job
+          description: "Get export job status and download URL."
+          hints:
+            readOnly: true
+          call: "connect-api.get-export-job"
+          with:
+            exportId: "tools.exportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-comment
+          description: "Create a comment on a design."
+          hints:
+            readOnly: false
+          call: "connect-api.create-comment"
+          with:
+            designId: "tools.designId"
+            message: "tools.message"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-users-me
+          description: "Get the authenticated user profile."
+          hints:
+            readOnly: true
+          call: "connect-api.get-users-me"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-brand-templates
+          description: "List available brand templates."
+          hints:
+            readOnly: true
+          call: "connect-api.list-brand-templates"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-brand-template
+          description: "Get a brand template by ID."
+          hints:
+            readOnly: true
+          call: "connect-api.get-brand-template"
+          with:
+            brandTemplateId: "tools.brandTemplateId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-brand-template-dataset
+          description: "Get the autofill dataset for a brand template."
+          hints:
+            readOnly: true
+          call: "connect-api.get-brand-template-dataset"
+          with:
+            brandTemplateId: "tools.brandTemplateId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-autofill-job
+          description: "Create a design from a brand template using autofill data."
+          hints:
+            readOnly: false
+          call: "connect-api.create-autofill-job"
+          with:
+            brand_template_id: "tools.brand_template_id"
+            data: "tools.data"
+            title: "tools.title"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-autofill-job
+          description: "Get autofill job status."
+          hints:
+            readOnly: true
+          call: "connect-api.get-autofill-job"
+          with:
+            jobId: "tools.jobId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-resize-job
+          description: "Resize a design to different dimensions or preset types."
+          hints:
+            readOnly: false
+          call: "connect-api.create-resize-job"
+          with:
+            design_id: "tools.design_id"
+            resize_type: "tools.resize_type"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-resize-job
+          description: "Get resize job status."
+          hints:
+            readOnly: true
+          call: "connect-api.get-resize-job"
+          with:
+            jobId: "tools.jobId"
+          outputParameters:
+            - type: object
+              mapping: "$."

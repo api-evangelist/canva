@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MoveFolderItemRequest",
+  "type": "object",
+  "description": "Request body for moving an item to a folder",
+  "properties": {
+    "item_id": {
+      "type": "string",
+      "description": "The ID of the item to move"
+    },
+    "item_type": {
+      "type": "string",
+      "description": "The type of item to move"
+    }
+  }
+}

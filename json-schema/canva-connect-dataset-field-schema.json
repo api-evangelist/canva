@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DatasetField",
+  "type": "object",
+  "description": "A data field in a brand template dataset",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The data field type"
+    }
+  }
+}

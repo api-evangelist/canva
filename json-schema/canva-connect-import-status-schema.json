@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ImportStatus",
+  "type": "object",
+  "description": "The import status of an asset (deprecated)",
+  "properties": {
+    "state": {
+      "type": "string",
+      "description": "The current import state"
+    },
+    "error": {
+      "type": "object",
+      "description": "Error details if the import failed"
+    }
+  }
+}

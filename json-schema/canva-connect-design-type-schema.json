@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DesignType",
+  "type": "object",
+  "description": "The type and dimensions for a new design"
+}

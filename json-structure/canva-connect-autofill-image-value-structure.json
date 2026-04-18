@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "AutofillImageValue",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "asset_id": {
+      "type": "string"
+    }
+  }
+}

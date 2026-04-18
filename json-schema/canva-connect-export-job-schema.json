@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExportJob",
+  "type": "object",
+  "description": "An export job for converting a design to a downloadable format",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The export job ID"
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the export job"
+    },
+    "urls": {
+      "type": "array",
+      "description": "Download URLs for the exported files (valid for 24 hours). Present only when status is success."
+    }
+  }
+}

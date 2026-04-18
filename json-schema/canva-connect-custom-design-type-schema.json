@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CustomDesignType",
+  "type": "object",
+  "description": "A custom design type with specific dimensions",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer",
+      "description": "Width in pixels (40-8000)"
+    },
+    "height": {
+      "type": "integer",
+      "description": "Height in pixels (40-8000)"
+    }
+  }
+}

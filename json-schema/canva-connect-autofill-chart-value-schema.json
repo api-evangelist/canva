@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AutofillChartValue",
+  "type": "object",
+  "description": "Chart data for autofill (preview feature)",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "chart_data": {
+      "type": "object",
+      "description": "Tabular data for the chart"
+    }
+  }
+}

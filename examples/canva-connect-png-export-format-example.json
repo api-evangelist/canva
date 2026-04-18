@@ -1,0 +1,10 @@
+{
+  "type": "example_value",
+  "export_quality": "example_value",
+  "width": 10,
+  "height": 10,
+  "lossless": true,
+  "transparent_background": true,
+  "as_single_image": true,
+  "pages": []
+}

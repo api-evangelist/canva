@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateDesignRequest",
+  "type": "object",
+  "description": "Request body for creating a new design",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "description": "An image asset ID to insert into the design"
+    },
+    "title": {
+      "type": "string",
+      "description": "The design title (1-255 characters)"
+    }
+  }
+}

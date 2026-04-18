@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AutofillJob",
+  "type": "object",
+  "description": "An autofill job for generating designs from brand templates",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The autofill job ID"
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the autofill job"
+    },
+    "result": {
+      "type": "object",
+      "description": "The autofill result (present when status is success)"
+    },
+    "error": {
+      "type": "object",
+      "description": "Error details (present when status is failed)"
+    }
+  }
+}

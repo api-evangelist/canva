@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Owner",
+  "type": "object",
+  "description": "The owner of a resource",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "The user ID of the owner"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "The team ID of the owner"
+    }
+  }
+}

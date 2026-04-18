@@ -1,0 +1,16 @@
+name: canva API Vocabulary
+provider: canva
+created: '2026-04-18'
+modified: '2026-04-18'
+operations: 22
+schemas: 55
+tags:
+- Assets
+- Autofills
+- Brand Templates
+- Comments
+- Designs
+- Exports
+- Folders
+- Resizes
+- Users

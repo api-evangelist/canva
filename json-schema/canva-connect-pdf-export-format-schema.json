@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PdfExportFormat",
+  "type": "object",
+  "description": "PDF export format options",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "export_quality": {
+      "type": "string"
+    },
+    "size": {
+      "type": "string",
+      "description": "Paper size for the PDF"
+    },
+    "pages": {
+      "type": "array",
+      "description": "Page indices to export (exports all pages if omitted)"
+    }
+  }
+}

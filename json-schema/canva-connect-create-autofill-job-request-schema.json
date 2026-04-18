@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateAutofillJobRequest",
+  "type": "object",
+  "description": "Request body for creating a design autofill job",
+  "properties": {
+    "brand_template_id": {
+      "type": "string",
+      "description": "The brand template ID to autofill"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title for the generated design (1-255 characters). Defaults to the brand template title."
+    },
+    "data": {
+      "type": "object",
+      "description": "Data fields to populate, keyed by field name from the brand template dataset"
+    }
+  }
+}

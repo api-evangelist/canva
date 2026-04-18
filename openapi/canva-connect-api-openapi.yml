@@ -20,85 +20,90 @@ externalDocs:
   description: Canva Connect API Documentation
   url: https://www.canva.dev/docs/connect/
 servers:
-  - url: https://api.canva.com/rest/v1
-    description: Canva Production API
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Assets
-    description: Upload and manage image and video assets
-  - name: Autofills
-    description: Create designs from brand templates using autofill data
-  - name: Brand Templates
-    description: List and retrieve brand templates and their datasets
-  - name: Comments
-    description: Create and manage comments on designs
-  - name: Designs
-    description: Create, retrieve, and list designs
-  - name: Exports
-    description: Export designs to PDF, PNG, JPG, GIF, PPTX, and MP4
-  - name: Folders
-    description: Retrieve folders and list folder contents
-  - name: Resizes
-    description: Resize designs to different dimensions or preset types
-  - name: Users
-    description: Retrieve information about the authenticated user
+- name: Assets
+  description: Upload and manage image and video assets
+- name: Autofills
+  description: Create designs from brand templates using autofill data
+- name: Brand Templates
+  description: List and retrieve brand templates and their datasets
+- name: Comments
+  description: Create and manage comments on designs
+- name: Designs
+  description: Create, retrieve, and list designs
+- name: Exports
+  description: Export designs to PDF, PNG, JPG, GIF, PPTX, and MP4
+- name: Folders
+  description: Retrieve folders and list folder contents
+- name: Resizes
+  description: Resize designs to different dimensions or preset types
+- name: Users
+  description: Retrieve information about the authenticated user
 paths:
   /designs:
     get:
       operationId: listDesigns
-      summary: Canva List designs
+      summary: Canva List Designs
       description: >-
         Lists designs accessible to the authenticated user. Supports
         searching by query, filtering by ownership, sorting, and
         pagination using continuation tokens.
       tags:
-        - Designs
+      - Designs
       security:
-        - oauth2:
-            - design:meta:read
+      - oauth2:
+        - design:meta:read
       parameters:
-        - name: query
-          in: query
-          description: Search term to filter designs (max 255 characters)
-          schema:
-            type: string
-            maxLength: 255
-        - name: ownership
-          in: query
-          description: Filter designs by ownership status
-          schema:
-            type: string
-            enum:
-              - any
-              - owned
-              - shared
-            default: any
-        - name: sort_by
-          in: query
-          description: Sort order for results
-          schema:
-            type: string
-            enum:
-              - relevance
-              - modified_descending
-              - modified_ascending
-              - title_descending
-              - title_ascending
-            default: relevance
-        - name: limit
-          in: query
-          description: Number of results per page
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 25
-        - name: continuation
-          in: query
-          description: Continuation token for paginated results
-          schema:
-            type: string
+      - name: query
+        in: query
+        description: Search term to filter designs (max 255 characters)
+        schema:
+          type: string
+          maxLength: 255
+        example: example_value
+      - name: ownership
+        in: query
+        description: Filter designs by ownership status
+        schema:
+          type: string
+          enum:
+          - any
+          - owned
+          - shared
+          default: any
+        example: any
+      - name: sort_by
+        in: query
+        description: Sort order for results
+        schema:
+          type: string
+          enum:
+          - relevance
+          - modified_descending
+          - modified_ascending
+          - title_descending
+          - title_ascending
+          default: relevance
+        example: relevance
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 25
+        example: 10
+      - name: continuation
+        in: query
+        description: Continuation token for paginated results
+        schema:
+          type: string
+        example: example_value
       responses:
         '200':
           description: A paginated list of designs
@@ -106,6 +111,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListDesignsResponse'
+              examples:
+                Listdesigns200Example:
+                  summary: Default listDesigns 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - id: abc123
+                      title: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      page_count: 10
+                    continuation: example_value
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -114,24 +131,35 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createDesign
-      summary: Canva Create a design
+      summary: Canva Create a Design
       description: >-
         Creates a new design in Canva. The design can use a preset type
         (doc, whiteboard, or presentation) or custom dimensions. An
         optional asset can be inserted and a title can be specified.
       tags:
-        - Designs
+      - Designs
       security:
-        - oauth2:
-            - design:content:write
+      - oauth2:
+        - design:content:write
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateDesignRequest'
+            examples:
+              CreatedesignRequestExample:
+                summary: Default createDesign request
+                x-microcks-default: true
+                value:
+                  design_type: {}
+                  asset_id: '500123'
+                  title: Example Title
       responses:
         '200':
           description: The created design
@@ -139,6 +167,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DesignResponse'
+              examples:
+                Createdesign200Example:
+                  summary: Default createDesign 200 response
+                  x-microcks-default: true
+                  value:
+                    design:
+                      id: abc123
+                      title: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      page_count: 10
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -147,20 +186,23 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /designs/{designId}:
     get:
       operationId: getDesign
-      summary: Canva Get a design
+      summary: Canva Get a Design
       description: >-
         Retrieves metadata for a specific design, including title, owner,
         URLs, timestamps, thumbnail, and page count.
       tags:
-        - Designs
+      - Designs
       security:
-        - oauth2:
-            - design:meta:read
+      - oauth2:
+        - design:meta:read
       parameters:
-        - $ref: '#/components/parameters/DesignId'
+      - $ref: '#/components/parameters/DesignId'
       responses:
         '200':
           description: The design metadata
@@ -168,6 +210,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DesignResponse'
+              examples:
+                Getdesign200Example:
+                  summary: Default getDesign 200 response
+                  x-microcks-default: true
+                  value:
+                    design:
+                      id: abc123
+                      title: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      page_count: 10
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -176,20 +229,23 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /assets/{assetId}:
     get:
       operationId: getAsset
-      summary: Canva Get an asset
+      summary: Canva Get an Asset
       description: >-
         Retrieves metadata for a specific asset, including type, name,
         tags, owner, timestamps, thumbnail, and import status.
       tags:
-        - Assets
+      - Assets
       security:
-        - oauth2:
-            - asset:read
+      - oauth2:
+        - asset:read
       parameters:
-        - $ref: '#/components/parameters/AssetId'
+      - $ref: '#/components/parameters/AssetId'
       responses:
         '200':
           description: The asset metadata
@@ -197,6 +253,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssetResponse'
+              examples:
+                Getasset200Example:
+                  summary: Default getAsset 200 response
+                  x-microcks-default: true
+                  value:
+                    asset:
+                      id: abc123
+                      type: image
+                      name: Example Title
+                      tags:
+                      - {}
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -205,17 +274,20 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteAsset
-      summary: Canva Delete an asset
+      summary: Canva Delete an Asset
       description: Deletes an asset from the authenticated user's account.
       tags:
-        - Assets
+      - Assets
       security:
-        - oauth2:
-            - asset:write
+      - oauth2:
+        - asset:write
       parameters:
-        - $ref: '#/components/parameters/AssetId'
+      - $ref: '#/components/parameters/AssetId'
       responses:
         '204':
           description: Asset deleted successfully
@@ -227,29 +299,33 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /asset-uploads:
     post:
       operationId: createAssetUploadJob
-      summary: Canva Upload an asset
+      summary: Canva Upload an Asset
       description: >-
         Uploads an image or video asset to the authenticated user's
         Canva account. The asset name is provided as a Base64-encoded
         string in the Asset-Upload-Metadata header. The request body
         contains the raw binary file content.
       tags:
-        - Assets
+      - Assets
       security:
-        - oauth2:
-            - asset:write
+      - oauth2:
+        - asset:write
       parameters:
-        - name: Asset-Upload-Metadata
-          in: header
-          required: true
-          description: >-
-            JSON object containing name_base64, the Base64-encoded asset
-            name (1-50 characters before encoding)
-          schema:
-            type: string
+      - name: Asset-Upload-Metadata
+        in: header
+        required: true
+        description: >-
+          JSON object containing name_base64, the Base64-encoded asset
+          name (1-50 characters before encoding)
+        schema:
+          type: string
+        example: example_value
       requestBody:
         required: true
         content:
@@ -257,6 +333,11 @@ paths:
             schema:
               type: string
               format: binary
+            examples:
+              CreateassetuploadjobRequestExample:
+                summary: Default createAssetUploadJob request
+                x-microcks-default: true
+                value: example_value
       responses:
         '200':
           description: The asset upload job
@@ -264,6 +345,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssetUploadJobResponse'
+              examples:
+                Createassetuploadjob200Example:
+                  summary: Default createAssetUploadJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      asset:
+                        id: abc123
+                        type: image
+                        name: Example Title
+                        tags: {}
+                        created_at: '2026-01-15T10:30:00Z'
+                        updated_at: '2026-01-15T10:30:00Z'
+                      error:
+                        code: file_too_big
+                        message: example_value
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -272,20 +371,23 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /asset-uploads/{jobId}:
     get:
       operationId: getAssetUploadJob
-      summary: Canva Get asset upload job
+      summary: Canva Get Asset Upload Job
       description: >-
         Retrieves the status of an asset upload job. When complete,
         includes the uploaded asset metadata.
       tags:
-        - Assets
+      - Assets
       security:
-        - oauth2:
-            - asset:read
+      - oauth2:
+        - asset:read
       parameters:
-        - $ref: '#/components/parameters/JobId'
+      - $ref: '#/components/parameters/JobId'
       responses:
         '200':
           description: The asset upload job status
@@ -293,26 +395,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssetUploadJobResponse'
+              examples:
+                Getassetuploadjob200Example:
+                  summary: Default getAssetUploadJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      asset:
+                        id: abc123
+                        type: image
+                        name: Example Title
+                        tags: {}
+                        created_at: '2026-01-15T10:30:00Z'
+                        updated_at: '2026-01-15T10:30:00Z'
+                      error:
+                        code: file_too_big
+                        message: example_value
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /folders/{folderId}:
     get:
       operationId: getFolder
-      summary: Canva Get a folder
+      summary: Canva Get a Folder
       description: >-
         Retrieves metadata for a specific folder, including name,
         timestamps, and thumbnail.
       tags:
-        - Folders
+      - Folders
       security:
-        - oauth2:
-            - folder:read
+      - oauth2:
+        - folder:read
       parameters:
-        - $ref: '#/components/parameters/FolderId'
+      - $ref: '#/components/parameters/FolderId'
       responses:
         '200':
           description: The folder metadata
@@ -320,6 +443,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FolderResponse'
+              examples:
+                Getfolder200Example:
+                  summary: Default getFolder 200 response
+                  x-microcks-default: true
+                  value:
+                    folder:
+                      id: abc123
+                      name: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -328,68 +461,76 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /folders/{folderId}/items:
     get:
       operationId: listFolderItems
-      summary: Canva List folder items
+      summary: Canva List Folder Items
       description: >-
         Lists items within a folder, including designs, subfolders, and
         images. Supports filtering by item type, sorting, pin status
         filtering, and pagination.
       tags:
-        - Folders
+      - Folders
       security:
-        - oauth2:
-            - folder:read
+      - oauth2:
+        - folder:read
       parameters:
-        - $ref: '#/components/parameters/FolderId'
-        - name: item_types
-          in: query
-          description: Filter by item type
-          schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - design
-                - folder
-                - image
-          style: form
-          explode: true
-        - name: sort_by
-          in: query
-          description: Sort order for results
-          schema:
+      - $ref: '#/components/parameters/FolderId'
+      - name: item_types
+        in: query
+        description: Filter by item type
+        schema:
+          type: array
+          items:
             type: string
             enum:
-              - created_ascending
-              - created_descending
-              - modified_ascending
-              - modified_descending
-              - title_ascending
-              - title_descending
-        - name: limit
-          in: query
-          description: Number of results per page
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 50
-        - name: continuation
-          in: query
-          description: Continuation token for paginated results
-          schema:
-            type: string
-        - name: pin_status
-          in: query
-          description: Filter by pin status
-          schema:
-            type: string
-            enum:
-              - any
-              - pinned
-            default: any
+            - design
+            - folder
+            - image
+        style: form
+        explode: true
+        example: []
+      - name: sort_by
+        in: query
+        description: Sort order for results
+        schema:
+          type: string
+          enum:
+          - created_ascending
+          - created_descending
+          - modified_ascending
+          - modified_descending
+          - title_ascending
+          - title_descending
+        example: created_ascending
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 50
+        example: 10
+      - name: continuation
+        in: query
+        description: Continuation token for paginated results
+        schema:
+          type: string
+        example: example_value
+      - name: pin_status
+        in: query
+        description: Filter by pin status
+        schema:
+          type: string
+          enum:
+          - any
+          - pinned
+          default: any
+        example: any
       responses:
         '200':
           description: A paginated list of folder items
@@ -397,6 +538,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListFolderItemsResponse'
+              examples:
+                Listfolderitems200Example:
+                  summary: Default listFolderItems 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - type: design
+                    continuation: example_value
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -405,24 +554,34 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /folders/{folderId}/items:move:
     post:
       operationId: moveFolderItem
-      summary: Canva Move an item to a folder
+      summary: Canva Move an Item to a Folder
       description: Moves a design, folder, or image into the specified folder.
       tags:
-        - Folders
+      - Folders
       security:
-        - oauth2:
-            - folder:write
+      - oauth2:
+        - folder:write
       parameters:
-        - $ref: '#/components/parameters/FolderId'
+      - $ref: '#/components/parameters/FolderId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/MoveFolderItemRequest'
+            examples:
+              MovefolderitemRequestExample:
+                summary: Default moveFolderItem request
+                x-microcks-default: true
+                value:
+                  item_id: '500123'
+                  item_type: design
       responses:
         '204':
           description: Item moved successfully
@@ -436,26 +595,36 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /exports:
     post:
       operationId: createDesignExportJob
-      summary: Canva Create a design export job
+      summary: Canva Create a Design Export Job
       description: >-
         Creates an asynchronous job to export a design from Canva.
         Supported formats include PDF, JPG, PNG, GIF, PPTX, and MP4.
         Each format supports format-specific options such as quality,
         dimensions, page selection, and transparency.
       tags:
-        - Exports
+      - Exports
       security:
-        - oauth2:
-            - design:content:read
+      - oauth2:
+        - design:content:read
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateExportJobRequest'
+            examples:
+              CreatedesignexportjobRequestExample:
+                summary: Default createDesignExportJob request
+                x-microcks-default: true
+                value:
+                  design_id: '500123'
+                  format: {}
       responses:
         '200':
           description: The export job
@@ -463,6 +632,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExportJobResponse'
+              examples:
+                Createdesignexportjob200Example:
+                  summary: Default createDesignExportJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      urls:
+                      - {}
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -471,21 +650,24 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /exports/{exportId}:
     get:
       operationId: getDesignExportJob
-      summary: Canva Get a design export job
+      summary: Canva Get a Design Export Job
       description: >-
         Retrieves the status and results of an export job. When the job
         completes successfully, the response includes download URLs for
         the exported files, valid for 24 hours.
       tags:
-        - Exports
+      - Exports
       security:
-        - oauth2:
-            - design:content:read
+      - oauth2:
+        - design:content:read
       parameters:
-        - $ref: '#/components/parameters/ExportId'
+      - $ref: '#/components/parameters/ExportId'
       responses:
         '200':
           description: The export job status and results
@@ -493,30 +675,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExportJobResponse'
+              examples:
+                Getdesignexportjob200Example:
+                  summary: Default getDesignExportJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      urls:
+                      - {}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /comments:
     post:
       operationId: createComment
-      summary: Canva Create a comment
+      summary: Canva Create a Comment
       description: >-
         Creates a new top-level comment on a design. Supports mentioning
         users using the [user_id:team_id] format in the message text.
       tags:
-        - Comments
+      - Comments
       security:
-        - oauth2:
-            - comment:write
+      - oauth2:
+        - comment:write
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateCommentRequest'
+            examples:
+              CreatecommentRequestExample:
+                summary: Default createComment request
+                x-microcks-default: true
+                value:
+                  attached_to:
+                    type: design
+                    design_id: '500123'
+                  message: example_value
+                  assignee_id: '500123'
       responses:
         '200':
           description: The created comment
@@ -524,6 +729,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommentResponse'
+              examples:
+                Createcomment200Example:
+                  summary: Default createComment 200 response
+                  x-microcks-default: true
+                  value:
+                    comment:
+                      type: parent
+                      id: abc123
+                      message: example_value
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      mentions: example_value
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -534,29 +751,42 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /comments/{commentId}/replies:
     post:
       operationId: createReply
-      summary: Canva Create a reply to a comment
+      summary: Canva Create a Reply to a Comment
       description: Creates a reply to an existing comment thread on a design.
       tags:
-        - Comments
+      - Comments
       security:
-        - oauth2:
-            - comment:write
+      - oauth2:
+        - comment:write
       parameters:
-        - name: commentId
-          in: path
-          required: true
-          description: The parent comment ID
-          schema:
-            type: string
+      - name: commentId
+        in: path
+        required: true
+        description: The parent comment ID
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateReplyRequest'
+            examples:
+              CreatereplyRequestExample:
+                summary: Default createReply request
+                x-microcks-default: true
+                value:
+                  attached_to:
+                    type: design
+                    design_id: '500123'
+                  message: example_value
       responses:
         '200':
           description: The created reply
@@ -564,6 +794,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommentResponse'
+              examples:
+                Createreply200Example:
+                  summary: Default createReply 200 response
+                  x-microcks-default: true
+                  value:
+                    comment:
+                      type: parent
+                      id: abc123
+                      message: example_value
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      mentions: example_value
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -574,15 +816,18 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /users/me:
     get:
       operationId: getUsersMe
-      summary: Canva Get current user
+      summary: Canva Get Current User
       description: >-
         Retrieves the user ID and team ID for the currently authenticated
         user.
       tags:
-        - Users
+      - Users
       responses:
         '200':
           description: The current user details
@@ -590,74 +835,91 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersMeResponse'
+              examples:
+                Getusersme200Example:
+                  summary: Default getUsersMe 200 response
+                  x-microcks-default: true
+                  value:
+                    team_user:
+                      user_id: '500123'
+                      team_id: '500123'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /brand-templates:
     get:
       operationId: listBrandTemplates
-      summary: Canva List brand templates
+      summary: Canva List Brand Templates
       description: >-
         Lists brand templates available to the authenticated user.
         Supports searching, filtering by ownership and dataset
         availability, sorting, and pagination. Requires Canva
         Enterprise membership.
       tags:
-        - Brand Templates
+      - Brand Templates
       security:
-        - oauth2:
-            - brandtemplate:meta:read
+      - oauth2:
+        - brandtemplate:meta:read
       parameters:
-        - name: query
-          in: query
-          description: Search term to filter brand templates
-          schema:
-            type: string
-        - name: ownership
-          in: query
-          description: Filter by ownership status
-          schema:
-            type: string
-            enum:
-              - any
-              - owned
-              - shared
-            default: any
-        - name: sort_by
-          in: query
-          description: Sort order for results
-          schema:
-            type: string
-            enum:
-              - relevance
-              - modified_descending
-              - modified_ascending
-              - title_descending
-              - title_ascending
-            default: relevance
-        - name: dataset
-          in: query
-          description: Filter by dataset availability
-          schema:
-            type: string
-            enum:
-              - any
-              - non_empty
-            default: any
-        - name: limit
-          in: query
-          description: Number of results per page
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 25
-        - name: continuation
-          in: query
-          description: Continuation token for paginated results
-          schema:
-            type: string
+      - name: query
+        in: query
+        description: Search term to filter brand templates
+        schema:
+          type: string
+        example: example_value
+      - name: ownership
+        in: query
+        description: Filter by ownership status
+        schema:
+          type: string
+          enum:
+          - any
+          - owned
+          - shared
+          default: any
+        example: any
+      - name: sort_by
+        in: query
+        description: Sort order for results
+        schema:
+          type: string
+          enum:
+          - relevance
+          - modified_descending
+          - modified_ascending
+          - title_descending
+          - title_ascending
+          default: relevance
+        example: relevance
+      - name: dataset
+        in: query
+        description: Filter by dataset availability
+        schema:
+          type: string
+          enum:
+          - any
+          - non_empty
+          default: any
+        example: any
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 25
+        example: 10
+      - name: continuation
+        in: query
+        description: Continuation token for paginated results
+        schema:
+          type: string
+        example: example_value
       responses:
         '200':
           description: A paginated list of brand templates
@@ -665,26 +927,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListBrandTemplatesResponse'
+              examples:
+                Listbrandtemplates200Example:
+                  summary: Default listBrandTemplates 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - id: abc123
+                      title: Example Title
+                      view_url: https://www.example.com
+                      create_url: https://www.example.com
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                    continuation: example_value
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /brand-templates/{brandTemplateId}:
     get:
       operationId: getBrandTemplate
-      summary: Canva Get a brand template
+      summary: Canva Get a Brand Template
       description: >-
         Retrieves metadata for a specific brand template. Requires
         Canva Enterprise membership.
       tags:
-        - Brand Templates
+      - Brand Templates
       security:
-        - oauth2:
-            - brandtemplate:meta:read
+      - oauth2:
+        - brandtemplate:meta:read
       parameters:
-        - $ref: '#/components/parameters/BrandTemplateId'
+      - $ref: '#/components/parameters/BrandTemplateId'
       responses:
         '200':
           description: The brand template metadata
@@ -692,6 +970,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BrandTemplateResponse'
+              examples:
+                Getbrandtemplate200Example:
+                  summary: Default getBrandTemplate 200 response
+                  x-microcks-default: true
+                  value:
+                    brand_template:
+                      id: abc123
+                      title: Example Title
+                      view_url: https://www.example.com
+                      create_url: https://www.example.com
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -700,21 +990,24 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /brand-templates/{brandTemplateId}/dataset:
     get:
       operationId: getBrandTemplateDataset
-      summary: Canva Get a brand template dataset
+      summary: Canva Get a Brand Template Dataset
       description: >-
         Retrieves the autofill dataset for a brand template, listing the
         available data fields and their types (image, text, or chart).
         Requires Canva Enterprise membership.
       tags:
-        - Brand Templates
+      - Brand Templates
       security:
-        - oauth2:
-            - brandtemplate:content:read
+      - oauth2:
+        - brandtemplate:content:read
       parameters:
-        - $ref: '#/components/parameters/BrandTemplateId'
+      - $ref: '#/components/parameters/BrandTemplateId'
       responses:
         '200':
           description: The brand template dataset
@@ -722,6 +1015,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BrandTemplateDatasetResponse'
+              examples:
+                Getbrandtemplatedataset200Example:
+                  summary: Default getBrandTemplateDataset 200 response
+                  x-microcks-default: true
+                  value:
+                    dataset: example_value
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -730,25 +1029,36 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /autofills:
     post:
       operationId: createDesignAutofillJob
-      summary: Canva Create a design autofill job
+      summary: Canva Create a Design Autofill Job
       description: >-
         Creates an asynchronous job to generate a new design by
         autofilling a brand template with provided data. Supports
         text, image, and chart data fields.
       tags:
-        - Autofills
+      - Autofills
       security:
-        - oauth2:
-            - design:content:write
+      - oauth2:
+        - design:content:write
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateAutofillJobRequest'
+            examples:
+              CreatedesignautofilljobRequestExample:
+                summary: Default createDesignAutofillJob request
+                x-microcks-default: true
+                value:
+                  brand_template_id: '500123'
+                  title: Example Title
+                  data: example_value
       responses:
         '200':
           description: The autofill job
@@ -756,6 +1066,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AutofillJobResponse'
+              examples:
+                Createdesignautofilljob200Example:
+                  summary: Default createDesignAutofillJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      result:
+                        type: create_design
+                      error:
+                        code: autofill_error
+                        message: example_value
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -766,20 +1089,23 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /autofills/{jobId}:
     get:
       operationId: getDesignAutofillJob
-      summary: Canva Get a design autofill job
+      summary: Canva Get a Design Autofill Job
       description: >-
         Retrieves the status and results of a design autofill job.
         When successful, includes the generated design metadata.
       tags:
-        - Autofills
+      - Autofills
       security:
-        - oauth2:
-            - design:content:read
+      - oauth2:
+        - design:content:read
       parameters:
-        - $ref: '#/components/parameters/JobId'
+      - $ref: '#/components/parameters/JobId'
       responses:
         '200':
           description: The autofill job status and results
@@ -787,32 +1113,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AutofillJobResponse'
+              examples:
+                Getdesignautofilljob200Example:
+                  summary: Default getDesignAutofillJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      result:
+                        type: create_design
+                      error:
+                        code: autofill_error
+                        message: example_value
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /resizes:
     post:
       operationId: createDesignResizeJob
-      summary: Canva Create a design resize job
+      summary: Canva Create a Design Resize Job
       description: >-
         Creates an asynchronous job to resize a design to different
         dimensions or a preset type (doc, whiteboard, or presentation).
         The resize creates a new design without modifying the original.
       tags:
-        - Resizes
+      - Resizes
       security:
-        - oauth2:
-            - design:content:read
-            - design:content:write
+      - oauth2:
+        - design:content:read
+        - design:content:write
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateResizeJobRequest'
+            examples:
+              CreatedesignresizejobRequestExample:
+                summary: Default createDesignResizeJob request
+                x-microcks-default: true
+                value:
+                  design_id: '500123'
+                  design_type: {}
       responses:
         '200':
           description: The resize job
@@ -820,6 +1169,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResizeJobResponse'
+              examples:
+                Createdesignresizejob200Example:
+                  summary: Default createDesignResizeJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      result: {}
+                      error:
+                        code: example_value
+                        message: example_value
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -828,20 +1189,23 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /resizes/{jobId}:
     get:
       operationId: getDesignResizeJob
-      summary: Canva Get a design resize job
+      summary: Canva Get a Design Resize Job
       description: >-
         Retrieves the status and results of a design resize job.
         When successful, includes the newly created design metadata.
       tags:
-        - Resizes
+      - Resizes
       security:
-        - oauth2:
-            - design:content:read
+      - oauth2:
+        - design:content:read
       parameters:
-        - $ref: '#/components/parameters/JobId'
+      - $ref: '#/components/parameters/JobId'
       responses:
         '200':
           description: The resize job status and results
@@ -849,12 +1213,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResizeJobResponse'
+              examples:
+                Getdesignresizejob200Example:
+                  summary: Default getDesignResizeJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      result: {}
+                      error:
+                        code: example_value
+                        message: example_value
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -929,9 +1308,11 @@ components:
         id:
           type: string
           description: The design ID
+          example: abc123
         title:
           type: string
           description: The design title
+          example: Example Title
         owner:
           $ref: '#/components/schemas/Owner'
         urls:
@@ -939,21 +1320,24 @@ components:
         created_at:
           type: integer
           description: Unix timestamp in seconds when the design was created
+          example: '2026-01-15T10:30:00Z'
         updated_at:
           type: integer
           description: Unix timestamp in seconds when the design was last updated
+          example: '2026-01-15T10:30:00Z'
         thumbnail:
           $ref: '#/components/schemas/Thumbnail'
         page_count:
           type: integer
           description: The number of pages in the design
+          example: 10
       required:
-        - id
-        - title
-        - owner
-        - urls
-        - created_at
-        - updated_at
+      - id
+      - title
+      - owner
+      - urls
+      - created_at
+      - updated_at
     Owner:
       type: object
       description: The owner of a resource
@@ -961,12 +1345,14 @@ components:
         user_id:
           type: string
           description: The user ID of the owner
+          example: '500123'
         team_id:
           type: string
           description: The team ID of the owner
+          example: '500123'
       required:
-        - user_id
-        - team_id
+      - user_id
+      - team_id
     DesignUrls:
       type: object
       description: Temporary URLs for accessing a design (expire after 30 days)
@@ -975,13 +1361,15 @@ components:
           type: string
           format: uri
           description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
         view_url:
           type: string
           format: uri
           description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
       required:
-        - edit_url
-        - view_url
+      - edit_url
+      - view_url
     Thumbnail:
       type: object
       description: A thumbnail image for a resource (URL expires in 15 minutes)
@@ -989,17 +1377,20 @@ components:
         width:
           type: integer
           description: Thumbnail width in pixels
+          example: 10
         height:
           type: integer
           description: Thumbnail height in pixels
+          example: 10
         url:
           type: string
           format: uri
           description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
       required:
-        - width
-        - height
-        - url
+      - width
+      - height
+      - url
     Asset:
       type: object
       description: A Canva asset (image or video)
@@ -1007,26 +1398,32 @@ components:
         id:
           type: string
           description: The asset ID
+          example: abc123
         type:
           type: string
           description: The asset type
           enum:
-            - image
-            - video
+          - image
+          - video
+          example: image
         name:
           type: string
           description: The asset name
+          example: Example Title
         tags:
           type: array
           description: User-facing tags for the asset
           items:
             type: string
+          example: []
         created_at:
           type: integer
           description: Unix timestamp in seconds when the asset was created
+          example: '2026-01-15T10:30:00Z'
         updated_at:
           type: integer
           description: Unix timestamp in seconds when the asset was last updated
+          example: '2026-01-15T10:30:00Z'
         owner:
           $ref: '#/components/schemas/Owner'
         thumbnail:
@@ -1034,12 +1431,12 @@ components:
         import_status:
           $ref: '#/components/schemas/ImportStatus'
       required:
-        - id
-        - type
-        - name
-        - created_at
-        - updated_at
-        - owner
+      - id
+      - type
+      - name
+      - created_at
+      - updated_at
+      - owner
     ImportStatus:
       type: object
       description: The import status of an asset (deprecated)
@@ -1049,9 +1446,10 @@ components:
           type: string
           description: The current import state
           enum:
-            - failed
-            - in_progress
-            - success
+          - failed
+          - in_progress
+          - success
+          example: failed
         error:
           type: object
           description: Error details if the import failed
@@ -1063,8 +1461,9 @@ components:
               type: string
               description: Error code
               enum:
-                - file_too_big
-                - import_failed
+              - file_too_big
+              - import_failed
+          example: example_value
     Folder:
       type: object
       description: A Canva folder
@@ -1072,22 +1471,26 @@ components:
         id:
           type: string
           description: The folder ID
+          example: abc123
         name:
           type: string
           description: The folder name
+          example: Example Title
         created_at:
           type: integer
           description: Unix timestamp in seconds when the folder was created
+          example: '2026-01-15T10:30:00Z'
         updated_at:
           type: integer
           description: Unix timestamp in seconds when the folder was last updated
+          example: '2026-01-15T10:30:00Z'
         thumbnail:
           $ref: '#/components/schemas/Thumbnail'
       required:
-        - id
-        - name
-        - created_at
-        - updated_at
+      - id
+      - name
+      - created_at
+      - updated_at
     FolderItem:
       type: object
       description: An item within a folder (design, folder, or image)
@@ -1096,9 +1499,10 @@ components:
           type: string
           description: The type of folder item
           enum:
-            - design
-            - folder
-            - image
+          - design
+          - folder
+          - image
+          example: design
         design:
           $ref: '#/components/schemas/Design'
         folder:
@@ -1106,7 +1510,7 @@ components:
         image:
           $ref: '#/components/schemas/Asset'
       required:
-        - type
+      - type
     ExportJob:
       type: object
       description: An export job for converting a design to a downloadable format
@@ -1114,13 +1518,15 @@ components:
         id:
           type: string
           description: The export job ID
+          example: abc123
         status:
           type: string
           description: The current status of the export job
           enum:
-            - in_progress
-            - success
-            - failed
+          - in_progress
+          - success
+          - failed
+          example: in_progress
         urls:
           type: array
           description: >-
@@ -1129,11 +1535,12 @@ components:
           items:
             type: string
             format: uri
+          example: https://www.example.com
         error:
           $ref: '#/components/schemas/ExportError'
       required:
-        - id
-        - status
+      - id
+      - status
     ExportError:
       type: object
       description: Error details for a failed export job
@@ -1142,15 +1549,17 @@ components:
           type: string
           description: Error code indicating the reason for failure
           enum:
-            - license_required
-            - approval_required
-            - internal_failure
+          - license_required
+          - approval_required
+          - internal_failure
+          example: license_required
         message:
           type: string
           description: Human-readable error message
+          example: example_value
       required:
-        - code
-        - message
+      - code
+      - message
     Comment:
       type: object
       description: A comment on a design
@@ -1159,24 +1568,29 @@ components:
           type: string
           description: The comment type
           enum:
-            - parent
-            - reply
+          - parent
+          - reply
+          example: parent
         id:
           type: string
           description: The comment ID
+          example: abc123
         message:
           type: string
           description: >-
             The comment text. User mentions use the format
             [user_id:team_id].
+          example: example_value
         author:
           $ref: '#/components/schemas/CommentUser'
         created_at:
           type: integer
           description: Unix timestamp in seconds when the comment was created
+          example: '2026-01-15T10:30:00Z'
         updated_at:
           type: integer
           description: Unix timestamp in seconds when the comment was last updated
+          example: '2026-01-15T10:30:00Z'
         mentions:
           type: object
           description: >-
@@ -1184,15 +1598,16 @@ components:
             identifier
           additionalProperties:
             $ref: '#/components/schemas/MentionedUser'
+          example: example_value
         attached_to:
           $ref: '#/components/schemas/CommentAttachment'
       required:
-        - type
-        - id
-        - message
-        - author
-        - created_at
-        - updated_at
+      - type
+      - id
+      - message
+      - author
+      - created_at
+      - updated_at
     CommentUser:
       type: object
       description: A user associated with a comment
@@ -1200,10 +1615,12 @@ components:
         id:
           type: string
           description: The user ID
+          example: abc123
         display_name:
           type: string
           description: The user display name
           deprecated: true
+          example: example_value
     MentionedUser:
       type: object
       description: A user mentioned in a comment
@@ -1211,12 +1628,15 @@ components:
         user_id:
           type: string
           description: The mentioned user ID
+          example: '500123'
         team_id:
           type: string
           description: The mentioned user team ID
+          example: '500123'
         display_name:
           type: string
           description: The mentioned user display name
+          example: example_value
     CommentAttachment:
       type: object
       description: The object a comment is attached to
@@ -1225,13 +1645,15 @@ components:
           type: string
           description: The attachment type
           enum:
-            - design
+          - design
+          example: design
         design_id:
           type: string
           description: The design ID the comment is attached to
+          example: '500123'
       required:
-        - type
-        - design_id
+      - type
+      - design_id
     BrandTemplate:
       type: object
       description: A Canva brand template (requires Enterprise)
@@ -1239,30 +1661,36 @@ components:
         id:
           type: string
           description: The brand template ID
+          example: abc123
         title:
           type: string
           description: The brand template title
+          example: Example Title
         view_url:
           type: string
           format: uri
           description: URL to view the brand template
+          example: https://www.example.com
         create_url:
           type: string
           format: uri
           description: URL to create a design from the brand template
+          example: https://www.example.com
         created_at:
           type: integer
           description: Unix timestamp in seconds when the template was created
+          example: '2026-01-15T10:30:00Z'
         updated_at:
           type: integer
           description: Unix timestamp in seconds when the template was last updated
+          example: '2026-01-15T10:30:00Z'
         thumbnail:
           $ref: '#/components/schemas/Thumbnail'
       required:
-        - id
-        - title
-        - created_at
-        - updated_at
+      - id
+      - title
+      - created_at
+      - updated_at
     DatasetField:
       type: object
       description: A data field in a brand template dataset
@@ -1271,11 +1699,12 @@ components:
           type: string
           description: The data field type
           enum:
-            - image
-            - text
-            - chart
+          - image
+          - text
+          - chart
+          example: image
       required:
-        - type
+      - type
     TeamUser:
       type: object
       description: The authenticated user and their team
@@ -1283,16 +1712,18 @@ components:
         user_id:
           type: string
           description: The user ID
+          example: '500123'
         team_id:
           type: string
           description: The team ID
+          example: '500123'
       required:
-        - user_id
-        - team_id
+      - user_id
+      - team_id
     DesignType:
       oneOf:
-        - $ref: '#/components/schemas/PresetDesignType'
-        - $ref: '#/components/schemas/CustomDesignType'
+      - $ref: '#/components/schemas/PresetDesignType'
+      - $ref: '#/components/schemas/CustomDesignType'
       description: The type and dimensions for a new design
     PresetDesignType:
       type: object
@@ -1301,17 +1732,19 @@ components:
         type:
           type: string
           enum:
-            - preset
+          - preset
+          example: preset
         name:
           type: string
           description: The preset design type name
           enum:
-            - doc
-            - whiteboard
-            - presentation
+          - doc
+          - whiteboard
+          - presentation
+          example: doc
       required:
-        - type
-        - name
+      - type
+      - name
     CustomDesignType:
       type: object
       description: A custom design type with specific dimensions
@@ -1319,29 +1752,32 @@ components:
         type:
           type: string
           enum:
-            - custom
+          - custom
+          example: custom
         width:
           type: integer
           description: Width in pixels (40-8000)
           minimum: 40
           maximum: 8000
+          example: 10
         height:
           type: integer
           description: Height in pixels (40-8000)
           minimum: 40
           maximum: 8000
+          example: 10
       required:
-        - type
-        - width
-        - height
+      - type
+      - width
+      - height
     ExportFormat:
       oneOf:
-        - $ref: '#/components/schemas/PdfExportFormat'
-        - $ref: '#/components/schemas/JpgExportFormat'
-        - $ref: '#/components/schemas/PngExportFormat'
-        - $ref: '#/components/schemas/GifExportFormat'
-        - $ref: '#/components/schemas/PptxExportFormat'
-        - $ref: '#/components/schemas/Mp4ExportFormat'
+      - $ref: '#/components/schemas/PdfExportFormat'
+      - $ref: '#/components/schemas/JpgExportFormat'
+      - $ref: '#/components/schemas/PngExportFormat'
+      - $ref: '#/components/schemas/GifExportFormat'
+      - $ref: '#/components/schemas/PptxExportFormat'
+      - $ref: '#/components/schemas/Mp4ExportFormat'
       description: Export format configuration
     PdfExportFormat:
       type: object
@@ -1350,29 +1786,33 @@ components:
         type:
           type: string
           enum:
-            - pdf
+          - pdf
+          example: pdf
         export_quality:
           type: string
           enum:
-            - regular
-            - pro
+          - regular
+          - pro
           default: regular
+          example: regular
         size:
           type: string
           description: Paper size for the PDF
           enum:
-            - a4
-            - a3
-            - letter
-            - legal
+          - a4
+          - a3
+          - letter
+          - legal
           default: a4
+          example: a4
         pages:
           type: array
           description: Page indices to export (exports all pages if omitted)
           items:
             type: integer
+          example: []
       required:
-        - type
+      - type
     JpgExportFormat:
       type: object
       description: JPG export format options
@@ -1380,36 +1820,42 @@ components:
         type:
           type: string
           enum:
-            - jpg
+          - jpg
+          example: jpg
         quality:
           type: integer
           description: JPG compression quality (1-100)
           minimum: 1
           maximum: 100
+          example: 10
         export_quality:
           type: string
           enum:
-            - regular
-            - pro
+          - regular
+          - pro
           default: regular
+          example: regular
         width:
           type: integer
           description: Output width in pixels
           minimum: 40
           maximum: 25000
+          example: 10
         height:
           type: integer
           description: Output height in pixels
           minimum: 40
           maximum: 25000
+          example: 10
         pages:
           type: array
           description: Page indices to export
           items:
             type: integer
+          example: []
       required:
-        - type
-        - quality
+      - type
+      - quality
     PngExportFormat:
       type: object
       description: PNG export format options
@@ -1417,42 +1863,50 @@ components:
         type:
           type: string
           enum:
-            - png
+          - png
+          example: png
         export_quality:
           type: string
           enum:
-            - regular
-            - pro
+          - regular
+          - pro
           default: regular
+          example: regular
         width:
           type: integer
           description: Output width in pixels
           minimum: 40
           maximum: 25000
+          example: 10
         height:
           type: integer
           description: Output height in pixels
           minimum: 40
           maximum: 25000
+          example: 10
         lossless:
           type: boolean
           description: Whether to use lossless compression
           default: true
+          example: true
         transparent_background:
           type: boolean
           description: Whether to use a transparent background
           default: false
+          example: true
         as_single_image:
           type: boolean
           description: Whether to export all pages as a single image
           default: false
+          example: true
         pages:
           type: array
           description: Page indices to export
           items:
             type: integer
+          example: []
       required:
-        - type
+      - type
     GifExportFormat:
       type: object
       description: GIF export format options
@@ -1460,30 +1914,35 @@ components:
         type:
           type: string
           enum:
-            - gif
+          - gif
+          example: gif
         export_quality:
           type: string
           enum:
-            - regular
-            - pro
+          - regular
+          - pro
           default: regular
+          example: regular
         width:
           type: integer
           description: Output width in pixels
           minimum: 40
           maximum: 25000
+          example: 10
         height:
           type: integer
           description: Output height in pixels
           minimum: 40
           maximum: 25000
+          example: 10
         pages:
           type: array
           description: Page indices to export
           items:
             type: integer
+          example: []
       required:
-        - type
+      - type
     PptxExportFormat:
       type: object
       description: PowerPoint export format options
@@ -1491,14 +1950,16 @@ components:
         type:
           type: string
           enum:
-            - pptx
+          - pptx
+          example: pptx
         pages:
           type: array
           description: Page indices to export
           items:
             type: integer
+          example: []
       required:
-        - type
+      - type
     Mp4ExportFormat:
       type: object
       description: MP4 video export format options
@@ -1506,38 +1967,42 @@ components:
         type:
           type: string
           enum:
-            - mp4
+          - mp4
+          example: mp4
         quality:
           type: string
           description: Video quality and orientation
           enum:
-            - horizontal_480p
-            - horizontal_720p
-            - horizontal_1080p
-            - horizontal_4k
-            - vertical_480p
-            - vertical_720p
-            - vertical_1080p
-            - vertical_4k
+          - horizontal_480p
+          - horizontal_720p
+          - horizontal_1080p
+          - horizontal_4k
+          - vertical_480p
+          - vertical_720p
+          - vertical_1080p
+          - vertical_4k
+          example: horizontal_480p
         export_quality:
           type: string
           enum:
-            - regular
-            - pro
+          - regular
+          - pro
           default: regular
+          example: regular
         pages:
           type: array
           description: Page indices to export
           items:
             type: integer
+          example: []
       required:
-        - type
-        - quality
+      - type
+      - quality
     AutofillDataValue:
       oneOf:
-        - $ref: '#/components/schemas/AutofillTextValue'
-        - $ref: '#/components/schemas/AutofillImageValue'
-        - $ref: '#/components/schemas/AutofillChartValue'
+      - $ref: '#/components/schemas/AutofillTextValue'
+      - $ref: '#/components/schemas/AutofillImageValue'
+      - $ref: '#/components/schemas/AutofillChartValue'
       description: A data value for autofilling a design field
     AutofillTextValue:
       type: object
@@ -1546,13 +2011,15 @@ components:
         type:
           type: string
           enum:
-            - text
+          - text
+          example: text
         text:
           type: string
           description: The text content
+          example: example_value
       required:
-        - type
-        - text
+      - type
+      - text
     AutofillImageValue:
       type: object
       description: Image data for autofill
@@ -1560,13 +2027,15 @@ components:
         type:
           type: string
           enum:
-            - image
+          - image
+          example: image
         asset_id:
           type: string
           description: The asset ID of the image to use
+          example: '500123'
       required:
-        - type
-        - asset_id
+      - type
+      - asset_id
     AutofillChartValue:
       type: object
       description: Chart data for autofill (preview feature)
@@ -1574,7 +2043,8 @@ components:
         type:
           type: string
           enum:
-            - chart
+          - chart
+          example: chart
         chart_data:
           type: object
           description: Tabular data for the chart
@@ -1596,23 +2066,24 @@ components:
                         type:
                           type: string
                           enum:
-                            - string
-                            - number
-                            - boolean
-                            - date
+                          - string
+                          - number
+                          - boolean
+                          - date
                         value:
                           type: string
                           description: The cell value
                       required:
-                        - type
-                        - value
+                      - type
+                      - value
                 required:
-                  - cells
+                - cells
           required:
-            - rows
+          - rows
+          example: example_value
       required:
-        - type
-        - chart_data
+      - type
+      - chart_data
     AutofillJob:
       type: object
       description: An autofill job for generating designs from brand templates
@@ -1620,13 +2091,15 @@ components:
         id:
           type: string
           description: The autofill job ID
+          example: abc123
         status:
           type: string
           description: The current status of the autofill job
           enum:
-            - in_progress
-            - success
-            - failed
+          - in_progress
+          - success
+          - failed
+          example: in_progress
         result:
           type: object
           description: The autofill result (present when status is success)
@@ -1634,12 +2107,13 @@ components:
             type:
               type: string
               enum:
-                - create_design
+              - create_design
             design:
               $ref: '#/components/schemas/Design'
           required:
-            - type
-            - design
+          - type
+          - design
+          example: example_value
         error:
           type: object
           description: Error details (present when status is failed)
@@ -1648,18 +2122,19 @@ components:
               type: string
               description: Error code
               enum:
-                - autofill_error
-                - thumbnail_generation_error
-                - create_design_error
+              - autofill_error
+              - thumbnail_generation_error
+              - create_design_error
             message:
               type: string
               description: Human-readable error message
           required:
-            - code
-            - message
+          - code
+          - message
+          example: example_value
       required:
-        - id
-        - status
+      - id
+      - status
     ResizeJob:
       type: object
       description: A resize job for creating a resized copy of a design
@@ -1667,19 +2142,22 @@ components:
         id:
           type: string
           description: The resize job ID
+          example: abc123
         status:
           type: string
           description: The current status of the resize job
           enum:
-            - in_progress
-            - success
-            - failed
+          - in_progress
+          - success
+          - failed
+          example: in_progress
         result:
           type: object
           description: The resize result (present when status is success)
           properties:
             design:
               $ref: '#/components/schemas/Design'
+          example: example_value
         error:
           type: object
           description: Error details (present when status is failed)
@@ -1691,11 +2169,12 @@ components:
               type: string
               description: Human-readable error message
           required:
-            - code
-            - message
+          - code
+          - message
+          example: example_value
       required:
-        - id
-        - status
+      - id
+      - status
     Error:
       type: object
       description: An error response
@@ -1703,12 +2182,14 @@ components:
         code:
           type: string
           description: Machine-readable error code
+          example: example_value
         message:
           type: string
           description: Human-readable error message
+          example: example_value
       required:
-        - code
-        - message
+      - code
+      - message
     CreateDesignRequest:
       type: object
       description: Request body for creating a new design
@@ -1718,13 +2199,15 @@ components:
         asset_id:
           type: string
           description: An image asset ID to insert into the design
+          example: '500123'
         title:
           type: string
           description: The design title (1-255 characters)
           minLength: 1
           maxLength: 255
+          example: Example Title
       required:
-        - design_type
+      - design_type
     CreateExportJobRequest:
       type: object
       description: Request body for creating an export job
@@ -1732,11 +2215,12 @@ components:
         design_id:
           type: string
           description: The design ID to export
+          example: '500123'
         format:
           $ref: '#/components/schemas/ExportFormat'
       required:
-        - design_id
-        - format
+      - design_id
+      - format
     CreateCommentRequest:
       type: object
       description: Request body for creating a comment
@@ -1750,13 +2234,15 @@ components:
             [user_id:team_id] format.
           minLength: 1
           maxLength: 2048
+          example: example_value
         assignee_id:
           type: string
           description: User ID to assign the comment to
           deprecated: true
+          example: '500123'
       required:
-        - attached_to
-        - message
+      - attached_to
+      - message
     CreateReplyRequest:
       type: object
       description: Request body for creating a reply to a comment
@@ -1768,9 +2254,10 @@ components:
           description: Reply text (1-2048 characters)
           minLength: 1
           maxLength: 2048
+          example: example_value
       required:
-        - attached_to
-        - message
+      - attached_to
+      - message
     CreateAutofillJobRequest:
       type: object
       description: Request body for creating a design autofill job
@@ -1778,6 +2265,7 @@ components:
         brand_template_id:
           type: string
           description: The brand template ID to autofill
+          example: '500123'
         title:
           type: string
           description: >-
@@ -1785,6 +2273,7 @@ components:
             to the brand template title.
           minLength: 1
           maxLength: 255
+          example: Example Title
         data:
           type: object
           description: >-
@@ -1792,9 +2281,10 @@ components:
             template dataset
           additionalProperties:
             $ref: '#/components/schemas/AutofillDataValue'
+          example: example_value
       required:
-        - brand_template_id
-        - data
+      - brand_template_id
+      - data
     CreateResizeJobRequest:
       type: object
       description: Request body for creating a design resize job
@@ -1802,11 +2292,12 @@ components:
         design_id:
           type: string
           description: The design ID to resize
+          example: '500123'
         design_type:
           $ref: '#/components/schemas/DesignType'
       required:
-        - design_id
-        - design_type
+      - design_id
+      - design_type
     MoveFolderItemRequest:
       type: object
       description: Request body for moving an item to a folder
@@ -1814,30 +2305,32 @@ components:
         item_id:
           type: string
           description: The ID of the item to move
+          example: '500123'
         item_type:
           type: string
           description: The type of item to move
           enum:
-            - design
-            - folder
-            - image
+          - design
+          - folder
+          - image
+          example: design
       required:
-        - item_id
-        - item_type
+      - item_id
+      - item_type
     DesignResponse:
       type: object
       properties:
         design:
           $ref: '#/components/schemas/Design'
       required:
-        - design
+      - design
     AssetResponse:
       type: object
       properties:
         asset:
           $ref: '#/components/schemas/Asset'
       required:
-        - asset
+      - asset
     AssetUploadJobResponse:
       type: object
       properties:
@@ -1851,9 +2344,9 @@ components:
               type: string
               description: The current status of the upload job
               enum:
-                - in_progress
-                - success
-                - failed
+              - in_progress
+              - success
+              - failed
             asset:
               $ref: '#/components/schemas/Asset'
             error:
@@ -1862,23 +2355,24 @@ components:
                 code:
                   type: string
                   enum:
-                    - file_too_big
-                    - import_failed
-                    - fetch_failed
+                  - file_too_big
+                  - import_failed
+                  - fetch_failed
                 message:
                   type: string
           required:
-            - id
-            - status
+          - id
+          - status
+          example: example_value
       required:
-        - job
+      - job
     FolderResponse:
       type: object
       properties:
         folder:
           $ref: '#/components/schemas/Folder'
       required:
-        - folder
+      - folder
     ListDesignsResponse:
       type: object
       properties:
@@ -1886,11 +2380,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Design'
+          example: []
         continuation:
           type: string
           description: Continuation token for the next page of results
+          example: example_value
       required:
-        - items
+      - items
     ListFolderItemsResponse:
       type: object
       properties:
@@ -1898,32 +2394,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FolderItem'
+          example: []
         continuation:
           type: string
           description: Continuation token for the next page of results
+          example: example_value
       required:
-        - items
+      - items
     ExportJobResponse:
       type: object
       properties:
         job:
           $ref: '#/components/schemas/ExportJob'
       required:
-        - job
+      - job
     CommentResponse:
       type: object
       properties:
         comment:
           $ref: '#/components/schemas/Comment'
       required:
-        - comment
+      - comment
     UsersMeResponse:
       type: object
       properties:
         team_user:
           $ref: '#/components/schemas/TeamUser'
       required:
-        - team_user
+      - team_user
     ListBrandTemplatesResponse:
       type: object
       properties:
@@ -1931,18 +2429,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BrandTemplate'
+          example: []
         continuation:
           type: string
           description: Continuation token for the next page of results
+          example: example_value
       required:
-        - items
+      - items
     BrandTemplateResponse:
       type: object
       properties:
         brand_template:
           $ref: '#/components/schemas/BrandTemplate'
       required:
-        - brand_template
+      - brand_template
     BrandTemplateDatasetResponse:
       type: object
       properties:
@@ -1952,22 +2452,23 @@ components:
             Dataset fields available for autofill, keyed by field name
           additionalProperties:
             $ref: '#/components/schemas/DatasetField'
+          example: example_value
       required:
-        - dataset
+      - dataset
     AutofillJobResponse:
       type: object
       properties:
         job:
           $ref: '#/components/schemas/AutofillJob'
       required:
-        - job
+      - job
     ResizeJobResponse:
       type: object
       properties:
         job:
           $ref: '#/components/schemas/ResizeJob'
       required:
-        - job
+      - job
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body

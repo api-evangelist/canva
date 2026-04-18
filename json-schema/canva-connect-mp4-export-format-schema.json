@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mp4ExportFormat",
+  "type": "object",
+  "description": "MP4 video export format options",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "quality": {
+      "type": "string",
+      "description": "Video quality and orientation"
+    },
+    "export_quality": {
+      "type": "string"
+    },
+    "pages": {
+      "type": "array",
+      "description": "Page indices to export"
+    }
+  }
+}

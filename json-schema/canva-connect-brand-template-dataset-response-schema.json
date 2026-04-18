@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BrandTemplateDatasetResponse",
+  "type": "object",
+  "properties": {
+    "dataset": {
+      "type": "object",
+      "description": "Dataset fields available for autofill, keyed by field name"
+    }
+  }
+}

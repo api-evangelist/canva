@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TeamUser",
+  "type": "object",
+  "description": "The authenticated user and their team",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "The user ID"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "The team ID"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateReplyRequest",
+  "type": "object",
+  "description": "Request body for creating a reply to a comment",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "Reply text (1-2048 characters)"
+    }
+  }
+}

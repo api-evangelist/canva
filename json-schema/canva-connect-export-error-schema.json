@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExportError",
+  "type": "object",
+  "description": "Error details for a failed export job",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "Error code indicating the reason for failure"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message"
+    }
+  }
+}

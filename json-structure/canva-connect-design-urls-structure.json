@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "DesignUrls",
+  "type": "object",
+  "properties": {
+    "edit_url": {
+      "type": "string"
+    },
+    "view_url": {
+      "type": "string"
+    }
+  }
+}

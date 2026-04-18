@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thumbnail",
+  "type": "object",
+  "description": "A thumbnail image for a resource (URL expires in 15 minutes)",
+  "properties": {
+    "width": {
+      "type": "integer",
+      "description": "Thumbnail width in pixels"
+    },
+    "height": {
+      "type": "integer",
+      "description": "Thumbnail height in pixels"
+    },
+    "url": {
+      "type": "string",
+      "description": "Thumbnail URL (expires in 15 minutes)"
+    }
+  }
+}

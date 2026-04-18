@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CommentAttachment",
+  "type": "object",
+  "description": "The object a comment is attached to",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The attachment type"
+    },
+    "design_id": {
+      "type": "string",
+      "description": "The design ID the comment is attached to"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResizeJob",
+  "type": "object",
+  "description": "A resize job for creating a resized copy of a design",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The resize job ID"
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the resize job"
+    },
+    "result": {
+      "type": "object",
+      "description": "The resize result (present when status is success)"
+    },
+    "error": {
+      "type": "object",
+      "description": "Error details (present when status is failed)"
+    }
+  }
+}

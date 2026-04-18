@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "PngExportFormat",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "export_quality": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "lossless": {
+      "type": "boolean"
+    },
+    "transparent_background": {
+      "type": "boolean"
+    },
+    "as_single_image": {
+      "type": "boolean"
+    },
+    "pages": {
+      "type": "array"
+    }
+  }
+}

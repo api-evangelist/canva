@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PptxExportFormat",
+  "type": "object",
+  "description": "PowerPoint export format options",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "pages": {
+      "type": "array",
+      "description": "Page indices to export"
+    }
+  }
+}

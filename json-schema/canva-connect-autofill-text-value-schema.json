@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AutofillTextValue",
+  "type": "object",
+  "description": "Text data for autofill",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string",
+      "description": "The text content"
+    }
+  }
+}

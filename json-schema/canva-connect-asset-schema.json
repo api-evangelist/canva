@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Asset",
+  "type": "object",
+  "description": "A Canva asset (image or video)",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The asset ID"
+    },
+    "type": {
+      "type": "string",
+      "description": "The asset type"
+    },
+    "name": {
+      "type": "string",
+      "description": "The asset name"
+    },
+    "tags": {
+      "type": "array",
+      "description": "User-facing tags for the asset"
+    },
+    "created_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the asset was created"
+    },
+    "updated_at": {
+      "type": "integer",
+      "description": "Unix timestamp in seconds when the asset was last updated"
+    }
+  }
+}

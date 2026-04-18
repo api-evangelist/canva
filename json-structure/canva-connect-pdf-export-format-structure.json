@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "PdfExportFormat",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "export_quality": {
+      "type": "string"
+    },
+    "size": {
+      "type": "string"
+    },
+    "pages": {
+      "type": "array"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CommentUser",
+  "type": "object",
+  "description": "A user associated with a comment",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The user ID"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "The user display name"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DesignUrls",
+  "type": "object",
+  "description": "Temporary URLs for accessing a design (expire after 30 days)",
+  "properties": {
+    "edit_url": {
+      "type": "string",
+      "description": "URL to edit the design (expires in 30 days)"
+    },
+    "view_url": {
+      "type": "string",
+      "description": "URL to view the design (expires in 30 days)"
+    }
+  }
+}
