@@ -1,0 +1,13 @@
+{
+  "repo": "canva",
+  "feeds": [
+    {
+      "source": "https://www.canva.dev/blog/developers/",
+      "feed_url": "https://www.canva.dev/blog/developers/feed.xml",
+      "saved": 10,
+      "title": "Canva - Developers Blog"
+    }
+  ],
+  "post_count": 10,
+  "fetched": "2026-05-03T23:25:14Z"
+}
