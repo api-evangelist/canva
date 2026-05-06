@@ -4,106 +4,44 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Canva
 providerId: canva
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Apps
   - Automation
-  - Brand Management
-  - Collaboration
   - Design
-  - Graphics
-  - Marketing
-  - Print
   - Templates
-  - Visual Content
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Canva API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: Canva does not publish concrete per-second or per-minute rate limit numbers for the Connect
+  API or Apps SDK. Standard 429 throttling behavior should be expected; integrations should implement
+  exponential backoff and honor any Retry-After response header. Contact Canva developer support for
+  documented limits on a specific integration.
+notes: No public rate-limit documentation found for the Canva Connect API. Numbers below are placeholders
+  pending provider documentation; treat enforcement as opaque and rely on response codes / Retry-After.
+sources:
+  - https://www.canva.dev/docs/connect/
+  - https://www.canva.com/developers/
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Canva Connect API
-      - Canva Apps SDK
-      - Canva Print Partnerships API
-      - Canva Button API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Canva Connect API
-      - Canva Apps SDK
-      - Canva Print Partnerships API
-      - Canva Button API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Canva Connect API
-      - Canva Apps SDK
-      - Canva Print Partnerships API
-      - Canva Button API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Canva Connect API
-      - Canva Apps SDK
-      - Canva Print Partnerships API
-      - Canva Button API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Canva Connect API
-      - Canva Apps SDK
-      - Canva Print Partnerships API
-      - Canva Button API
+  - name: Canva Connect API (per-integration)
+    scope: integration
+    metric: varies
+    limit: see Canva developer support
+    notes: Canva has not published per-second or per-minute caps; assume standard throttling applies.
+  - name: Canva Apps SDK
+    scope: app
+    metric: varies
+    limit: see Canva developer support
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Backoff strategy
+    description: Implement exponential backoff with jitter on 429 responses; honor Retry-After if present.
+  - name: Idempotent retries
+    description: Use idempotent request patterns for upload, export, and design-mutation endpoints to
+      avoid double-charging on retried requests.
+  - name: OAuth token refresh
+    description: Connect API uses OAuth 2.0; cache and refresh tokens rather than reauthorizing on every
+      request to avoid auth-flow throttling.
 maintainers:
   - FN: Canva
     email: developers@canva.com
