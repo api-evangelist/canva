@@ -2,12 +2,19 @@
   "repo": "canva",
   "feeds": [
     {
+      "source": "https://www.canva.com/newsroom/developers/",
+      "feed_url": "",
+      "title": "",
+      "saved": 0,
+      "error": "no_feed"
+    },
+    {
       "source": "https://www.canva.dev/blog/developers/",
-      "feed_url": "https://www.canva.dev/blog/developers/feed.xml",
-      "saved": 10,
-      "title": "Canva - Developers Blog"
+      "feed_url": "https://www.canva.dev/blog/developers/feed",
+      "title": "Canva - Developers Blog",
+      "saved": 1
     }
   ],
-  "post_count": 10,
-  "fetched": "2026-05-03T23:25:14Z"
+  "post_count": 11,
+  "fetched": "2026-05-09T20:17:51Z"
 }
