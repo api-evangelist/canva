@@ -1,0 +1,173 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Canva Connect API — Brand Templates
+  description: 'Canva Connect API — Brand Templates. 3 operations. Lead operation: Canva List Brand Templates. Self-contained
+    Naftiko capability covering one Canva business surface.'
+  tags:
+  - Canva
+  - Brand Templates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CANVA_API_KEY: CANVA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: connect-brand-templates
+    baseUri: https://api.canva.com/rest/v1
+    description: Canva Connect API — Brand Templates business capability. Self-contained, no shared references.
+    resources:
+    - name: brand-templates
+      path: /brand-templates
+      operations:
+      - name: listbrandtemplates
+        method: GET
+        description: Canva List Brand Templates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+          description: Search term to filter brand templates
+        - name: ownership
+          in: query
+          type: string
+          description: Filter by ownership status
+        - name: sort_by
+          in: query
+          type: string
+          description: Sort order for results
+        - name: dataset
+          in: query
+          type: string
+          description: Filter by dataset availability
+        - name: limit
+          in: query
+          type: integer
+          description: Number of results per page
+        - name: continuation
+          in: query
+          type: string
+          description: Continuation token for paginated results
+    - name: brand-templates-brandTemplateId
+      path: /brand-templates/{brandTemplateId}
+      operations:
+      - name: getbrandtemplate
+        method: GET
+        description: Canva Get a Brand Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: brand-templates-brandTemplateId-dataset
+      path: /brand-templates/{brandTemplateId}/dataset
+      operations:
+      - name: getbrandtemplatedataset
+        method: GET
+        description: Canva Get a Brand Template Dataset
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.CANVA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: connect-brand-templates-rest
+    port: 8080
+    description: REST adapter for Canva Connect API — Brand Templates. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/brand-templates
+      name: brand-templates
+      description: REST surface for brand-templates.
+      operations:
+      - method: GET
+        name: listbrandtemplates
+        description: Canva List Brand Templates
+        call: connect-brand-templates.listbrandtemplates
+        with:
+          query: rest.query
+          ownership: rest.ownership
+          sort_by: rest.sort_by
+          dataset: rest.dataset
+          limit: rest.limit
+          continuation: rest.continuation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/brand-templates/{brandtemplateid}
+      name: brand-templates-brandtemplateid
+      description: REST surface for brand-templates-brandTemplateId.
+      operations:
+      - method: GET
+        name: getbrandtemplate
+        description: Canva Get a Brand Template
+        call: connect-brand-templates.getbrandtemplate
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/brand-templates/{brandtemplateid}/dataset
+      name: brand-templates-brandtemplateid-dataset
+      description: REST surface for brand-templates-brandTemplateId-dataset.
+      operations:
+      - method: GET
+        name: getbrandtemplatedataset
+        description: Canva Get a Brand Template Dataset
+        call: connect-brand-templates.getbrandtemplatedataset
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: connect-brand-templates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Canva Connect API — Brand Templates. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: canva-list-brand-templates
+      description: Canva List Brand Templates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: connect-brand-templates.listbrandtemplates
+      with:
+        query: tools.query
+        ownership: tools.ownership
+        sort_by: tools.sort_by
+        dataset: tools.dataset
+        limit: tools.limit
+        continuation: tools.continuation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: canva-get-brand-template
+      description: Canva Get a Brand Template
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: connect-brand-templates.getbrandtemplate
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: canva-get-brand-template-dataset
+      description: Canva Get a Brand Template Dataset
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: connect-brand-templates.getbrandtemplatedataset
+      outputParameters:
+      - type: object
+        mapping: $.

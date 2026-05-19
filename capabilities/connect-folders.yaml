@@ -1,0 +1,177 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Canva Connect API — Folders
+  description: 'Canva Connect API — Folders. 3 operations. Lead operation: Canva Get a Folder. Self-contained Naftiko capability
+    covering one Canva business surface.'
+  tags:
+  - Canva
+  - Folders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CANVA_API_KEY: CANVA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: connect-folders
+    baseUri: https://api.canva.com/rest/v1
+    description: Canva Connect API — Folders business capability. Self-contained, no shared references.
+    resources:
+    - name: folders-folderId
+      path: /folders/{folderId}
+      operations:
+      - name: getfolder
+        method: GET
+        description: Canva Get a Folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: folders-folderId-items
+      path: /folders/{folderId}/items
+      operations:
+      - name: listfolderitems
+        method: GET
+        description: Canva List Folder Items
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: item_types
+          in: query
+          type: array
+          description: Filter by item type
+        - name: sort_by
+          in: query
+          type: string
+          description: Sort order for results
+        - name: limit
+          in: query
+          type: integer
+          description: Number of results per page
+        - name: continuation
+          in: query
+          type: string
+          description: Continuation token for paginated results
+        - name: pin_status
+          in: query
+          type: string
+          description: Filter by pin status
+    - name: folders-folderId-items:move
+      path: /folders/{folderId}/items:move
+      operations:
+      - name: movefolderitem
+        method: POST
+        description: Canva Move an Item to a Folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.CANVA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: connect-folders-rest
+    port: 8080
+    description: REST adapter for Canva Connect API — Folders. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/folders/{folderid}
+      name: folders-folderid
+      description: REST surface for folders-folderId.
+      operations:
+      - method: GET
+        name: getfolder
+        description: Canva Get a Folder
+        call: connect-folders.getfolder
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/{folderid}/items
+      name: folders-folderid-items
+      description: REST surface for folders-folderId-items.
+      operations:
+      - method: GET
+        name: listfolderitems
+        description: Canva List Folder Items
+        call: connect-folders.listfolderitems
+        with:
+          item_types: rest.item_types
+          sort_by: rest.sort_by
+          limit: rest.limit
+          continuation: rest.continuation
+          pin_status: rest.pin_status
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/{folderid}/items-move
+      name: folders-folderid-items-move
+      description: REST surface for folders-folderId-items:move.
+      operations:
+      - method: POST
+        name: movefolderitem
+        description: Canva Move an Item to a Folder
+        call: connect-folders.movefolderitem
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: connect-folders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Canva Connect API — Folders. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: canva-get-folder
+      description: Canva Get a Folder
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: connect-folders.getfolder
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: canva-list-folder-items
+      description: Canva List Folder Items
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: connect-folders.listfolderitems
+      with:
+        item_types: tools.item_types
+        sort_by: tools.sort_by
+        limit: tools.limit
+        continuation: tools.continuation
+        pin_status: tools.pin_status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: canva-move-item-folder
+      description: Canva Move an Item to a Folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: connect-folders.movefolderitem
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
