@@ -5,7 +5,7 @@ description: >-
   tools and functionality into their applications.
 image: https://www.canva.com/favicon.ico
 created: '2024-01-01'
-modified: '2026-04-18'
+modified: '2026-05-19'
 specificationVersion: '0.19'
 type: Index
 url: https://www.canva.com/developers/apis.json
@@ -384,6 +384,9 @@ common:
         description: Design product images and marketing materials for Shopify stores.
       - name: WordPress
         description: Create and embed Canva designs directly into WordPress posts and pages.
+  - name: Agent Skills
+    url: https://github.com/canva-sdks/canva-claude-skills
+    type: AgentSkill
 maintainers:
   - FN: Canva
     email: developers@canva.com
