@@ -1,20 +1,6 @@
 {
   "repo": "canva",
-  "feeds": [
-    {
-      "source": "https://www.canva.com/newsroom/developers/",
-      "feed_url": "",
-      "title": "",
-      "saved": 0,
-      "error": "no_feed"
-    },
-    {
-      "source": "https://www.canva.dev/blog/developers/",
-      "feed_url": "https://www.canva.dev/blog/developers/feed",
-      "title": "Canva - Developers Blog",
-      "saved": 3
-    }
-  ],
+  "feeds": [],
   "post_count": 14,
   "fetched": "2026-05-17T20:48:52Z"
 }

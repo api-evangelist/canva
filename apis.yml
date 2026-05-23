@@ -313,6 +313,9 @@ common:
 - type: Blog
   url: https://www.canva.dev/blog/developers/
   title: Developer Blog
+- url: https://www.canva.dev/blog/developers/feed.xml
+  type: BlogRSS
+  description: Discovered RSS/Atom feed for https://www.canva.dev/blog/developers/
 - type: TermsOfService
   url: https://www.canva.com/policies/canva-developer-terms/
   title: Developer Terms
