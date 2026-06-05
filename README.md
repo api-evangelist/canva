@@ -1,190 +1,232 @@
 # Canva (canva)
+
 APIs for the Canva design platform, enabling developers to integrate Canva's design tools and functionality into their applications.
 
-**URL:** [Visit APIs.json URL](https://www.canva.com/developers/apis.json)
+**APIs.json:** [https://www.canva.com/developers/apis.json](https://www.canva.com/developers/apis.json)
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Scope
 
-## Tags:
+- **Type:** Index
 
- - Apps, Automation, Brand Management, Collaboration, Design, Graphics, Marketing, Print, Templates, Visual Content
+## Tags
+
+- Apps
+- Automation
+- Brand Management
+- Collaboration
+- Design
+- Graphics
+- Marketing
+- Print
+- Templates
+- Visual Content
 
 ## Timestamps
 
 - **Created:** 2024-01-01
-- **Modified:** 2026-04-18
+- **Modified:** 2026-05-19
 
 ## APIs
 
 ### Canva Connect API
+
 Enables users to create and edit Canva designs directly from your application, with support for templates, autofill, and design management.
 
-**Human URL:** [https://www.canva.com/developers/](https://www.canva.com/developers/)
+- **Human URL:** [https://www.canva.com/developers/](https://www.canva.com/developers/)
+- **Base URL:** `https://api.canva.com`
 
-#### Tags:
+#### Tags
 
- - Assets, Autofill, Brand Templates, Collaboration, Comments, Design, Design Import, Exports, Folders, Graphics, Resizes, Templates, Users, Webhooks
+- Assets
+- Autofill
+- Brand Templates
+- Collaboration
+- Comments
+- Design
+- Design Import
+- Exports
+- Folders
+- Graphics
+- Resizes
+- Templates
+- Users
+- Webhooks
 
 #### Properties
 
 - [Documentation](https://www.canva.com/developers/docs/connect-api/)
-- [OpenAPI](openapi/canva-connect-api-openapi.yml)
+- [OpenAPI](https://www.canva.com/developers/docs/connect-api/openapi/) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
 - [Authentication](https://www.canva.com/developers/docs/connect-api/authentication/)
-- [GettingStarted](https://www.canva.com/developers/docs/connect-api/get-started/)
-- [APIReference](https://www.canva.com/developers/docs/connect-api/api-reference/)
+- [Getting Started](https://www.canva.com/developers/docs/connect-api/get-started/)
+- [API Reference](https://www.canva.com/developers/docs/connect-api/api-reference/)
+- [OpenAPI](https://www.canva.dev/sources/connect/api/latest/api.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Documentation](https://www.canva.dev/docs/connect/)
 - [Quickstart](https://www.canva.dev/docs/connect/quickstart/)
-- [ChangeLog](https://www.canva.dev/docs/connect/changelog/)
-- [RateLimits](https://www.canva.dev/docs/connect/api-requests-responses/)
+- [Authentication](https://www.canva.dev/docs/connect/authentication/)
+- [Changelog](https://www.canva.dev/docs/connect/changelog/)
+- [Documentation](https://www.canva.dev/docs/connect/webhooks/)
+- [Rate Limits](https://www.canva.dev/docs/connect/api-requests-responses/)
 - [Security](https://www.canva.dev/docs/connect/guidelines/security/)
+- [Documentation](https://www.canva.dev/docs/connect/appendix/scopes/)
+- [Documentation](https://www.canva.dev/docs/connect/canva-concepts/)
+- [Documentation](https://www.canva.dev/docs/connect/autofill-guide/)
 - [Versioning](https://www.canva.dev/docs/connect/versions/)
-- [GitHubRepository](https://github.com/canva-sdks/canva-connect-api-starter-kit)
-- [MCP Server](https://www.canva.dev/docs/connect/mcp-server/)
-- [JSONSchema](json-schema/canva-design-schema.json)
-- [JSONLD](json-ld/canva-context.jsonld)
+- [Documentation](https://www.canva.dev/docs/connect/creating-integrations/)
+- [Documentation](https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api)
+- [GitHub Repository](https://github.com/canva-sdks/canva-connect-api-starter-kit)
+- [API Reference](https://www.canva.dev/docs/connect/api-reference/brand-templates/)
+- [API Reference](https://www.canva.dev/docs/connect/api-reference/designs/create-design/)
+- [API Reference](https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/)
+- [API Reference](https://www.canva.dev/docs/connect/api-reference/users/users-me/)
+- [API Reference](https://www.canva.dev/docs/connect/api-reference/assets/get-asset/)
+- [API Reference](https://www.canva.dev/docs/connect/api-reference/folders/get-folder/)
+- [API Reference](https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/)
+- [Documentation](https://www.canva.dev/docs/connect/mcp-server/)
+- [OpenAPI](openapi/canva-connect-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/canva-connect-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/canva-connect-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [JSON Schema](json-schema/canva-design-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON-LD](json-ld/canva-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
 
 ### Canva Apps SDK
+
 Build apps that extend Canva's editor with custom functionality, content, and integrations.
 
-**Human URL:** [https://www.canva.com/developers/apps](https://www.canva.com/developers/apps)
+- **Human URL:** [https://www.canva.com/developers/apps](https://www.canva.com/developers/apps)
+- **Base URL:** `https://api.canva.com`
 
-#### Tags:
+#### Tags
 
- - Apps, Content Publishing, Data Connectors, Design Editing, Extensions, Integrations, Intents, SDK, Tables
+- Apps
+- Content Publishing
+- Data Connectors
+- Design Editing
+- Extensions
+- Integrations
+- Intents
+- SDK
+- Tables
 
 #### Properties
 
 - [Documentation](https://www.canva.com/developers/docs/apps/)
-- [GettingStarted](https://www.canva.com/developers/docs/apps/quickstart/)
-- [APIReference](https://www.canva.com/developers/docs/apps/api/)
-- [CodeExamples](https://www.canva.com/developers/docs/apps/examples/)
-- [GitHubRepository](https://github.com/canva-sdks/canva-apps-sdk-starter-kit)
+- [Getting Started](https://www.canva.com/developers/docs/apps/quickstart/)
+- [API Reference](https://www.canva.com/developers/docs/apps/api/)
+- [Code Examples](https://www.canva.com/developers/docs/apps/examples/)
+- [Documentation](https://www.canva.dev/docs/apps/)
+- [Quickstart](https://www.canva.dev/docs/apps/quickstart/)
+- [Documentation](https://www.canva.dev/docs/apps/design-editing/)
+- [GitHub Repository](https://github.com/canva-sdks/canva-apps-sdk-starter-kit)
+- [Documentation](https://www.canva.dev/docs/apps/intents/)
+- [Documentation](https://www.canva.dev/docs/apps/design-guidelines/)
+- [Documentation](https://www.canva.dev/docs/apps/bundling-apps/)
+- [Documentation](https://www.canva.dev/docs/apps/previewing-apps/)
+- [Documentation](https://www.canva.dev/docs/apps/submission-checklist/)
+- [Documentation](https://www.canva.dev/docs/apps/app-templates/content-publisher/)
+- [Documentation](https://www.canva.dev/docs/apps/design-guidelines/content-publisher/)
+- [Documentation](https://www.canva.dev/docs/apps/design-guidelines/data-connector/)
+- [Authentication](https://www.canva.dev/docs/apps/design-guidelines/authentication/)
+- [Documentation](https://www.canva.dev/docs/apps/design-guidelines/mobile/)
+- [Documentation](https://www.canva.dev/docs/apps/design-guidelines/feature-support/)
+- [Getting Started](https://www.canva.dev/docs/apps/setting-up-starter-kit/)
+- [Documentation](https://www.canva.dev/docs/apps/mcp-server/)
+- [Postman Collection](collections/canva-connect-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/canva-connect-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Canva Print Partnerships API
-Enables print service providers to integrate Canva design tools into their customer journey.
 
-**Human URL:** [https://www.canva.dev/docs/print-partnerships/](https://www.canva.dev/docs/print-partnerships/)
+Enables print service providers to integrate Canva design tools into their customer journey, allowing customers to create designs with Canva and print them from partner websites.
 
-#### Tags:
+- **Human URL:** [https://www.canva.dev/docs/print-partnerships/](https://www.canva.dev/docs/print-partnerships/)
+- **Base URL:** `https://api.canva.com`
 
- - Design, E-Commerce, Partnerships, Print
+#### Tags
+
+- Design
+- E-Commerce
+- Partnerships
+- Print
 
 #### Properties
 
 - [Documentation](https://www.canva.dev/docs/print-partnerships/)
-- [GettingStarted](https://www.canva.dev/docs/print-partnerships/tutorial/getting-started/)
+- [API Reference](https://www.canva.dev/docs/print-partnerships/javascript-api/create-design/)
+- [API Reference](https://www.canva.dev/docs/print-partnerships/rest-api/purchase-artwork/)
+- [Getting Started](https://www.canva.dev/docs/print-partnerships/tutorial/getting-started/)
+- [API Reference](https://www.canva.dev/docs/print-partnerships/javascript-api/edit-design/)
+- [API Reference](https://www.canva.dev/docs/print-partnerships/javascript-api/on-design-open/)
+- [API Reference](https://www.canva.dev/docs/print-partnerships/javascript-api/on-product-select/)
+- [API Reference](https://www.canva.dev/docs/print-partnerships/javascript-api/on-artwork-create/)
+- [API Reference](https://www.canva.dev/docs/print-partnerships/javascript-api/initialize/)
+- [Tutorials](https://www.canva.dev/docs/print-partnerships/tutorial/initialize-partnership-sdk/)
+- [Postman Collection](collections/canva-connect-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/canva-connect-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Canva Button API
-Enables embedding Canva design capabilities directly into websites and applications.
 
-**Human URL:** [https://www.canva.dev/docs/button/](https://www.canva.dev/docs/button/)
+Enables embedding Canva design capabilities directly into websites and applications through HTML and JavaScript APIs for creating and editing designs.
 
-#### Tags:
+- **Human URL:** [https://www.canva.dev/docs/button/](https://www.canva.dev/docs/button/)
+- **Base URL:** `https://api.canva.com`
 
- - Button, Design, Embed, Integration, Widget
+#### Tags
+
+- Button
+- Design
+- Embed
+- Integration
+- Widget
 
 #### Properties
 
 - [Documentation](https://www.canva.dev/docs/button/)
-- [GettingStarted](https://www.canva.dev/docs/button/html/getting-started/)
+- [Getting Started](https://www.canva.dev/docs/button/html/getting-started/)
+- [API Reference](https://www.canva.dev/docs/button/javascript/api-reference/initialize/)
+- [Documentation](https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/)
+- [Postman Collection](collections/canva-connect-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/canva-connect-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ## Common Properties
 
-- [DeveloperPortal](https://www.canva.com/developers/)
+- [LinkedIn](https://www.linkedin.com/company/canva)
+- [Developer Portal](https://www.canva.com/developers/)
 - [Authentication](https://www.canva.com/developers/docs/authentication/)
 - [Support](https://www.canva.com/developers/support/)
-- [TermsOfService](https://www.canva.com/policies/developer-terms/)
-- [PrivacyPolicy](https://www.canva.com/policies/privacy-policy/)
+- [Terms of Service](https://www.canva.com/policies/developer-terms/)
+- [Privacy Policy](https://www.canva.com/policies/privacy-policy/)
+- [Documentation](https://community.canva.com/developers)
 - [Blog](https://www.canva.com/newsroom/developers/)
-- [StatusPage](https://status.canva.com/)
-- [GitHubOrganization](https://github.com/canva-sdks)
-- [ChangeLog](https://www.canva.dev/docs/connect/changelog/)
+- [Status Page](https://status.canva.com/)
+- [Documentation](https://www.canva.dev/docs/)
+- [Documentation](https://community.canva.dev/)
+- [OpenAPI](https://www.canva.dev/sources/connect/api/latest/api.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [GitHub Organization](https://github.com/canva-sdks)
+- [Documentation](https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api)
+- [Changelog](https://www.canva.dev/docs/connect/changelog/)
 - [Security](https://www.canva.dev/docs/connect/guidelines/security/)
-- [RateLimits](https://www.canva.dev/docs/connect/api-requests-responses/)
-- [CLI](https://www.npmjs.com/package/@canva/cli)
+- [Rate Limits](https://www.canva.dev/docs/connect/api-requests-responses/)
+- [Blog](https://www.canva.dev/blog/developers/)
+- [Blog R S S](https://www.canva.dev/blog/developers/feed.xml)
+- [Terms of Service](https://www.canva.com/policies/canva-developer-terms/)
+- [Legal](https://www.canva.com/policies/acceptable-use-policy/)
+- [Terms of Service](https://www.canva.com/policies/terms-of-use/)
+- [Documentation](https://www.canva.com/developers/premium-apps-program/)
+- [Documentation](https://www.canva.dev/docs/apps/innovation-fund/)
+- [Documentation](https://www.canva.dev/docs/extensions/platform-concepts/deprecation-policy/)
+- [F A Q](https://www.canva.com/help/canva-api/)
 - [Events](https://www.canva.com/canva-extend/)
-
-## Features
-
-| Name | Description |
-|------|-------------|
-| Design Creation | Create and manage Canva designs programmatically from external applications. |
-| Asset Management | Upload, retrieve, and manage image and video assets within Canva. |
-| Brand Templates | Access and list brand templates with dataset definitions for consistent brand content. |
-| Design Autofill | Automatically populate brand templates with dynamic data for bulk content creation. |
-| Design Export | Export designs to PDF, PNG, JPG, GIF, PPTX, and MP4 formats. |
-| Design Resize | Resize designs to different dimensions or preset types for multi-channel publishing. |
-| Folder Organization | Organize designs into folders with move, list, and retrieval capabilities. |
-| Comments and Collaboration | Create and manage comments on designs for team review and feedback workflows. |
-| Webhooks | Receive real-time notifications for design events via webhook subscriptions. |
-| Apps SDK | Build custom apps that extend the Canva editor with new functionality and content. |
-
-## Use Cases
-
-| Name | Description |
-|------|-------------|
-| Marketing Automation | Generate branded marketing materials at scale by autofilling templates with campaign data. |
-| Print-on-Demand | Integrate Canva design tools into e-commerce platforms for custom product design. |
-| Content Management | Build content pipelines that create, export, and distribute visual content. |
-| Brand Consistency | Ensure brand compliance using locked brand templates with controlled elements. |
-| Social Media Publishing | Create and export social media graphics in multiple formats and sizes. |
-
-## Integrations
-
-| Name | Description |
-|------|-------------|
-| Slack | Share Canva designs directly to Slack channels for team review. |
-| Google Drive | Save and sync Canva designs with Google Drive. |
-| Dropbox | Connect Canva with Dropbox for cloud storage and asset management. |
-| HubSpot | Create marketing visuals within HubSpot using Canva. |
-| Shopify | Design product images and marketing materials for Shopify stores. |
-| WordPress | Create and embed Canva designs into WordPress posts and pages. |
-
-## Artifacts
-
-Machine-readable API specifications organized by format.
-
-### OpenAPI
-
-- [Canva Connect API](openapi/canva-connect-api-openapi.yml)
-
-### JSON Schema
-
-- [Design](json-schema/canva-design-schema.json)
-- [Connect Design](json-schema/canva-connect-design-schema.json)
-- [Asset](json-schema/canva-connect-asset-schema.json)
-- [Folder](json-schema/canva-connect-folder-schema.json)
-- [Export Job](json-schema/canva-connect-export-job-schema.json)
-- [Comment](json-schema/canva-connect-comment-schema.json)
-- [Brand Template](json-schema/canva-connect-brand-template-schema.json)
-
-### JSON-LD
-
-- [Canva Context](json-ld/canva-context.jsonld)
-
-## Capabilities
-
-Naftiko capabilities organized as shared per-API definitions composed into customer-facing workflows.
-
-### Shared Per-API Definitions
-
-- [Canva Connect API](capabilities/shared/connect-api.yaml) -- 22 operations for designs, assets, exports, brand templates, autofill, and collaboration
-
-### Workflow Capabilities
-
-| Workflow | APIs Combined | Tools | Persona |
-|----------|--------------|-------|---------|
-| [Design Management](capabilities/design-management.yaml) | Connect API | 20 | Marketing Team |
-
-## Rules
-
-- [Canva Spectral Rules](rules/canva-spectral-rules.yml) -- 7 rules enforcing Canva Connect API conventions
+- [C L I](https://www.npmjs.com/package/@canva/cli)
+- [Spectral Rules](rules/canva-spectral-rules.yml)
+- [Features](https://www.canva.com/developers/)
+- [Use Cases](https://www.canva.com/developers/)
+- [Integrations](https://www.canva.com/developers/)
+- [Agent Skill](https://github.com/canva-sdks/canva-claude-skills)
 
 ## Maintainers
 
 **FN:** Canva
-
 **Email:** developers@canva.com
-
+**URL:** https://www.canva.com/developers/
 **FN:** Kin Lane
-
 **Email:** kin@apievangelist.com
+**URL:** https://apievangelist.com
