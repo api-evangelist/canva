@@ -59,7 +59,7 @@ apis:
         title: Latest OpenAPI Spec
       - type: Documentation
         url: https://www.canva.dev/docs/connect/
-      - type: Quickstart
+      - type: GettingStarted
         url: https://www.canva.dev/docs/connect/quickstart/
       - type: Authentication
         url: https://www.canva.dev/docs/connect/authentication/
@@ -147,7 +147,7 @@ apis:
         url: https://www.canva.com/developers/docs/apps/examples/
       - type: Documentation
         url: https://www.canva.dev/docs/apps/
-      - type: Quickstart
+      - type: GettingStarted
         url: https://www.canva.dev/docs/apps/quickstart/
       - type: Documentation
         url: https://www.canva.dev/docs/apps/design-editing/
@@ -382,7 +382,7 @@ common:
         description: Create and embed Canva designs directly into WordPress posts and pages.
   - name: Agent Skills
     url: https://github.com/canva-sdks/canva-claude-skills
-    type: AgentSkill
+    type: AgentSkills
 maintainers:
   - FN: Canva
     email: developers@canva.com

@@ -5,12 +5,8 @@
       "source": "https://www.canva.dev/blog/developers/feed.xml",
       "feed_url": "https://www.canva.dev/blog/developers/feed.xml",
       "title": "",
-      "saved": 1,
+      "saved": 0,
       "method": "feed"
-    },
-    {
-      "source": "https://community.canva.com/developers",
-      "error": "URLError"
     },
     {
       "source": "https://www.canva.dev/docs/connect/api-requests-responses/",
@@ -18,8 +14,12 @@
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://community.canva.com/developers",
+      "error": "URLError"
     }
   ],
   "post_count": 16,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T12:03:07Z"
 }
