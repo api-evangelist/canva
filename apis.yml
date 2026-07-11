@@ -258,6 +258,14 @@ apis:
         url: https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/
         title: HTML API vs JavaScript API
 common:
+  - type: TrustCenter
+    url: security/canva-trust-center.yml
+  - type: VulnerabilityDisclosure
+    url: security/canva-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/canva-domain-security.yml
+  - type: Authentication
+    url: authentication/canva-authentication.yml
   - type: OAuthScopes
     url: scopes/canva-scopes.yml
   - type: LinkedIn
