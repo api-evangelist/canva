@@ -1,0 +1,79 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/canva-connect-api-openapi.yml
+schemes:
+- name: oauth2
+  source: openapi/canva-connect-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included
+    in the Authorization header as a Bearer token.
+scopes:
+- scope: asset:read
+  description: Read asset metadata
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: asset:write
+  description: Upload and delete assets
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: brandtemplate:content:read
+  description: Read brand template content and datasets
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: brandtemplate:meta:read
+  description: Read brand template metadata
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: comment:read
+  description: Read comments on designs
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: comment:write
+  description: Create and manage comments
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: design:content:read
+  description: Read design content
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: design:content:write
+  description: Create and modify designs
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: design:meta:read
+  description: Read design metadata
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: folder:read
+  description: Read folder metadata and contents
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: folder:write
+  description: Modify folder contents
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml

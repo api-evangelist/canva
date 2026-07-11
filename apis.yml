@@ -258,6 +258,8 @@ apis:
         url: https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/
         title: HTML API vs JavaScript API
 common:
+  - type: OAuthScopes
+    url: scopes/canva-scopes.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/canva
   - type: DeveloperPortal
