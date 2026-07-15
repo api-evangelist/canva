@@ -258,6 +258,8 @@ apis:
         url: https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/
         title: HTML API vs JavaScript API
 common:
+  - type: AgenticAccess
+    url: agentic-access/canva-agentic-access.yml
   - type: TrustCenter
     url: security/canva-trust-center.yml
   - type: VulnerabilityDisclosure

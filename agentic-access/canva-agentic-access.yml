@@ -1,0 +1,333 @@
+generated: '2026-07-15'
+method: generated
+source: openapi/canva-connect-api-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 22
+  by_action_class:
+    connected: 13
+    acting: 9
+  by_consequence:
+    read: 13
+    write: 9
+  human_in_the_loop_required: 0
+operations:
+- path: /designs
+  method: get
+  operationId: listDesigns
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - design:meta:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /designs
+  method: post
+  operationId: createDesign
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - design:content:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /designs/{designId}
+  method: get
+  operationId: getDesign
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - design:meta:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /assets/{assetId}
+  method: get
+  operationId: getAsset
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - asset:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /assets/{assetId}
+  method: delete
+  operationId: deleteAsset
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - asset:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /asset-uploads
+  method: post
+  operationId: createAssetUploadJob
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - asset:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /asset-uploads/{jobId}
+  method: get
+  operationId: getAssetUploadJob
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - asset:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /folders/{folderId}
+  method: get
+  operationId: getFolder
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - folder:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /folders/{folderId}/items
+  method: get
+  operationId: listFolderItems
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - folder:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /folders/{folderId}/items:move
+  method: post
+  operationId: moveFolderItem
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - folder:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /exports
+  method: post
+  operationId: createDesignExportJob
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - design:content:read
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /exports/{exportId}
+  method: get
+  operationId: getDesignExportJob
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - design:content:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /comments
+  method: post
+  operationId: createComment
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - comment:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /comments/{commentId}/replies
+  method: post
+  operationId: createReply
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - comment:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users/me
+  method: get
+  operationId: getUsersMe
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /brand-templates
+  method: get
+  operationId: listBrandTemplates
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - brandtemplate:meta:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /brand-templates/{brandTemplateId}
+  method: get
+  operationId: getBrandTemplate
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - brandtemplate:meta:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /brand-templates/{brandTemplateId}/dataset
+  method: get
+  operationId: getBrandTemplateDataset
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - brandtemplate:content:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /autofills
+  method: post
+  operationId: createDesignAutofillJob
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - design:content:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /autofills/{jobId}
+  method: get
+  operationId: getDesignAutofillJob
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - design:content:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /resizes
+  method: post
+  operationId: createDesignResizeJob
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - design:content:read
+    - design:content:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /resizes/{jobId}
+  method: get
+  operationId: getDesignResizeJob
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - design:content:read
+    token:
+      max-ttl: 3600
+    audit: none
