@@ -1,0 +1,460 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets Designs API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Designs
+  description: Create, retrieve, and list designs
+paths:
+  /designs:
+    get:
+      operationId: listDesigns
+      summary: Canva List Designs
+      description: Lists designs accessible to the authenticated user. Supports searching by query, filtering by ownership, sorting, and pagination using continuation tokens.
+      tags:
+      - Designs
+      security:
+      - oauth2:
+        - design:meta:read
+      parameters:
+      - name: query
+        in: query
+        description: Search term to filter designs (max 255 characters)
+        schema:
+          type: string
+          maxLength: 255
+        example: example_value
+      - name: ownership
+        in: query
+        description: Filter designs by ownership status
+        schema:
+          type: string
+          enum:
+          - any
+          - owned
+          - shared
+          default: any
+        example: any
+      - name: sort_by
+        in: query
+        description: Sort order for results
+        schema:
+          type: string
+          enum:
+          - relevance
+          - modified_descending
+          - modified_ascending
+          - title_descending
+          - title_ascending
+          default: relevance
+        example: relevance
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 25
+        example: 10
+      - name: continuation
+        in: query
+        description: Continuation token for paginated results
+        schema:
+          type: string
+        example: example_value
+      responses:
+        '200':
+          description: A paginated list of designs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDesignsResponse'
+              examples:
+                Listdesigns200Example:
+                  summary: Default listDesigns 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - id: abc123
+                      title: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      page_count: 10
+                    continuation: example_value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createDesign
+      summary: Canva Create a Design
+      description: Creates a new design in Canva. The design can use a preset type (doc, whiteboard, or presentation) or custom dimensions. An optional asset can be inserted and a title can be specified.
+      tags:
+      - Designs
+      security:
+      - oauth2:
+        - design:content:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDesignRequest'
+            examples:
+              CreatedesignRequestExample:
+                summary: Default createDesign request
+                x-microcks-default: true
+                value:
+                  design_type: {}
+                  asset_id: '500123'
+                  title: Example Title
+      responses:
+        '200':
+          description: The created design
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DesignResponse'
+              examples:
+                Createdesign200Example:
+                  summary: Default createDesign 200 response
+                  x-microcks-default: true
+                  value:
+                    design:
+                      id: abc123
+                      title: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      page_count: 10
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /designs/{designId}:
+    get:
+      operationId: getDesign
+      summary: Canva Get a Design
+      description: Retrieves metadata for a specific design, including title, owner, URLs, timestamps, thumbnail, and page count.
+      tags:
+      - Designs
+      security:
+      - oauth2:
+        - design:meta:read
+      parameters:
+      - $ref: '#/components/parameters/DesignId'
+      responses:
+        '200':
+          description: The design metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DesignResponse'
+              examples:
+                Getdesign200Example:
+                  summary: Default getDesign 200 response
+                  x-microcks-default: true
+                  value:
+                    design:
+                      id: abc123
+                      title: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      page_count: 10
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Design:
+      type: object
+      description: A Canva design
+      properties:
+        id:
+          type: string
+          description: The design ID
+          example: abc123
+        title:
+          type: string
+          description: The design title
+          example: Example Title
+        owner:
+          $ref: '#/components/schemas/Owner'
+        urls:
+          $ref: '#/components/schemas/DesignUrls'
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        page_count:
+          type: integer
+          description: The number of pages in the design
+          example: 10
+      required:
+      - id
+      - title
+      - owner
+      - urls
+      - created_at
+      - updated_at
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
+    CreateDesignRequest:
+      type: object
+      description: Request body for creating a new design
+      properties:
+        design_type:
+          $ref: '#/components/schemas/DesignType'
+        asset_id:
+          type: string
+          description: An image asset ID to insert into the design
+          example: '500123'
+        title:
+          type: string
+          description: The design title (1-255 characters)
+          minLength: 1
+          maxLength: 255
+          example: Example Title
+      required:
+      - design_type
+    ListDesignsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Design'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
+          example: example_value
+      required:
+      - items
+    DesignType:
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignType'
+      - $ref: '#/components/schemas/CustomDesignType'
+      description: The type and dimensions for a new design
+    DesignResponse:
+      type: object
+      properties:
+        design:
+          $ref: '#/components/schemas/Design'
+      required:
+      - design
+    CustomDesignType:
+      type: object
+      description: A custom design type with specific dimensions
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          example: custom
+        width:
+          type: integer
+          description: Width in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
+        height:
+          type: integer
+          description: Height in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
+      required:
+      - type
+      - width
+      - height
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    PresetDesignType:
+      type: object
+      description: A preset design type
+      properties:
+        type:
+          type: string
+          enum:
+          - preset
+          example: preset
+        name:
+          type: string
+          description: The preset design type name
+          enum:
+          - doc
+          - whiteboard
+          - presentation
+          example: doc
+      required:
+      - type
+      - name
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+  parameters:
+    DesignId:
+      name: designId
+      in: path
+      required: true
+      description: The design ID
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/

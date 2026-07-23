@@ -1,0 +1,456 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets Autofills API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Autofills
+  description: Create designs from brand templates using autofill data
+paths:
+  /autofills:
+    post:
+      operationId: createDesignAutofillJob
+      summary: Canva Create a Design Autofill Job
+      description: Creates an asynchronous job to generate a new design by autofilling a brand template with provided data. Supports text, image, and chart data fields.
+      tags:
+      - Autofills
+      security:
+      - oauth2:
+        - design:content:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAutofillJobRequest'
+            examples:
+              CreatedesignautofilljobRequestExample:
+                summary: Default createDesignAutofillJob request
+                x-microcks-default: true
+                value:
+                  brand_template_id: '500123'
+                  title: Example Title
+                  data: example_value
+      responses:
+        '200':
+          description: The autofill job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutofillJobResponse'
+              examples:
+                Createdesignautofilljob200Example:
+                  summary: Default createDesignAutofillJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      result:
+                        type: create_design
+                      error:
+                        code: autofill_error
+                        message: example_value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /autofills/{jobId}:
+    get:
+      operationId: getDesignAutofillJob
+      summary: Canva Get a Design Autofill Job
+      description: Retrieves the status and results of a design autofill job. When successful, includes the generated design metadata.
+      tags:
+      - Autofills
+      security:
+      - oauth2:
+        - design:content:read
+      parameters:
+      - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: The autofill job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutofillJobResponse'
+              examples:
+                Getdesignautofilljob200Example:
+                  summary: Default getDesignAutofillJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      result:
+                        type: create_design
+                      error:
+                        code: autofill_error
+                        message: example_value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    AutofillJob:
+      type: object
+      description: An autofill job for generating designs from brand templates
+      properties:
+        id:
+          type: string
+          description: The autofill job ID
+          example: abc123
+        status:
+          type: string
+          description: The current status of the autofill job
+          enum:
+          - in_progress
+          - success
+          - failed
+          example: in_progress
+        result:
+          type: object
+          description: The autofill result (present when status is success)
+          properties:
+            type:
+              type: string
+              enum:
+              - create_design
+            design:
+              $ref: '#/components/schemas/Design'
+          required:
+          - type
+          - design
+          example: example_value
+        error:
+          type: object
+          description: Error details (present when status is failed)
+          properties:
+            code:
+              type: string
+              description: Error code
+              enum:
+              - autofill_error
+              - thumbnail_generation_error
+              - create_design_error
+            message:
+              type: string
+              description: Human-readable error message
+          required:
+          - code
+          - message
+          example: example_value
+      required:
+      - id
+      - status
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
+    Design:
+      type: object
+      description: A Canva design
+      properties:
+        id:
+          type: string
+          description: The design ID
+          example: abc123
+        title:
+          type: string
+          description: The design title
+          example: Example Title
+        owner:
+          $ref: '#/components/schemas/Owner'
+        urls:
+          $ref: '#/components/schemas/DesignUrls'
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        page_count:
+          type: integer
+          description: The number of pages in the design
+          example: 10
+      required:
+      - id
+      - title
+      - owner
+      - urls
+      - created_at
+      - updated_at
+    CreateAutofillJobRequest:
+      type: object
+      description: Request body for creating a design autofill job
+      properties:
+        brand_template_id:
+          type: string
+          description: The brand template ID to autofill
+          example: '500123'
+        title:
+          type: string
+          description: Title for the generated design (1-255 characters). Defaults to the brand template title.
+          minLength: 1
+          maxLength: 255
+          example: Example Title
+        data:
+          type: object
+          description: Data fields to populate, keyed by field name from the brand template dataset
+          additionalProperties:
+            $ref: '#/components/schemas/AutofillDataValue'
+          example: example_value
+      required:
+      - brand_template_id
+      - data
+    AutofillTextValue:
+      type: object
+      description: Text data for autofill
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          example: text
+        text:
+          type: string
+          description: The text content
+          example: example_value
+      required:
+      - type
+      - text
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    AutofillChartValue:
+      type: object
+      description: Chart data for autofill (preview feature)
+      properties:
+        type:
+          type: string
+          enum:
+          - chart
+          example: chart
+        chart_data:
+          type: object
+          description: Tabular data for the chart
+          properties:
+            rows:
+              type: array
+              description: Chart data rows (max 100)
+              maxItems: 100
+              items:
+                type: object
+                properties:
+                  cells:
+                    type: array
+                    description: Cell values in the row (max 20)
+                    maxItems: 20
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          - number
+                          - boolean
+                          - date
+                        value:
+                          type: string
+                          description: The cell value
+                      required:
+                      - type
+                      - value
+                required:
+                - cells
+          required:
+          - rows
+          example: example_value
+      required:
+      - type
+      - chart_data
+    AutofillJobResponse:
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/AutofillJob'
+      required:
+      - job
+    AutofillDataValue:
+      oneOf:
+      - $ref: '#/components/schemas/AutofillTextValue'
+      - $ref: '#/components/schemas/AutofillImageValue'
+      - $ref: '#/components/schemas/AutofillChartValue'
+      description: A data value for autofilling a design field
+    AutofillImageValue:
+      type: object
+      description: Image data for autofill
+      properties:
+        type:
+          type: string
+          enum:
+          - image
+          example: image
+        asset_id:
+          type: string
+          description: The asset ID of the image to use
+          example: '500123'
+      required:
+      - type
+      - asset_id
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    JobId:
+      name: jobId
+      in: path
+      required: true
+      description: The job ID
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/

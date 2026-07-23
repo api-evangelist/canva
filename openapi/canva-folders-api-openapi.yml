@@ -1,0 +1,522 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets Folders API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Folders
+  description: Retrieve folders and list folder contents
+paths:
+  /folders/{folderId}:
+    get:
+      operationId: getFolder
+      summary: Canva Get a Folder
+      description: Retrieves metadata for a specific folder, including name, timestamps, and thumbnail.
+      tags:
+      - Folders
+      security:
+      - oauth2:
+        - folder:read
+      parameters:
+      - $ref: '#/components/parameters/FolderId'
+      responses:
+        '200':
+          description: The folder metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderResponse'
+              examples:
+                Getfolder200Example:
+                  summary: Default getFolder 200 response
+                  x-microcks-default: true
+                  value:
+                    folder:
+                      id: abc123
+                      name: Example Title
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /folders/{folderId}/items:
+    get:
+      operationId: listFolderItems
+      summary: Canva List Folder Items
+      description: Lists items within a folder, including designs, subfolders, and images. Supports filtering by item type, sorting, pin status filtering, and pagination.
+      tags:
+      - Folders
+      security:
+      - oauth2:
+        - folder:read
+      parameters:
+      - $ref: '#/components/parameters/FolderId'
+      - name: item_types
+        in: query
+        description: Filter by item type
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - design
+            - folder
+            - image
+        style: form
+        explode: true
+        example: []
+      - name: sort_by
+        in: query
+        description: Sort order for results
+        schema:
+          type: string
+          enum:
+          - created_ascending
+          - created_descending
+          - modified_ascending
+          - modified_descending
+          - title_ascending
+          - title_descending
+        example: created_ascending
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 50
+        example: 10
+      - name: continuation
+        in: query
+        description: Continuation token for paginated results
+        schema:
+          type: string
+        example: example_value
+      - name: pin_status
+        in: query
+        description: Filter by pin status
+        schema:
+          type: string
+          enum:
+          - any
+          - pinned
+          default: any
+        example: any
+      responses:
+        '200':
+          description: A paginated list of folder items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFolderItemsResponse'
+              examples:
+                Listfolderitems200Example:
+                  summary: Default listFolderItems 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - type: design
+                    continuation: example_value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /folders/{folderId}/items:move:
+    post:
+      operationId: moveFolderItem
+      summary: Canva Move an Item to a Folder
+      description: Moves a design, folder, or image into the specified folder.
+      tags:
+      - Folders
+      security:
+      - oauth2:
+        - folder:write
+      parameters:
+      - $ref: '#/components/parameters/FolderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveFolderItemRequest'
+            examples:
+              MovefolderitemRequestExample:
+                summary: Default moveFolderItem request
+                x-microcks-default: true
+                value:
+                  item_id: '500123'
+                  item_type: design
+      responses:
+        '204':
+          description: Item moved successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    ImportStatus:
+      type: object
+      description: The import status of an asset (deprecated)
+      deprecated: true
+      properties:
+        state:
+          type: string
+          description: The current import state
+          enum:
+          - failed
+          - in_progress
+          - success
+          example: failed
+        error:
+          type: object
+          description: Error details if the import failed
+          properties:
+            message:
+              type: string
+              description: Human-readable error message
+            code:
+              type: string
+              description: Error code
+              enum:
+              - file_too_big
+              - import_failed
+          example: example_value
+    Folder:
+      type: object
+      description: A Canva folder
+      properties:
+        id:
+          type: string
+          description: The folder ID
+          example: abc123
+        name:
+          type: string
+          description: The folder name
+          example: Example Title
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+    Design:
+      type: object
+      description: A Canva design
+      properties:
+        id:
+          type: string
+          description: The design ID
+          example: abc123
+        title:
+          type: string
+          description: The design title
+          example: Example Title
+        owner:
+          $ref: '#/components/schemas/Owner'
+        urls:
+          $ref: '#/components/schemas/DesignUrls'
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        page_count:
+          type: integer
+          description: The number of pages in the design
+          example: 10
+      required:
+      - id
+      - title
+      - owner
+      - urls
+      - created_at
+      - updated_at
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
+    FolderItem:
+      type: object
+      description: An item within a folder (design, folder, or image)
+      properties:
+        type:
+          type: string
+          description: The type of folder item
+          enum:
+          - design
+          - folder
+          - image
+          example: design
+        design:
+          $ref: '#/components/schemas/Design'
+        folder:
+          $ref: '#/components/schemas/Folder'
+        image:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - type
+    FolderResponse:
+      type: object
+      properties:
+        folder:
+          $ref: '#/components/schemas/Folder'
+      required:
+      - folder
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    Asset:
+      type: object
+      description: A Canva asset (image or video)
+      properties:
+        id:
+          type: string
+          description: The asset ID
+          example: abc123
+        type:
+          type: string
+          description: The asset type
+          enum:
+          - image
+          - video
+          example: image
+        name:
+          type: string
+          description: The asset name
+          example: Example Title
+        tags:
+          type: array
+          description: User-facing tags for the asset
+          items:
+            type: string
+          example: []
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the asset was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the asset was last updated
+          example: '2026-01-15T10:30:00Z'
+        owner:
+          $ref: '#/components/schemas/Owner'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        import_status:
+          $ref: '#/components/schemas/ImportStatus'
+      required:
+      - id
+      - type
+      - name
+      - created_at
+      - updated_at
+      - owner
+    ListFolderItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderItem'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
+          example: example_value
+      required:
+      - items
+    MoveFolderItemRequest:
+      type: object
+      description: Request body for moving an item to a folder
+      properties:
+        item_id:
+          type: string
+          description: The ID of the item to move
+          example: '500123'
+        item_type:
+          type: string
+          description: The type of item to move
+          enum:
+          - design
+          - folder
+          - image
+          example: design
+      required:
+      - item_id
+      - item_type
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+  parameters:
+    FolderId:
+      name: folderId
+      in: path
+      required: true
+      description: The folder ID
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/

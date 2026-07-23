@@ -1,0 +1,126 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets Users API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Users
+  description: Retrieve information about the authenticated user
+paths:
+  /users/me:
+    get:
+      operationId: getUsersMe
+      summary: Canva Get Current User
+      description: Retrieves the user ID and team ID for the currently authenticated user.
+      tags:
+      - Users
+      responses:
+        '200':
+          description: The current user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersMeResponse'
+              examples:
+                Getusersme200Example:
+                  summary: Default getUsersMe 200 response
+                  x-microcks-default: true
+                  value:
+                    team_user:
+                      user_id: '500123'
+                      team_id: '500123'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    TeamUser:
+      type: object
+      description: The authenticated user and their team
+      properties:
+        user_id:
+          type: string
+          description: The user ID
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    UsersMeResponse:
+      type: object
+      properties:
+        team_user:
+          $ref: '#/components/schemas/TeamUser'
+      required:
+      - team_user
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/

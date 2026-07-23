@@ -1,0 +1,348 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets Comments API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Comments
+  description: Create and manage comments on designs
+paths:
+  /comments:
+    post:
+      operationId: createComment
+      summary: Canva Create a Comment
+      description: Creates a new top-level comment on a design. Supports mentioning users using the [user_id:team_id] format in the message text.
+      tags:
+      - Comments
+      security:
+      - oauth2:
+        - comment:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+            examples:
+              CreatecommentRequestExample:
+                summary: Default createComment request
+                x-microcks-default: true
+                value:
+                  attached_to:
+                    type: design
+                    design_id: '500123'
+                  message: example_value
+                  assignee_id: '500123'
+      responses:
+        '200':
+          description: The created comment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+              examples:
+                Createcomment200Example:
+                  summary: Default createComment 200 response
+                  x-microcks-default: true
+                  value:
+                    comment:
+                      type: parent
+                      id: abc123
+                      message: example_value
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      mentions: example_value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /comments/{commentId}/replies:
+    post:
+      operationId: createReply
+      summary: Canva Create a Reply to a Comment
+      description: Creates a reply to an existing comment thread on a design.
+      tags:
+      - Comments
+      security:
+      - oauth2:
+        - comment:write
+      parameters:
+      - name: commentId
+        in: path
+        required: true
+        description: The parent comment ID
+        schema:
+          type: string
+        example: '500123'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReplyRequest'
+            examples:
+              CreatereplyRequestExample:
+                summary: Default createReply request
+                x-microcks-default: true
+                value:
+                  attached_to:
+                    type: design
+                    design_id: '500123'
+                  message: example_value
+      responses:
+        '200':
+          description: The created reply
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+              examples:
+                Createreply200Example:
+                  summary: Default createReply 200 response
+                  x-microcks-default: true
+                  value:
+                    comment:
+                      type: parent
+                      id: abc123
+                      message: example_value
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                      mentions: example_value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    CreateReplyRequest:
+      type: object
+      description: Request body for creating a reply to a comment
+      properties:
+        attached_to:
+          $ref: '#/components/schemas/CommentAttachment'
+        message:
+          type: string
+          description: Reply text (1-2048 characters)
+          minLength: 1
+          maxLength: 2048
+          example: example_value
+      required:
+      - attached_to
+      - message
+    CommentAttachment:
+      type: object
+      description: The object a comment is attached to
+      properties:
+        type:
+          type: string
+          description: The attachment type
+          enum:
+          - design
+          example: design
+        design_id:
+          type: string
+          description: The design ID the comment is attached to
+          example: '500123'
+      required:
+      - type
+      - design_id
+    CreateCommentRequest:
+      type: object
+      description: Request body for creating a comment
+      properties:
+        attached_to:
+          $ref: '#/components/schemas/CommentAttachment'
+        message:
+          type: string
+          description: Comment text (1-2048 characters). Mention users with [user_id:team_id] format.
+          minLength: 1
+          maxLength: 2048
+          example: example_value
+        assignee_id:
+          type: string
+          description: User ID to assign the comment to
+          deprecated: true
+          example: '500123'
+      required:
+      - attached_to
+      - message
+    CommentResponse:
+      type: object
+      properties:
+        comment:
+          $ref: '#/components/schemas/Comment'
+      required:
+      - comment
+    Comment:
+      type: object
+      description: A comment on a design
+      properties:
+        type:
+          type: string
+          description: The comment type
+          enum:
+          - parent
+          - reply
+          example: parent
+        id:
+          type: string
+          description: The comment ID
+          example: abc123
+        message:
+          type: string
+          description: The comment text. User mentions use the format [user_id:team_id].
+          example: example_value
+        author:
+          $ref: '#/components/schemas/CommentUser'
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the comment was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the comment was last updated
+          example: '2026-01-15T10:30:00Z'
+        mentions:
+          type: object
+          description: Dictionary of mentioned users, keyed by their mention identifier
+          additionalProperties:
+            $ref: '#/components/schemas/MentionedUser'
+          example: example_value
+        attached_to:
+          $ref: '#/components/schemas/CommentAttachment'
+      required:
+      - type
+      - id
+      - message
+      - author
+      - created_at
+      - updated_at
+    CommentUser:
+      type: object
+      description: A user associated with a comment
+      properties:
+        id:
+          type: string
+          description: The user ID
+          example: abc123
+        display_name:
+          type: string
+          description: The user display name
+          deprecated: true
+          example: example_value
+    MentionedUser:
+      type: object
+      description: A user mentioned in a comment
+      properties:
+        user_id:
+          type: string
+          description: The mentioned user ID
+          example: '500123'
+        team_id:
+          type: string
+          description: The mentioned user team ID
+          example: '500123'
+        display_name:
+          type: string
+          description: The mentioned user display name
+          example: example_value
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/

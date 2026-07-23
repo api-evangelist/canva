@@ -1,0 +1,439 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Assets
+  description: Upload and manage image and video assets
+paths:
+  /assets/{assetId}:
+    get:
+      operationId: getAsset
+      summary: Canva Get an Asset
+      description: Retrieves metadata for a specific asset, including type, name, tags, owner, timestamps, thumbnail, and import status.
+      tags:
+      - Assets
+      security:
+      - oauth2:
+        - asset:read
+      parameters:
+      - $ref: '#/components/parameters/AssetId'
+      responses:
+        '200':
+          description: The asset metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetResponse'
+              examples:
+                Getasset200Example:
+                  summary: Default getAsset 200 response
+                  x-microcks-default: true
+                  value:
+                    asset:
+                      id: abc123
+                      type: image
+                      name: Example Title
+                      tags:
+                      - {}
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteAsset
+      summary: Canva Delete an Asset
+      description: Deletes an asset from the authenticated user's account.
+      tags:
+      - Assets
+      security:
+      - oauth2:
+        - asset:write
+      parameters:
+      - $ref: '#/components/parameters/AssetId'
+      responses:
+        '204':
+          description: Asset deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /asset-uploads:
+    post:
+      operationId: createAssetUploadJob
+      summary: Canva Upload an Asset
+      description: Uploads an image or video asset to the authenticated user's Canva account. The asset name is provided as a Base64-encoded string in the Asset-Upload-Metadata header. The request body contains the raw binary file content.
+      tags:
+      - Assets
+      security:
+      - oauth2:
+        - asset:write
+      parameters:
+      - name: Asset-Upload-Metadata
+        in: header
+        required: true
+        description: JSON object containing name_base64, the Base64-encoded asset name (1-50 characters before encoding)
+        schema:
+          type: string
+        example: example_value
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+            examples:
+              CreateassetuploadjobRequestExample:
+                summary: Default createAssetUploadJob request
+                x-microcks-default: true
+                value: example_value
+      responses:
+        '200':
+          description: The asset upload job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetUploadJobResponse'
+              examples:
+                Createassetuploadjob200Example:
+                  summary: Default createAssetUploadJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      asset:
+                        id: abc123
+                        type: image
+                        name: Example Title
+                        tags: {}
+                        created_at: '2026-01-15T10:30:00Z'
+                        updated_at: '2026-01-15T10:30:00Z'
+                      error:
+                        code: file_too_big
+                        message: example_value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /asset-uploads/{jobId}:
+    get:
+      operationId: getAssetUploadJob
+      summary: Canva Get Asset Upload Job
+      description: Retrieves the status of an asset upload job. When complete, includes the uploaded asset metadata.
+      tags:
+      - Assets
+      security:
+      - oauth2:
+        - asset:read
+      parameters:
+      - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: The asset upload job status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetUploadJobResponse'
+              examples:
+                Getassetuploadjob200Example:
+                  summary: Default getAssetUploadJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      asset:
+                        id: abc123
+                        type: image
+                        name: Example Title
+                        tags: {}
+                        created_at: '2026-01-15T10:30:00Z'
+                        updated_at: '2026-01-15T10:30:00Z'
+                      error:
+                        code: file_too_big
+                        message: example_value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    ImportStatus:
+      type: object
+      description: The import status of an asset (deprecated)
+      deprecated: true
+      properties:
+        state:
+          type: string
+          description: The current import state
+          enum:
+          - failed
+          - in_progress
+          - success
+          example: failed
+        error:
+          type: object
+          description: Error details if the import failed
+          properties:
+            message:
+              type: string
+              description: Human-readable error message
+            code:
+              type: string
+              description: Error code
+              enum:
+              - file_too_big
+              - import_failed
+          example: example_value
+    AssetResponse:
+      type: object
+      properties:
+        asset:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - asset
+    AssetUploadJobResponse:
+      type: object
+      properties:
+        job:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The upload job ID
+            status:
+              type: string
+              description: The current status of the upload job
+              enum:
+              - in_progress
+              - success
+              - failed
+            asset:
+              $ref: '#/components/schemas/Asset'
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - file_too_big
+                  - import_failed
+                  - fetch_failed
+                message:
+                  type: string
+          required:
+          - id
+          - status
+          example: example_value
+      required:
+      - job
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    Asset:
+      type: object
+      description: A Canva asset (image or video)
+      properties:
+        id:
+          type: string
+          description: The asset ID
+          example: abc123
+        type:
+          type: string
+          description: The asset type
+          enum:
+          - image
+          - video
+          example: image
+        name:
+          type: string
+          description: The asset name
+          example: Example Title
+        tags:
+          type: array
+          description: User-facing tags for the asset
+          items:
+            type: string
+          example: []
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the asset was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the asset was last updated
+          example: '2026-01-15T10:30:00Z'
+        owner:
+          $ref: '#/components/schemas/Owner'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        import_status:
+          $ref: '#/components/schemas/ImportStatus'
+      required:
+      - id
+      - type
+      - name
+      - created_at
+      - updated_at
+      - owner
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+  parameters:
+    JobId:
+      name: jobId
+      in: path
+      required: true
+      description: The job ID
+      schema:
+        type: string
+    AssetId:
+      name: assetId
+      in: path
+      required: true
+      description: The asset ID
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/

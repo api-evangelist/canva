@@ -1,0 +1,485 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets Exports API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Exports
+  description: Export designs to PDF, PNG, JPG, GIF, PPTX, and MP4
+paths:
+  /exports:
+    post:
+      operationId: createDesignExportJob
+      summary: Canva Create a Design Export Job
+      description: Creates an asynchronous job to export a design from Canva. Supported formats include PDF, JPG, PNG, GIF, PPTX, and MP4. Each format supports format-specific options such as quality, dimensions, page selection, and transparency.
+      tags:
+      - Exports
+      security:
+      - oauth2:
+        - design:content:read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExportJobRequest'
+            examples:
+              CreatedesignexportjobRequestExample:
+                summary: Default createDesignExportJob request
+                x-microcks-default: true
+                value:
+                  design_id: '500123'
+                  format: {}
+      responses:
+        '200':
+          description: The export job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJobResponse'
+              examples:
+                Createdesignexportjob200Example:
+                  summary: Default createDesignExportJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      urls:
+                      - {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /exports/{exportId}:
+    get:
+      operationId: getDesignExportJob
+      summary: Canva Get a Design Export Job
+      description: Retrieves the status and results of an export job. When the job completes successfully, the response includes download URLs for the exported files, valid for 24 hours.
+      tags:
+      - Exports
+      security:
+      - oauth2:
+        - design:content:read
+      parameters:
+      - $ref: '#/components/parameters/ExportId'
+      responses:
+        '200':
+          description: The export job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJobResponse'
+              examples:
+                Getdesignexportjob200Example:
+                  summary: Default getDesignExportJob 200 response
+                  x-microcks-default: true
+                  value:
+                    job:
+                      id: abc123
+                      status: in_progress
+                      urls:
+                      - {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    PptxExportFormat:
+      type: object
+      description: PowerPoint export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - pptx
+          example: pptx
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+    JpgExportFormat:
+      type: object
+      description: JPG export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - jpg
+          example: jpg
+        quality:
+          type: integer
+          description: JPG compression quality (1-100)
+          minimum: 1
+          maximum: 100
+          example: 10
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        width:
+          type: integer
+          description: Output width in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        height:
+          type: integer
+          description: Output height in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+      - quality
+    ExportJob:
+      type: object
+      description: An export job for converting a design to a downloadable format
+      properties:
+        id:
+          type: string
+          description: The export job ID
+          example: abc123
+        status:
+          type: string
+          description: The current status of the export job
+          enum:
+          - in_progress
+          - success
+          - failed
+          example: in_progress
+        urls:
+          type: array
+          description: Download URLs for the exported files (valid for 24 hours). Present only when status is success.
+          items:
+            type: string
+            format: uri
+          example: https://www.example.com
+        error:
+          $ref: '#/components/schemas/ExportError'
+      required:
+      - id
+      - status
+    PngExportFormat:
+      type: object
+      description: PNG export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - png
+          example: png
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        width:
+          type: integer
+          description: Output width in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        height:
+          type: integer
+          description: Output height in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        lossless:
+          type: boolean
+          description: Whether to use lossless compression
+          default: true
+          example: true
+        transparent_background:
+          type: boolean
+          description: Whether to use a transparent background
+          default: false
+          example: true
+        as_single_image:
+          type: boolean
+          description: Whether to export all pages as a single image
+          default: false
+          example: true
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+    ExportJobResponse:
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/ExportJob'
+      required:
+      - job
+    Mp4ExportFormat:
+      type: object
+      description: MP4 video export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - mp4
+          example: mp4
+        quality:
+          type: string
+          description: Video quality and orientation
+          enum:
+          - horizontal_480p
+          - horizontal_720p
+          - horizontal_1080p
+          - horizontal_4k
+          - vertical_480p
+          - vertical_720p
+          - vertical_1080p
+          - vertical_4k
+          example: horizontal_480p
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+      - quality
+    ExportFormat:
+      oneOf:
+      - $ref: '#/components/schemas/PdfExportFormat'
+      - $ref: '#/components/schemas/JpgExportFormat'
+      - $ref: '#/components/schemas/PngExportFormat'
+      - $ref: '#/components/schemas/GifExportFormat'
+      - $ref: '#/components/schemas/PptxExportFormat'
+      - $ref: '#/components/schemas/Mp4ExportFormat'
+      description: Export format configuration
+    GifExportFormat:
+      type: object
+      description: GIF export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - gif
+          example: gif
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        width:
+          type: integer
+          description: Output width in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        height:
+          type: integer
+          description: Output height in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+    CreateExportJobRequest:
+      type: object
+      description: Request body for creating an export job
+      properties:
+        design_id:
+          type: string
+          description: The design ID to export
+          example: '500123'
+        format:
+          $ref: '#/components/schemas/ExportFormat'
+      required:
+      - design_id
+      - format
+    PdfExportFormat:
+      type: object
+      description: PDF export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - pdf
+          example: pdf
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        size:
+          type: string
+          description: Paper size for the PDF
+          enum:
+          - a4
+          - a3
+          - letter
+          - legal
+          default: a4
+          example: a4
+        pages:
+          type: array
+          description: Page indices to export (exports all pages if omitted)
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+    ExportError:
+      type: object
+      description: Error details for a failed export job
+      properties:
+        code:
+          type: string
+          description: Error code indicating the reason for failure
+          enum:
+          - license_required
+          - approval_required
+          - internal_failure
+          example: license_required
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+  parameters:
+    ExportId:
+      name: exportId
+      in: path
+      required: true
+      description: The export job ID
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/

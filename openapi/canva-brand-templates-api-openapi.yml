@@ -1,0 +1,372 @@
+openapi: 3.1.0
+info:
+  title: Canva Connect Assets Brand Templates API
+  description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
+  version: 1.0.0
+  contact:
+    name: Canva Developers
+    url: https://www.canva.dev/docs/connect/
+    email: developers@canva.com
+  license:
+    name: Canva Developer Terms
+    url: https://www.canva.com/policies/canva-developer-terms/
+  termsOfService: https://www.canva.com/policies/terms-of-use/
+servers:
+- url: https://api.canva.com/rest/v1
+  description: Canva Production API
+security:
+- oauth2: []
+tags:
+- name: Brand Templates
+  description: List and retrieve brand templates and their datasets
+paths:
+  /brand-templates:
+    get:
+      operationId: listBrandTemplates
+      summary: Canva List Brand Templates
+      description: Lists brand templates available to the authenticated user. Supports searching, filtering by ownership and dataset availability, sorting, and pagination. Requires Canva Enterprise membership.
+      tags:
+      - Brand Templates
+      security:
+      - oauth2:
+        - brandtemplate:meta:read
+      parameters:
+      - name: query
+        in: query
+        description: Search term to filter brand templates
+        schema:
+          type: string
+        example: example_value
+      - name: ownership
+        in: query
+        description: Filter by ownership status
+        schema:
+          type: string
+          enum:
+          - any
+          - owned
+          - shared
+          default: any
+        example: any
+      - name: sort_by
+        in: query
+        description: Sort order for results
+        schema:
+          type: string
+          enum:
+          - relevance
+          - modified_descending
+          - modified_ascending
+          - title_descending
+          - title_ascending
+          default: relevance
+        example: relevance
+      - name: dataset
+        in: query
+        description: Filter by dataset availability
+        schema:
+          type: string
+          enum:
+          - any
+          - non_empty
+          default: any
+        example: any
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 25
+        example: 10
+      - name: continuation
+        in: query
+        description: Continuation token for paginated results
+        schema:
+          type: string
+        example: example_value
+      responses:
+        '200':
+          description: A paginated list of brand templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBrandTemplatesResponse'
+              examples:
+                Listbrandtemplates200Example:
+                  summary: Default listBrandTemplates 200 response
+                  x-microcks-default: true
+                  value:
+                    items:
+                    - id: abc123
+                      title: Example Title
+                      view_url: https://www.example.com
+                      create_url: https://www.example.com
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+                    continuation: example_value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /brand-templates/{brandTemplateId}:
+    get:
+      operationId: getBrandTemplate
+      summary: Canva Get a Brand Template
+      description: Retrieves metadata for a specific brand template. Requires Canva Enterprise membership.
+      tags:
+      - Brand Templates
+      security:
+      - oauth2:
+        - brandtemplate:meta:read
+      parameters:
+      - $ref: '#/components/parameters/BrandTemplateId'
+      responses:
+        '200':
+          description: The brand template metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandTemplateResponse'
+              examples:
+                Getbrandtemplate200Example:
+                  summary: Default getBrandTemplate 200 response
+                  x-microcks-default: true
+                  value:
+                    brand_template:
+                      id: abc123
+                      title: Example Title
+                      view_url: https://www.example.com
+                      create_url: https://www.example.com
+                      created_at: '2026-01-15T10:30:00Z'
+                      updated_at: '2026-01-15T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /brand-templates/{brandTemplateId}/dataset:
+    get:
+      operationId: getBrandTemplateDataset
+      summary: Canva Get a Brand Template Dataset
+      description: Retrieves the autofill dataset for a brand template, listing the available data fields and their types (image, text, or chart). Requires Canva Enterprise membership.
+      tags:
+      - Brand Templates
+      security:
+      - oauth2:
+        - brandtemplate:content:read
+      parameters:
+      - $ref: '#/components/parameters/BrandTemplateId'
+      responses:
+        '200':
+          description: The brand template dataset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandTemplateDatasetResponse'
+              examples:
+                Getbrandtemplatedataset200Example:
+                  summary: Default getBrandTemplateDataset 200 response
+                  x-microcks-default: true
+                  value:
+                    dataset: example_value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    DatasetField:
+      type: object
+      description: A data field in a brand template dataset
+      properties:
+        type:
+          type: string
+          description: The data field type
+          enum:
+          - image
+          - text
+          - chart
+          example: image
+      required:
+      - type
+    BrandTemplate:
+      type: object
+      description: A Canva brand template (requires Enterprise)
+      properties:
+        id:
+          type: string
+          description: The brand template ID
+          example: abc123
+        title:
+          type: string
+          description: The brand template title
+          example: Example Title
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the brand template
+          example: https://www.example.com
+        create_url:
+          type: string
+          format: uri
+          description: URL to create a design from the brand template
+          example: https://www.example.com
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the template was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the template was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+      required:
+      - id
+      - title
+      - created_at
+      - updated_at
+    ListBrandTemplatesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandTemplate'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
+          example: example_value
+      required:
+      - items
+    BrandTemplateResponse:
+      type: object
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+    BrandTemplateDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          type: object
+          description: Dataset fields available for autofill, keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/DatasetField'
+          example: example_value
+      required:
+      - dataset
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+  parameters:
+    BrandTemplateId:
+      name: brandTemplateId
+      in: path
+      required: true
+      description: The brand template ID
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the Authorization header as a Bearer token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+          scopes:
+            design:meta:read: Read design metadata
+            design:content:read: Read design content
+            design:content:write: Create and modify designs
+            asset:read: Read asset metadata
+            asset:write: Upload and delete assets
+            folder:read: Read folder metadata and contents
+            folder:write: Modify folder contents
+            comment:read: Read comments on designs
+            comment:write: Create and manage comments
+            brandtemplate:meta:read: Read brand template metadata
+            brandtemplate:content:read: Read brand template content and datasets
+externalDocs:
+  description: Canva Connect API Documentation
+  url: https://www.canva.dev/docs/connect/
