@@ -1,0 +1,670 @@
+{
+  "info": {
+    "_postman_id": "cb2cc7f2-bbf5-44e6-b5a0-df3165dba9e2",
+    "name": "Canva Connect Assets Resizes API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:08.000Z",
+    "updatedAt": "2026-07-28T01:17:08.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-cb2cc7f2-bbf5-44e6-b5a0-df3165dba9e2"
+  },
+  "item": [
+    {
+      "name": "resizes",
+      "item": [
+        {
+          "name": "{jobId}",
+          "item": [
+            {
+              "name": "Canva Get a Design Resize Job",
+              "id": "55f85251-24e4-435b-9ad7-89365ead2fbb",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/resizes/:jobId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "resizes",
+                    ":jobId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "7d4e544d-d5e9-432a-ae8e-32c604264c25",
+                      "key": "jobId",
+                      "value": "<string>",
+                      "description": "(Required) The job ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves the status and results of a design resize job. When successful, includes the newly created design metadata."
+              },
+              "response": [
+                {
+                  "id": "614e03fc-69e1-4c14-b7a8-58900eb5b80a",
+                  "name": "The resize job status and results",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/resizes/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "resizes",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"failed\",\n    \"result\": {\n      \"design\": {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"urls\": {\n          \"edit_url\": \"<uri>\",\n          \"view_url\": \"<uri>\"\n        },\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"page_count\": \"<integer>\"\n      }\n    },\n    \"error\": {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:08.000Z",
+                  "updatedAt": "2026-07-28T01:17:08.000Z",
+                  "uid": "35240-614e03fc-69e1-4c14-b7a8-58900eb5b80a"
+                },
+                {
+                  "id": "3e466e72-9c67-4481-a27f-e75586c29f0a",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/resizes/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "resizes",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:08.000Z",
+                  "updatedAt": "2026-07-28T01:17:08.000Z",
+                  "uid": "35240-3e466e72-9c67-4481-a27f-e75586c29f0a"
+                },
+                {
+                  "id": "fe8ca585-d247-4db7-b005-9cc5797765cb",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/resizes/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "resizes",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:08.000Z",
+                  "updatedAt": "2026-07-28T01:17:08.000Z",
+                  "uid": "35240-fe8ca585-d247-4db7-b005-9cc5797765cb"
+                },
+                {
+                  "id": "0b197d2f-20fc-42c1-b547-8f5046443006",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/resizes/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "resizes",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:08.000Z",
+                  "updatedAt": "2026-07-28T01:17:08.000Z",
+                  "uid": "35240-0b197d2f-20fc-42c1-b547-8f5046443006"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:08.000Z",
+              "updatedAt": "2026-07-28T01:17:08.000Z",
+              "uid": "35240-55f85251-24e4-435b-9ad7-89365ead2fbb"
+            }
+          ],
+          "id": "16b718ae-9f1f-43c4-9669-7cfb447adb30",
+          "createdAt": "2026-07-28T01:17:08.000Z",
+          "updatedAt": "2026-07-28T01:17:08.000Z",
+          "uid": "35240-16b718ae-9f1f-43c4-9669-7cfb447adb30"
+        },
+        {
+          "name": "Canva Create a Design Resize Job",
+          "id": "0b0b1446-e87c-494a-a525-a1626fbd89e1",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"design_id\": \"<string>\",\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"doc\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/resizes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resizes"
+              ]
+            },
+            "description": "Creates an asynchronous job to resize a design to different dimensions or a preset type (doc, whiteboard, or presentation). The resize creates a new design without modifying the original."
+          },
+          "response": [
+            {
+              "id": "9067f2d8-d7f0-4270-b627-7501fcc252ab",
+              "name": "The resize job",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"doc\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/resizes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "resizes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"failed\",\n    \"result\": {\n      \"design\": {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"urls\": {\n          \"edit_url\": \"<uri>\",\n          \"view_url\": \"<uri>\"\n        },\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"page_count\": \"<integer>\"\n      }\n    },\n    \"error\": {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T01:17:08.000Z",
+              "updatedAt": "2026-07-28T01:17:08.000Z",
+              "uid": "35240-9067f2d8-d7f0-4270-b627-7501fcc252ab"
+            },
+            {
+              "id": "fac91a31-1ef0-44e0-88c5-5b9ce9826775",
+              "name": "Bad request - invalid parameters or request body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"doc\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/resizes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "resizes"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:08.000Z",
+              "updatedAt": "2026-07-28T01:17:08.000Z",
+              "uid": "35240-fac91a31-1ef0-44e0-88c5-5b9ce9826775"
+            },
+            {
+              "id": "b9c05df7-b929-4b85-b00d-08be400448cb",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"doc\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/resizes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "resizes"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:08.000Z",
+              "updatedAt": "2026-07-28T01:17:08.000Z",
+              "uid": "35240-b9c05df7-b929-4b85-b00d-08be400448cb"
+            },
+            {
+              "id": "f6f5ab39-4943-4b1b-a9dc-b5c36c34e309",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"doc\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/resizes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "resizes"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:08.000Z",
+              "updatedAt": "2026-07-28T01:17:08.000Z",
+              "uid": "35240-f6f5ab39-4943-4b1b-a9dc-b5c36c34e309"
+            },
+            {
+              "id": "51ec34f1-423a-4314-a903-f4d7fbd1b8df",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"doc\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/resizes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "resizes"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:08.000Z",
+              "updatedAt": "2026-07-28T01:17:08.000Z",
+              "uid": "35240-51ec34f1-423a-4314-a903-f4d7fbd1b8df"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:08.000Z",
+          "updatedAt": "2026-07-28T01:17:08.000Z",
+          "uid": "35240-0b0b1446-e87c-494a-a525-a1626fbd89e1"
+        }
+      ],
+      "id": "c0e77643-2ec8-4b7c-b628-a71268ac1fd0",
+      "createdAt": "2026-07-28T01:17:08.000Z",
+      "updatedAt": "2026-07-28T01:17:08.000Z",
+      "uid": "35240-c0e77643-2ec8-4b7c-b628-a71268ac1fd0"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

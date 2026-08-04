@@ -1,0 +1,726 @@
+{
+  "info": {
+    "_postman_id": "3e11abef-965e-4e8b-a79d-0aecda317993",
+    "name": "Canva Connect Assets Autofills API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:58.000Z",
+    "updatedAt": "2026-07-28T01:16:58.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-3e11abef-965e-4e8b-a79d-0aecda317993"
+  },
+  "item": [
+    {
+      "name": "autofills",
+      "item": [
+        {
+          "name": "{jobId}",
+          "item": [
+            {
+              "name": "Canva Get a Design Autofill Job",
+              "id": "0dcc9282-0f60-41fb-9904-0007ea169d35",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/autofills/:jobId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "autofills",
+                    ":jobId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "211492a6-2e3f-4fb4-a016-9194b915a041",
+                      "key": "jobId",
+                      "value": "<string>",
+                      "description": "(Required) The job ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves the status and results of a design autofill job. When successful, includes the generated design metadata."
+              },
+              "response": [
+                {
+                  "id": "d50e825c-d3ec-4286-ac5c-5a66090d1547",
+                  "name": "The autofill job status and results",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/autofills/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "autofills",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"failed\",\n    \"result\": {\n      \"type\": \"create_design\",\n      \"design\": {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"urls\": {\n          \"edit_url\": \"<uri>\",\n          \"view_url\": \"<uri>\"\n        },\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"page_count\": \"<integer>\"\n      }\n    },\n    \"error\": {\n      \"code\": \"thumbnail_generation_error\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:16:59.000Z",
+                  "updatedAt": "2026-07-28T01:16:59.000Z",
+                  "uid": "35240-d50e825c-d3ec-4286-ac5c-5a66090d1547"
+                },
+                {
+                  "id": "6642eb1d-4c6d-4980-b8f9-8181eff8e665",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/autofills/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "autofills",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:59.000Z",
+                  "updatedAt": "2026-07-28T01:16:59.000Z",
+                  "uid": "35240-6642eb1d-4c6d-4980-b8f9-8181eff8e665"
+                },
+                {
+                  "id": "97e6c9e7-2cc2-4dce-8c8e-bf6b1a1738c1",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/autofills/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "autofills",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:59.000Z",
+                  "updatedAt": "2026-07-28T01:16:59.000Z",
+                  "uid": "35240-97e6c9e7-2cc2-4dce-8c8e-bf6b1a1738c1"
+                },
+                {
+                  "id": "d238c016-b399-45f5-98d1-28cd5d8e626a",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/autofills/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "autofills",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:59.000Z",
+                  "updatedAt": "2026-07-28T01:16:59.000Z",
+                  "uid": "35240-d238c016-b399-45f5-98d1-28cd5d8e626a"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:59.000Z",
+              "updatedAt": "2026-07-28T01:16:59.000Z",
+              "uid": "35240-0dcc9282-0f60-41fb-9904-0007ea169d35"
+            }
+          ],
+          "id": "004ad218-a0bc-4793-96e6-f5892b40a518",
+          "createdAt": "2026-07-28T01:16:58.000Z",
+          "updatedAt": "2026-07-28T01:16:58.000Z",
+          "uid": "35240-004ad218-a0bc-4793-96e6-f5892b40a518"
+        },
+        {
+          "name": "Canva Create a Design Autofill Job",
+          "id": "444a0a6f-b2fc-4b8b-8489-f2d85258c0a7",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand_template_id\": \"<string>\",\n  \"data\": {\n    \"qui_ba\": {\n      \"type\": \"text\",\n      \"text\": \"<string>\"\n    }\n  },\n  \"title\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/autofills",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autofills"
+              ]
+            },
+            "description": "Creates an asynchronous job to generate a new design by autofilling a brand template with provided data. Supports text, image, and chart data fields."
+          },
+          "response": [
+            {
+              "id": "4bdcf827-98b6-4d39-9cf3-0f6d35a66ff6",
+              "name": "The autofill job",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brand_template_id\": \"<string>\",\n  \"data\": {\n    \"qui_ba\": {\n      \"type\": \"text\",\n      \"text\": \"<string>\"\n    }\n  },\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/autofills",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "autofills"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"failed\",\n    \"result\": {\n      \"type\": \"create_design\",\n      \"design\": {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"urls\": {\n          \"edit_url\": \"<uri>\",\n          \"view_url\": \"<uri>\"\n        },\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"page_count\": \"<integer>\"\n      }\n    },\n    \"error\": {\n      \"code\": \"thumbnail_generation_error\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T01:16:59.000Z",
+              "updatedAt": "2026-07-28T01:16:59.000Z",
+              "uid": "35240-4bdcf827-98b6-4d39-9cf3-0f6d35a66ff6"
+            },
+            {
+              "id": "bf3edf37-734c-41c7-a384-12c70d0606ec",
+              "name": "Bad request - invalid parameters or request body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brand_template_id\": \"<string>\",\n  \"data\": {\n    \"qui_ba\": {\n      \"type\": \"text\",\n      \"text\": \"<string>\"\n    }\n  },\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/autofills",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "autofills"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:59.000Z",
+              "updatedAt": "2026-07-28T01:16:59.000Z",
+              "uid": "35240-bf3edf37-734c-41c7-a384-12c70d0606ec"
+            },
+            {
+              "id": "709c76c9-a409-4b8c-a990-caa39025bb32",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brand_template_id\": \"<string>\",\n  \"data\": {\n    \"qui_ba\": {\n      \"type\": \"text\",\n      \"text\": \"<string>\"\n    }\n  },\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/autofills",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "autofills"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:59.000Z",
+              "updatedAt": "2026-07-28T01:16:59.000Z",
+              "uid": "35240-709c76c9-a409-4b8c-a990-caa39025bb32"
+            },
+            {
+              "id": "6a7859e2-5993-4c39-b5d9-5f2dc728c988",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brand_template_id\": \"<string>\",\n  \"data\": {\n    \"qui_ba\": {\n      \"type\": \"text\",\n      \"text\": \"<string>\"\n    }\n  },\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/autofills",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "autofills"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:59.000Z",
+              "updatedAt": "2026-07-28T01:16:59.000Z",
+              "uid": "35240-6a7859e2-5993-4c39-b5d9-5f2dc728c988"
+            },
+            {
+              "id": "fb6f42c8-83e0-4b65-9fd7-5cf886681dc0",
+              "name": "Not found - the requested resource does not exist",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brand_template_id\": \"<string>\",\n  \"data\": {\n    \"qui_ba\": {\n      \"type\": \"text\",\n      \"text\": \"<string>\"\n    }\n  },\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/autofills",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "autofills"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:59.000Z",
+              "updatedAt": "2026-07-28T01:16:59.000Z",
+              "uid": "35240-fb6f42c8-83e0-4b65-9fd7-5cf886681dc0"
+            },
+            {
+              "id": "79e17606-b50e-4285-a5a9-85789032daf0",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"brand_template_id\": \"<string>\",\n  \"data\": {\n    \"qui_ba\": {\n      \"type\": \"text\",\n      \"text\": \"<string>\"\n    }\n  },\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/autofills",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "autofills"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:59.000Z",
+              "updatedAt": "2026-07-28T01:16:59.000Z",
+              "uid": "35240-79e17606-b50e-4285-a5a9-85789032daf0"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:59.000Z",
+          "updatedAt": "2026-07-28T01:16:59.000Z",
+          "uid": "35240-444a0a6f-b2fc-4b8b-8489-f2d85258c0a7"
+        }
+      ],
+      "id": "a26b2f89-36ff-4add-8024-5242ce0c07b5",
+      "createdAt": "2026-07-28T01:16:58.000Z",
+      "updatedAt": "2026-07-28T01:16:58.000Z",
+      "uid": "35240-a26b2f89-36ff-4add-8024-5242ce0c07b5"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

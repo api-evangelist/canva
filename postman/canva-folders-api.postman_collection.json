@@ -1,0 +1,1313 @@
+{
+  "info": {
+    "_postman_id": "58625866-eacb-42b3-a8b8-8a1b594286f4",
+    "name": "Canva Connect Assets Folders API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:03.000Z",
+    "updatedAt": "2026-07-28T01:17:03.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-58625866-eacb-42b3-a8b8-8a1b594286f4"
+  },
+  "item": [
+    {
+      "name": "folders",
+      "item": [
+        {
+          "name": "{folderId}",
+          "item": [
+            {
+              "name": "items",
+              "item": [
+                {
+                  "name": "Canva List Folder Items",
+                  "id": "f5d742dc-e1e7-4381-9ef3-bba2092a5591",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.canva.com/rest/v1/oauth/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://www.canva.com/api/oauth/authorize",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folderId/items?item_types=image&item_types=folder&sort_by=modified_descending&limit=50&continuation=<string>&pin_status=any",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folderId",
+                        "items"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by item type",
+                          "key": "item_types",
+                          "value": "image"
+                        },
+                        {
+                          "description": "Filter by item type",
+                          "key": "item_types",
+                          "value": "folder"
+                        },
+                        {
+                          "description": "Sort order for results",
+                          "key": "sort_by",
+                          "value": "modified_descending"
+                        },
+                        {
+                          "description": "Number of results per page",
+                          "key": "limit",
+                          "value": "50"
+                        },
+                        {
+                          "description": "Continuation token for paginated results",
+                          "key": "continuation",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by pin status",
+                          "key": "pin_status",
+                          "value": "any"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "06b7c2e4-22e3-42a4-ba1d-ba1eeac771d7",
+                          "key": "folderId",
+                          "value": "<string>",
+                          "description": "(Required) The folder ID"
+                        }
+                      ]
+                    },
+                    "description": "Lists items within a folder, including designs, subfolders, and images. Supports filtering by item type, sorting, pin status filtering, and pagination."
+                  },
+                  "response": [
+                    {
+                      "id": "fa85bdde-2f0d-4772-9630-b4f4ebe6eb9e",
+                      "name": "A paginated list of folder items",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items?item_types=folder&sort_by=modified_descending&limit=50&continuation=<string>&pin_status=any",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by item type",
+                              "key": "item_types",
+                              "value": "folder"
+                            },
+                            {
+                              "description": "Sort order for results",
+                              "key": "sort_by",
+                              "value": "modified_descending"
+                            },
+                            {
+                              "description": "Number of results per page",
+                              "key": "limit",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Continuation token for paginated results",
+                              "key": "continuation",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by pin status",
+                              "key": "pin_status",
+                              "value": "any"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"items\": [\n    {\n      \"type\": \"image\",\n      \"design\": {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"urls\": {\n          \"edit_url\": \"<uri>\",\n          \"view_url\": \"<uri>\"\n        },\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"page_count\": \"<integer>\"\n      },\n      \"folder\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        }\n      },\n      \"image\": {\n        \"id\": \"<string>\",\n        \"type\": \"video\",\n        \"name\": \"<string>\",\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"tags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"import_status\": {\n          \"state\": \"failed\",\n          \"error\": {\n            \"message\": \"<string>\",\n            \"code\": \"file_too_big\"\n          }\n        }\n      }\n    },\n    {\n      \"type\": \"image\",\n      \"design\": {\n        \"id\": \"<string>\",\n        \"title\": \"<string>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"urls\": {\n          \"edit_url\": \"<uri>\",\n          \"view_url\": \"<uri>\"\n        },\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"page_count\": \"<integer>\"\n      },\n      \"folder\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        }\n      },\n      \"image\": {\n        \"id\": \"<string>\",\n        \"type\": \"image\",\n        \"name\": \"<string>\",\n        \"created_at\": \"<integer>\",\n        \"updated_at\": \"<integer>\",\n        \"owner\": {\n          \"user_id\": \"<string>\",\n          \"team_id\": \"<string>\"\n        },\n        \"tags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"thumbnail\": {\n          \"width\": \"<integer>\",\n          \"height\": \"<integer>\",\n          \"url\": \"<uri>\"\n        },\n        \"import_status\": {\n          \"state\": \"success\",\n          \"error\": {\n            \"message\": \"<string>\",\n            \"code\": \"import_failed\"\n          }\n        }\n      }\n    }\n  ],\n  \"continuation\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-fa85bdde-2f0d-4772-9630-b4f4ebe6eb9e"
+                    },
+                    {
+                      "id": "31794323-f7b2-4bec-ad16-16f72a09a007",
+                      "name": "Unauthorized - missing or invalid authentication",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items?item_types=folder&sort_by=modified_descending&limit=50&continuation=<string>&pin_status=any",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by item type",
+                              "key": "item_types",
+                              "value": "folder"
+                            },
+                            {
+                              "description": "Sort order for results",
+                              "key": "sort_by",
+                              "value": "modified_descending"
+                            },
+                            {
+                              "description": "Number of results per page",
+                              "key": "limit",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Continuation token for paginated results",
+                              "key": "continuation",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by pin status",
+                              "key": "pin_status",
+                              "value": "any"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-31794323-f7b2-4bec-ad16-16f72a09a007"
+                    },
+                    {
+                      "id": "32b31e79-0f2d-45ca-9771-17264bcbd14a",
+                      "name": "Forbidden - insufficient permissions or scopes",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items?item_types=folder&sort_by=modified_descending&limit=50&continuation=<string>&pin_status=any",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by item type",
+                              "key": "item_types",
+                              "value": "folder"
+                            },
+                            {
+                              "description": "Sort order for results",
+                              "key": "sort_by",
+                              "value": "modified_descending"
+                            },
+                            {
+                              "description": "Number of results per page",
+                              "key": "limit",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Continuation token for paginated results",
+                              "key": "continuation",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by pin status",
+                              "key": "pin_status",
+                              "value": "any"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-32b31e79-0f2d-45ca-9771-17264bcbd14a"
+                    },
+                    {
+                      "id": "a56e71ab-b9e3-4ea9-bf13-a336fa00c60a",
+                      "name": "Not found - the requested resource does not exist",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items?item_types=folder&sort_by=modified_descending&limit=50&continuation=<string>&pin_status=any",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by item type",
+                              "key": "item_types",
+                              "value": "folder"
+                            },
+                            {
+                              "description": "Sort order for results",
+                              "key": "sort_by",
+                              "value": "modified_descending"
+                            },
+                            {
+                              "description": "Number of results per page",
+                              "key": "limit",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Continuation token for paginated results",
+                              "key": "continuation",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by pin status",
+                              "key": "pin_status",
+                              "value": "any"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-a56e71ab-b9e3-4ea9-bf13-a336fa00c60a"
+                    },
+                    {
+                      "id": "12962615-3846-4433-9167-209a5c035868",
+                      "name": "Too many requests - rate limit exceeded",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items?item_types=folder&sort_by=modified_descending&limit=50&continuation=<string>&pin_status=any",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by item type",
+                              "key": "item_types",
+                              "value": "folder"
+                            },
+                            {
+                              "description": "Sort order for results",
+                              "key": "sort_by",
+                              "value": "modified_descending"
+                            },
+                            {
+                              "description": "Number of results per page",
+                              "key": "limit",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Continuation token for paginated results",
+                              "key": "continuation",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by pin status",
+                              "key": "pin_status",
+                              "value": "any"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-12962615-3846-4433-9167-209a5c035868"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:17:04.000Z",
+                  "updatedAt": "2026-07-28T01:17:04.000Z",
+                  "uid": "35240-f5d742dc-e1e7-4381-9ef3-bba2092a5591"
+                }
+              ],
+              "id": "f1101b37-f63a-4a70-ad44-617e202af70b",
+              "createdAt": "2026-07-28T01:17:04.000Z",
+              "updatedAt": "2026-07-28T01:17:04.000Z",
+              "uid": "35240-f1101b37-f63a-4a70-ad44-617e202af70b"
+            },
+            {
+              "name": "items:move",
+              "item": [
+                {
+                  "name": "Canva Move an Item to a Folder",
+                  "id": "1c5f40b0-09a0-4c7a-b5ff-4abfb4eeb8cb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.canva.com/rest/v1/oauth/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://www.canva.com/api/oauth/authorize",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"item_id\": \"<string>\",\n  \"item_type\": \"folder\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folderId/items:move",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folderId",
+                        "items:move"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c3a46abd-9128-45b2-b189-7b7bcda41501",
+                          "key": "folderId",
+                          "value": "<string>",
+                          "description": "(Required) The folder ID"
+                        }
+                      ]
+                    },
+                    "description": "Moves a design, folder, or image into the specified folder."
+                  },
+                  "response": [
+                    {
+                      "id": "b6d591a1-ff68-4b9c-b440-ecc613c4263f",
+                      "name": "Item moved successfully",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"item_id\": \"<string>\",\n  \"item_type\": \"folder\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items:move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items:move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-b6d591a1-ff68-4b9c-b440-ecc613c4263f"
+                    },
+                    {
+                      "id": "dc71fa8c-fe6f-425a-bd03-e2d343259a75",
+                      "name": "Bad request - invalid parameters or request body",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"item_id\": \"<string>\",\n  \"item_type\": \"folder\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items:move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items:move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-dc71fa8c-fe6f-425a-bd03-e2d343259a75"
+                    },
+                    {
+                      "id": "adc2846d-bec7-4629-b7ca-5f6cc515709a",
+                      "name": "Unauthorized - missing or invalid authentication",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"item_id\": \"<string>\",\n  \"item_type\": \"folder\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items:move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items:move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-adc2846d-bec7-4629-b7ca-5f6cc515709a"
+                    },
+                    {
+                      "id": "8bf038b1-e4e6-43a4-9cc0-95581d6e4897",
+                      "name": "Forbidden - insufficient permissions or scopes",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"item_id\": \"<string>\",\n  \"item_type\": \"folder\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items:move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items:move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-8bf038b1-e4e6-43a4-9cc0-95581d6e4897"
+                    },
+                    {
+                      "id": "7b363f4d-860d-4846-9a08-70b950baae5b",
+                      "name": "Not found - the requested resource does not exist",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"item_id\": \"<string>\",\n  \"item_type\": \"folder\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items:move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items:move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-7b363f4d-860d-4846-9a08-70b950baae5b"
+                    },
+                    {
+                      "id": "00e57126-d6a9-482e-a061-1dde4915caa9",
+                      "name": "Too many requests - rate limit exceeded",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"item_id\": \"<string>\",\n  \"item_type\": \"folder\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folderId/items:move",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folderId",
+                            "items:move"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folderId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:04.000Z",
+                      "updatedAt": "2026-07-28T01:17:04.000Z",
+                      "uid": "35240-00e57126-d6a9-482e-a061-1dde4915caa9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:17:04.000Z",
+                  "updatedAt": "2026-07-28T01:17:04.000Z",
+                  "uid": "35240-1c5f40b0-09a0-4c7a-b5ff-4abfb4eeb8cb"
+                }
+              ],
+              "id": "c3bbd8a6-fd8c-4522-a9a7-c354104b82ea",
+              "createdAt": "2026-07-28T01:17:04.000Z",
+              "updatedAt": "2026-07-28T01:17:04.000Z",
+              "uid": "35240-c3bbd8a6-fd8c-4522-a9a7-c354104b82ea"
+            },
+            {
+              "name": "Canva Get a Folder",
+              "id": "d0e35cc5-4a61-4fdf-ae66-c7bfe48b6773",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folders/:folderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folders",
+                    ":folderId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "1656d496-8b96-4908-a676-b4a8ed284019",
+                      "key": "folderId",
+                      "value": "<string>",
+                      "description": "(Required) The folder ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves metadata for a specific folder, including name, timestamps, and thumbnail."
+              },
+              "response": [
+                {
+                  "id": "9ecc318c-6df2-4a0d-9122-5c848300550b",
+                  "name": "The folder metadata",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folderId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folderId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folderId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"folder\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"created_at\": \"<integer>\",\n    \"updated_at\": \"<integer>\",\n    \"thumbnail\": {\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"url\": \"<uri>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:04.000Z",
+                  "updatedAt": "2026-07-28T01:17:04.000Z",
+                  "uid": "35240-9ecc318c-6df2-4a0d-9122-5c848300550b"
+                },
+                {
+                  "id": "787f7736-2c87-4a39-a821-a72275138f5b",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folderId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folderId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folderId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:04.000Z",
+                  "updatedAt": "2026-07-28T01:17:04.000Z",
+                  "uid": "35240-787f7736-2c87-4a39-a821-a72275138f5b"
+                },
+                {
+                  "id": "7ce6bc8e-8fbf-416a-97fc-a53ed8b030e0",
+                  "name": "Forbidden - insufficient permissions or scopes",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folderId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folderId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folderId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:04.000Z",
+                  "updatedAt": "2026-07-28T01:17:04.000Z",
+                  "uid": "35240-7ce6bc8e-8fbf-416a-97fc-a53ed8b030e0"
+                },
+                {
+                  "id": "c8f84eb3-5c19-4e36-8bee-068e69c51b0c",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folderId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folderId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folderId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:04.000Z",
+                  "updatedAt": "2026-07-28T01:17:04.000Z",
+                  "uid": "35240-c8f84eb3-5c19-4e36-8bee-068e69c51b0c"
+                },
+                {
+                  "id": "4878116a-611e-4819-a7f5-61ea3008d165",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folderId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folderId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folderId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:04.000Z",
+                  "updatedAt": "2026-07-28T01:17:04.000Z",
+                  "uid": "35240-4878116a-611e-4819-a7f5-61ea3008d165"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:04.000Z",
+              "updatedAt": "2026-07-28T01:17:04.000Z",
+              "uid": "35240-d0e35cc5-4a61-4fdf-ae66-c7bfe48b6773"
+            }
+          ],
+          "id": "ccc3609b-6215-4e0e-a012-224c64498610",
+          "createdAt": "2026-07-28T01:17:04.000Z",
+          "updatedAt": "2026-07-28T01:17:04.000Z",
+          "uid": "35240-ccc3609b-6215-4e0e-a012-224c64498610"
+        }
+      ],
+      "id": "eab23c99-62bc-4f50-aed2-9b2743316b7b",
+      "createdAt": "2026-07-28T01:17:04.000Z",
+      "updatedAt": "2026-07-28T01:17:04.000Z",
+      "uid": "35240-eab23c99-62bc-4f50-aed2-9b2743316b7b"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

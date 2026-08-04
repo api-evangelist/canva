@@ -1,0 +1,1146 @@
+{
+  "info": {
+    "_postman_id": "40d31112-474e-4d22-b37d-5acdd0321df7",
+    "name": "Canva Connect Assets Designs API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:01.000Z",
+    "updatedAt": "2026-07-28T01:17:01.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-40d31112-474e-4d22-b37d-5acdd0321df7"
+  },
+  "item": [
+    {
+      "name": "designs",
+      "item": [
+        {
+          "name": "{designId}",
+          "item": [
+            {
+              "name": "Canva Get a Design",
+              "id": "d30af22e-b38e-4e46-ab70-4c0c9c76e02f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/designs/:designId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs",
+                    ":designId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "9c1b358a-20f8-4257-a8db-9a56ac9a4d42",
+                      "key": "designId",
+                      "value": "<string>",
+                      "description": "(Required) The design ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves metadata for a specific design, including title, owner, URLs, timestamps, thumbnail, and page count."
+              },
+              "response": [
+                {
+                  "id": "6178d32c-27a4-4626-a12e-ca9488d53d25",
+                  "name": "The design metadata",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/designs/:designId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "designs",
+                        ":designId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "designId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"design\": {\n    \"id\": \"<string>\",\n    \"title\": \"<string>\",\n    \"owner\": {\n      \"user_id\": \"<string>\",\n      \"team_id\": \"<string>\"\n    },\n    \"urls\": {\n      \"edit_url\": \"<uri>\",\n      \"view_url\": \"<uri>\"\n    },\n    \"created_at\": \"<integer>\",\n    \"updated_at\": \"<integer>\",\n    \"thumbnail\": {\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"url\": \"<uri>\"\n    },\n    \"page_count\": \"<integer>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:02.000Z",
+                  "updatedAt": "2026-07-28T01:17:02.000Z",
+                  "uid": "35240-6178d32c-27a4-4626-a12e-ca9488d53d25"
+                },
+                {
+                  "id": "82878996-0d47-4222-a096-131e9ad77e6e",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/designs/:designId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "designs",
+                        ":designId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "designId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:02.000Z",
+                  "updatedAt": "2026-07-28T01:17:02.000Z",
+                  "uid": "35240-82878996-0d47-4222-a096-131e9ad77e6e"
+                },
+                {
+                  "id": "2761f815-ce1e-4333-bab0-f034d8fa5786",
+                  "name": "Forbidden - insufficient permissions or scopes",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/designs/:designId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "designs",
+                        ":designId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "designId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:02.000Z",
+                  "updatedAt": "2026-07-28T01:17:02.000Z",
+                  "uid": "35240-2761f815-ce1e-4333-bab0-f034d8fa5786"
+                },
+                {
+                  "id": "b3c5755f-80a7-465e-885a-14bcc35a9092",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/designs/:designId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "designs",
+                        ":designId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "designId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:02.000Z",
+                  "updatedAt": "2026-07-28T01:17:02.000Z",
+                  "uid": "35240-b3c5755f-80a7-465e-885a-14bcc35a9092"
+                },
+                {
+                  "id": "0e6d0c2a-8409-42f3-a15f-0c3913ace727",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/designs/:designId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "designs",
+                        ":designId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "designId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:02.000Z",
+                  "updatedAt": "2026-07-28T01:17:02.000Z",
+                  "uid": "35240-0e6d0c2a-8409-42f3-a15f-0c3913ace727"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-d30af22e-b38e-4e46-ab70-4c0c9c76e02f"
+            }
+          ],
+          "id": "160260c9-41c2-484e-993e-86faec2ba590",
+          "createdAt": "2026-07-28T01:17:02.000Z",
+          "updatedAt": "2026-07-28T01:17:02.000Z",
+          "uid": "35240-160260c9-41c2-484e-993e-86faec2ba590"
+        },
+        {
+          "name": "Canva List Designs",
+          "id": "1ae1a0da-226c-4d5c-b143-7bbc7a07000e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/designs?query=<string>&ownership=any&sort_by=relevance&limit=25&continuation=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "designs"
+              ],
+              "query": [
+                {
+                  "description": "Search term to filter designs (max 255 characters)",
+                  "key": "query",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter designs by ownership status",
+                  "key": "ownership",
+                  "value": "any"
+                },
+                {
+                  "description": "Sort order for results",
+                  "key": "sort_by",
+                  "value": "relevance"
+                },
+                {
+                  "description": "Number of results per page",
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "description": "Continuation token for paginated results",
+                  "key": "continuation",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Lists designs accessible to the authenticated user. Supports searching by query, filtering by ownership, sorting, and pagination using continuation tokens."
+          },
+          "response": [
+            {
+              "id": "a60a74d6-ddfe-43a7-9367-3776369bc9c1",
+              "name": "A paginated list of designs",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/designs?query=<string>&ownership=any&sort_by=relevance&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter designs (max 255 characters)",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter designs by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"owner\": {\n        \"user_id\": \"<string>\",\n        \"team_id\": \"<string>\"\n      },\n      \"urls\": {\n        \"edit_url\": \"<uri>\",\n        \"view_url\": \"<uri>\"\n      },\n      \"created_at\": \"<integer>\",\n      \"updated_at\": \"<integer>\",\n      \"thumbnail\": {\n        \"width\": \"<integer>\",\n        \"height\": \"<integer>\",\n        \"url\": \"<uri>\"\n      },\n      \"page_count\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"owner\": {\n        \"user_id\": \"<string>\",\n        \"team_id\": \"<string>\"\n      },\n      \"urls\": {\n        \"edit_url\": \"<uri>\",\n        \"view_url\": \"<uri>\"\n      },\n      \"created_at\": \"<integer>\",\n      \"updated_at\": \"<integer>\",\n      \"thumbnail\": {\n        \"width\": \"<integer>\",\n        \"height\": \"<integer>\",\n        \"url\": \"<uri>\"\n      },\n      \"page_count\": \"<integer>\"\n    }\n  ],\n  \"continuation\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-a60a74d6-ddfe-43a7-9367-3776369bc9c1"
+            },
+            {
+              "id": "c9a7d646-b825-42e8-b493-2c2739e6e4fa",
+              "name": "Bad request - invalid parameters or request body",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/designs?query=<string>&ownership=any&sort_by=relevance&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter designs (max 255 characters)",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter designs by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-c9a7d646-b825-42e8-b493-2c2739e6e4fa"
+            },
+            {
+              "id": "20e762c6-a75b-48fc-a17c-ba9b5bf3c184",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/designs?query=<string>&ownership=any&sort_by=relevance&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter designs (max 255 characters)",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter designs by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-20e762c6-a75b-48fc-a17c-ba9b5bf3c184"
+            },
+            {
+              "id": "a5bcc01a-b7f3-4486-847f-b012ee255207",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/designs?query=<string>&ownership=any&sort_by=relevance&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter designs (max 255 characters)",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter designs by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-a5bcc01a-b7f3-4486-847f-b012ee255207"
+            },
+            {
+              "id": "c23d31e8-6a5d-4aa7-ae97-b6604a24fa56",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/designs?query=<string>&ownership=any&sort_by=relevance&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter designs (max 255 characters)",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter designs by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-c23d31e8-6a5d-4aa7-ae97-b6604a24fa56"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:02.000Z",
+          "updatedAt": "2026-07-28T01:17:02.000Z",
+          "uid": "35240-1ae1a0da-226c-4d5c-b143-7bbc7a07000e"
+        },
+        {
+          "name": "Canva Create a Design",
+          "id": "9c077df2-e657-4964-a34a-67c052b7fd7d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"whiteboard\"\n  },\n  \"asset_id\": \"<string>\",\n  \"title\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/designs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "designs"
+              ]
+            },
+            "description": "Creates a new design in Canva. The design can use a preset type (doc, whiteboard, or presentation) or custom dimensions. An optional asset can be inserted and a title can be specified."
+          },
+          "response": [
+            {
+              "id": "83b373fa-bb07-419e-85cb-e4c9b8fca9d9",
+              "name": "The created design",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"whiteboard\"\n  },\n  \"asset_id\": \"<string>\",\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/designs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"design\": {\n    \"id\": \"<string>\",\n    \"title\": \"<string>\",\n    \"owner\": {\n      \"user_id\": \"<string>\",\n      \"team_id\": \"<string>\"\n    },\n    \"urls\": {\n      \"edit_url\": \"<uri>\",\n      \"view_url\": \"<uri>\"\n    },\n    \"created_at\": \"<integer>\",\n    \"updated_at\": \"<integer>\",\n    \"thumbnail\": {\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"url\": \"<uri>\"\n    },\n    \"page_count\": \"<integer>\"\n  }\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-83b373fa-bb07-419e-85cb-e4c9b8fca9d9"
+            },
+            {
+              "id": "4ea100b1-666d-4b70-a18a-deadb73fd4ed",
+              "name": "Bad request - invalid parameters or request body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"whiteboard\"\n  },\n  \"asset_id\": \"<string>\",\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/designs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-4ea100b1-666d-4b70-a18a-deadb73fd4ed"
+            },
+            {
+              "id": "86d34e44-4a0c-4887-a7f3-c493a3b5dc28",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"whiteboard\"\n  },\n  \"asset_id\": \"<string>\",\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/designs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-86d34e44-4a0c-4887-a7f3-c493a3b5dc28"
+            },
+            {
+              "id": "6095747e-6987-422f-8175-d832c3681b0b",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"whiteboard\"\n  },\n  \"asset_id\": \"<string>\",\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/designs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-6095747e-6987-422f-8175-d832c3681b0b"
+            },
+            {
+              "id": "96bd227f-5f78-4f82-b5a5-3c8ab4851dbd",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_type\": {\n    \"type\": \"preset\",\n    \"name\": \"whiteboard\"\n  },\n  \"asset_id\": \"<string>\",\n  \"title\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/designs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "designs"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:02.000Z",
+              "updatedAt": "2026-07-28T01:17:02.000Z",
+              "uid": "35240-96bd227f-5f78-4f82-b5a5-3c8ab4851dbd"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:02.000Z",
+          "updatedAt": "2026-07-28T01:17:02.000Z",
+          "uid": "35240-9c077df2-e657-4964-a34a-67c052b7fd7d"
+        }
+      ],
+      "id": "dc5e405a-fd65-46de-85e1-dbe0c2e5fab9",
+      "createdAt": "2026-07-28T01:17:02.000Z",
+      "updatedAt": "2026-07-28T01:17:02.000Z",
+      "uid": "35240-dc5e405a-fd65-46de-85e1-dbe0c2e5fab9"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

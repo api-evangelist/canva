@@ -1,0 +1,1283 @@
+{
+  "info": {
+    "_postman_id": "7c6ab17b-e082-4e44-aa5e-c164ed8e1cca",
+    "name": "Canva Connect Assets API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:57.000Z",
+    "updatedAt": "2026-07-28T01:16:57.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-7c6ab17b-e082-4e44-aa5e-c164ed8e1cca"
+  },
+  "item": [
+    {
+      "name": "assets",
+      "item": [
+        {
+          "name": "{assetId}",
+          "item": [
+            {
+              "name": "Canva Get an Asset",
+              "id": "0374ce4d-152f-4b22-a7f6-555008c9364d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/assets/:assetId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "assets",
+                    ":assetId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "a3a88c63-7a5b-49ae-ba44-c146bf2aee2a",
+                      "key": "assetId",
+                      "value": "<string>",
+                      "description": "(Required) The asset ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves metadata for a specific asset, including type, name, tags, owner, timestamps, thumbnail, and import status."
+              },
+              "response": [
+                {
+                  "id": "6db367be-b9a0-4a57-a0a9-ccf7c1bdf832",
+                  "name": "The asset metadata",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"asset\": {\n    \"id\": \"<string>\",\n    \"type\": \"image\",\n    \"name\": \"<string>\",\n    \"created_at\": \"<integer>\",\n    \"updated_at\": \"<integer>\",\n    \"owner\": {\n      \"user_id\": \"<string>\",\n      \"team_id\": \"<string>\"\n    },\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"thumbnail\": {\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"url\": \"<uri>\"\n    },\n    \"import_status\": {\n      \"state\": \"in_progress\",\n      \"error\": {\n        \"message\": \"<string>\",\n        \"code\": \"file_too_big\"\n      }\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-6db367be-b9a0-4a57-a0a9-ccf7c1bdf832"
+                },
+                {
+                  "id": "fbd99f26-736e-4f55-8181-6fc513f8fc84",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-fbd99f26-736e-4f55-8181-6fc513f8fc84"
+                },
+                {
+                  "id": "54b554b1-2770-4956-8ded-6c8669572108",
+                  "name": "Forbidden - insufficient permissions or scopes",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-54b554b1-2770-4956-8ded-6c8669572108"
+                },
+                {
+                  "id": "7e9bb378-a959-45bf-a3b2-0e65eb28988d",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-7e9bb378-a959-45bf-a3b2-0e65eb28988d"
+                },
+                {
+                  "id": "1b94e397-5adb-431f-8555-a10214b2b08b",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-1b94e397-5adb-431f-8555-a10214b2b08b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-0374ce4d-152f-4b22-a7f6-555008c9364d"
+            },
+            {
+              "name": "Canva Delete an Asset",
+              "id": "1bea892f-50bb-449c-879b-51a86b4f7d90",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/assets/:assetId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "assets",
+                    ":assetId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "2ac1e4db-3454-40d6-b3c8-629a3dcc7ff7",
+                      "key": "assetId",
+                      "value": "<string>",
+                      "description": "(Required) The asset ID"
+                    }
+                  ]
+                },
+                "description": "Deletes an asset from the authenticated user's account."
+              },
+              "response": [
+                {
+                  "id": "14b0f55f-bd9b-4e97-9f02-86ac2d89edea",
+                  "name": "Asset deleted successfully",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-14b0f55f-bd9b-4e97-9f02-86ac2d89edea"
+                },
+                {
+                  "id": "269f957d-27f1-4842-94c8-0c0ece7e2e7b",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-269f957d-27f1-4842-94c8-0c0ece7e2e7b"
+                },
+                {
+                  "id": "6e7126c3-133f-4210-b6b8-68cfcfe1683e",
+                  "name": "Forbidden - insufficient permissions or scopes",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-6e7126c3-133f-4210-b6b8-68cfcfe1683e"
+                },
+                {
+                  "id": "c817fe49-8187-4ea5-b78a-15bd415f79b0",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-c817fe49-8187-4ea5-b78a-15bd415f79b0"
+                },
+                {
+                  "id": "508ca933-2844-4b02-bacd-d606647d59bf",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/assets/:assetId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "assets",
+                        ":assetId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "assetId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-508ca933-2844-4b02-bacd-d606647d59bf"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-1bea892f-50bb-449c-879b-51a86b4f7d90"
+            }
+          ],
+          "id": "781adacf-d70f-4227-b0b6-0bbd56c0fea0",
+          "createdAt": "2026-07-28T01:16:58.000Z",
+          "updatedAt": "2026-07-28T01:16:58.000Z",
+          "uid": "35240-781adacf-d70f-4227-b0b6-0bbd56c0fea0"
+        }
+      ],
+      "id": "50443d7d-b4d0-434a-9928-4f1d509d7a73",
+      "createdAt": "2026-07-28T01:16:58.000Z",
+      "updatedAt": "2026-07-28T01:16:58.000Z",
+      "uid": "35240-50443d7d-b4d0-434a-9928-4f1d509d7a73"
+    },
+    {
+      "name": "asset-uploads",
+      "item": [
+        {
+          "name": "{jobId}",
+          "item": [
+            {
+              "name": "Canva Get Asset Upload Job",
+              "id": "25a3dedd-6cb2-47da-a446-e5dabf38b643",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/asset-uploads/:jobId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "asset-uploads",
+                    ":jobId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "a1282b6b-acba-489c-8f7e-fb6048f3c5f0",
+                      "key": "jobId",
+                      "value": "<string>",
+                      "description": "(Required) The job ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves the status of an asset upload job. When complete, includes the uploaded asset metadata."
+              },
+              "response": [
+                {
+                  "id": "63916a9c-04e9-4cb5-bfc4-da23c57c6040",
+                  "name": "The asset upload job status",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/asset-uploads/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "asset-uploads",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"in_progress\",\n    \"asset\": {\n      \"id\": \"<string>\",\n      \"type\": \"image\",\n      \"name\": \"<string>\",\n      \"created_at\": \"<integer>\",\n      \"updated_at\": \"<integer>\",\n      \"owner\": {\n        \"user_id\": \"<string>\",\n        \"team_id\": \"<string>\"\n      },\n      \"tags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"thumbnail\": {\n        \"width\": \"<integer>\",\n        \"height\": \"<integer>\",\n        \"url\": \"<uri>\"\n      },\n      \"import_status\": {\n        \"state\": \"success\",\n        \"error\": {\n          \"message\": \"<string>\",\n          \"code\": \"file_too_big\"\n        }\n      }\n    },\n    \"error\": {\n      \"code\": \"file_too_big\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-63916a9c-04e9-4cb5-bfc4-da23c57c6040"
+                },
+                {
+                  "id": "7f72b79f-2f43-4941-b6a9-320ef947d914",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/asset-uploads/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "asset-uploads",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-7f72b79f-2f43-4941-b6a9-320ef947d914"
+                },
+                {
+                  "id": "dec9c1d8-1ceb-486b-9dff-b665689b3182",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/asset-uploads/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "asset-uploads",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-dec9c1d8-1ceb-486b-9dff-b665689b3182"
+                },
+                {
+                  "id": "3fddff47-1b77-4495-a0ea-3c5ca4863ec7",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/asset-uploads/:jobId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "asset-uploads",
+                        ":jobId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jobId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:58.000Z",
+                  "updatedAt": "2026-07-28T01:16:58.000Z",
+                  "uid": "35240-3fddff47-1b77-4495-a0ea-3c5ca4863ec7"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-25a3dedd-6cb2-47da-a446-e5dabf38b643"
+            }
+          ],
+          "id": "2bc291b9-5657-46e3-a985-17e6a59b9a88",
+          "createdAt": "2026-07-28T01:16:58.000Z",
+          "updatedAt": "2026-07-28T01:16:58.000Z",
+          "uid": "35240-2bc291b9-5657-46e3-a985-17e6a59b9a88"
+        },
+        {
+          "name": "Canva Upload an Asset",
+          "id": "904a7ef8-2a35-4303-9bd8-3604b68cbc2f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "description": "(Required) JSON object containing name_base64, the Base64-encoded asset name (1-50 characters before encoding)",
+                "key": "Asset-Upload-Metadata",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/octet-stream"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<binary>"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/asset-uploads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "asset-uploads"
+              ]
+            },
+            "description": "Uploads an image or video asset to the authenticated user's Canva account. The asset name is provided as a Base64-encoded string in the Asset-Upload-Metadata header. The request body contains the raw binary file content."
+          },
+          "response": [
+            {
+              "id": "386c5a72-8f33-4c8c-9547-adbd730cd055",
+              "name": "The asset upload job",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) JSON object containing name_base64, the Base64-encoded asset name (1-50 characters before encoding)",
+                    "key": "Asset-Upload-Metadata",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/octet-stream"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/asset-uploads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "asset-uploads"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"in_progress\",\n    \"asset\": {\n      \"id\": \"<string>\",\n      \"type\": \"image\",\n      \"name\": \"<string>\",\n      \"created_at\": \"<integer>\",\n      \"updated_at\": \"<integer>\",\n      \"owner\": {\n        \"user_id\": \"<string>\",\n        \"team_id\": \"<string>\"\n      },\n      \"tags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"thumbnail\": {\n        \"width\": \"<integer>\",\n        \"height\": \"<integer>\",\n        \"url\": \"<uri>\"\n      },\n      \"import_status\": {\n        \"state\": \"success\",\n        \"error\": {\n          \"message\": \"<string>\",\n          \"code\": \"file_too_big\"\n        }\n      }\n    },\n    \"error\": {\n      \"code\": \"file_too_big\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-386c5a72-8f33-4c8c-9547-adbd730cd055"
+            },
+            {
+              "id": "0e34dcb9-b28b-4538-af19-9312eb48b684",
+              "name": "Bad request - invalid parameters or request body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) JSON object containing name_base64, the Base64-encoded asset name (1-50 characters before encoding)",
+                    "key": "Asset-Upload-Metadata",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/octet-stream"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/asset-uploads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "asset-uploads"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-0e34dcb9-b28b-4538-af19-9312eb48b684"
+            },
+            {
+              "id": "8839c1e9-3b16-4844-89ca-92721ca60bdd",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) JSON object containing name_base64, the Base64-encoded asset name (1-50 characters before encoding)",
+                    "key": "Asset-Upload-Metadata",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/octet-stream"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/asset-uploads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "asset-uploads"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-8839c1e9-3b16-4844-89ca-92721ca60bdd"
+            },
+            {
+              "id": "7d8a2a7f-8a49-4bfb-b960-13f512d6228b",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) JSON object containing name_base64, the Base64-encoded asset name (1-50 characters before encoding)",
+                    "key": "Asset-Upload-Metadata",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/octet-stream"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/asset-uploads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "asset-uploads"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-7d8a2a7f-8a49-4bfb-b960-13f512d6228b"
+            },
+            {
+              "id": "9167bdcf-a79b-40bd-bfbe-2db616990189",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) JSON object containing name_base64, the Base64-encoded asset name (1-50 characters before encoding)",
+                    "key": "Asset-Upload-Metadata",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/octet-stream"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "<binary>"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/asset-uploads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "asset-uploads"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:58.000Z",
+              "updatedAt": "2026-07-28T01:16:58.000Z",
+              "uid": "35240-9167bdcf-a79b-40bd-bfbe-2db616990189"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:58.000Z",
+          "updatedAt": "2026-07-28T01:16:58.000Z",
+          "uid": "35240-904a7ef8-2a35-4303-9bd8-3604b68cbc2f"
+        }
+      ],
+      "id": "d9b28734-d9e4-4627-b6c5-4fedb500b023",
+      "createdAt": "2026-07-28T01:16:58.000Z",
+      "updatedAt": "2026-07-28T01:16:58.000Z",
+      "uid": "35240-d9b28734-d9e4-4627-b6c5-4fedb500b023"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

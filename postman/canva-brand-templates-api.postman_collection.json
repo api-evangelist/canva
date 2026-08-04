@@ -1,0 +1,1072 @@
+{
+  "info": {
+    "_postman_id": "5999971a-f723-4789-b406-4994e9455650",
+    "name": "Canva Connect Assets Brand Templates API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:59.000Z",
+    "updatedAt": "2026-07-28T01:16:59.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5999971a-f723-4789-b406-4994e9455650"
+  },
+  "item": [
+    {
+      "name": "brand-templates",
+      "item": [
+        {
+          "name": "{brandTemplateId}",
+          "item": [
+            {
+              "name": "dataset",
+              "item": [
+                {
+                  "name": "Canva Get a Brand Template Dataset",
+                  "id": "3421cbdf-c61f-419a-b6a2-86be48dc13d2",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.canva.com/rest/v1/oauth/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://www.canva.com/api/oauth/authorize",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/brand-templates/:brandTemplateId/dataset",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "brand-templates",
+                        ":brandTemplateId",
+                        "dataset"
+                      ],
+                      "variable": [
+                        {
+                          "id": "b726b974-cf30-426c-8c95-510894c28964",
+                          "key": "brandTemplateId",
+                          "value": "<string>",
+                          "description": "(Required) The brand template ID"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the autofill dataset for a brand template, listing the available data fields and their types (image, text, or chart). Requires Canva Enterprise membership."
+                  },
+                  "response": [
+                    {
+                      "id": "5bb74d60-1eaa-40a6-81d2-1f53670162d8",
+                      "name": "The brand template dataset",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/brand-templates/:brandTemplateId/dataset",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "brand-templates",
+                            ":brandTemplateId",
+                            "dataset"
+                          ],
+                          "variable": [
+                            {
+                              "key": "brandTemplateId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"dataset\": {\n    \"do_b6\": {\n      \"type\": \"chart\"\n    },\n    \"deserunt12e\": {\n      \"type\": \"image\"\n    },\n    \"reprehenderit_a8c\": {\n      \"type\": \"chart\"\n    }\n  }\n}",
+                      "createdAt": "2026-07-28T01:17:00.000Z",
+                      "updatedAt": "2026-07-28T01:17:00.000Z",
+                      "uid": "35240-5bb74d60-1eaa-40a6-81d2-1f53670162d8"
+                    },
+                    {
+                      "id": "5ebe139f-e991-445f-aaca-b6709c9ee032",
+                      "name": "Unauthorized - missing or invalid authentication",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/brand-templates/:brandTemplateId/dataset",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "brand-templates",
+                            ":brandTemplateId",
+                            "dataset"
+                          ],
+                          "variable": [
+                            {
+                              "key": "brandTemplateId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:00.000Z",
+                      "updatedAt": "2026-07-28T01:17:00.000Z",
+                      "uid": "35240-5ebe139f-e991-445f-aaca-b6709c9ee032"
+                    },
+                    {
+                      "id": "9ed0a321-0371-48f1-9694-2d335f64b930",
+                      "name": "Forbidden - insufficient permissions or scopes",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/brand-templates/:brandTemplateId/dataset",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "brand-templates",
+                            ":brandTemplateId",
+                            "dataset"
+                          ],
+                          "variable": [
+                            {
+                              "key": "brandTemplateId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:00.000Z",
+                      "updatedAt": "2026-07-28T01:17:00.000Z",
+                      "uid": "35240-9ed0a321-0371-48f1-9694-2d335f64b930"
+                    },
+                    {
+                      "id": "a32bd85e-ccec-4578-b719-5dfab8e6f43a",
+                      "name": "Not found - the requested resource does not exist",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/brand-templates/:brandTemplateId/dataset",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "brand-templates",
+                            ":brandTemplateId",
+                            "dataset"
+                          ],
+                          "variable": [
+                            {
+                              "key": "brandTemplateId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:00.000Z",
+                      "updatedAt": "2026-07-28T01:17:00.000Z",
+                      "uid": "35240-a32bd85e-ccec-4578-b719-5dfab8e6f43a"
+                    },
+                    {
+                      "id": "a8b0712d-3950-4d4c-8f23-9cfd6e05459a",
+                      "name": "Too many requests - rate limit exceeded",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/brand-templates/:brandTemplateId/dataset",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "brand-templates",
+                            ":brandTemplateId",
+                            "dataset"
+                          ],
+                          "variable": [
+                            {
+                              "key": "brandTemplateId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:00.000Z",
+                      "updatedAt": "2026-07-28T01:17:00.000Z",
+                      "uid": "35240-a8b0712d-3950-4d4c-8f23-9cfd6e05459a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:17:00.000Z",
+                  "updatedAt": "2026-07-28T01:17:00.000Z",
+                  "uid": "35240-3421cbdf-c61f-419a-b6a2-86be48dc13d2"
+                }
+              ],
+              "id": "d3009717-d8c3-4d70-80cb-3a254f07388a",
+              "createdAt": "2026-07-28T01:17:00.000Z",
+              "updatedAt": "2026-07-28T01:17:00.000Z",
+              "uid": "35240-d3009717-d8c3-4d70-80cb-3a254f07388a"
+            },
+            {
+              "name": "Canva Get a Brand Template",
+              "id": "d056a359-357f-4468-b83d-0be82d886618",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/brand-templates/:brandTemplateId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "brand-templates",
+                    ":brandTemplateId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "a542c65a-3094-4faa-ae41-c521a227ef1e",
+                      "key": "brandTemplateId",
+                      "value": "<string>",
+                      "description": "(Required) The brand template ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves metadata for a specific brand template. Requires Canva Enterprise membership."
+              },
+              "response": [
+                {
+                  "id": "6e94414c-cf4b-4038-9514-a0f38d596fe4",
+                  "name": "The brand template metadata",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/brand-templates/:brandTemplateId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "brand-templates",
+                        ":brandTemplateId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "brandTemplateId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"brand_template\": {\n    \"id\": \"<string>\",\n    \"title\": \"<string>\",\n    \"created_at\": \"<integer>\",\n    \"updated_at\": \"<integer>\",\n    \"view_url\": \"<uri>\",\n    \"create_url\": \"<uri>\",\n    \"thumbnail\": {\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"url\": \"<uri>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:00.000Z",
+                  "updatedAt": "2026-07-28T01:17:00.000Z",
+                  "uid": "35240-6e94414c-cf4b-4038-9514-a0f38d596fe4"
+                },
+                {
+                  "id": "de63913c-baed-4758-bdea-d4fadc220acb",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/brand-templates/:brandTemplateId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "brand-templates",
+                        ":brandTemplateId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "brandTemplateId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:00.000Z",
+                  "updatedAt": "2026-07-28T01:17:00.000Z",
+                  "uid": "35240-de63913c-baed-4758-bdea-d4fadc220acb"
+                },
+                {
+                  "id": "560bdd4c-ba36-4c02-a699-ea375a47dc5a",
+                  "name": "Forbidden - insufficient permissions or scopes",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/brand-templates/:brandTemplateId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "brand-templates",
+                        ":brandTemplateId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "brandTemplateId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:00.000Z",
+                  "updatedAt": "2026-07-28T01:17:00.000Z",
+                  "uid": "35240-560bdd4c-ba36-4c02-a699-ea375a47dc5a"
+                },
+                {
+                  "id": "962c1ed2-751d-46f4-b9ae-b33835709d41",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/brand-templates/:brandTemplateId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "brand-templates",
+                        ":brandTemplateId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "brandTemplateId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:00.000Z",
+                  "updatedAt": "2026-07-28T01:17:00.000Z",
+                  "uid": "35240-962c1ed2-751d-46f4-b9ae-b33835709d41"
+                },
+                {
+                  "id": "0758b0ae-12c1-4057-b005-cfd3325a64a6",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/brand-templates/:brandTemplateId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "brand-templates",
+                        ":brandTemplateId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "brandTemplateId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:00.000Z",
+                  "updatedAt": "2026-07-28T01:17:00.000Z",
+                  "uid": "35240-0758b0ae-12c1-4057-b005-cfd3325a64a6"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:00.000Z",
+              "updatedAt": "2026-07-28T01:17:00.000Z",
+              "uid": "35240-d056a359-357f-4468-b83d-0be82d886618"
+            }
+          ],
+          "id": "713cd7b0-58fe-469b-89e5-c8b709ce90ee",
+          "createdAt": "2026-07-28T01:17:00.000Z",
+          "updatedAt": "2026-07-28T01:17:00.000Z",
+          "uid": "35240-713cd7b0-58fe-469b-89e5-c8b709ce90ee"
+        },
+        {
+          "name": "Canva List Brand Templates",
+          "id": "7178b0f8-1b82-4bf9-b17c-8978bc4863bf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/brand-templates?query=<string>&ownership=any&sort_by=relevance&dataset=any&limit=25&continuation=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brand-templates"
+              ],
+              "query": [
+                {
+                  "description": "Search term to filter brand templates",
+                  "key": "query",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter by ownership status",
+                  "key": "ownership",
+                  "value": "any"
+                },
+                {
+                  "description": "Sort order for results",
+                  "key": "sort_by",
+                  "value": "relevance"
+                },
+                {
+                  "description": "Filter by dataset availability",
+                  "key": "dataset",
+                  "value": "any"
+                },
+                {
+                  "description": "Number of results per page",
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "description": "Continuation token for paginated results",
+                  "key": "continuation",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Lists brand templates available to the authenticated user. Supports searching, filtering by ownership and dataset availability, sorting, and pagination. Requires Canva Enterprise membership."
+          },
+          "response": [
+            {
+              "id": "9ed0c06b-d9ad-4944-bca8-47a075d458d2",
+              "name": "A paginated list of brand templates",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/brand-templates?query=<string>&ownership=any&sort_by=relevance&dataset=any&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "brand-templates"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter brand templates",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Filter by dataset availability",
+                      "key": "dataset",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"created_at\": \"<integer>\",\n      \"updated_at\": \"<integer>\",\n      \"view_url\": \"<uri>\",\n      \"create_url\": \"<uri>\",\n      \"thumbnail\": {\n        \"width\": \"<integer>\",\n        \"height\": \"<integer>\",\n        \"url\": \"<uri>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"created_at\": \"<integer>\",\n      \"updated_at\": \"<integer>\",\n      \"view_url\": \"<uri>\",\n      \"create_url\": \"<uri>\",\n      \"thumbnail\": {\n        \"width\": \"<integer>\",\n        \"height\": \"<integer>\",\n        \"url\": \"<uri>\"\n      }\n    }\n  ],\n  \"continuation\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:00.000Z",
+              "updatedAt": "2026-07-28T01:17:00.000Z",
+              "uid": "35240-9ed0c06b-d9ad-4944-bca8-47a075d458d2"
+            },
+            {
+              "id": "34abb957-ddc5-454e-bd1f-949bfc1bb66a",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/brand-templates?query=<string>&ownership=any&sort_by=relevance&dataset=any&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "brand-templates"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter brand templates",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Filter by dataset availability",
+                      "key": "dataset",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:00.000Z",
+              "updatedAt": "2026-07-28T01:17:00.000Z",
+              "uid": "35240-34abb957-ddc5-454e-bd1f-949bfc1bb66a"
+            },
+            {
+              "id": "341c77b2-5850-42e1-838b-874b28ba7ae5",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/brand-templates?query=<string>&ownership=any&sort_by=relevance&dataset=any&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "brand-templates"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter brand templates",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Filter by dataset availability",
+                      "key": "dataset",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:00.000Z",
+              "updatedAt": "2026-07-28T01:17:00.000Z",
+              "uid": "35240-341c77b2-5850-42e1-838b-874b28ba7ae5"
+            },
+            {
+              "id": "c0a046fd-e82c-431f-bd6c-2a010ea30a3d",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/brand-templates?query=<string>&ownership=any&sort_by=relevance&dataset=any&limit=25&continuation=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "brand-templates"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search term to filter brand templates",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by ownership status",
+                      "key": "ownership",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Sort order for results",
+                      "key": "sort_by",
+                      "value": "relevance"
+                    },
+                    {
+                      "description": "Filter by dataset availability",
+                      "key": "dataset",
+                      "value": "any"
+                    },
+                    {
+                      "description": "Number of results per page",
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "description": "Continuation token for paginated results",
+                      "key": "continuation",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:00.000Z",
+              "updatedAt": "2026-07-28T01:17:00.000Z",
+              "uid": "35240-c0a046fd-e82c-431f-bd6c-2a010ea30a3d"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:00.000Z",
+          "updatedAt": "2026-07-28T01:17:00.000Z",
+          "uid": "35240-7178b0f8-1b82-4bf9-b17c-8978bc4863bf"
+        }
+      ],
+      "id": "6ea19fee-d200-4cd6-a535-91d27b64a53d",
+      "createdAt": "2026-07-28T01:17:00.000Z",
+      "updatedAt": "2026-07-28T01:17:00.000Z",
+      "uid": "35240-6ea19fee-d200-4cd6-a535-91d27b64a53d"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

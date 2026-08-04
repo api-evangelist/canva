@@ -1,0 +1,224 @@
+{
+  "info": {
+    "_postman_id": "44d7b8a3-55d1-449b-8bb5-eb4f89ae3a7e",
+    "name": "Canva Connect Assets Users API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:09.000Z",
+    "updatedAt": "2026-07-28T01:17:09.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-44d7b8a3-55d1-449b-8bb5-eb4f89ae3a7e"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "me",
+          "item": [
+            {
+              "name": "Canva Get Current User",
+              "id": "21b9459e-b7d5-47f1-b7b4-6c170a8269b0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "me"
+                  ]
+                },
+                "description": "Retrieves the user ID and team ID for the currently authenticated user."
+              },
+              "response": [
+                {
+                  "id": "9bc12111-07c8-4b96-ac4c-999032a9c803",
+                  "name": "The current user details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/me",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "me"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"team_user\": {\n    \"user_id\": \"<string>\",\n    \"team_id\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:09.000Z",
+                  "updatedAt": "2026-07-28T01:17:09.000Z",
+                  "uid": "35240-9bc12111-07c8-4b96-ac4c-999032a9c803"
+                },
+                {
+                  "id": "41ed27db-af3f-424c-be01-e6d4ceaa1d97",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/me",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "me"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:09.000Z",
+                  "updatedAt": "2026-07-28T01:17:09.000Z",
+                  "uid": "35240-41ed27db-af3f-424c-be01-e6d4ceaa1d97"
+                },
+                {
+                  "id": "a83326ff-3b3b-47e3-a5dd-29ad02e20a5f",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/me",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "me"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:09.000Z",
+                  "updatedAt": "2026-07-28T01:17:09.000Z",
+                  "uid": "35240-a83326ff-3b3b-47e3-a5dd-29ad02e20a5f"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:09.000Z",
+              "updatedAt": "2026-07-28T01:17:09.000Z",
+              "uid": "35240-21b9459e-b7d5-47f1-b7b4-6c170a8269b0"
+            }
+          ],
+          "id": "0cd6c64c-41d9-4835-a090-46001d6d1a78",
+          "createdAt": "2026-07-28T01:17:09.000Z",
+          "updatedAt": "2026-07-28T01:17:09.000Z",
+          "uid": "35240-0cd6c64c-41d9-4835-a090-46001d6d1a78"
+        }
+      ],
+      "id": "fa172768-4be1-4cca-84a0-1aeb8e44243a",
+      "createdAt": "2026-07-28T01:17:09.000Z",
+      "updatedAt": "2026-07-28T01:17:09.000Z",
+      "uid": "35240-fa172768-4be1-4cca-84a0-1aeb8e44243a"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

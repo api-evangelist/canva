@@ -1,0 +1,936 @@
+{
+  "info": {
+    "_postman_id": "7cda9813-fab1-41ff-bdc5-fd86cbcf2b87",
+    "name": "Canva Connect Assets Comments API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:00.000Z",
+    "updatedAt": "2026-07-28T01:17:00.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-7cda9813-fab1-41ff-bdc5-fd86cbcf2b87"
+  },
+  "item": [
+    {
+      "name": "comments",
+      "item": [
+        {
+          "name": "{commentId}",
+          "item": [
+            {
+              "name": "replies",
+              "item": [
+                {
+                  "name": "Canva Create a Reply to a Comment",
+                  "id": "56935f35-e2d3-480a-aa71-e9894dd08e60",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.canva.com/rest/v1/oauth/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://www.canva.com/api/oauth/authorize",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/comments/:commentId/replies",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "comments",
+                        ":commentId",
+                        "replies"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f3dddc66-c454-4f33-a077-e5a404a42370",
+                          "key": "commentId",
+                          "value": "<string>",
+                          "description": "(Required) The parent comment ID"
+                        }
+                      ]
+                    },
+                    "description": "Creates a reply to an existing comment thread on a design."
+                  },
+                  "response": [
+                    {
+                      "id": "cfd8303b-b87f-488c-88a2-42cc477b21d0",
+                      "name": "The created reply",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/comments/:commentId/replies",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "comments",
+                            ":commentId",
+                            "replies"
+                          ],
+                          "variable": [
+                            {
+                              "key": "commentId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"comment\": {\n    \"type\": \"reply\",\n    \"id\": \"<string>\",\n    \"message\": \"<string>\",\n    \"author\": {\n      \"id\": \"<string>\",\n      \"display_name\": \"<string>\"\n    },\n    \"created_at\": \"<integer>\",\n    \"updated_at\": \"<integer>\",\n    \"mentions\": {\n      \"culpa82\": {\n        \"user_id\": \"<string>\",\n        \"team_id\": \"<string>\",\n        \"display_name\": \"<string>\"\n      }\n    },\n    \"attached_to\": {\n      \"type\": \"design\",\n      \"design_id\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-07-28T01:17:01.000Z",
+                      "updatedAt": "2026-07-28T01:17:01.000Z",
+                      "uid": "35240-cfd8303b-b87f-488c-88a2-42cc477b21d0"
+                    },
+                    {
+                      "id": "b9df87cc-9a34-4afd-8d23-26ade9e0f666",
+                      "name": "Bad request - invalid parameters or request body",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/comments/:commentId/replies",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "comments",
+                            ":commentId",
+                            "replies"
+                          ],
+                          "variable": [
+                            {
+                              "key": "commentId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:01.000Z",
+                      "updatedAt": "2026-07-28T01:17:01.000Z",
+                      "uid": "35240-b9df87cc-9a34-4afd-8d23-26ade9e0f666"
+                    },
+                    {
+                      "id": "3dfc69b0-7f9f-4cda-9790-a05973ca3ec3",
+                      "name": "Unauthorized - missing or invalid authentication",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/comments/:commentId/replies",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "comments",
+                            ":commentId",
+                            "replies"
+                          ],
+                          "variable": [
+                            {
+                              "key": "commentId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:01.000Z",
+                      "updatedAt": "2026-07-28T01:17:01.000Z",
+                      "uid": "35240-3dfc69b0-7f9f-4cda-9790-a05973ca3ec3"
+                    },
+                    {
+                      "id": "1fc7c2f8-2710-4a57-bcce-296f1ca4a223",
+                      "name": "Forbidden - insufficient permissions or scopes",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/comments/:commentId/replies",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "comments",
+                            ":commentId",
+                            "replies"
+                          ],
+                          "variable": [
+                            {
+                              "key": "commentId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:01.000Z",
+                      "updatedAt": "2026-07-28T01:17:01.000Z",
+                      "uid": "35240-1fc7c2f8-2710-4a57-bcce-296f1ca4a223"
+                    },
+                    {
+                      "id": "c1b3c6cb-7606-477c-af33-9ea9ef55eda2",
+                      "name": "Not found - the requested resource does not exist",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/comments/:commentId/replies",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "comments",
+                            ":commentId",
+                            "replies"
+                          ],
+                          "variable": [
+                            {
+                              "key": "commentId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:01.000Z",
+                      "updatedAt": "2026-07-28T01:17:01.000Z",
+                      "uid": "35240-c1b3c6cb-7606-477c-af33-9ea9ef55eda2"
+                    },
+                    {
+                      "id": "7cf4422c-48cd-45d5-9a04-b1728b76159f",
+                      "name": "Too many requests - rate limit exceeded",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/comments/:commentId/replies",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "comments",
+                            ":commentId",
+                            "replies"
+                          ],
+                          "variable": [
+                            {
+                              "key": "commentId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:01.000Z",
+                      "updatedAt": "2026-07-28T01:17:01.000Z",
+                      "uid": "35240-7cf4422c-48cd-45d5-9a04-b1728b76159f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:17:01.000Z",
+                  "updatedAt": "2026-07-28T01:17:01.000Z",
+                  "uid": "35240-56935f35-e2d3-480a-aa71-e9894dd08e60"
+                }
+              ],
+              "id": "915fe989-2d0c-4f97-835d-0bb4cdb8cc6f",
+              "createdAt": "2026-07-28T01:17:01.000Z",
+              "updatedAt": "2026-07-28T01:17:01.000Z",
+              "uid": "35240-915fe989-2d0c-4f97-835d-0bb4cdb8cc6f"
+            }
+          ],
+          "id": "19596bd5-de08-46a6-91a4-74f7e6cd1d3a",
+          "createdAt": "2026-07-28T01:17:01.000Z",
+          "updatedAt": "2026-07-28T01:17:01.000Z",
+          "uid": "35240-19596bd5-de08-46a6-91a4-74f7e6cd1d3a"
+        },
+        {
+          "name": "Canva Create a Comment",
+          "id": "450067c2-479c-4977-b00c-657d4c4ba042",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\",\n  \"assignee_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comments"
+              ]
+            },
+            "description": "Creates a new top-level comment on a design. Supports mentioning users using the [user_id:team_id] format in the message text."
+          },
+          "response": [
+            {
+              "id": "b5fb2052-84bc-45ae-a80c-87491428f69f",
+              "name": "The created comment",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\",\n  \"assignee_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"comment\": {\n    \"type\": \"reply\",\n    \"id\": \"<string>\",\n    \"message\": \"<string>\",\n    \"author\": {\n      \"id\": \"<string>\",\n      \"display_name\": \"<string>\"\n    },\n    \"created_at\": \"<integer>\",\n    \"updated_at\": \"<integer>\",\n    \"mentions\": {\n      \"culpa82\": {\n        \"user_id\": \"<string>\",\n        \"team_id\": \"<string>\",\n        \"display_name\": \"<string>\"\n      }\n    },\n    \"attached_to\": {\n      \"type\": \"design\",\n      \"design_id\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T01:17:01.000Z",
+              "updatedAt": "2026-07-28T01:17:01.000Z",
+              "uid": "35240-b5fb2052-84bc-45ae-a80c-87491428f69f"
+            },
+            {
+              "id": "fe77aade-a635-4fb5-a6f6-4dcb163830c7",
+              "name": "Bad request - invalid parameters or request body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\",\n  \"assignee_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:01.000Z",
+              "updatedAt": "2026-07-28T01:17:01.000Z",
+              "uid": "35240-fe77aade-a635-4fb5-a6f6-4dcb163830c7"
+            },
+            {
+              "id": "e38f6ba6-fd68-4899-ad0b-5690748c1392",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\",\n  \"assignee_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:01.000Z",
+              "updatedAt": "2026-07-28T01:17:01.000Z",
+              "uid": "35240-e38f6ba6-fd68-4899-ad0b-5690748c1392"
+            },
+            {
+              "id": "80fcdc71-0c27-4025-9603-ffb4019bf4e4",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\",\n  \"assignee_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:01.000Z",
+              "updatedAt": "2026-07-28T01:17:01.000Z",
+              "uid": "35240-80fcdc71-0c27-4025-9603-ffb4019bf4e4"
+            },
+            {
+              "id": "ed43e26c-aca8-4035-aa55-21b482a597d1",
+              "name": "Not found - the requested resource does not exist",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\",\n  \"assignee_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:01.000Z",
+              "updatedAt": "2026-07-28T01:17:01.000Z",
+              "uid": "35240-ed43e26c-aca8-4035-aa55-21b482a597d1"
+            },
+            {
+              "id": "5898e4c6-1430-4c95-8242-c2ff73415cbd",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attached_to\": {\n    \"type\": \"design\",\n    \"design_id\": \"<string>\"\n  },\n  \"message\": \"<string>\",\n  \"assignee_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:01.000Z",
+              "updatedAt": "2026-07-28T01:17:01.000Z",
+              "uid": "35240-5898e4c6-1430-4c95-8242-c2ff73415cbd"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:01.000Z",
+          "updatedAt": "2026-07-28T01:17:01.000Z",
+          "uid": "35240-450067c2-479c-4977-b00c-657d4c4ba042"
+        }
+      ],
+      "id": "4c36bbe0-9d4b-4e94-ba31-0d8c1b7ed25b",
+      "createdAt": "2026-07-28T01:17:01.000Z",
+      "updatedAt": "2026-07-28T01:17:01.000Z",
+      "uid": "35240-4c36bbe0-9d4b-4e94-ba31-0d8c1b7ed25b"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}

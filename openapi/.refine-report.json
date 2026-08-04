@@ -1,0 +1,30 @@
+{
+  "provider": "canva",
+  "sources": [
+    "canva-assets-api-openapi.yml",
+    "canva-autofills-api-openapi.yml",
+    "canva-brand-templates-api-openapi.yml",
+    "canva-comments-api-openapi.yml",
+    "canva-designs-api-openapi.yml",
+    "canva-exports-api-openapi.yml",
+    "canva-folders-api-openapi.yml",
+    "canva-resizes-api-openapi.yml",
+    "canva-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "canva-assets-api-openapi.yml",
+    "canva-autofills-api-openapi.yml",
+    "canva-brand-templates-api-openapi.yml",
+    "canva-comments-api-openapi.yml",
+    "canva-designs-api-openapi.yml",
+    "canva-exports-api-openapi.yml",
+    "canva-folders-api-openapi.yml",
+    "canva-resizes-api-openapi.yml",
+    "canva-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

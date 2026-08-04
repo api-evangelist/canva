@@ -1,0 +1,670 @@
+{
+  "info": {
+    "_postman_id": "e422598b-5fac-476a-a8c5-82ca456965f6",
+    "name": "Canva Connect Assets Exports API",
+    "description": "The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.\n\nContact Support:\n Name: Canva Developers\n Email: developers@canva.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:02.000Z",
+    "updatedAt": "2026-07-28T01:17:02.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e422598b-5fac-476a-a8c5-82ca456965f6"
+  },
+  "item": [
+    {
+      "name": "exports",
+      "item": [
+        {
+          "name": "{exportId}",
+          "item": [
+            {
+              "name": "Canva Get a Design Export Job",
+              "id": "50758c81-6110-4823-bd86-5ac4c8722bc1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://api.canva.com/rest/v1/oauth/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://www.canva.com/api/oauth/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/exports/:exportId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "exports",
+                    ":exportId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "4b213a28-2619-451f-8446-fea5d61d58d1",
+                      "key": "exportId",
+                      "value": "<string>",
+                      "description": "(Required) The export job ID"
+                    }
+                  ]
+                },
+                "description": "Retrieves the status and results of an export job. When the job completes successfully, the response includes download URLs for the exported files, valid for 24 hours."
+              },
+              "response": [
+                {
+                  "id": "b89fb9c1-12a8-4ce7-9bba-431a59b024a7",
+                  "name": "The export job status and results",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/exports/:exportId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "exports",
+                        ":exportId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "exportId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"success\",\n    \"urls\": [\n      \"<uri>\",\n      \"<uri>\"\n    ],\n    \"error\": {\n      \"code\": \"license_required\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:03.000Z",
+                  "updatedAt": "2026-07-28T01:17:03.000Z",
+                  "uid": "35240-b89fb9c1-12a8-4ce7-9bba-431a59b024a7"
+                },
+                {
+                  "id": "37eed7a4-40cc-4d18-9eea-50fb53f7d670",
+                  "name": "Unauthorized - missing or invalid authentication",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/exports/:exportId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "exports",
+                        ":exportId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "exportId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:03.000Z",
+                  "updatedAt": "2026-07-28T01:17:03.000Z",
+                  "uid": "35240-37eed7a4-40cc-4d18-9eea-50fb53f7d670"
+                },
+                {
+                  "id": "9a527998-9d4e-4318-b527-ec0e7b5b9ae4",
+                  "name": "Not found - the requested resource does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/exports/:exportId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "exports",
+                        ":exportId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "exportId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:03.000Z",
+                  "updatedAt": "2026-07-28T01:17:03.000Z",
+                  "uid": "35240-9a527998-9d4e-4318-b527-ec0e7b5b9ae4"
+                },
+                {
+                  "id": "21fd8960-4fb4-444d-9f73-332e92084690",
+                  "name": "Too many requests - rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/exports/:exportId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "exports",
+                        ":exportId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "exportId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:03.000Z",
+                  "updatedAt": "2026-07-28T01:17:03.000Z",
+                  "uid": "35240-21fd8960-4fb4-444d-9f73-332e92084690"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-50758c81-6110-4823-bd86-5ac4c8722bc1"
+            }
+          ],
+          "id": "8bf913f7-7d3e-4b67-a239-5eecee4aa6d8",
+          "createdAt": "2026-07-28T01:17:02.000Z",
+          "updatedAt": "2026-07-28T01:17:02.000Z",
+          "uid": "35240-8bf913f7-7d3e-4b67-a239-5eecee4aa6d8"
+        },
+        {
+          "name": "Canva Create a Design Export Job",
+          "id": "8f582568-baf6-4100-9e1c-a41ea1cfaa45",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.canva.com/rest/v1/oauth/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://www.canva.com/api/oauth/authorize",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"design_id\": \"<string>\",\n  \"format\": {\n    \"type\": \"pdf\",\n    \"export_quality\": \"regular\",\n    \"size\": \"a4\",\n    \"pages\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/exports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "exports"
+              ]
+            },
+            "description": "Creates an asynchronous job to export a design from Canva. Supported formats include PDF, JPG, PNG, GIF, PPTX, and MP4. Each format supports format-specific options such as quality, dimensions, page selection, and transparency."
+          },
+          "response": [
+            {
+              "id": "91f08ac8-d609-4188-84ea-fb1d7242c05b",
+              "name": "The export job",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"format\": {\n    \"type\": \"pdf\",\n    \"export_quality\": \"regular\",\n    \"size\": \"a4\",\n    \"pages\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "exports"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"job\": {\n    \"id\": \"<string>\",\n    \"status\": \"success\",\n    \"urls\": [\n      \"<uri>\",\n      \"<uri>\"\n    ],\n    \"error\": {\n      \"code\": \"license_required\",\n      \"message\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-91f08ac8-d609-4188-84ea-fb1d7242c05b"
+            },
+            {
+              "id": "87cb5fa3-b5ed-42b2-8477-9ccf4d60ee37",
+              "name": "Bad request - invalid parameters or request body",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"format\": {\n    \"type\": \"pdf\",\n    \"export_quality\": \"regular\",\n    \"size\": \"a4\",\n    \"pages\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "exports"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-87cb5fa3-b5ed-42b2-8477-9ccf4d60ee37"
+            },
+            {
+              "id": "92cd97ff-7ea7-448e-bb82-5a3b7d6bfb17",
+              "name": "Unauthorized - missing or invalid authentication",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"format\": {\n    \"type\": \"pdf\",\n    \"export_quality\": \"regular\",\n    \"size\": \"a4\",\n    \"pages\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "exports"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-92cd97ff-7ea7-448e-bb82-5a3b7d6bfb17"
+            },
+            {
+              "id": "7dbd6fe1-0ae8-4a29-a956-98b6a78cc8bb",
+              "name": "Forbidden - insufficient permissions or scopes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"format\": {\n    \"type\": \"pdf\",\n    \"export_quality\": \"regular\",\n    \"size\": \"a4\",\n    \"pages\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "exports"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-7dbd6fe1-0ae8-4a29-a956-98b6a78cc8bb"
+            },
+            {
+              "id": "ae807904-40b9-4904-9e26-330b61f00dc9",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"design_id\": \"<string>\",\n  \"format\": {\n    \"type\": \"pdf\",\n    \"export_quality\": \"regular\",\n    \"size\": \"a4\",\n    \"pages\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "exports"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-ae807904-40b9-4904-9e26-330b61f00dc9"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:03.000Z",
+          "updatedAt": "2026-07-28T01:17:03.000Z",
+          "uid": "35240-8f582568-baf6-4100-9e1c-a41ea1cfaa45"
+        }
+      ],
+      "id": "7f295f6b-c399-43b5-a72c-30692938e71d",
+      "createdAt": "2026-07-28T01:17:02.000Z",
+      "updatedAt": "2026-07-28T01:17:02.000Z",
+      "uid": "35240-7f295f6b-c399-43b5-a72c-30692938e71d"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "design:meta:read design:content:read design:content:write asset:read asset:write folder:read folder:write comment:read comment:write brandtemplate:meta:read brandtemplate:content:read",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.canva.com/rest/v1/oauth/token",
+        "type": "string"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://www.canva.com/api/oauth/authorize",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.canva.com/rest/v1"
+    }
+  ]
+}
