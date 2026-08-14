@@ -1,8 +1,13 @@
 aid: canva
 name: Canva
 description: >-
-  APIs for the Canva design platform, enabling developers to integrate Canva's design tools and functionality into their
-  applications.
+  Canva is the visual design platform used by hundreds of millions of people, and it exposes
+  four distinct developer surfaces: the Connect APIs (a REST API for creating, autofilling,
+  exporting, resizing, importing and commenting on designs from another application), the
+  Apps SDK (React apps that run inside the Canva editor), the SCIM and Audit Logs APIs for
+  enterprise identity and compliance, and the partner-gated Print API. Canva publishes its
+  own OpenAPI description, a dated changelog, per-product llms.txt indexes, a hosted MCP
+  server and a public set of Agent Skills.
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -18,7 +23,7 @@ accessModel:
   method: derived
 image: https://www.canva.com/favicon.ico
 created: '2024-01-01'
-modified: '2026-05-19'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 type: Index
 url: https://www.canva.com/developers/apis.json
@@ -774,6 +779,84 @@ apis:
     url: json-schema/canva-design-schema.json
   - type: JSONLD
     url: json-ld/canva-context.jsonld
+- name: Canva Connect API
+  description: >-
+    The umbrella Canva Connect REST API as Canva publishes it — 59 operations across
+    designs, assets, folders, brand templates, autofills, exports, resizes, imports,
+    merges, comments, analytics, users, OAuth and OIDC. This entry carries Canva's own
+    OpenAPI description, fetched verbatim from
+    https://www.canva.dev/sources/connect/api/latest/api.yml.
+  humanURL: https://www.canva.dev/docs/connect/
+  baseURL: https://api.canva.com/rest/v1
+  tags:
+    - Design
+    - Automation
+    - Content
+  properties:
+    - type: OpenAPI
+      url: openapi/canva-connect-api-openapi.yml
+    - type: Overlay
+      url: overlays/canva-connect-api-overlay.yaml
+    - type: Documentation
+      url: https://www.canva.dev/docs/connect/
+    - type: APIReference
+      url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+    - type: GettingStarted
+      url: https://www.canva.dev/docs/connect/quickstart/
+    - type: Authentication
+      url: https://www.canva.dev/docs/connect/authentication/
+    - type: ChangeLog
+      url: https://www.canva.dev/docs/connect/changelog/
+    - type: Webhooks
+      url: asyncapi/canva-webhooks.yml
+    - type: ErrorCatalog
+      url: errors/canva-problem-types.yml
+    - type: DataModel
+      url: data-model/canva-data-model.yml
+    - type: Conventions
+      url: conventions/canva-conventions.yml
+- name: Canva SCIM API
+  description: >-
+    SCIM 2.0 API for automating provisioning and deprovisioning of Canva user accounts and
+    groups. Canva states it implements the SCIM v2 specification (RFC 7644). Available to
+    Canva Enterprise single teams; not available to multi-team or Canva for Teams
+    organizations (existing Teams users are grandfathered).
+  humanURL: https://www.canva.dev/docs/scim/
+  baseURL: https://www.canva.com/_scim/v2
+  tags:
+    - Identity
+    - Provisioning
+    - SCIM
+    - Enterprise
+  properties:
+    - type: Documentation
+      url: https://www.canva.dev/docs/scim/
+    - type: Authentication
+      url: https://www.canva.dev/docs/scim/authentication/
+    - type: APIReference
+      url: https://www.canva.dev/docs/scim/list-users/
+    - type: Documentation
+      url: https://www.canva.dev/docs/scim/users-groups-and-teams/
+- name: Canva Print API
+  description: >-
+    Partner-gated REST API for print order fulfilment. Uniquely bidirectional — Canva acts
+    as the API CLIENT when sending orders to a print partner, and as the API SERVER when the
+    partner sends order status back. Date-based versions selected with the
+    X-Canva-Public-Api-Version header. Only available to partners in Canva's print
+    fulfilment network.
+  humanURL: https://www.canva.dev/docs/print/
+  baseURL: https://api.canva.com/rest/v1
+  tags:
+    - Print
+    - Fulfillment
+    - Partners
+  properties:
+    - type: Documentation
+      url: https://www.canva.dev/docs/print/
+    - type: APIReference
+      url: https://www.canva.dev/docs/print/api-reference/requests-from-canva/
+    - type: APIReference
+      url: https://www.canva.dev/docs/print/api-reference/requests-to-canva/
 common:
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/canva/overview
@@ -914,6 +997,68 @@ common:
   - name: Agent Skills
     url: https://github.com/canva-sdks/canva-claude-skills
     type: AgentSkills
+  - type: Packages
+    url: packages/canva-packages.yml
+  - type: SDKs
+    url: packages/canva-packages.yml
+  - type: WellKnown
+    url: well-known/canva-well-known.yml
+  - type: SecurityTxt
+    url: well-known/canva-security.txt
+  - type: Security
+    url: security/canva-vulnerability-disclosure.yml
+  - type: Compliance
+    url: security/canva-trust-center.yml
+  - type: Conformance
+    url: conformance/canva-conformance.yml
+  - type: MCPServer
+    url: mcp/canva-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/canva-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/canva-llms.txt
+  - type: Conventions
+    url: conventions/canva-conventions.yml
+  - type: ErrorCatalog
+    url: errors/canva-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/canva-lifecycle.yml
+  - type: Deprecation
+    url: lifecycle/canva-lifecycle.yml
+  - type: StatusPage
+    url: https://www.canvastatus.com/
+  - type: ChangeLog
+    url: changelog/canva-changelog.yml
+  - type: RateLimits
+    url: rate-limits/canva-rate-limits.yml
+  - type: Plans
+    url: plans/canva-plans-pricing.yml
+  - type: FinOps
+    url: finops/canva-finops.yml
+  - type: CLI
+    url: cli/canva-cli.yml
+  - type: Components
+    url: components/canva-components.yml
+  - type: DataModel
+    url: data-model/canva-data-model.yml
+  - type: Webhooks
+    url: asyncapi/canva-webhooks.yml
+  - type: Overlay
+    url: overlays/canva-connect-api-overlay.yaml
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+  - type: GettingStarted
+    url: https://www.canva.dev/docs/connect/quickstart/
+  - type: Pricing
+    url: https://www.canva.com/pricing/
+  - type: Documentation
+    url: https://www.canva.dev/docs/audit-logs/
+    name: Audit Logs (Canva Enterprise)
+  - type: Documentation
+    url: https://www.canva.dev/docs/print/
+    name: Print API (partner network)
 maintainers:
   - FN: Canva
     email: developers@canva.com
@@ -921,3 +1066,8 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
     url: https://apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1
