@@ -1,0 +1,151 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canva Connect Assets Folders API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+      "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Canva Get a Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/folders/:folderId",
+            "params": [
+              {
+                "name": "folderId",
+                "value": "",
+                "type": "path",
+                "description": "The folder ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves metadata for a specific folder, including name, timestamps, and thumbnail."
+        },
+        {
+          "info": {
+            "name": "Canva List Folder Items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/folders/:folderId/items",
+            "params": [
+              {
+                "name": "folderId",
+                "value": "",
+                "type": "path",
+                "description": "The folder ID"
+              },
+              {
+                "name": "item_types",
+                "value": "",
+                "type": "query",
+                "description": "Filter by item type"
+              },
+              {
+                "name": "sort_by",
+                "value": "created_ascending",
+                "type": "query",
+                "description": "Sort order for results"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Number of results per page"
+              },
+              {
+                "name": "continuation",
+                "value": "example_value",
+                "type": "query",
+                "description": "Continuation token for paginated results"
+              },
+              {
+                "name": "pin_status",
+                "value": "any",
+                "type": "query",
+                "description": "Filter by pin status"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists items within a folder, including designs, subfolders, and images. Supports filtering by item type, sorting, pin status filtering, and pagination."
+        },
+        {
+          "info": {
+            "name": "Canva Move an Item to a Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/folders/:folderId/items:move",
+            "params": [
+              {
+                "name": "folderId",
+                "value": "",
+                "type": "path",
+                "description": "The folder ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Moves a design, folder, or image into the specified folder."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

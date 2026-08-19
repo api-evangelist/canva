@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canva Connect Assets Brand Templates API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+      "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Brand Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Canva List Brand Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/brand-templates",
+            "params": [
+              {
+                "name": "query",
+                "value": "example_value",
+                "type": "query",
+                "description": "Search term to filter brand templates"
+              },
+              {
+                "name": "ownership",
+                "value": "any",
+                "type": "query",
+                "description": "Filter by ownership status"
+              },
+              {
+                "name": "sort_by",
+                "value": "relevance",
+                "type": "query",
+                "description": "Sort order for results"
+              },
+              {
+                "name": "dataset",
+                "value": "any",
+                "type": "query",
+                "description": "Filter by dataset availability"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Number of results per page"
+              },
+              {
+                "name": "continuation",
+                "value": "example_value",
+                "type": "query",
+                "description": "Continuation token for paginated results"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists brand templates available to the authenticated user. Supports searching, filtering by ownership and dataset availability, sorting, and pagination. Requires Canva Enterprise membership."
+        },
+        {
+          "info": {
+            "name": "Canva Get a Brand Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/brand-templates/:brandTemplateId",
+            "params": [
+              {
+                "name": "brandTemplateId",
+                "value": "",
+                "type": "path",
+                "description": "The brand template ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves metadata for a specific brand template. Requires Canva Enterprise membership."
+        },
+        {
+          "info": {
+            "name": "Canva Get a Brand Template Dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/brand-templates/:brandTemplateId/dataset",
+            "params": [
+              {
+                "name": "brandTemplateId",
+                "value": "",
+                "type": "path",
+                "description": "The brand template ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves the autofill dataset for a brand template, listing the available data fields and their types (image, text, or chart). Requires Canva Enterprise membership."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

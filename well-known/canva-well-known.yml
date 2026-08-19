@@ -1,0 +1,94 @@
+generated: '2026-08-13'
+method: probed
+source: live HTTP probe of every Canva base host
+description: >-
+  Probe of the standard /.well-known/ paths across every host Canva serves an API or
+  developer surface from. www.canva.com serves a real security.txt, a real OpenID Connect
+  discovery document and a real OAuth 2.0 authorization server metadata document.
+  mcp.canva.com — Canva's hosted MCP server — serves both OAuth 2.0 Authorization Server
+  Metadata (RFC 8414) and OAuth 2.0 Protected Resource Metadata (RFC 9728), which is how the
+  MCP endpoint was confirmed without an access token.
+hosts:
+  - host: www.canva.com
+    probes:
+      - path: /.well-known/security.txt
+        status: 200
+        file: well-known/canva-security.txt
+        document: true
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: well-known/canva-openid-configuration.json
+        document: true
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: well-known/canva-oauth-authorization-server.json
+        document: true
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: api.canva.com
+    note: Connect API host. Serves no /.well-known/ documents; every probed path 404s.
+    probes:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: www.canva.dev
+    note: Developer documentation host. Serves no /.well-known/ documents.
+    probes:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: mcp.canva.com
+    note: >-
+      Canva's hosted (remote) MCP server. POST /mcp returns HTTP 401 with a
+      WWW-Authenticate Bearer challenge naming the protected-resource metadata document,
+      so both discovery documents below are anonymous and authoritative.
+    probes:
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: well-known/canva-mcp-oauth-authorization-server.json
+        document: true
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        file: well-known/canva-mcp-oauth-protected-resource.json
+        document: true
+summary:
+  hosts_probed: 4
+  documents_found: 5
+  security_txt: true
+  openid_configuration: true
+  oauth_authorization_server: true
+  agent_card: false

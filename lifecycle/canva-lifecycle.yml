@@ -1,0 +1,95 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://www.canva.dev/docs/connect/versions/,
+  https://www.canva.dev/docs/connect/changelog/,
+  https://www.canvastatus.com/,
+  https://www.canva.dev/docs/extensions/platform-concepts/deprecation-policy/
+derived_from: openapi/canva-connect-api-openapi.yml
+description: Versioning, deprecation, support-window and operational-status posture for the Canva Connect APIs.
+versioning:
+  scheme: date-based
+  example: '2024-01-31'
+  path_version: v1
+  path_version_meaning: >-
+    An epoch marker reserved for a fundamental re-architecture of the whole API. It is NOT
+    the API version and does not change when a breaking change ships.
+  minted_on: breaking changes only
+  docs: https://www.canva.dev/docs/connect/versions/
+  selection: >-
+    Canva states a Developer Portal setting for pinning an integration's default API version
+    will be documented before any additional version is released. As of this probe no second
+    date-based version exists, so there is nothing to pin yet.
+breaking_change_definition:
+  published: true
+  breaking:
+    - Changing the required scopes for an API
+    - Adding a required request parameter
+    - Changing a request parameter from optional to required
+    - Changing the default value of a request parameter
+    - Updating an optional query or search parameter
+    - Removing an enumerated value from a request parameter
+    - Removing a request parameter
+    - Changing a validation rule for request parameters or response properties
+    - Adding an enumerated value to a response property
+    - Changing a response property from required to optional
+    - Changing response property behavior
+    - Removing a response property
+    - Changing API behavior in a non-backwards-compatible way
+    - Changing the HTTP response status code for an API
+  non_breaking:
+    - Adding an optional request parameter
+    - Adding an enumerated value to a request parameter
+    - Changing a request parameter from required to optional
+    - Adding a response property
+    - Changing a response property from optional to required
+    - Removing an enumerated value from a response property
+  note: >-
+    Canva counts "adding an enumerated value to a response property" as BREAKING — a stricter
+    line than most providers draw, and worth knowing before writing exhaustive switches.
+deprecation_policy:
+  published: true
+  support_window: >-
+    Superseded API versions are anticipated to remain supported for at least 6 months before
+    the old version is deprecated and removed.
+  sunset_header: not documented
+  deprecation_header: not documented
+  rfc8594: false
+  extensions_policy: https://www.canva.dev/docs/extensions/platform-concepts/deprecation-policy/
+  preview_exemption: >-
+    Beta/Preview APIs and features are explicitly excluded — they can break without notice and
+    without minting a new version. A large share of Canva's newest surface (analytics, merges,
+    publish brand template, design dataset, in-place autofill) is currently preview.
+deprecated:
+  operations:
+    - operationId: createComment
+      path: /v1/comments
+      method: post
+      replacement: createThread (POST /v1/designs/{designId}/comments)
+      source: 'openapi/canva-connect-api-openapi.yml (deprecated: true)'
+  fields:
+    - field: DesignPage.index
+      replacement: DesignPage.page_number
+      announced: '2026-05-27'
+      status: >-
+        Both properties return the same value; `index` will be removed in a future release
+        after existing integrations migrate.
+      source: https://www.canva.dev/docs/connect/changelog/
+status_page:
+  url: https://www.canvastatus.com/
+  http_status: 200
+  alternate:
+    url: https://status.canva.com/
+    http_status: 200
+  note: >-
+    Canva's own error documentation points at https://www.canvastatus.com/ as the incident
+    surface; https://status.canva.com/ also resolves.
+sla:
+  published: false
+  note: >-
+    No public uptime SLA for the Connect APIs. Enterprise agreements are negotiated and not
+    published.
+changelog:
+  url: https://www.canva.dev/docs/connect/changelog/
+  cadence: dated entries, several per month
+  detail: changelog/canva-changelog.yml

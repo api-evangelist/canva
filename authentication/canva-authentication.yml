@@ -1,8 +1,10 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/canva-connect-api-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: https://www.canva.dev/docs/connect/authentication/ + https://www.canva.com/.well-known/openid-configuration
+  + https://www.canva.com/.well-known/oauth-authorization-server + openapi/canva-connect-api-openapi.yml
 summary:
   types:
+  - http
   - oauth2
   oauth2_flows:
   - authorizationCode
@@ -14,7 +16,63 @@ schemes:
     authorizationUrl: https://www.canva.com/api/oauth/authorize
     tokenUrl: https://api.canva.com/rest/v1/oauth/token
     scopes: 11
-  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included
-    in the Authorization header as a Bearer token.
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+  sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
+  - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
+- name: basicAuth
+  type: http
+  scheme: basic
   sources:
   - openapi/canva-connect-api-openapi.yml
+docs: https://www.canva.dev/docs/connect/authentication/
+discovery:
+  oauth_authorization_server:
+    url: https://www.canva.com/.well-known/oauth-authorization-server
+    status: 200
+    file: well-known/canva-oauth-authorization-server.json
+  openid_configuration:
+    url: https://www.canva.com/.well-known/openid-configuration
+    status: 200
+    file: well-known/canva-openid-configuration.json
+  issuer: https://www.canva.com
+  authorization_endpoint: https://www.canva.com/api/oauth/authorize
+  token_endpoint: https://api.canva.com/auth/v1/oauth/token
+  userinfo_endpoint: https://api.canva.com/auth/v1/oidc/userinfo
+  jwks_uri: https://api.canva.com/auth/v1/oidc/jwks
+  note: Canva runs the OAuth/OIDC endpoints on auth/v1 (api.canva.com/auth/v1/oauth/token) per its discovery
+    documents, while the Connect OpenAPI documents the equivalent token endpoint under the REST path /rest/v1/oauth/token.
+    Both are Canva-published; prefer the discovery document.
+pkce:
+  required: true
+  methods:
+  - S256
+  source: https://www.canva.dev/docs/connect/api-requests-responses/
+token_endpoint_auth_methods:
+- client_secret_basic
+- client_secret_post
+grant_types:
+- authorization_code
+- refresh_token
+token_lifecycle:
+  introspection: POST /v1/oauth/introspect (introspectToken)
+  revocation: POST /v1/oauth/revoke (revokeTokens) — revokes a token and its lineage
+  refresh: refresh_token grant
+basic_auth_note: The basicAuth securityScheme in the OpenAPI is CLIENT authentication on the OAuth token
+  endpoints (client_id/client_secret), not a way to call resource endpoints. Every resource operation
+  requires a bearer token from the authorization code flow.
+mcp:
+  endpoint: https://mcp.canva.com/mcp
+  auth: oauth
+  dynamic_client_registration: true
+  detail: mcp/canva-mcp.yml
+scopes: scopes/canva-scopes.yml

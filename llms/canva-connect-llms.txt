@@ -1,0 +1,230 @@
+# Canva Connect APIs
+
+How to integrate into Canva using our REST API.
+
+The Canva Connect APIs let you integrate Canva's capabilities into your own web apps and platforms.
+
+You can use the Connect APIs to create web app integrations that create and sync assets, designs, comments, and more. You can also collaborate and communicate with different platforms, or embed Canva into project management workflows.
+
+For example, you could use the Connect APIs to create an integration between Canva and your digital asset management system. With an integration you can upload your assets to Canva, programmatically create designs for your users to edit, and then export the finished designs back to your system.
+
+## Public vs. private integrations
+
+An integration that uses the Connect APIs can be *public* (available to all Canva users), or *private* (available only to your team on a [Canva Enterprise](https://www.canva.com/enterprise/) plan).
+
+Public integrations must first be reviewed by Canva and meet the [integration requirements](https://www.canva.dev/docs/connect/submission-checklist/) before they can be made available to all Canva users.
+
+## First steps
+
+* Follow the [Quickstart](https://www.canva.dev/docs/connect/quickstart/) to get started with a Canva-created app that demonstrates some of the main API features. It's also a great template for creating an integration.
+* [Create a new integration](https://www.canva.dev/docs/connect/creating-integrations/) from scratch.
+
+## Connect APIs Starter Kit
+
+Canva has created a [Starter Kit repository](https://github.com/canva-sdks/canva-connect-api-starter-kit) that includes an example web app which demonstrates some of the Connect APIs' main features. The [Quickstart](https://www.canva.dev/docs/connect/quickstart/) walks you through installing and running the example app.
+
+## OpenAPI description
+
+Canva provides an OpenAPI description of the Connect APIs. You can use this with code generation libraries, such as [openapi-generator](https://github.com/OpenAPITools/openapi-generator), to generate client SDKs in various languages. The OpenAPI description is publicly available at [https://www.canva.dev/sources/connect/api/latest/api.yml](https://www.canva.dev/sources/connect/api/latest/api.yml).
+
+## Preview APIs
+
+Some APIs and features have notices declaring they're provided as a preview. Although you can use these APIs for development and experimentation, they are not finalized and we don't recommend them for use in production environments.
+
+Specifically, you should be aware of the following for preview APIs and features:
+
+* There might be unannounced breaking changes.
+* Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+* Public integrations that use preview APIs or features will not pass the review process, and can't be made available to all Canva users.
+
+## Want to add features to Canva?
+
+In addition to the Connect APIs, Canva also offers the Apps SDK, which lets developers create plugins that enhance a user's experience when designing in Canva. If you're interested, [check out the documentation](https://www.canva.dev/docs/apps/).
+
+
+## Getting started
+
+- [Overview](https://www.canva.dev/docs/connect.md): How to integrate into Canva using our REST API.
+- [Quickstart](https://www.canva.dev/docs/connect/quickstart.md): How to integrate an app with Canva, using the Connect APIs.
+- [Creating integrations](https://www.canva.dev/docs/connect/creating-integrations.md): How to create and configure an integration.
+
+## Reference apps
+
+- [Nourish](https://www.canva.dev/docs/connect/reference-apps/nourish.md): Learn how to connect your marketing platform to Canva and automate content creation workflows
+- [Realty Commercial](https://www.canva.dev/docs/connect/reference-apps/realty-commercial.md): Learn how to connect your real estate platform to Canva and automate property marketing workflows
+- [Dev MCP server](https://www.canva.dev/docs/connect/mcp-server.md): How to configure the Canva Dev MCP server for an AI-assisted developer experience.
+
+## Fundamentals
+
+- [API requests & responses](https://www.canva.dev/docs/connect/api-requests-responses.md)
+- [Authentication](https://www.canva.dev/docs/connect/authentication.md)
+- [API versions](https://www.canva.dev/docs/connect/versions.md)
+- [Canva concepts](https://www.canva.dev/docs/connect/canva-concepts.md)
+- [Security](https://www.canva.dev/docs/connect/guidelines/security.md): Recommended security practices for your integration.
+- [Shared responsibility model](https://www.canva.dev/docs/connect/guidelines/shared-responsibility.md): Shared security responsibilities for Canva API integrations.
+
+## Examples
+
+- [Autofill guide](https://www.canva.dev/docs/connect/autofill-guide.md): How to generate dynamic designs using Brand templates and the Autofill APIs.
+- [Return navigation guide](https://www.canva.dev/docs/connect/return-navigation-guide.md): Let users move seamlessly between your integration and the Canva editor.
+
+## Guidelines
+
+- [Brand](https://www.canva.dev/docs/connect/guidelines/brand.md): Learn how to integrate the Canva brand into your product.
+- [Recommended practices](https://www.canva.dev/docs/connect/guidelines/recommended-practices.md): Learn how to make a meaningful integration.
+- [User interface](https://www.canva.dev/docs/connect/guidelines/user-interface.md): Learn about using Canva elements in your product.
+
+## Distributing integrations
+
+- [Submission checklist](https://www.canva.dev/docs/connect/submission-checklist.md): What to do before submitting an integration for review.
+- [Submitting integrations](https://www.canva.dev/docs/connect/submitting-integrations.md)
+
+## API reference
+
+
+## Authentication
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/authentication.md): The Canva Connect APIs for managing OAuth tokens.
+- [Generate access token](https://www.canva.dev/docs/connect/api-reference/authentication/generate-access-token.md): Generate access tokens to access the Connect APIs.
+- [Introspect access token](https://www.canva.dev/docs/connect/api-reference/authentication/introspect-access-token.md): Introspect a token to see its validity and properties.
+- [Revoke token](https://www.canva.dev/docs/connect/api-reference/authentication/revoke-token.md): Revoke a token and its lineage.
+
+## Analytics
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/analytics.md): The Canva Connect APIs for retrieving design analytics.
+- [Get design analytics](https://www.canva.dev/docs/connect/api-reference/analytics/get-design-analytics.md): Get analytics for a design, including total views and viewers.
+- [Get design analytics links](https://www.canva.dev/docs/connect/api-reference/analytics/get-design-analytics-links.md): Get analytics for links in a design.
+- [Get design analytics page views](https://www.canva.dev/docs/connect/api-reference/analytics/get-design-analytics-page-views.md): Get analytics for individual pages in a design.
+- [Get design analytics viewers](https://www.canva.dev/docs/connect/api-reference/analytics/get-design-analytics-viewers.md): Get information about users who have viewed a design.
+- [Get design analytics views over time](https://www.canva.dev/docs/connect/api-reference/analytics/get-design-analytics-views-over-time.md): Get the view count for a design over a time period.
+
+## Assets
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/assets.md): The Canva Connect APIs for managing assets.
+- [Create asset upload job](https://www.canva.dev/docs/connect/api-reference/assets/create-asset-upload-job.md): Create an asynchronous job to upload an asset.
+- [Get asset upload job](https://www.canva.dev/docs/connect/api-reference/assets/get-asset-upload-job.md): Get the status and results of an upload asset job.
+- [Create asset upload job via URL](https://www.canva.dev/docs/connect/api-reference/assets/create-url-asset-upload-job.md): Create an asynchronous job to upload an asset from a URL.
+- [Get asset upload job via URL](https://www.canva.dev/docs/connect/api-reference/assets/get-url-asset-upload-job.md): Get the status and results of job to upload asset from a URL.
+- [Get asset](https://www.canva.dev/docs/connect/api-reference/assets/get-asset.md): Get the metadata for an asset in the user's Project.
+- [Update asset](https://www.canva.dev/docs/connect/api-reference/assets/update-asset.md): Update the metadata for an asset in the users Projects.
+- [Delete asset](https://www.canva.dev/docs/connect/api-reference/assets/delete-asset.md): Delete an asset from the user's Projects.
+
+## Autofill
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/autofills.md): The Canva Connect APIs for working with autofillable brand templates.
+- [Create design autofill job](https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job.md): Create an asynchronous job to autofill a design from a brand template with your input information.
+- [Get design autofill job](https://www.canva.dev/docs/connect/api-reference/autofills/get-design-autofill-job.md): Get the status and results of an autofill job, including the autofilled design.
+
+## Brand templates
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/brand-templates.md): The Canva Connect APIs for working with brand templates.
+- [Publish brand template](https://www.canva.dev/docs/connect/api-reference/brand-templates/publish-brand-template.md): Publish a design as a brand template.
+- [Get brand template](https://www.canva.dev/docs/connect/api-reference/brand-templates/get-brand-template.md): Get the metadata for one of the user's brand templates.
+- [Get brand template dataset](https://www.canva.dev/docs/connect/api-reference/brand-templates/get-brand-template-dataset.md): Check if a brand template has autofillable fields and what type of information the fields accept.
+- [List brand templates](https://www.canva.dev/docs/connect/api-reference/brand-templates/list-brand-templates.md): List all the user's brand templates.
+
+## Comments
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/comments.md): The Canva Connect APIs for design comments.
+- [Create thread](https://www.canva.dev/docs/connect/api-reference/comments/create-thread.md): Create a new comment thread on a design.
+- [Create reply](https://www.canva.dev/docs/connect/api-reference/comments/create-reply.md): Reply to a comment on a design.
+- [Get thread](https://www.canva.dev/docs/connect/api-reference/comments/get-thread.md): Get metadata for a comment thread.
+- [Get reply](https://www.canva.dev/docs/connect/api-reference/comments/get-reply.md): Get a comment reply.
+- [List replies](https://www.canva.dev/docs/connect/api-reference/comments/list-replies.md): List the replies to a comment on a design.
+- [Create comment (deprecated)](https://www.canva.dev/docs/connect/api-reference/comments/create-comment.md): Create a new comment on a design.
+
+## Designs
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/designs.md): The Canva Connect APIs for managing designs.
+- [Create design](https://www.canva.dev/docs/connect/api-reference/designs/create-design.md): Create a Canva design.
+- [List designs](https://www.canva.dev/docs/connect/api-reference/designs/list-designs.md): List all the user's designs.
+- [Get design](https://www.canva.dev/docs/connect/api-reference/designs/get-design.md): Get the metadata for one of the user's designs.
+- [Get design pages](https://www.canva.dev/docs/connect/api-reference/designs/get-design-pages.md): Get the metadata for pages in a design.
+- [Get design export formats](https://www.canva.dev/docs/connect/api-reference/designs/get-design-export-formats.md): Get the export formats available for a design.
+- [Get design dataset](https://www.canva.dev/docs/connect/api-reference/designs/get-design-dataset.md): Check if a design has autofillable fields and what type of information the fields accept.
+
+## Design imports
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/design-imports.md): The Canva Connect APIs for importing designs from other applications into Canva.
+- [Create design import job](https://www.canva.dev/docs/connect/api-reference/design-imports/create-design-import-job.md): Create an asynchronous job to import a design created in another application.
+- [Create URL import job](https://www.canva.dev/docs/connect/api-reference/design-imports/create-url-import-job.md): Create an asynchronous job to import a design created in another application, using a URL.
+- [Get design import job](https://www.canva.dev/docs/connect/api-reference/design-imports/get-design-import-job.md): Get the status and results of a design import job, including the imported design.
+- [Get URL import job](https://www.canva.dev/docs/connect/api-reference/design-imports/get-url-import-job.md): Get the status and results of a URL import job, including the imported design.
+
+## Exports
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/exports.md): The Canva Connect APIs for exporting designs.
+- [Create design export job](https://www.canva.dev/docs/connect/api-reference/exports/create-design-export-job.md): Create an asynchronous job to export a design from Canva.
+- [Get design export job](https://www.canva.dev/docs/connect/api-reference/exports/get-design-export-job.md): Get the status and results of an export job, including link(s) to the downloadable file(s).
+
+## Folders
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/folders.md): The Canva Connect APIs for managing folders.
+- [Create folder](https://www.canva.dev/docs/connect/api-reference/folders/create-folder.md): Create a new folder in the user's Projects.
+- [Get folder](https://www.canva.dev/docs/connect/api-reference/folders/get-folder.md): Retrieve a folder's metadata.
+- [Update folder](https://www.canva.dev/docs/connect/api-reference/folders/update-folder.md): Update a folder's metadata.
+- [Delete folder](https://www.canva.dev/docs/connect/api-reference/folders/delete-folder.md): Delete a folder.
+- [List folder items](https://www.canva.dev/docs/connect/api-reference/folders/list-folder-items.md): List the contents of a folder.
+- [Move folder item](https://www.canva.dev/docs/connect/api-reference/folders/move-folder-item.md): Move an item from one folder to another.
+
+## Merges
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/merges.md): The Canva Connect APIs for merging designs.
+- [Create design merge job](https://www.canva.dev/docs/connect/api-reference/merges/create-design-merge-job.md)
+- [Get design merge job](https://www.canva.dev/docs/connect/api-reference/merges/get-design-merge-job.md)
+
+## Print partner
+
+- [Get print partner design](https://www.canva.dev/docs/connect/api-reference/print-partner/get-print-partner-design.md)
+
+## Resizes
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/resizes.md): The Canva Connect APIs for resizing designs.
+- [Create design resize job](https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job.md)
+- [Get design resize job](https://www.canva.dev/docs/connect/api-reference/resizes/get-design-resize-job.md)
+
+## Users
+
+- [Overview](https://www.canva.dev/docs/connect/api-reference/users.md): The Canva Connect APIs for user information.
+- [Get current user](https://www.canva.dev/docs/connect/api-reference/users/users-me.md)
+- [Get current user profile](https://www.canva.dev/docs/connect/api-reference/users/users-profile.md)
+- [Get user capabilities](https://www.canva.dev/docs/connect/api-reference/users/get-user-capabilities.md)
+- [Keys](https://www.canva.dev/docs/connect/api-reference/webhooks/keys.md): API reference for the keys method.
+- [OpenAPI description](https://www.canva.dev/docs/connect/api-reference/openapi-description.md): OpenAPI description for the Connect APIs.
+
+## Webhooks
+
+
+## Webhook notifications
+
+- [Overview](https://www.canva.dev/docs/connect/webhooks.md): Receive real-time notification data for your users.
+
+## Access
+
+- [Design access requested](https://www.canva.dev/docs/connect/webhooks/design-access-requested-notification.md): The NotificationContent sent when a user requests access to a design.
+- [Folder access requested](https://www.canva.dev/docs/connect/webhooks/folder-access-requested-notification.md): The NotificationContent sent when a user requests access to a folder.
+- [Team invite](https://www.canva.dev/docs/connect/webhooks/team-invite-notification.md): The NotificationContent sent when inviting a user to join a team.
+
+## Approvals
+
+- [Design approval requested](https://www.canva.dev/docs/connect/webhooks/design-approval-requested-notification.md): The NotificationContent sent when a user requests approval for a design.
+- [Design approval response](https://www.canva.dev/docs/connect/webhooks/design-approval-response-notification.md): The NotificationContent sent when a user responds to a design approval request.
+- [Design approval reviewer invalidated](https://www.canva.dev/docs/connect/webhooks/design-approval-reviewer-invalidated-notification.md): The NotificationContent sent when a reviewer in a design is invalidated.
+
+## Collaborating
+
+- [Comment](https://www.canva.dev/docs/connect/webhooks/comment-notification.md): The NotificationContent sent when a user comments on a design.
+- [Suggestion](https://www.canva.dev/docs/connect/webhooks/suggestion-notification.md): The NotificationContent sent when a user suggests an edit to a design.
+
+## Sharing
+
+- [Share design](https://www.canva.dev/docs/connect/webhooks/share-design-notification.md): The NotificationContent sent when a user shares a design.
+- [Share folder](https://www.canva.dev/docs/connect/webhooks/share-folder-notification.md): The NotificationContent sent when a user shares a folder.
+
+## Appendix
+
+- [Scopes](https://www.canva.dev/docs/connect/appendix/scopes.md)
+- [Capabilities](https://www.canva.dev/docs/connect/capabilities.md)
+- [Error responses](https://www.canva.dev/docs/connect/error-responses.md)
+- [Changelog](https://www.canva.dev/docs/connect/changelog.md)
+- [Canva AI Connector](https://www.canva.com/help/mcp-agent-setup/)

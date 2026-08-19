@@ -4,48 +4,83 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Canva
 providerId: canva
 created: '2026-05-04'
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-08-13'
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://www.canva.dev/docs/connect/api-requests-responses/,
+  https://www.canva.dev/docs/connect/error-responses/,
+  openapi/canva-connect-api-openapi.yml
+reconciled: true
 tags:
   - Apps
   - Automation
   - Design
   - Templates
   - Rate Limiting
-description: Canva does not publish concrete per-second or per-minute rate limit numbers for the Connect
-  API or Apps SDK. Standard 429 throttling behavior should be expected; integrations should implement
-  exponential backoff and honor any Retry-After response header. Contact Canva developer support for
-  documented limits on a specific integration.
-notes: No public rate-limit documentation found for the Canva Connect API. Numbers below are placeholders
-  pending provider documentation; treat enforcement as opaque and rely on response codes / Retry-After.
-sources:
-  - https://www.canva.dev/docs/connect/
-  - https://www.canva.com/developers/
+description: >-
+  Canva enforces rate limits on the Connect APIs but publishes NO numbers and NO rate-limit
+  response headers. The complete public contract is: exceeding a limit returns HTTP 429 with
+  the error code `too_many_requests`, and callers should back off exponentially. Twelve of the
+  59 published operations declare a 429 response in the OpenAPI. No X-RateLimit-*, no
+  RateLimit-* (RFC 9331 style), and no documented Retry-After — so a client cannot see how
+  close it is to a limit, only that it crossed one.
+limit_count: 0
+numeric_limits_published: false
+response_headers:
+  published: none
+  x_ratelimit: false
+  ratelimit_draft_headers: false
+  retry_after: not documented
+  note: >-
+    This is the material gap. An agent has no forward-looking budget signal from Canva — the
+    only runtime signal is the 429 itself, discovered by hitting it.
 responseCodes:
   throttled: 429
-limits:
-  - name: Canva Connect API (per-integration)
-    scope: integration
-    metric: varies
-    limit: see Canva developer support
-    notes: Canva has not published per-second or per-minute caps; assume standard throttling applies.
-  - name: Canva Apps SDK
-    scope: app
-    metric: varies
-    limit: see Canva developer support
+  error_code: too_many_requests
+limits: []
+quotas:
+  - name: Trial quotas
+    status: preview
+    scope: per-user, per-premium-operation
+    description: >-
+      Free-plan users get a small allowance of certain premium operations — Canva's published
+      example is 2 resize operations for a user's lifetime. Not a rate limit; a usage cap.
+    signal: >-
+      Successful responses on premium endpoints include
+      trial_information { uses_remaining, upgrade_url }.
+    exhaustion:
+      status: 403
+      code: permission_denied
+      body_note: The message carries the upgrade URL.
+    docs: https://www.canva.dev/docs/connect/api-requests-responses/
+  - name: Capability gating
+    scope: per-user
+    description: >-
+      Not a rate limit either, but the other way a call gets refused for non-technical
+      reasons — the user's plan lacks the capability the operation requires.
+    status: 403
+    precheck: GET /v1/users/me/capabilities
+    docs: https://www.canva.dev/docs/connect/capabilities/
 policies:
   - name: Backoff strategy
-    description: Implement exponential backoff with jitter on 429 responses; honor Retry-After if present.
-  - name: Idempotent retries
-    description: Use idempotent request patterns for upload, export, and design-mutation endpoints to
-      avoid double-charging on retried requests.
-  - name: OAuth token refresh
-    description: Connect API uses OAuth 2.0; cache and refresh tokens rather than reauthorizing on every
-      request to avoid auth-flow throttling.
-maintainers:
-  - FN: Canva
-    email: developers@canva.com
-    url: https://www.canva.com/developers/
-  - FN: Kin Lane
-    email: kin@apievangelist.com
-    url: https://apievangelist.com
+    description: >-
+      Canva explicitly recommends exponential backoff, both for 429 handling and for polling
+      async job endpoints — poll fast enough for good UX, slowly enough to avoid the limit.
+    reference_implementation: >-
+      https://github.com/canva-sdks/canva-connect-api-starter-kit/blob/main/demos/common/utils/poll.ts
+  - name: Caching
+    description: >-
+      Canva's own troubleshooting guidance for `too_many_requests` is to review request
+      patterns and cache responses to reduce call volume.
+operations_declaring_429: 12
+evidence:
+  - url: https://www.canva.dev/docs/connect/error-responses/
+    status: 200
+  - url: https://www.canva.dev/docs/connect/api-requests-responses/
+    status: 200
+notes: >-
+  limit_count is 0 because Canva publishes no numeric limit for any scope — not because none
+  was looked for. Both the error reference and the requests/responses guide were read in full
+  and neither states a per-second, per-minute, per-hour or per-day figure for any endpoint,
+  key, integration or account.

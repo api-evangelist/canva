@@ -1,0 +1,188 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  well-known/canva-mcp-oauth-protected-resource.json (scopes the hosted MCP server declares)
+  x openapi/canva-connect-api-openapi.yml (security requirements per operation)
+description: >-
+  Binding between Canva's hosted MCP server (https://mcp.canva.com/mcp) and the Connect API
+  OpenAPI operations behind it.
+  IMPORTANT — READ THE SHAPE BEFORE READING THE ROWS. Canva's MCP `tools/list` is OAuth-gated
+  (HTTP 401 anonymously), so the tool NAMES and inputSchemas could not be enumerated and NONE
+  ARE INVENTED HERE. What the server does publish anonymously, via RFC 9728 Protected Resource
+  Metadata, is its full scope list. Every row below is therefore keyed on a DECLARED MCP SCOPE
+  rather than a tool name, and binds that scope to the exact OpenAPI operationIds that require
+  it. This is a real, checkable derivation from two real artifacts; upgrade it to tool-keyed
+  rows once an authenticated introspection of tools/list is possible.
+surfaces:
+  openapi:
+    file: openapi/canva-connect-api-openapi.yml
+    published: https://www.canva.dev/sources/connect/api/latest/api.yml
+    server: https://api.canva.com/rest
+    operations: 59
+    gated: false
+  mcp:
+    url: https://mcp.canva.com/mcp
+    transport: streamable-http
+    gated: true
+    gate: OAuth 2.1 bearer; tools/list returns 401 invalid_token
+  graphql:
+    present: false
+scope_bindings:
+  - scope: design:meta:read
+    rest:
+      - listDesigns
+      - getDesign
+      - getDesignAutofillJob
+      - getDesignMergeJob
+      - getPrintPartnerDesign
+      - createDesignMergeJob
+    binding: scope-to-operation
+    confidence: high
+  - scope: design:content:read
+    rest:
+      - getDesignPages
+      - getDesignDataset
+      - getDesignExportFormats
+      - createDesignExportJob
+      - getDesignExportJob
+      - createPrintPartnerDesignExportJob
+      - createDesignResizeJob
+      - getDesignResizeJob
+      - getDesignAnalytics
+      - getDesignAnalyticsViewers
+      - getDesignAnalyticsViewsOverTime
+      - getDesignAnalyticsPageViews
+      - getDesignAnalyticsLinks
+    binding: scope-to-operation
+    confidence: high
+  - scope: design:content:write
+    rest:
+      - createDesign
+      - createDesignAutofillJob
+      - createDesignImportJob
+      - createUrlImportJob
+      - getDesignImportJob
+      - getUrlImportJob
+      - createDesignMergeJob
+      - createDesignResizeJob
+      - getDesignResizeJob
+      - createPrintPartnerDesign
+    binding: scope-to-operation
+    confidence: high
+  - scope: asset:read
+    rest:
+      - getAsset
+      - GetAssetUploadJob
+      - getUrlAssetUploadJob
+    binding: scope-to-operation
+    confidence: high
+  - scope: asset:write
+    rest:
+      - CreateAssetUploadJob
+      - createUrlAssetUploadJob
+      - updateAsset
+      - deleteAsset
+    binding: scope-to-operation
+    confidence: high
+  - scope: folder:read
+    rest:
+      - getFolder
+      - listFolderItems
+    binding: scope-to-operation
+    confidence: high
+  - scope: folder:write
+    rest:
+      - createFolder
+      - updateFolder
+      - deleteFolder
+      - moveFolderItem
+    binding: scope-to-operation
+    confidence: high
+  - scope: brandtemplate:meta:read
+    rest:
+      - listBrandTemplates
+      - getBrandTemplate
+    binding: scope-to-operation
+    confidence: high
+  - scope: brandtemplate:content:read
+    rest:
+      - getBrandTemplateDataset
+    binding: scope-to-operation
+    confidence: high
+  - scope: brandtemplate:content:write
+    rest:
+      - publishBrandTemplate
+    binding: scope-to-operation
+    confidence: high
+  - scope: comment:read
+    rest:
+      - getThread
+      - getReply
+      - listReplies
+    binding: scope-to-operation
+    confidence: high
+  - scope: comment:write
+    rest:
+      - createThread
+      - createReply
+      - createComment
+    binding: scope-to-operation
+    confidence: high
+    note: createComment is marked deprecated in the OpenAPI; createThread supersedes it.
+  - scope: profile:read
+    rest:
+      - getUserProfile
+      - getUserCapabilities
+    binding: scope-to-operation
+    confidence: high
+mcp_only:
+  - scope: brandkit:read
+    reason: >-
+      Declared by the hosted MCP server but absent from the Connect API OAuth scope table
+      (https://www.canva.dev/docs/connect/appendix/scopes/) and from every securityScheme in
+      the published OpenAPI. No public REST operation corresponds to it — the MCP server
+      reaches a Brand Kit capability the public REST API does not expose.
+  - scope: help:answers:read
+    reason: >-
+      Declared by the hosted MCP server only. No public REST operation. Almost certainly backs
+      Canva Help Center answering inside the AI Connector; not part of the Connect APIs.
+  - scope: help:answers:write
+    reason: Declared by the hosted MCP server only. No public REST operation.
+rest_only:
+  - operations:
+      - exchangeAccessToken
+      - introspectToken
+      - revokeTokens
+    reason: OAuth token lifecycle. Handled by the MCP client's own OAuth flow, never a tool.
+  - operations:
+      - getOidcJwks
+      - userInfo
+      - getAppJwks
+      - getSigningPublicKeys
+    reason: Key material and OIDC/webhook-signature endpoints; infrastructure, not agent actions.
+  - operations:
+      - usersMe
+    reason: >-
+      Requires only a valid token (no scope). Not reachable via any declared MCP scope binding.
+  - operations:
+      - createDesignImportJob
+      - createUrlImportJob
+      - getDesignImportJob
+      - getUrlImportJob
+      - createDesignMergeJob
+      - getDesignMergeJob
+      - createPrintPartnerDesign
+      - getPrintPartnerDesign
+      - createPrintPartnerDesignExportJob
+    reason: >-
+      Covered by declared scopes but represent import/merge/print-partner flows with no
+      confirmable MCP tool; listed for completeness pending an authenticated tools/list.
+coverage:
+  openapi_operations: 59
+  mcp_scopes_declared: 16
+  mcp_scopes_bound_to_rest: 13
+  mcp_scopes_with_no_rest_equivalent: 3
+  rest_operations_reachable_by_a_declared_scope: 45
+  rest_operations_with_no_scope_binding: 7
+  tools_enumerated: 0
+  tools_enumerable: false

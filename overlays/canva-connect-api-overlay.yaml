@@ -1,0 +1,145 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Canva Connect API
+  version: 1.0.0
+  x-generated: '2026-08-13'
+  x-method: generated
+  x-source: openapi/canva-connect-api-openapi.yml
+  x-description: >-
+    OpenAPI Overlay 1.0.0 capturing API Evangelist's additions to Canva's published Connect
+    API description. The original spec is never mutated — it is preserved verbatim at
+    openapi/canva-connect-api-openapi.yml exactly as fetched from
+    https://www.canva.dev/sources/connect/api/latest/api.yml. Every action below adds
+    provenance, cross-links to artifacts in this repo, or records a runtime semantic Canva
+    documents in prose but does not express in the spec.
+extends: openapi/canva-connect-api-openapi.yml
+actions:
+  - target: $.info
+    description: Record provenance and link the artifacts derived from this spec.
+    update:
+      x-provenance:
+        harvested-from: https://www.canva.dev/sources/connect/api/latest/api.yml
+        harvested-on: '2026-08-13'
+        http-status: 200
+        publisher: Canva Pty Ltd
+        verbatim: true
+      x-artifacts:
+        authentication: authentication/canva-authentication.yml
+        scopes: scopes/canva-scopes.yml
+        conventions: conventions/canva-conventions.yml
+        errors: errors/canva-problem-types.yml
+        lifecycle: lifecycle/canva-lifecycle.yml
+        changelog: changelog/canva-changelog.yml
+        rate-limits: rate-limits/canva-rate-limits.yml
+        plans: plans/canva-plans-pricing.yml
+        data-model: data-model/canva-data-model.yml
+        webhooks: asyncapi/canva-webhooks.yml
+        mcp: mcp/canva-mcp.yml
+        tool-crosswalk: mcp/canva-tool-crosswalk.yml
+        conformance: conformance/canva-conformance.yml
+        packages: packages/canva-packages.yml
+        well-known: well-known/canva-well-known.yml
+  - target: $.info
+    description: >-
+      Add the developer contact channels Canva publishes elsewhere but omits from info.
+    update:
+      x-developer-portal: https://www.canva.com/developers/
+      x-documentation: https://www.canva.dev/docs/connect/
+      x-changelog: https://www.canva.dev/docs/connect/changelog/
+      x-status-page: https://www.canvastatus.com/
+      x-llms-txt: https://www.canva.dev/docs/connect/llms.txt
+  - target: $.info
+    description: >-
+      Record the versioning contract. Canva's version scheme is date-based and INDEPENDENT of
+      the /v1 path segment, which is an epoch marker — the spec's info.version alone is
+      misleading without this.
+    update:
+      x-versioning:
+        scheme: date-based
+        path-segment-is-version: false
+        support-window: at least 6 months for superseded versions
+        docs: https://www.canva.dev/docs/connect/versions/
+        preview-exempt: >-
+          Beta/Preview APIs may break without minting a new version and disqualify a public
+          integration from review.
+  - target: $
+    description: >-
+      Record the error contract at the document level. Every operation returns the same
+      {code, message} envelope; it is not RFC 9457 and there is no problem+json media type.
+    update:
+      x-error-contract:
+        rfc9457: false
+        media-type: application/json
+        envelope:
+          code: stable machine-readable error code
+          message: human-readable description
+        switch-on: code
+        catalog: errors/canva-problem-types.yml
+        docs: https://www.canva.dev/docs/connect/error-responses/
+  - target: $
+    description: >-
+      Record rate-limit semantics. Canva publishes no numbers and no rate-limit headers; 429 +
+      too_many_requests is the entire runtime signal.
+    update:
+      x-rate-limits:
+        numeric-limits-published: false
+        response-headers: none
+        status-on-exhaustion: 429
+        error-code: too_many_requests
+        strategy: exponential backoff
+        detail: rate-limits/canva-rate-limits.yml
+  - target: $
+    description: >-
+      Record that writes are NOT idempotent — no Idempotency-Key header exists on any
+      operation — and that the async-job pattern is the partial mitigation.
+    update:
+      x-idempotency:
+        supported: false
+        header: null
+        mitigation: >-
+          Long-running writes are modelled as jobs; a lost create response can be recovered by
+          re-reading the job rather than re-issuing the create.
+  - target: $
+    description: Record the cursor pagination contract shared by every list endpoint.
+    update:
+      x-pagination:
+        style: cursor
+        request-params: [continuation, limit]
+        response-field: continuation
+        termination: continuation omitted on the last page
+        exception: >-
+          Analytics preview endpoints paginate with `offset` and raise offset_too_large.
+  - target: $
+    description: >-
+      Record the capability pre-check contract. Operations carrying x-required-capabilities
+      fail with 403 for users whose Canva plan lacks them; getUserCapabilities is the
+      pre-flight.
+    update:
+      x-capabilities:
+        precheck-operation: getUserCapabilities
+        precheck-path: /v1/users/me/capabilities
+        failure-status: 403
+        docs: https://www.canva.dev/docs/connect/capabilities/
+  - target: $
+    description: Record the agent surfaces that front this API.
+    update:
+      x-agent-surfaces:
+        mcp-remote: https://mcp.canva.com/mcp
+        mcp-local: npx -y @canva/cli@latest mcp
+        agent-card: null
+        agent-skills: https://github.com/canva-sdks/canva-skills
+        detail: mcp/canva-mcp.yml
+  - target: $.paths['/v1/comments'].post
+    description: >-
+      Reinforce the deprecation Canva already marks, naming the replacement operation so a
+      generated client can steer callers.
+    update:
+      x-deprecation:
+        replaced-by: createThread
+        replacement-path: /v1/designs/{designId}/comments
+        source: openapi/canva-connect-api-openapi.yml
+  - target: $.paths['/v1/connect/keys'].get
+    description: Flag the webhook signature-verification key endpoint for event consumers.
+    update:
+      x-webhook-verification: true
+      x-webhook-catalog: asyncapi/canva-webhooks.yml

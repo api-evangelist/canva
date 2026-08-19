@@ -1,0 +1,153 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://www.canva.dev/docs/connect/api-requests-responses/,
+  https://www.canva.dev/docs/connect/authentication/,
+  https://www.canva.dev/docs/connect/versions/,
+  https://www.canva.dev/docs/connect/error-responses/,
+  https://www.canva.dev/docs/connect/capabilities/
+derived_from: openapi/canva-connect-api-openapi.yml
+description: >-
+  Cross-cutting runtime semantics for the Canva Connect APIs — what an agent or SDK needs to
+  know that is true of every endpoint rather than of one.
+base_url: https://api.canva.com/rest/v1
+media_type: application/json
+authentication:
+  style: OAuth 2.0 authorization code with PKCE; bearer token in the Authorization header
+  header: 'Authorization: Bearer {token}'
+  token_endpoint: https://api.canva.com/rest/v1/oauth/token
+  token_endpoint_auth: HTTP Basic (client_id/client_secret) or client_secret_post
+  refresh: supported (refresh_token grant)
+  introspection: POST /v1/oauth/introspect
+  revocation: POST /v1/oauth/revoke
+  oidc: >-
+    Canva is also an OIDC provider — https://www.canva.com/.well-known/openid-configuration —
+    with openid/profile/email scopes and a userinfo endpoint at
+    https://api.canva.com/auth/v1/oidc/userinfo.
+  detail: authentication/canva-authentication.yml
+  scopes: scopes/canva-scopes.yml
+idempotency:
+  supported: false
+  evidence: >-
+    No Idempotency-Key (or equivalent) header appears in any of the 59 operations in the
+    published OpenAPI, and the docs describe no replay-safe retry mechanism. Retries of a
+    POST that created a design, folder, comment or job may duplicate it.
+  mitigation: >-
+    The long-running operations are structured as ASYNC JOBS instead: the create call returns
+    a job id and the result is fetched by polling, so a lost response can be recovered by
+    re-reading the job rather than by re-issuing the create. This narrows, but does not close,
+    the duplicate-write window.
+pagination:
+  style: cursor (continuation token)
+  request_params:
+    - name: continuation
+      in: query
+      description: Opaque token returned by the previous page. Omit for the first page.
+    - name: limit
+      in: query
+      description: >-
+        Page size. Added incrementally per endpoint — list designs (2025-10-20),
+        list folder items (2025-12-02), list brand templates (2026-01-05).
+  response_field: continuation
+  termination: The response omits `continuation` when there are no further pages.
+  exceptions:
+    - endpoints:
+        - getDesignAnalyticsViewers
+      params:
+        - offset
+      note: >-
+        The analytics preview APIs use an `offset` instead of a continuation token, and
+        overrunning it returns the `offset_too_large` error.
+filtering_and_sorting:
+  params:
+    - query
+    - sort_by
+    - ownership
+    - item_types
+    - pin_status
+    - start_time
+    - end_time
+    - timezone
+  note: Applied per-endpoint; there is no global filter grammar.
+field_expansion:
+  supported: false
+  note: No expand/fields/include parameter exists. Responses are fixed shapes.
+metadata:
+  supported: partial
+  note: >-
+    Assets carry a `metadata` property (added 2026-03-02) and uploads pass metadata via the
+    `Asset-Upload-Metadata` request header; imports use `Import-Metadata`. There is no
+    general-purpose user-defined metadata bag on designs or folders.
+request_id_tracing:
+  documented: false
+  note: >-
+    Canva documents no request-id / correlation-id response header. There is no published
+    identifier to quote back to support for a single failed call.
+versioning:
+  scheme: date-based API versions, independent of the /v1 path segment
+  current: >-
+    A single released version; the `v1` in https://api.canva.com/rest/v1/ is an epoch marker,
+    NOT the API version. New date-based versions (e.g. 2024-01-31) are minted only when a
+    breaking change ships.
+  support_window: >-
+    Superseded versions are expected to remain supported for at least 6 months before
+    deprecation and removal.
+  preview: >-
+    APIs and fields marked Beta/Preview are exempt: breaking changes to them do NOT mint a
+    new version, and public integrations that use them fail review.
+  docs: https://www.canva.dev/docs/connect/versions/
+  detail: lifecycle/canva-lifecycle.yml
+errors:
+  envelope:
+    code: stable machine-readable error code
+    message: human-readable description
+  rfc9457: false
+  switch_on: code
+  detail: errors/canva-problem-types.yml
+rate_limit_signaling:
+  headers_published: none
+  status_on_exhaustion: 429
+  error_code: too_many_requests
+  retry_after: not documented
+  strategy: exponential backoff
+  detail: rate-limits/canva-rate-limits.yml
+async_jobs:
+  pattern: >-
+    Create-job returns {"job": {"id": "...", "status": "in_progress"}}; poll the matching
+    Get-job endpoint until status becomes `success` or `failed`. Successful jobs carry the
+    result inline.
+  polling: exponential backoff, short initial interval, capped maximum
+  reference_implementation: >-
+    https://github.com/canva-sdks/canva-connect-api-starter-kit/blob/main/demos/common/utils/poll.ts
+  job_apis:
+    - createDesignAutofillJob / getDesignAutofillJob
+    - createDesignExportJob / getDesignExportJob
+    - createDesignResizeJob / getDesignResizeJob
+    - CreateAssetUploadJob / GetAssetUploadJob
+    - createUrlAssetUploadJob / getUrlAssetUploadJob
+    - createDesignImportJob / getDesignImportJob
+    - createUrlImportJob / getUrlImportJob
+    - createDesignMergeJob / getDesignMergeJob
+capabilities_precheck:
+  supported: true
+  description: >-
+    Premium operations declare `x-required-capabilities` in the OpenAPI (e.g. `resize`,
+    `analytics`). A user missing the capability gets 403 with a message naming the required
+    capabilities. Integrations should call GET /v1/users/me/capabilities FIRST and adapt the
+    UI rather than calling and failing.
+  operation: getUserCapabilities
+  docs: https://www.canva.dev/docs/connect/capabilities/
+  note: >-
+    This is an unusually explicit plan-gating contract — most providers make the caller
+    discover premium gating from a 403.
+trial_quotas:
+  status: preview
+  description: >-
+    Free-plan users get a limited lifetime/monthly trial of certain premium operations.
+    Responses carry a `trial_information` object with `uses_remaining` and an `upgrade_url`;
+    exhaustion returns 403 permission_denied with the upgrade URL in the message.
+webhook_signing:
+  operation: getSigningPublicKeys
+  path: /v1/connect/keys
+  note: Public keys for verifying Canva webhook notification signatures.
+  detail: asyncapi/canva-webhooks.yml

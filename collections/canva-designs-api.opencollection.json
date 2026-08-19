@@ -1,0 +1,137 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canva Connect Assets Designs API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+      "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Designs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Canva List Designs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs",
+            "params": [
+              {
+                "name": "query",
+                "value": "example_value",
+                "type": "query",
+                "description": "Search term to filter designs (max 255 characters)"
+              },
+              {
+                "name": "ownership",
+                "value": "any",
+                "type": "query",
+                "description": "Filter designs by ownership status"
+              },
+              {
+                "name": "sort_by",
+                "value": "relevance",
+                "type": "query",
+                "description": "Sort order for results"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Number of results per page"
+              },
+              {
+                "name": "continuation",
+                "value": "example_value",
+                "type": "query",
+                "description": "Continuation token for paginated results"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists designs accessible to the authenticated user. Supports searching by query, filtering by ownership, sorting, and pagination using continuation tokens."
+        },
+        {
+          "info": {
+            "name": "Canva Create a Design",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/designs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new design in Canva. The design can use a preset type (doc, whiteboard, or presentation) or custom dimensions. An optional asset can be inserted and a title can be specified."
+        },
+        {
+          "info": {
+            "name": "Canva Get a Design",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves metadata for a specific design, including title, owner, URLs, timestamps, thumbnail, and page count."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

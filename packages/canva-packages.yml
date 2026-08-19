@@ -1,0 +1,185 @@
+generated: '2026-08-13'
+method: searched
+source: https://registry.npmjs.org/ (registry metadata endpoint, per package) + https://github.com/canva-sdks
+description: >-
+  First-party Canva client libraries. Everything Canva ships for developers is published to
+  npm under the @canva scope; there is no first-party Python, Java, .NET, Go, Ruby, PHP or
+  Rust client for the Connect APIs. Canva instead publishes an OpenAPI description
+  (https://www.canva.dev/sources/connect/api/latest/api.yml) and points developers at
+  openapi-generator to produce clients in other languages — a deliberate generate-your-own
+  posture recorded here rather than counted as a gap.
+  Versions and publish dates below were read from registry.npmjs.org metadata on 2026-08-13.
+registries_checked:
+  - npm
+  - PyPI
+  - RubyGems
+  - Packagist
+  - crates.io
+  - NuGet
+  - Maven Central
+  - pkg.go.dev
+packages:
+  - name: '@canva/cli'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/cli
+    language: TypeScript
+    official: true
+    version: 2.8.3
+    published: '2026-08-12'
+    description: The official Canva CLI. Also ships the Canva Dev MCP server (`npx -y @canva/cli@latest mcp`).
+  - name: '@canva/app-ui-kit'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/app-ui-kit
+    language: TypeScript
+    official: true
+    version: 5.14.0
+    published: '2026-07-29'
+    description: Canva Apps SDK UI components library — the React component set apps must render with.
+  - name: '@canva/design'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/design
+    language: TypeScript
+    official: true
+    version: 2.12.0
+    published: '2026-08-13'
+    description: Canva Apps SDK design library — read and edit the design a Canva app is running inside.
+  - name: '@canva/asset'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/asset
+    language: TypeScript
+    official: true
+    version: 2.3.0
+    published: '2025-12-22'
+    description: Canva Apps SDK asset management library.
+  - name: '@canva/user'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/user
+    language: TypeScript
+    official: true
+    version: 2.2.0
+    published: '2026-03-11'
+    description: Canva Apps SDK user library.
+  - name: '@canva/platform'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/platform
+    language: TypeScript
+    official: true
+    version: 2.2.2
+    published: '2026-02-17'
+    description: Canva Apps SDK app platform library.
+  - name: '@canva/error'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/error
+    language: TypeScript
+    official: true
+    version: 2.2.1
+    published: '2026-02-17'
+    description: Canva Apps SDK error library.
+  - name: '@canva/intents'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/intents
+    language: TypeScript
+    official: true
+    version: 2.6.0
+    published: '2026-06-09'
+    description: Canva Apps SDK Intents library — how an app declares the flows Canva can invoke it for.
+  - name: '@canva/app-components'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/app-components
+    language: TypeScript
+    official: true
+    version: 2.7.0
+    published: '2026-08-11'
+    description: Composite app components for reusable Canva app patterns (e.g. content browsing).
+  - name: '@canva/app-i18n-kit'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/app-i18n-kit
+    language: TypeScript
+    official: true
+    version: 1.3.0
+    published: '2026-07-28'
+    description: Internationalization kit for Canva apps; adapts react-intl.
+  - name: '@canva/app-scripts'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/app-scripts
+    language: TypeScript
+    official: true
+    version: 1.0.0
+    published: '2026-08-12'
+    description: Build scripts and bundler configuration for Canva Apps.
+  - name: '@canva/app-eslint-plugin'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/app-eslint-plugin
+    language: TypeScript
+    official: true
+    version: 1.0.0
+    published: '2026-07-29'
+    description: ESLint rules and shareable config for building with the Canva Apps SDK.
+  - name: '@canva/app-hooks'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/app-hooks
+    language: TypeScript
+    official: true
+    version: 0.0.0-beta.4
+    published: '2025-12-02'
+    prerelease: true
+    description: React hooks for building with the Canva Apps SDK. Still on a 0.0.0-beta line.
+  - name: '@canva/app-middleware'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/app-middleware
+    language: TypeScript
+    official: true
+    version: 0.0.0-beta.8
+    published: '2026-07-24'
+    prerelease: true
+    description: Utilities and Express.js middleware for Apps SDK server-side work. Still on a 0.0.0-beta line.
+  - name: '@canva/n8n-nodes-canva'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/n8n-nodes-canva
+    language: TypeScript
+    official: true
+    version: 0.1.6
+    published: '2026-08-06'
+    description: >-
+      Official Canva node for n8n (source: https://github.com/canva-sdks/n8n-nodes-canva).
+      Wraps the Connect APIs for workflow automation.
+  - name: '@canva/create-app'
+    registry: npm
+    url: https://www.npmjs.com/package/@canva/create-app
+    language: TypeScript
+    official: true
+    version: 0.0.1-beta.30
+    published: '2025-02-03'
+    prerelease: true
+    deprecated_by_practice: true
+    description: >-
+      Scaffolding CLI for Canva Apps. Last published 2025-02-03 and superseded in practice by
+      @canva/cli; recorded as a currency signal, not a recommendation.
+not_published:
+  - name: '@canva/connect-api-ts'
+    registry: npm
+    version: null
+    note: >-
+      The Connect API TypeScript client lives inside the canva-connect-api-starter-kit repo
+      (client/ workspace, generated from the OpenAPI description by the repo's own
+      `openapi:generate` script) and is NOT published to npm — registry.npmjs.org returns
+      "Not found". Consumers vendor it or generate their own.
+third_party_seen:
+  - name: n8n-nodes-canva
+    registry: npm
+    official: false
+    version: 2.2.1
+    published: '2025-07-09'
+    note: Community n8n node, unrelated to Canva's own @canva/n8n-nodes-canva. Not first-party.
+summary:
+  official_count: 16
+  languages:
+    - TypeScript/JavaScript
+  no_first_party_client_for:
+    - Python
+    - Java
+    - C#/.NET
+    - Go
+    - Ruby
+    - PHP
+    - Rust

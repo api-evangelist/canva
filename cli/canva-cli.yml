@@ -1,0 +1,128 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.canva.dev/docs/apps/canva-cli/
+docs: https://www.canva.dev/docs/apps/canva-cli/
+package: packages/canva-packages.yml
+description: >-
+  `@canva/cli` is Canva's first-party command line tool for creating, previewing, migrating
+  and configuring Canva Apps. It is also the delivery vehicle for the local stdio Canva Dev
+  MCP server (`canva mcp`), which is why it matters beyond app authoring.
+name: canva
+official: true
+install:
+  - method: npm (global)
+    command: npm install -g @canva/cli@latest
+  - method: npx (no install)
+    command: npx -y @canva/cli@latest <command>
+requirements:
+  node: v24
+  npm: v11
+  account: https://www.canva.com/developers
+version: 2.8.3
+published: '2026-08-12'
+authentication:
+  command: canva login
+  flow: >-
+    Browser access-request page, then a confirmation code pasted back into the CLI. The token
+    is encrypted and stored locally.
+  token_location:
+    macos_linux: ~/.canva-cli/credentials
+    windows: '%USERPROFILE%\.canva-cli\credentials'
+  revocation: >-
+    `canva logout` revokes AND deletes the token. Deleting the credentials file alone does
+    not revoke it — a copy of the file can still reconnect to the account's apps.
+  flags:
+    - '--china / --cn: log in to canva.cn and use it for all subsequent commands'
+    - '--mode: callback (local server, default) or manual (paste the auth code)'
+global_flags:
+  - '--help'
+  - '--lite (simplified interface for accessibility)'
+  - '--version'
+commands:
+  - name: welcome
+    description: Show the welcome page and general information.
+  - name: tip
+    aliases: [tips]
+    description: Print a random Apps SDK development tip.
+  - name: bug
+    description: Raise an issue with the Canva CLI on GitHub.
+  - name: login
+    description: Log in to the Canva CLI.
+  - name: logout
+    description: Log out, revoke access and delete the saved auth token.
+  - name: mcp
+    description: >-
+      Start the Canva Dev MCP server over stdio. Normally invoked by an MCP client
+      (Claude Desktop, Cursor) rather than by a human.
+    related: mcp/canva-mcp.yml
+  - name: apps
+    description: Manage Canva apps.
+    subcommands:
+      - name: apps create
+        description: Create a new Canva app from a template.
+        flags:
+          - '--template'
+          - '--distribution (public | private; NOT changeable after creation)'
+          - '--git'
+          - '--installDependencies'
+          - '--strict'
+          - '--optionalConfig (vscode | cursor | agents.md | claude)'
+          - '--offline (scaffold locally without creating a Developer Portal app)'
+          - '--yes'
+      - name: apps list
+        description: List all Canva apps.
+        flags: ['--appId', '--all/-a', '--print/-p']
+      - name: apps preview
+        description: Preview the app; prints/opens a preview URL.
+        flags: ['--intent', '--no-open']
+      - name: apps doctor
+        description: Run diagnostics — missing dependencies, outdated packages, other issues.
+        flags:
+          - '--fix'
+          - '--report'
+          - '--verbose (detailed output optimized for AI agent assistance)'
+          - '--check'
+      - name: apps migrate
+        description: Run a codemod to move an app to newer SDK patterns.
+        arguments: [migrationName]
+        migrations:
+          - apps-sdk-v1-v2
+          - app-ui-kit-v5
+          - design-editor-intent
+        flags: ['--dry-run', '--debug', '--force']
+      - name: apps config pull
+        description: Fetch canva-app.json from the Developer Portal.
+        flags: ['--force', '--strategy (local|remote|manual)']
+      - name: apps config push
+        description: Submit the local canva-app.json to the Developer Portal.
+        flags: ['--force', '--strategy (local|remote|manual)']
+      - name: apps config status
+        description: Report the status and validity of canva-app.json.
+      - name: apps link
+        description: Link a local project to an existing Canva app by writing .env.
+        flags: ['--appId', '--force']
+key_flows:
+  - name: Create and preview an app
+    steps:
+      - npm install -g @canva/cli@latest
+      - canva login
+      - canva apps create "My New App" --template="hello_world" --distribution="public" --git --installDependencies
+      - cd my-new-app
+      - npm start
+  - name: Run the local MCP server from an MCP client
+    steps:
+      - 'npx -y @canva/cli@latest mcp'
+  - name: Upgrade an app across a breaking SDK version
+    steps:
+      - canva apps migrate apps-sdk-v1-v2 --dry-run
+      - canva apps migrate apps-sdk-v1-v2
+limitations:
+  - >-
+    Apps created with the CLI must still be MANAGED through the Developer Portal
+    (https://www.canva.com/developers/apps) — the CLI is not a complete management surface.
+  - The CLI covers the Apps SDK. It does not administer Connect API integrations.
+notes:
+  - >-
+    `canva apps create --optionalConfig` can scaffold AGENTS.md and CLAUDE.md alongside the
+    project — Canva ships agent-instruction files as a first-class project option, which is
+    rare and worth noting on the agent-readiness axis.

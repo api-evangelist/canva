@@ -1,0 +1,58 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.canva.dev/docs/llms.txt
+description: >-
+  Canva publishes llms.txt properly — a root index at the docs host plus a per-product index
+  for every developer surface, and a `.md` twin for every documentation page. Files below were
+  fetched verbatim on 2026-08-13.
+files:
+  - path: llms/canva-llms.txt
+    url: https://www.canva.dev/docs/llms.txt
+    http_status: 200
+    bytes: 1084
+    role: root index — points at the five product-level llms.txt files
+  - path: llms/canva-connect-llms.txt
+    url: https://www.canva.dev/docs/connect/llms.txt
+    http_status: 200
+    bytes: 18198
+    role: >-
+      Connect APIs index — the complete documentation map including every API reference page,
+      every webhook notification type, scopes, capabilities, error responses and changelog.
+probed:
+  - url: https://www.canva.dev/docs/llms.txt
+    status: 200
+  - url: https://www.canva.dev/docs/connect/llms.txt
+    status: 200
+  - url: https://www.canva.dev/docs/apps/llms.txt
+    status: 200
+    bytes: 55339
+    saved: false
+    note: Apps SDK index; large, referenced rather than vendored.
+  - url: https://www.canva.dev/docs/scim/llms.txt
+    status: 200
+    bytes: 2678
+    saved: false
+  - url: https://www.canva.dev/docs/print/llms.txt
+    status: 200
+    bytes: 5553
+    saved: false
+  - url: https://www.canva.dev/docs/audit-logs/llms.txt
+    status: 200
+    bytes: 3570
+    saved: false
+  - url: https://www.canva.dev/llms.txt
+    status: 404
+    note: The index lives under /docs/, not at the host root.
+  - url: https://www.canva.com/llms.txt
+    status: 403
+    note: >-
+      The www.canva.com marketing host answers a Cloudflare bot challenge to unauthenticated
+      machine clients. The developer docs host (www.canva.dev) is fully open.
+markdown_twins:
+  supported: true
+  pattern: append `.md` to any www.canva.dev/docs/ page URL
+  example: https://www.canva.dev/docs/connect/error-responses.md
+  note: >-
+    Every page carries a header instructing an agent to fetch the llms.txt index first. This
+    is a deliberately agent-shaped documentation surface, and it is why every docs-derived
+    artifact in this repo cites a .md URL rather than a scraped HTML page.

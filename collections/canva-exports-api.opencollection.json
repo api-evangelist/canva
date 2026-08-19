@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canva Connect Assets Exports API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+      "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Exports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Canva Create a Design Export Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates an asynchronous job to export a design from Canva. Supported formats include PDF, JPG, PNG, GIF, PPTX, and MP4. Each format supports format-specific options such as quality, dimensions, page selection, and transparency."
+        },
+        {
+          "info": {
+            "name": "Canva Get a Design Export Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/exports/:exportId",
+            "params": [
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "The export job ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves the status and results of an export job. When the job completes successfully, the response includes download URLs for the exported files, valid for 24 hours."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

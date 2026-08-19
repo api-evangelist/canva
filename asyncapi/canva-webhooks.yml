@@ -1,0 +1,117 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.canva.dev/docs/connect/webhooks/
+derived_from: openapi/canva-connect-api-openapi.yml
+docs: https://www.canva.dev/docs/connect/webhooks/
+description: >-
+  Canva's event surface. Canva publishes NO AsyncAPI document — the event catalog is
+  documented in prose plus NotificationContent schemas embedded in the Connect OpenAPI. This
+  artifact captures the webhook catalog as published; it is not an AsyncAPI and is not
+  presented as one.
+asyncapi_published: false
+asyncapi_probed:
+  - url: https://www.canva.dev/asyncapi.yaml
+    result: not published
+  - note: >-
+      No AsyncAPI is referenced anywhere in https://www.canva.dev/docs/connect/llms.txt, which
+      is Canva's own complete documentation index.
+style: outgoing webhooks only
+direction: Canva -> integration
+delivery:
+  transport: HTTPS POST to the integration's configured endpoint
+  ack: >-
+    The integration must return HTTP 200. Any other status is treated as a delivery error.
+  retries: not documented
+  ordering: not documented
+subscription:
+  model: >-
+    Per-authenticated-user. An integration receives notifications for events relevant to the
+    users who have authorized it — there is no per-event subscription API, the scopes decide.
+  required_base_scope: collaboration:event
+signature_verification:
+  supported: true
+  operation: getSigningPublicKeys
+  path: /v1/connect/keys
+  key_type: EdDSA JWK (EdDsaJwk)
+  note: >-
+    Canva publishes rotating public keys for verifying notification signatures — fetch them
+    from the API rather than pinning a secret.
+events:
+  - type: comment
+    category: collaborating
+    description: A user commented on a design.
+    schema: CommentNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/comment-notification/
+    scopes: [collaboration:event, design:meta:read, comment:read]
+  - type: suggestion
+    category: collaborating
+    description: A user suggested an edit to a design.
+    schema: SuggestionNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/suggestion-notification/
+    scopes: [collaboration:event, design:meta:read, comment:read]
+  - type: design_mention
+    category: collaborating
+    description: A user was mentioned in a design.
+    schema: DesignMentionNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/design-mention-notification/
+    scopes: [collaboration:event, design:meta:read]
+  - type: design_access_requested
+    category: access
+    description: A user requested access to a design.
+    schema: DesignAccessRequestedNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/design-access-requested-notification/
+    scopes: [collaboration:event, design:meta:read]
+  - type: folder_access_requested
+    category: access
+    description: A user requested access to a folder.
+    schema: FolderAccessRequestedNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/folder-access-requested-notification/
+    scopes: [collaboration:event, folder:permission:write]
+  - type: team_invite
+    category: access
+    description: A user was invited to join a team.
+    schema: TeamInviteNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/team-invite-notification/
+    scopes: [collaboration:event]
+  - type: design_approval_requested
+    category: approvals
+    description: A user requested approval for a design.
+    schema: DesignApprovalRequestedNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/design-approval-requested-notification/
+    scopes: [collaboration:event, design:meta:read]
+  - type: design_approval_response
+    category: approvals
+    description: A user responded to a design approval request.
+    schema: DesignApprovalResponseNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/design-approval-response-notification/
+    scopes: [collaboration:event, design:meta:read]
+  - type: design_approval_reviewer_invalidated
+    category: approvals
+    description: A reviewer on a design was invalidated.
+    schema: DesignApprovalReviewerInvalidatedNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/design-approval-reviewer-invalidated-notification/
+    scopes: [collaboration:event, design:meta:read]
+  - type: share_design
+    category: sharing
+    description: A user shared a design.
+    schema: ShareDesignNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/share-design-notification/
+    scopes: [collaboration:event, design:meta:read]
+  - type: share_folder
+    category: sharing
+    description: A user shared a folder.
+    schema: ShareFolderNotificationContent
+    docs: https://www.canva.dev/docs/connect/webhooks/share-folder-notification/
+    scopes: [collaboration:event, folder:read]
+envelope:
+  schema: Notification
+  fields:
+    id: Notification id
+    content: One of the NotificationContent variants above, discriminated by `type`
+summary:
+  event_count: 11
+  categories: [collaborating, access, approvals, sharing]
+  incoming_webhooks: false
+  note: >-
+    Canva supports OUTGOING webhooks only — there is no inbound event ingestion. To respond to
+    a comment, call the Comments API.

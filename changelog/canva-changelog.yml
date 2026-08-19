@@ -1,0 +1,153 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.canva.dev/docs/connect/changelog/
+description: >-
+  Canva publishes a dated, per-entry changelog for the Connect APIs. Entries are additive
+  change notes; a breaking change would additionally mint a new date-based API version
+  (see lifecycle/canva-lifecycle.yml). Recent window only — the full log runs back to the
+  API's launch and lives at the source URL.
+scheme: date-based
+current_version: >-
+  Single released date-based version; the /v1 path segment is an epoch marker, not the version.
+latest_entry: '2026-08-10'
+window:
+  from: '2025-06-24'
+  to: '2026-08-10'
+entries:
+  - date: '2026-08-10'
+    breaking: false
+    additions:
+      - >-
+        Create design autofill job now supports `update_design` for `type`, autofilling an
+        existing design in place instead of creating a new one (preview).
+  - date: '2026-07-10'
+    breaking: false
+    highlights:
+      - '`design_types` on Design and `design_type` on DesignPage are out of preview and always returned.'
+  - date: '2026-06-29'
+    breaking: false
+    additions:
+      - Get design analytics (preview)
+      - Get design analytics viewers (preview)
+      - Get design analytics views over time (preview)
+      - Get design analytics page views (preview)
+      - Get design analytics links (preview)
+    highlights:
+      - Engagement metrics for a shared design became available as a new API family.
+  - date: '2026-06-25'
+    breaking: false
+    additions:
+      - Get design dataset
+      - 'Create design autofill job: `create_from_design` type (preview)'
+  - date: '2026-06-22'
+    breaking: false
+    additions:
+      - Autofill accepts `video` data values for image data fields (preview).
+  - date: '2026-06-16'
+    breaking: false
+    additions:
+      - >-
+        Create design autofill job accepts a `type` field; first value
+        `create_from_brand_template`. Omitting it keeps the previous behavior.
+  - date: '2026-06-12'
+    breaking: false
+    additions:
+      - '`design_types` on Design responses, `design_type` on DesignPage responses.'
+    note: >-
+      Canva warns the value list may be extended — and by its own definition adding an
+      enumerated value to a response property is a breaking change, so handle `unknown`.
+  - date: '2026-06-11'
+    breaking: false
+    additions:
+      - Get design pages returns an `id` per page (preview).
+  - date: '2026-06-09'
+    breaking: false
+    additions:
+      - Autofill accepts data values for `sheet` data fields (preview).
+  - date: '2026-06-04'
+    breaking: false
+    additions:
+      - Publish brand template API (preview)
+      - Get design export formats returns page-level format options with `page_numbers`.
+  - date: '2026-06-03'
+    breaking: false
+    additions:
+      - List folder items supports `brand_template` as an item type.
+  - date: '2026-05-27'
+    breaking: false
+    deprecations:
+      - >-
+        DesignPage.index deprecated in favour of DesignPage.page_number; both return the same
+        value, `index` to be removed in a future release.
+  - date: '2026-05-14'
+    breaking: false
+    additions:
+      - 'Create design: `type: design` (copy an existing design) and `type: brand_template` (preview).'
+  - date: '2026-05-12'
+    breaking: false
+    additions:
+      - Create design export job supports `csv` (Canva Sheets designs only).
+      - Create design merge job / Get design merge job (preview)
+  - date: '2026-03-30'
+    breaking: false
+    additions:
+      - 'Create design accepts `email` in the `name` field for `preset` types.'
+  - date: '2026-03-26'
+    breaking: false
+    additions:
+      - >-
+        Create design gains a `type` request parameter; shown as required but defaults to
+        `type_and_asset` for backward compatibility.
+  - date: '2026-03-25'
+    breaking: false
+    additions:
+      - Autofill supports `column_configs` for chart data fields.
+      - 'Export supports `html_bundle` and `html_standalone` email export formats.'
+  - date: '2026-03-02'
+    breaking: false
+    additions:
+      - Assets APIs return an additional `metadata` property on the asset object.
+  - date: '2026-02-26'
+    breaking: false
+    additions:
+      - List folder items supports a `pin_status` filter.
+  - date: '2026-02-19'
+    breaking: false
+    additions:
+      - Get design pages returns page dimensions for bounded designs.
+  - date: '2026-01-08'
+    breaking: false
+    highlights:
+      - Get design export formats left preview and became generally available.
+  - date: '2026-01-05'
+    breaking: false
+    additions:
+      - List brand templates supports `limit`.
+  - date: '2025-12-02'
+    breaking: false
+    additions:
+      - List folder items supports `limit`.
+  - date: '2025-10-20'
+    breaking: false
+    additions:
+      - List designs supports `limit`.
+  - date: '2025-08-11'
+    breaking: false
+    additions:
+      - Folders API accepts `uploads` as a folder ID for the user's Uploads folder.
+  - date: '2025-07-02'
+    breaking: false
+    additions:
+      - Create asset upload job via URL / Get asset upload job via URL (preview)
+  - date: '2025-06-24'
+    breaking: false
+    highlights:
+      - URL import job APIs left preview and became generally available.
+observations:
+  - >-
+    26 dated entries in ~14 months and zero breaking changes: Canva has not needed to mint a
+    second date-based API version since the scheme was introduced.
+  - >-
+    The changelog is where preview status is announced AND withdrawn; it is the only place the
+    preview-to-GA transition is recorded, so it is load-bearing for anyone depending on a
+    preview surface.

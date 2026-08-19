@@ -1,0 +1,116 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://www.canva.dev/docs/apps/app-ui-kit/,
+  https://www.canva.dev/docs/apps/llms.txt,
+  https://www.canva.dev/docs/button/,
+  https://www.canva.dev/docs/print-partnerships/
+description: >-
+  Client-side and embeddable surfaces Canva publishes — distinct from the Connect API SDKs.
+  Canva ships three separate embedding stories: a React component library for building apps
+  that run INSIDE the Canva editor (App UI Kit), a drop-in HTML/JS button that opens Canva
+  FROM a host site (Canva Button), and a JavaScript SDK for print partners embedding the
+  Canva editor into a product flow.
+families:
+  - name: App UI Kit
+    kind: react-component-library
+    package: '@canva/app-ui-kit'
+    version: 5.14.0
+    published: '2026-07-29'
+    docs: https://www.canva.dev/docs/apps/app-ui-kit/
+    storybook: https://www.canva.dev/docs/apps/app-ui-kit/storybook/
+    playroom: https://playroom.canva.dev/app-ui-kit/
+    changelog: https://www.canva.dev/docs/apps/app-ui-kit/changelog/
+    description: >-
+      The component set a Canva app must render with so it matches the editor's look and feel.
+      Ships design tokens (colors, shadows, spacing, transitions, units) alongside components.
+    component_count: 58
+    components:
+      action: [Button, LinkButton, Link, SegmentedControl, Switch]
+      form:
+        - Checkbox
+        - CheckboxGroup
+        - CustomizableSelect
+        - DateInput
+        - FileInput
+        - FileInputItem
+        - FormField
+        - MultilineInput
+        - NumberInput
+        - PillsInput
+        - RadioGroup
+        - SearchInputMenu
+        - Select
+        - Slider
+        - TextInput
+        - TimeInput
+      layout: [Accordion, Box, Carousel, Column, Columns, Grid, Masonry, Rows, Scrollable, Tabs]
+      card: [AudioCard, EmbedCard, HorizontalCard, ImageCard, TypographyCard, VideoCard]
+      informational: [Alert, Badge, LoadingIndicator, ProgressBar]
+      avatar: [Avatar, AvatarGroup]
+      color: [ColorSelector, Swatch]
+      surface: [Flyout, FlyoutMenu, SurfaceHeader]
+      typography: [Text, Title, TruncatedText]
+      placeholder: [Placeholder, TextPlaceholder, TitlePlaceholder]
+      other: [HtmlPreview, Icons, InputPill, Pill]
+    design_tokens:
+      docs: https://www.canva.dev/docs/apps/app-ui-kit/design-tokens/
+      families: [colors, shadows, spacing, transitions, units]
+  - name: App components
+    kind: composite-react-components
+    package: '@canva/app-components'
+    version: 2.7.0
+    published: '2026-08-11'
+    description: >-
+      Higher-level composite components for reusable app patterns — most notably the
+      digital-asset-management content browser used by DAM integrations.
+    example: https://www.canva.dev/docs/apps/examples/digital-asset-management/
+  - name: Canva Button
+    kind: embeddable-widget
+    docs: https://www.canva.dev/docs/button/
+    distribution: script tag (hosted by Canva)
+    registry: cdn
+    version: null
+    version_note: >-
+      Distributed as a Canva-hosted script include, not a versioned package. The docs give no
+      pinned version and no registry metadata endpoint exists, so a consumer cannot tell which
+      build they are loading — the include floats to whatever Canva serves.
+    variants:
+      - name: HTML API
+        docs: https://www.canva.dev/docs/button/html/getting-started/
+        description: Declarative markup — the lowest-effort way to put "Design with Canva" on a page.
+      - name: JavaScript API
+        docs: https://www.canva.dev/docs/button/javascript/api-reference/initialize/
+        description: Programmatic control over the button and the design flow it opens.
+    comparison: https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/
+  - name: Print Partnerships SDK
+    kind: embedded-editor-sdk
+    docs: https://www.canva.dev/docs/print-partnerships/
+    distribution: Canva-hosted JavaScript SDK
+    registry: cdn
+    version: null
+    version_note: >-
+      Partner-scoped, Canva-hosted script; no public registry entry and no pinned version in
+      the public docs.
+    audience: Print partners (gated commercial partnership, not self-serve).
+    javascript_api:
+      - createDesign
+      - editDesign
+      - onDesignOpen
+      - onProductSelect
+      - onArtworkCreate
+      - initialize
+    rest_companion:
+      - purchase artwork (https://www.canva.dev/docs/print-partnerships/rest-api/purchase-artwork/)
+    connect_api_operations:
+      - createPrintPartnerDesign
+      - getPrintPartnerDesign
+      - createPrintPartnerDesignExportJob
+notes:
+  - >-
+    The App UI Kit is not optional styling — Canva's design guidelines require apps to look
+    native to the editor, so the component library is effectively part of the review contract.
+  - >-
+    Two of the three embeddable surfaces (Canva Button, Print Partnerships SDK) are unpinned
+    CDN script includes with no published version. That is the honest finding, not a gap in
+    this probe.

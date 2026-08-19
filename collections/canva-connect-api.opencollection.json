@@ -2,65 +2,29 @@
   "opencollection": "1.0.0",
   "info": {
     "name": "Canva Connect API",
-    "version": "1.0.0"
-  },
-  "request": {
-    "auth": {
-      "type": "oauth2",
-      "flow": "authorization_code",
-      "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-      "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-      "credentials": {
-        "clientId": "{{clientId}}",
-        "clientSecret": "{{clientSecret}}"
-      }
-    }
+    "version": "2024-06-18"
   },
   "items": [
     {
       "info": {
-        "name": "Designs",
+        "name": "analytics",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Canva List Designs",
+            "name": "getDesignAnalytics",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.canva.com/rest/v1/designs",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/analytics",
             "params": [
               {
-                "name": "query",
-                "value": "example_value",
-                "type": "query",
-                "description": "Search term to filter designs (max 255 characters)"
-              },
-              {
-                "name": "ownership",
-                "value": "any",
-                "type": "query",
-                "description": "Filter designs by ownership status"
-              },
-              {
-                "name": "sort_by",
-                "value": "relevance",
-                "type": "query",
-                "description": "Sort order for results"
-              },
-              {
-                "name": "limit",
-                "value": "10",
-                "type": "query",
-                "description": "Number of results per page"
-              },
-              {
-                "name": "continuation",
-                "value": "example_value",
-                "type": "query",
-                "description": "Continuation token for paginated results"
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
               }
             ],
             "auth": {
@@ -74,16 +38,136 @@
               }
             }
           },
-          "docs": "Lists designs accessible to the authenticated user. Supports searching by query, filtering by ownership, sorting, and pagination using continuation tokens."
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\n<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Ente"
         },
         {
           "info": {
-            "name": "Canva Create a Design",
+            "name": "getDesignAnalyticsViewers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/analytics/viewers",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "query",
+                "description": "Filters viewers by a specific trackable link. If omitted, only viewers who visited the design without using a trackable link are returned."
+              },
+              {
+                "name": "first_viewed_after",
+                "value": "",
+                "type": "query",
+                "description": "Only returns viewers whose first view happened after this time, as a Unix timestamp (in seconds since the Unix Epoch)."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of viewers to return per page."
+              },
+              {
+                "name": "continuation",
+                "value": "",
+                "type": "query",
+                "description": "If the success response contains a continuation token, there are more viewers you can list. You can use this token as a query parameter and retrieve more viewers from the list, for example `/v1/designs/{designId}/analytics/viewers?continuation={continuation}`.\n\nTo retrieve all viewers, you might need to make multiple requests."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\n<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Ente"
+        },
+        {
+          "info": {
+            "name": "getDesignAnalyticsViewsOverTime",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/analytics/views-over-time",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "The inclusive start of the requested time range, as a Unix timestamp (in seconds since the Unix Epoch)."
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "The inclusive end of the requested time range, as a Unix timestamp (in seconds since the Unix Epoch)."
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "The timezone to use for bucketing, as a UTC offset in the form `+HH:MM` (for example, `+10:00`)."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of time buckets to return per page."
+              },
+              {
+                "name": "continuation",
+                "value": "",
+                "type": "query",
+                "description": "If the success response contains a continuation token, there are more time buckets you can list. You can use this token as a query parameter and retrieve more time buckets from the list, for example `/v1/designs/{designId}/analytics/views-over-time?continuation={continuation}`.\n\nTo retrieve all time buckets, you might need to make multiple requests."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\n<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Ente"
+        },
+        {
+          "info": {
+            "name": "getDesignAnalyticsPageViews",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.canva.com/rest/v1/designs",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/analytics/page-views",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              }
+            ],
             "body": {
               "type": "json",
               "data": "{}"
@@ -99,22 +183,34 @@
               }
             }
           },
-          "docs": "Creates a new design in Canva. The design can use a preset type (doc, whiteboard, or presentation) or custom dimensions. An optional asset can be inserted and a title can be specified."
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\n<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Ente"
         },
         {
           "info": {
-            "name": "Canva Get a Design",
+            "name": "getDesignAnalyticsLinks",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.canva.com/rest/v1/designs/:designId",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/analytics/links",
             "params": [
               {
                 "name": "designId",
                 "value": "",
                 "type": "path",
-                "description": "The design ID"
+                "description": "The design ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of links to return per page."
+              },
+              {
+                "name": "continuation",
+                "value": "",
+                "type": "query",
+                "description": "If the success response contains a continuation token, there are more links you can list. You can use this token as a query parameter and retrieve more links from the list, for example `/v1/designs/{designId}/analytics/links?continuation={continuation}`.\n\nTo retrieve all links, you might need to make multiple requests."
               }
             ],
             "auth": {
@@ -128,19 +224,46 @@
               }
             }
           },
-          "docs": "Retrieves metadata for a specific design, including title, owner, URLs, timestamps, thumbnail, and page count."
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\n<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Ente"
         }
       ]
     },
     {
       "info": {
-        "name": "Assets",
+        "name": "app",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Canva Get an Asset",
+            "name": "getAppJwks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/apps/:appId/jwks",
+            "params": [
+              {
+                "name": "appId",
+                "value": "",
+                "type": "path",
+                "description": "The app ID."
+              }
+            ]
+          },
+          "docs": "Returns the Json Web Key Set (public keys) of an app. These keys are used to\nverify JWTs sent to app backends."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "asset",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getAsset",
             "type": "http"
           },
           "http": {
@@ -151,7 +274,7 @@
                 "name": "assetId",
                 "value": "",
                 "type": "path",
-                "description": "The asset ID"
+                "description": "The ID of the asset."
               }
             ],
             "auth": {
@@ -165,11 +288,44 @@
               }
             }
           },
-          "docs": "Retrieves metadata for a specific asset, including type, name, tags, owner, timestamps, thumbnail, and import status."
+          "docs": "You can retrieve the metadata of an asset by specifying its `assetId`."
         },
         {
           "info": {
-            "name": "Canva Delete an Asset",
+            "name": "updateAsset",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.canva.com/rest/v1/assets/:assetId",
+            "params": [
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the asset."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "You can update the name and tags of an asset by specifying its `assetId`. Updating the tags\nreplaces all existing tags of the asset."
+        },
+        {
+          "info": {
+            "name": "deleteAsset",
             "type": "http"
           },
           "http": {
@@ -180,7 +336,7 @@
                 "name": "assetId",
                 "value": "",
                 "type": "path",
-                "description": "The asset ID"
+                "description": "The ID of the asset."
               }
             ],
             "auth": {
@@ -194,11 +350,11 @@
               }
             }
           },
-          "docs": "Deletes an asset from the authenticated user's account."
+          "docs": "You can delete an asset by specifying its `assetId`. This operation mirrors the behavior\nin the Canva UI. Deleting an item moves it to the trash.\nDeleting an asset doesn't remove it from designs that already use it."
         },
         {
           "info": {
-            "name": "Canva Upload an Asset",
+            "name": "CreateAssetUploadJob",
             "type": "http"
           },
           "http": {
@@ -207,7 +363,7 @@
             "headers": [
               {
                 "name": "Asset-Upload-Metadata",
-                "value": "example_value"
+                "value": ""
               }
             ],
             "auth": {
@@ -221,11 +377,11 @@
               }
             }
           },
-          "docs": "Uploads an image or video asset to the authenticated user's Canva account. The asset name is provided as a Base64-encoded string in the Asset-Upload-Metadata header. The request body contains the raw binary file content."
+          "docs": "Starts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to upload an asset to the user's content library. Supported file types for assets are listed in the [Assets API overview](https://www.canva.dev/docs/connect/api-reference/assets/).\n\nThe request format for this endpoint is an `application/octet-stream` body of bytes. Attach\ninformation about the upload using an `Asset-Upload-Metadata` header.\n\n\n<Note>\n\nFor more information on the"
         },
         {
           "info": {
-            "name": "Canva Get Asset Upload Job",
+            "name": "GetAssetUploadJob",
             "type": "http"
           },
           "http": {
@@ -236,7 +392,7 @@
                 "name": "jobId",
                 "value": "",
                 "type": "path",
-                "description": "The job ID"
+                "description": "The asset upload job ID."
               }
             ],
             "auth": {
@@ -250,120 +406,16 @@
               }
             }
           },
-          "docs": "Retrieves the status of an asset upload job. When complete, includes the uploaded asset metadata."
-        }
-      ]
-    },
-    {
-      "info": {
-        "name": "Folders",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Canva Get a Folder",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.canva.com/rest/v1/folders/:folderId",
-            "params": [
-              {
-                "name": "folderId",
-                "value": "",
-                "type": "path",
-                "description": "The folder ID"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Retrieves metadata for a specific folder, including name, timestamps, and thumbnail."
+          "docs": "Get the result of an asset upload job that was created using the [Create asset upload job API](https://www.canva.dev/docs/connect/api-reference/assets/create-asset-upload-job/).\n\nYou might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints)."
         },
         {
           "info": {
-            "name": "Canva List Folder Items",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.canva.com/rest/v1/folders/:folderId/items",
-            "params": [
-              {
-                "name": "folderId",
-                "value": "",
-                "type": "path",
-                "description": "The folder ID"
-              },
-              {
-                "name": "item_types",
-                "value": "",
-                "type": "query",
-                "description": "Filter by item type"
-              },
-              {
-                "name": "sort_by",
-                "value": "created_ascending",
-                "type": "query",
-                "description": "Sort order for results"
-              },
-              {
-                "name": "limit",
-                "value": "10",
-                "type": "query",
-                "description": "Number of results per page"
-              },
-              {
-                "name": "continuation",
-                "value": "example_value",
-                "type": "query",
-                "description": "Continuation token for paginated results"
-              },
-              {
-                "name": "pin_status",
-                "value": "any",
-                "type": "query",
-                "description": "Filter by pin status"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Lists items within a folder, including designs, subfolders, and images. Supports filtering by item type, sorting, pin status filtering, and pagination."
-        },
-        {
-          "info": {
-            "name": "Canva Move an Item to a Folder",
+            "name": "createUrlAssetUploadJob",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.canva.com/rest/v1/folders/:folderId/items:move",
-            "params": [
-              {
-                "name": "folderId",
-                "value": "",
-                "type": "path",
-                "description": "The folder ID"
-              }
-            ],
+            "url": "https://api.canva.com/rest/v1/url-asset-uploads",
             "body": {
               "type": "json",
               "data": "{}"
@@ -379,55 +431,22 @@
               }
             }
           },
-          "docs": "Moves a design, folder, or image into the specified folder."
-        }
-      ]
-    },
-    {
-      "info": {
-        "name": "Exports",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Canva Create a Design Export Job",
-            "type": "http"
-          },
-          "http": {
-            "method": "POST",
-            "url": "https://api.canva.com/rest/v1/exports",
-            "body": {
-              "type": "json",
-              "data": "{}"
-            },
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Creates an asynchronous job to export a design from Canva. Supported formats include PDF, JPG, PNG, GIF, PPTX, and MP4. Each format supports format-specific options such as quality, dimensions, page selection, and transparency."
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nStarts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-en"
         },
         {
           "info": {
-            "name": "Canva Get a Design Export Job",
+            "name": "getUrlAssetUploadJob",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.canva.com/rest/v1/exports/:exportId",
+            "url": "https://api.canva.com/rest/v1/url-asset-uploads/:jobId",
             "params": [
               {
-                "name": "exportId",
+                "name": "jobId",
                 "value": "",
                 "type": "path",
-                "description": "The export job ID"
+                "description": "The asset upload job ID."
               }
             ],
             "auth": {
@@ -441,229 +460,19 @@
               }
             }
           },
-          "docs": "Retrieves the status and results of an export job. When the job completes successfully, the response includes download URLs for the exported files, valid for 24 hours."
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nGet the result of an asset upload job that was created using the [Create asset upload job via URL API](https:/"
         }
       ]
     },
     {
       "info": {
-        "name": "Comments",
+        "name": "autofill",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Canva Create a Comment",
-            "type": "http"
-          },
-          "http": {
-            "method": "POST",
-            "url": "https://api.canva.com/rest/v1/comments",
-            "body": {
-              "type": "json",
-              "data": "{}"
-            },
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Creates a new top-level comment on a design. Supports mentioning users using the [user_id:team_id] format in the message text."
-        },
-        {
-          "info": {
-            "name": "Canva Create a Reply to a Comment",
-            "type": "http"
-          },
-          "http": {
-            "method": "POST",
-            "url": "https://api.canva.com/rest/v1/comments/:commentId/replies",
-            "params": [
-              {
-                "name": "commentId",
-                "value": "500123",
-                "type": "path",
-                "description": "The parent comment ID"
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            },
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Creates a reply to an existing comment thread on a design."
-        }
-      ]
-    },
-    {
-      "info": {
-        "name": "Users",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Canva Get Current User",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.canva.com/rest/v1/users/me"
-          },
-          "docs": "Retrieves the user ID and team ID for the currently authenticated user."
-        }
-      ]
-    },
-    {
-      "info": {
-        "name": "Brand Templates",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Canva List Brand Templates",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.canva.com/rest/v1/brand-templates",
-            "params": [
-              {
-                "name": "query",
-                "value": "example_value",
-                "type": "query",
-                "description": "Search term to filter brand templates"
-              },
-              {
-                "name": "ownership",
-                "value": "any",
-                "type": "query",
-                "description": "Filter by ownership status"
-              },
-              {
-                "name": "sort_by",
-                "value": "relevance",
-                "type": "query",
-                "description": "Sort order for results"
-              },
-              {
-                "name": "dataset",
-                "value": "any",
-                "type": "query",
-                "description": "Filter by dataset availability"
-              },
-              {
-                "name": "limit",
-                "value": "10",
-                "type": "query",
-                "description": "Number of results per page"
-              },
-              {
-                "name": "continuation",
-                "value": "example_value",
-                "type": "query",
-                "description": "Continuation token for paginated results"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Lists brand templates available to the authenticated user. Supports searching, filtering by ownership and dataset availability, sorting, and pagination. Requires Canva Enterprise membership."
-        },
-        {
-          "info": {
-            "name": "Canva Get a Brand Template",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.canva.com/rest/v1/brand-templates/:brandTemplateId",
-            "params": [
-              {
-                "name": "brandTemplateId",
-                "value": "",
-                "type": "path",
-                "description": "The brand template ID"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Retrieves metadata for a specific brand template. Requires Canva Enterprise membership."
-        },
-        {
-          "info": {
-            "name": "Canva Get a Brand Template Dataset",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://api.canva.com/rest/v1/brand-templates/:brandTemplateId/dataset",
-            "params": [
-              {
-                "name": "brandTemplateId",
-                "value": "",
-                "type": "path",
-                "description": "The brand template ID"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
-              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Retrieves the autofill dataset for a brand template, listing the available data fields and their types (image, text, or chart). Requires Canva Enterprise membership."
-        }
-      ]
-    },
-    {
-      "info": {
-        "name": "Autofills",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Canva Create a Design Autofill Job",
+            "name": "createDesignAutofillJob",
             "type": "http"
           },
           "http": {
@@ -684,11 +493,11 @@
               }
             }
           },
-          "docs": "Creates an asynchronous job to generate a new design by autofilling a brand template with provided data. Supports text, image, and chart data fields."
+          "docs": "WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you'll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.\n\n<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.\n\nUsers on Canva paid plans have access to a limited "
         },
         {
           "info": {
-            "name": "Canva Get a Design Autofill Job",
+            "name": "getDesignAutofillJob",
             "type": "http"
           },
           "http": {
@@ -699,7 +508,7 @@
                 "name": "jobId",
                 "value": "",
                 "type": "path",
-                "description": "The job ID"
+                "description": "The design autofill job ID."
               }
             ],
             "auth": {
@@ -713,19 +522,1268 @@
               }
             }
           },
-          "docs": "Retrieves the status and results of a design autofill job. When successful, includes the generated design metadata."
+          "docs": "<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.\n\nUsers on Canva paid plans have access to a limited trial while your integration is under development. For more information, see [Trial quotas](https://www.canva.dev/docs/connect/api-requests-responses/#trial-quotas).\n</Availability>\n\nGet the result of a design autofill job that was created using the [Create design autofill job\nAPI"
         }
       ]
     },
     {
       "info": {
-        "name": "Resizes",
+        "name": "brand_template",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Canva Create a Design Resize Job",
+            "name": "listBrandTemplates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/brand-templates",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Lets you search the brand templates available to the user using a search term or terms."
+              },
+              {
+                "name": "continuation",
+                "value": "",
+                "type": "query",
+                "description": "If the success response contains a continuation token, the user has access to more\nbrand templates you can list. You can use this token as a query parameter and retrieve\nmore templates from the list, for example\n`/v1/brand-templates?continuation={continuation}`.\nTo retrieve all the brand templates available to the user, you might need to make\nmultiple requests."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The number of brand templates to return."
+              },
+              {
+                "name": "ownership",
+                "value": "",
+                "type": "query",
+                "description": "Filter the list of brand templates based on the user's ownership of the brand templates."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Sort the list of brand templates."
+              },
+              {
+                "name": "dataset",
+                "value": "",
+                "type": "query",
+                "description": "Filter the list of brand templates based on the brand templates' dataset definitions.\nBrand templates with dataset definitions are mainly used with the [Autofill APIs](https://www.canva.dev/docs/connect/api-reference/autofills/)."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you'll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.\n\nAVAILABILITY: To use this API, your integration must act on behalf of a user that's on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise).\n\nGet a list of the [brand templat"
+        },
+        {
+          "info": {
+            "name": "publishBrandTemplate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/brand-templates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nAVAILABILITY: To use this API, your integration must act on behalf of a user that's on a Canva plan with acces"
+        },
+        {
+          "info": {
+            "name": "getBrandTemplate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/brand-templates/:brandTemplateId",
+            "params": [
+              {
+                "name": "brandTemplateId",
+                "value": "",
+                "type": "path",
+                "description": "The brand template ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you'll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.\n\nAVAILABILITY: To use this API, your integration must act on behalf of a user that's on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise).\n\nRetrieves the metadata for a bra"
+        },
+        {
+          "info": {
+            "name": "getBrandTemplateDataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/brand-templates/:brandTemplateId/dataset",
+            "params": [
+              {
+                "name": "brandTemplateId",
+                "value": "",
+                "type": "path",
+                "description": "The brand template ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you'll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.\n\nAVAILABILITY: To use this API, your integration must act on behalf of a user that's on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise).\n\nGets the dataset definition of a"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "comment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "createComment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/comments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis preview API is deprecated. You should use the [Create thread](https://www.canva.dev/docs/connect/api-reference/comments/create-thread/) API instead.\n\n</Warning>\n\nCreate a new top-level comment on a design.\nFor information on comments and how they're used in the Canva UI, see the\n[Canva Help Center](https://www.canva.com/help/comments/). A design can have a maximum\nof 1000 comments."
+        },
+        {
+          "info": {
+            "name": "listReplies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/comments/:threadId/replies",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "threadId",
+                "value": "KeAbiEAjZEj",
+                "type": "path",
+                "description": "The ID of the thread."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "continuation",
+                "value": "",
+                "type": "query",
+                "description": "If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.\n\nTo retrieve all items, you might need to make multiple requests."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\nThis API is currently provided as a preview. Be aware of the following:\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n</Warning>\n\nRetrieves a list of replies for a comment or suggestion thread on a design.\n\nFor information on comments and how "
+        },
+        {
+          "info": {
+            "name": "createReply",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/comments/:threadId/replies",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "threadId",
+                "value": "KeAbiEAjZEj",
+                "type": "path",
+                "description": "The ID of the thread."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nCreates a reply to a comment or suggestion thread on a design.\nTo reply to an existing thread, you must provid"
+        },
+        {
+          "info": {
+            "name": "getThread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/comments/:threadId",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "threadId",
+                "value": "KeAbiEAjZEj",
+                "type": "path",
+                "description": "The ID of the thread."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nGets a comment or suggestion thread on a design.\nTo retrieve a reply to a comment thread, use the [Get reply]("
+        },
+        {
+          "info": {
+            "name": "getReply",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/comments/:threadId/replies/:replyId",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "threadId",
+                "value": "KeAbiEAjZEj",
+                "type": "path",
+                "description": "The ID of the thread."
+              },
+              {
+                "name": "replyId",
+                "value": "KeAZEAjijEb",
+                "type": "path",
+                "description": "The ID of the reply."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nGets a reply to a comment or suggestion thread on a design.\nFor information on comments and how they're used i"
+        },
+        {
+          "info": {
+            "name": "createThread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/comments",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\nThis API is currently provided as a preview. Be aware of the following:\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n</Warning>\n\nCreates a new comment thread on a design.\nFor information on comments and how they're used in the Canva UI, see t"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "connect",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getSigningPublicKeys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/connect/keys"
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nThe Keys API (`connect/keys`) is a security measure you can use to verify the authenticity\nof webhooks you rec"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "design",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "listDesigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs",
+            "params": [
+              {
+                "name": "query",
+                "value": "party invites",
+                "type": "query",
+                "description": "Lets you search the user's designs, and designs shared with the user, using a search term or terms."
+              },
+              {
+                "name": "continuation",
+                "value": "RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN",
+                "type": "query",
+                "description": "If the success response contains a continuation token, the list contains more designs\nyou can list. You can use this token as a query parameter and retrieve more\ndesigns from the list, for example\n`/v1/designs?continuation={continuation}`.\n\nTo retrieve all of a user's designs, you might need to make multiple requests."
+              },
+              {
+                "name": "ownership",
+                "value": "any",
+                "type": "query",
+                "description": "Filter the list of designs based on the user's ownership of the designs."
+              },
+              {
+                "name": "sort_by",
+                "value": "relevance",
+                "type": "query",
+                "description": "Sort the list of designs."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The number of designs to return."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists metadata for all the designs in a Canva user's\n[projects](https://www.canva.com/help/find-designs-and-folders/). You can also:\n\n- Use search terms to filter the listed designs.\n- Show designs either created by, or shared with the user.\n- Sort the results."
+        },
+        {
+          "info": {
+            "name": "createDesign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/designs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new Canva design. To create a new design, you can:\n\n- Use a preset design type.\n- Set height and width dimensions for a custom design.\n\n  NOTE: Custom designs can have a maximum area of 25,000,000 pixels squared (for example, 5000 × 5000 pixels). Each dimension can be between 40 and 8000 pixels, but the total area must stay within this limit.\n- Create a copy of an existing design (currently a [preview feature](https://www.canva.dev/docs/connect/#preview-apis)).\n- Create a new design fr"
+        },
+        {
+          "info": {
+            "name": "getDesign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Gets the metadata for a design. This includes owner information, URLs for editing and viewing, and thumbnail information."
+        },
+        {
+          "info": {
+            "name": "getDesignPages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/pages",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The page index to start the range of pages to return.\n\nPages are indexed using one-based numbering, so the first page in a design has the index value `1`.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The number of pages to return, starting at the page index specified using the `offset` parameter."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nLists metadata for pages in a design, such as page-specific thumbnails.\n\nFor the specified design, you can pro"
+        },
+        {
+          "info": {
+            "name": "getDesignExportFormats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/export-formats",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists the available file formats for [exporting a design](https://www.canva.dev/docs/connect/api-reference/exports/create-design-export-job/).\n\n<Note>\nThe available export formats depend on the design type and the types of pages in the design.\nEach format includes the page numbers that support it. If a format is supported by every page in the design, its `page_numbers` are omitted.\n</Note>"
+        },
+        {
+          "info": {
+            "name": "getDesignDataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/designs/:designId/dataset",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nGets the dataset definition of a design. If the design contains autofill data fields, this API\nreturns an obje"
+        },
+        {
+          "info": {
+            "name": "createPrintPartnerDesign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/print-partner/designs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nAVAILABILITY: This API is only available to Print Partners.\n\nCreates a new Canva design using a Print Partner "
+        },
+        {
+          "info": {
+            "name": "getPrintPartnerDesign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/print-partner/designs/:designId",
+            "params": [
+              {
+                "name": "designId",
+                "value": "",
+                "type": "path",
+                "description": "The design ID."
+              },
+              {
+                "name": "bleed",
+                "value": "",
+                "type": "query",
+                "description": "Bleed in microns to apply around the design in the editor. Bleed is the area\noutside the trim line used to avoid white edges after cutting. Use 0 for no bleed. If bleed is not\nspecified, a default of 3000 microns is used."
+              },
+              {
+                "name": "min_pages",
+                "value": "",
+                "type": "query",
+                "description": "Minimum number of pages the design must have in the editor. The user cannot\nreduce the page count below this value. If both min_pages and max_pages are\nprovided, min_pages must be less than or equal to max_pages."
+              },
+              {
+                "name": "max_pages",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of pages the design can have in the editor. The user cannot\nadd pages beyond this value. If both min_pages and max_pages are provided,\nmin_pages must be less than or equal to max_pages."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nAVAILABILITY: This API is only available to Print Partners.\n\nGets the metadata for a design. This includes own"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "design_import",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "createDesignImportJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/imports",
+            "headers": [
+              {
+                "name": "Import-Metadata",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Starts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to import an external file as a new design in Canva.\n\nThe request format for this endpoint has an `application/octet-stream` body of bytes,\nand the information about the import is provided using an `Import-Metadata` header.\n\nSupported file types for imports are listed in [Design imports overview](https://www.canva.dev/docs/connect/api-reference/design-imports/#supported-file-typ"
+        },
+        {
+          "info": {
+            "name": "getDesignImportJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/imports/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "f81b26fd-a33d-4c2d-9e8c-4a7aca798b17",
+                "type": "path",
+                "description": "The design import job ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Gets the result of a design import job created using the [Create design import job API](https://www.canva.dev/docs/connect/api-reference/design-imports/create-design-import-job/).\n\nYou might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints)."
+        },
+        {
+          "info": {
+            "name": "createUrlImportJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/url-imports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Starts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to import an external file from a URL as a new design in Canva.\n\nSupported file types for imports are listed in [Design imports overview](https://www.canva.dev/docs/connect/api-reference/design-imports/#supported-file-types).\n\n<Note>\n\nFor more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests"
+        },
+        {
+          "info": {
+            "name": "getUrlImportJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/url-imports/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "f81b26fd-a33d-4c2d-9e8c-4a7aca798b17",
+                "type": "path",
+                "description": "The ID of the URL import job."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Gets the result of a URL import job created using the [Create URL import job API](https://www.canva.dev/docs/connect/api-reference/design-imports/create-url-import-job/).\n\nYou might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "export",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "createDesignExportJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Starts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to export a file from Canva. Once the exported file is generated, you can download\nit using the URL(s) provided. The download URLs are only valid for 24 hours.\n\nThe request requires the design ID and the exported file format type.\n\nSupported file formats (and export file type values): JPG (`jpg`), PNG (`png`), GIF (`gif`), Microsoft PowerPoint (`pptx`), MP4 (`mp4`), PDF (`pdf`),"
+        },
+        {
+          "info": {
+            "name": "createPrintPartnerDesignExportJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/print-partner/exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nAVAILABILITY: This API is only available to Print Partners.\n\nStarts a new [asynchronous job](https://www.canva"
+        },
+        {
+          "info": {
+            "name": "getDesignExportJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/exports/:exportId",
+            "params": [
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "The export job ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Gets the result of a design export job that was created using the [Create design export job API](https://www.canva.dev/docs/connect/api-reference/exports/create-design-export-job/).\n\nIf the job is successful, the response includes an array\nof download URLs. Depending on the design type and export format, there is a download URL for each page in the design. The download URLs are only valid for 24 hours.\n\nYou might need to make multiple requests to this endpoint until you get a `success` or `faile"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "folder",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getFolder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/folders/:folderId",
+            "params": [
+              {
+                "name": "folderId",
+                "value": "FAF2lZtloor",
+                "type": "path",
+                "description": "The folder ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Gets the name and other details of a folder using a folder's `folderID`."
+        },
+        {
+          "info": {
+            "name": "updateFolder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.canva.com/rest/v1/folders/:folderId",
+            "params": [
+              {
+                "name": "folderId",
+                "value": "FAF2lZtloor",
+                "type": "path",
+                "description": "The folder ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a folder's details using its `folderID`.\nCurrently, you can only update a folder's name."
+        },
+        {
+          "info": {
+            "name": "deleteFolder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.canva.com/rest/v1/folders/:folderId",
+            "params": [
+              {
+                "name": "folderId",
+                "value": "FAF2lZtloor",
+                "type": "path",
+                "description": "The folder ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a folder with the specified `folderID`.\nDeleting a folder moves the user's content in the folder to the\n[Trash](https://www.canva.com/help/deleted-designs/) and content owned by\nother users is moved to the top level of the owner's\n[projects](https://www.canva.com/help/find-designs-and-folders/)."
+        },
+        {
+          "info": {
+            "name": "listFolderItems",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/folders/:folderId/items",
+            "params": [
+              {
+                "name": "folderId",
+                "value": "FAF2lZtloor",
+                "type": "path",
+                "description": "The folder ID."
+              },
+              {
+                "name": "continuation",
+                "value": "RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN",
+                "type": "query",
+                "description": "If the success response contains a continuation token, the folder contains more items\nyou can list. You can use this token as a query parameter and retrieve more\nitems from the list, for example\n`/v1/folders/{folderId}/items?continuation={continuation}`.\n\nTo retrieve all the items in a folder, you might need to make multiple requests."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "item_types",
+                "value": "",
+                "type": "query",
+                "description": "Filter the folder items to only return specified types. The available types are:\n`design`, `folder`, `image`, and `brand_template`. To filter for more than one item type,\nprovide a comma-delimited list.\n\nIf not specified, defaults to returning `design`, `folder`, and `image` items.\nTo include `brand_template` items, you must explicitly specify it in this parameter."
+              },
+              {
+                "name": "sort_by",
+                "value": "title_ascending",
+                "type": "query",
+                "description": "Sort the list of folder items."
+              },
+              {
+                "name": "pin_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the folder items by their pinned status."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists the items in a folder, including each item's `type`.\n\nFolders can contain:\n\n- Other folders.\n- Designs, such as Instagram posts, Presentations, and Documents ([Canva Docs](https://www.canva.com/create/documents/)).\n- Image assets.\n- Brand templates. To include `brand_template` items in the response, you must explicitly specify it in the `item_types` parameter.\n\n  AVAILABILITY: Brand template items are only returned for users on a Canva plan with access to brand templates (such as Canva Pro"
+        },
+        {
+          "info": {
+            "name": "moveFolderItem",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/folders/move",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Moves an item to another folder. You must specify the folder ID of the destination folder, as well as the ID of the item you want to move.\n\nNOTE: In some situations, a single item can exist in multiple folders. If you attempt to move an item that exists in multiple folders, the API returns an `item_in_multiple_folders` error. In this case, you must use the Canva UI to move the item to another folder."
+        },
+        {
+          "info": {
+            "name": "createFolder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/folders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a folder in one of the following locations:\n\n- The top level of a Canva user's [projects](https://www.canva.com/help/find-designs-and-folders/) (using the ID `root`),\n- The user's Uploads folder (using the ID `uploads`),\n- Another folder (using the parent folder's ID).\n\nWhen a folder is successfully created, the\nendpoint returns its folder ID, along with other information."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "merge",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "createDesignMergeJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/merges",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nStarts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-en"
+        },
+        {
+          "info": {
+            "name": "getDesignMergeJob",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/merges/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The design merge job ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nGets the result of a design merge job that was created using the [Create design merge job API](https://www.can"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "oauth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "exchangeAccessToken",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/oauth/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "This endpoint implements the OAuth 2.0 `token` endpoint, as part of the Authorization Code flow with Proof Key for Code Exchange (PKCE). For more information, see [Authentication](https://www.canva.dev/docs/connect/authentication/).\n\nTo generate an access token, you must provide one of the following:\n\n- An authorization code\n- A refresh token\n\nGenerating a token using either an authorization code or a refresh token allows your integration to act on behalf of a user. You must first [obtain user a"
+        },
+        {
+          "info": {
+            "name": "introspectToken",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/oauth/introspect",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Introspect an access token to see whether it is valid and active. You can also verify some token properties, such as its claims, scopes, and validity times.\n\nRequests to this endpoint require authentication with your client ID and client secret, using _one_ of the following methods:\n\n- **Basic access authentication** (Recommended): For [basic access authentication](https://en.wikipedia.org/wiki/Basic_access_authentication), the `{credentials}` string must be a Base64 encoded value of `{client id"
+        },
+        {
+          "info": {
+            "name": "revokeTokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.canva.com/rest/v1/oauth/revoke",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Revoke an access token or a refresh token.\n\nIf you revoke a _refresh token_, be aware that:\n\n- The refresh token's lineage is also revoked. This means that access tokens created from that refresh token are also revoked.\n- The user's consent for your integration is also revoked. This means that the user must go through the OAuth process again to use your integration.\n\nRequests to this endpoint require authentication with your client ID and client secret, using _one_ of the following methods:\n\n- *"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "oidc",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getOidcJwks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/oidc/jwks"
+          },
+          "docs": "Gets the JSON Web Key Set (public keys) for OIDC. These keys are used to verify JWTs in OpenID Connect flows."
+        },
+        {
+          "info": {
+            "name": "userInfo",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/oidc/userinfo",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Fetches the current UserInfo claims for the authorized user. This is the same fields\nreturned by a id_token returns during authorization.\n\nThe claims returned depend on the granted scopes: `profile` claims (`name`, `given_name`,\n`family_name`) are only returned when the `profile` scope is granted, and `email` claims\n(`email`, `email_verified`) are only returned when the `email` scope is granted. The\n`openid` scope is always required."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "resize",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "createDesignResizeJob",
             "type": "http"
           },
           "http": {
@@ -746,11 +1804,11 @@
               }
             }
           },
-          "docs": "Creates an asynchronous job to resize a design to different dimensions or a preset type (doc, whiteboard, or presentation). The resize creates a new design without modifying the original."
+          "docs": "<Availability>\n\nTo use this API, your integration must act on behalf of a user that's on a Canva plan with premium features (such as Canva Pro).\n\nUsers on the Canva Free plan have access to a limited trial. For more information, see [Trial quotas](https://www.canva.dev/docs/connect/api-requests-responses/#trial-quotas).\n\n</Availability>\n\nStarts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints)\nto create a resized copy of a design. The"
         },
         {
           "info": {
-            "name": "Canva Get a Design Resize Job",
+            "name": "getDesignResizeJob",
             "type": "http"
           },
           "http": {
@@ -761,7 +1819,7 @@
                 "name": "jobId",
                 "value": "",
                 "type": "path",
-                "description": "The job ID"
+                "description": "The design resize job ID."
               }
             ],
             "auth": {
@@ -775,7 +1833,78 @@
               }
             }
           },
-          "docs": "Retrieves the status and results of a design resize job. When successful, includes the newly created design metadata."
+          "docs": "<Availability>\n\nTo use this API, your integration must act on behalf of a user that's on a Canva plan with premium features (such as Canva Pro).\n\nUsers on the Canva Free plan have access to a limited trial. For more information, see [Trial quotas](https://www.canva.dev/docs/connect/api-requests-responses/#trial-quotas).\n\n</Availability>\n\nGets the result of a design resize job that was created using the [Create design resize\njob API](https://www.canva.dev/docs/connect/api-reference/resizes/create"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "user",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "usersMe",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/users/me",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the User ID and Team ID of the user\naccount associated with the provided access token."
+        },
+        {
+          "info": {
+            "name": "getUserCapabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/users/me/capabilities",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists the API capabilities for the user account associated with the provided access token. For more information, see [Capabilities](https://www.canva.dev/docs/connect/capabilities/)."
+        },
+        {
+          "info": {
+            "name": "getUserProfile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.canva.com/rest/v1/users/me/profile",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://www.canva.com/api/oauth/authorize",
+              "accessTokenUrl": "https://api.canva.com/rest/v1/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Currently, this returns the display name of the user account associated with the provided access token. More user information is expected to be included in the future."
         }
       ]
     }

@@ -1,30 +1,134 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/canva-connect-api-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: https://www.canva.dev/docs/connect/appendix/scopes/ + https://www.canva.dev/sources/connect/api/latest/api.yml
+  (openapi/canva-connect-api-openapi.yml)
 schemes:
 - name: oauth2
+  source: openapi/canva-assets-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-autofills-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-brand-templates-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-comments-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauthAuthCode
   source: openapi/canva-connect-api-openapi.yml
   flows:
   - flow: authorizationCode
     authorizationUrl: https://www.canva.com/api/oauth/authorize
     tokenUrl: https://api.canva.com/rest/v1/oauth/token
-  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included
-    in the Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-designs-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-exports-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-folders-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-resizes-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
+- name: oauth2
+  source: openapi/canva-users-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.canva.com/api/oauth/authorize
+    tokenUrl: https://api.canva.com/rest/v1/oauth/token
+  description: Canva uses OAuth 2.0 with authorization code flow. Access tokens must be included in the
+    Authorization header as a Bearer token.
 scopes:
 - scope: asset:read
   description: Read asset metadata
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
 - scope: asset:write
   description: Upload and delete assets
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
 - scope: brandtemplate:content:read
   description: Read brand template content and datasets
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
+  - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
+- scope: brandtemplate:content:write
+  description: Publish brand templates associated with the user's brand.
   flows:
   - authorizationCode
   sources:
@@ -34,33 +138,105 @@ scopes:
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
+  - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
+- scope: collaboration:event
+  description: Receive webhook notifications about events relevant to the user.
+  flows:
+  - authorizationCode
+  sources:
   - openapi/canva-connect-api-openapi.yml
 - scope: comment:read
   description: Read comments on designs
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
 - scope: comment:write
   description: Create and manage comments
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
 - scope: design:content:read
   description: Read design content
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
 - scope: design:content:write
   description: Create and modify designs
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
 - scope: design:meta:read
   description: Read design metadata
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
+  - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
+- scope: email
+  description: Read user email address through OIDC.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: folder:permission:write
+  description: Set, update, or remove permissions assigned to the user's folders.
   flows:
   - authorizationCode
   sources:
@@ -70,10 +246,67 @@ scopes:
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
 - scope: folder:write
   description: Modify folder contents
   flows:
   - authorizationCode
   sources:
+  - openapi/canva-assets-api-openapi.yml
+  - openapi/canva-autofills-api-openapi.yml
+  - openapi/canva-brand-templates-api-openapi.yml
+  - openapi/canva-comments-api-openapi.yml
   - openapi/canva-connect-api-openapi.yml
+  - openapi/canva-designs-api-openapi.yml
+  - openapi/canva-exports-api-openapi.yml
+  - openapi/canva-folders-api-openapi.yml
+  - openapi/canva-resizes-api-openapi.yml
+  - openapi/canva-users-api-openapi.yml
+- scope: openid
+  description: Read user information through Open ID Connect (OIDC).
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: profile
+  description: Read user profile information through OIDC.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+- scope: profile:read
+  description: Read a user's profile and account information.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canva-connect-api-openapi.yml
+docs: https://www.canva.dev/docs/connect/appendix/scopes/
+note: 'Scope list reconciled against Canva''s published scopes reference on 2026-08-13: the docs table
+  and the OpenAPI oauthAuthCode flow agree exactly on 18 scopes. Canva scopes are EXPLICIT and non-implying
+  — asset:write does not grant asset:read; both must be enabled in integration settings AND requested
+  at authorization. Three further scopes (brandkit:read, help:answers:read, help:answers:write) are declared
+  by the hosted MCP server at mcp.canva.com but appear in neither the docs table nor the OpenAPI; see
+  mcp/canva-tool-crosswalk.yml.'
+mcp_only_scopes:
+- brandkit:read
+- help:answers:read
+- help:answers:write
+oidc:
+  discovery: https://www.canva.com/.well-known/openid-configuration
+  scopes_supported:
+  - openid
+  - email
+  - profile
+  userinfo_endpoint: https://api.canva.com/auth/v1/oidc/userinfo
+webhook_scope:
+  scope: collaboration:event
+  note: Required base scope for every webhook notification type; see asyncapi/canva-webhooks.yml.

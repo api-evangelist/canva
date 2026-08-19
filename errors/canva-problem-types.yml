@@ -1,0 +1,298 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.canva.dev/docs/connect/error-responses/
+derived_from: openapi/canva-connect-api-openapi.yml
+docs: https://www.canva.dev/docs/connect/error-responses/
+description: >-
+  Canva Connect API error catalog. Canva publishes a single flat error reference of stable,
+  machine-readable error codes shared across every endpoint.
+format: custom
+rfc9457: false
+envelope:
+  media_type: application/json
+  shape:
+    code: Stable machine-readable error code. The field to switch on.
+    message: Human-readable description of what went wrong.
+  example: |
+    HTTP 404
+    {
+      "code": "design_not_found",
+      "message": "Design with id 'ABCD' not found"
+    }
+  note: >-
+    NOT RFC 9457. There is no `type` URI, no `title`, no `status` and no
+    application/problem+json media type — every error is application/json with a two-field
+    body. Handle programmatically on `code`, never on `message`.
+status_codes_observed:
+  '400': 31
+  '401': 9
+  '403': 44
+  '404': 47
+  '413': 1
+  '429': 12
+  default: 59
+problem_types:
+  - code: invalid_access_token
+    status: 401
+    title: Access token is malformed, expired, or invalid
+    remediation: >-
+      Check the token format and expiry, refresh it, or re-authenticate the user.
+      See https://www.canva.dev/docs/connect/authentication/
+  - code: revoked_access_token
+    status: 401
+    title: Access token has been revoked
+    remediation: Re-run the authorization code flow to obtain a new token.
+  - code: missing_scope
+    status: 403
+    title: The token does not carry a scope this endpoint requires
+    remediation: >-
+      Add the missing scope in your integration settings AND request it during
+      authorization; Canva scopes are explicit — asset:write does not imply asset:read.
+  - code: permission_denied
+    status: 403
+    title: The user lacks permission for the resource, or has exhausted a trial quota
+    remediation: >-
+      Notify the user. On premium endpoints this is also the trial-quota exhaustion error and
+      carries an upgrade URL in the message.
+  - code: user_role_required
+    status: 403
+    title: The user's role in the team does not permit this operation
+    remediation: Ask the user to perform the action with an account holding the required role.
+  - code: not_found
+    status: 404
+    title: The requested resource does not exist or is not accessible
+    remediation: Verify the resource ID; it may have been deleted or moved.
+  - code: design_not_found
+    status: 404
+    title: The specified design does not exist or is not accessible
+    remediation: Check the design ID and the user's access to the team that owns it.
+  - code: folder_not_found
+    status: 404
+    title: The specified folder does not exist or is not accessible
+  - code: asset_not_found
+    status: 404
+    title: The specified asset does not exist or is not accessible
+  - code: comment_not_found
+    status: 404
+    title: The specified comment does not exist
+  - code: thread_not_found
+    status: 404
+    title: The specified comment thread does not exist
+  - code: reply_not_found
+    status: 404
+    title: The specified reply does not exist
+  - code: design_or_comment_not_found
+    status: 404
+    title: Neither the design nor the comment could be resolved
+  - code: design_or_thread_not_found
+    status: 404
+    title: Neither the design nor the thread could be resolved
+  - code: page_not_found
+    status: 404
+    title: The specified design page does not exist
+  - code: endpoint_not_found
+    status: 404
+    title: No such endpoint
+  - code: endpoint_gone
+    status: 410
+    title: The endpoint has been removed
+    remediation: Migrate to the replacement endpoint named in the changelog.
+  - code: unsupported_version
+    status: 400
+    title: The requested Connect API version is not supported
+    remediation: >-
+      See https://www.canva.dev/docs/connect/versions/ — versions are date-based and
+      superseded versions are supported for at least 6 months.
+  - code: bad_request_body
+    status: 400
+    title: The request body is malformed or contains invalid data
+    remediation: Validate the payload against the OpenAPI schema for the operation.
+  - code: bad_request_params
+    status: 400
+    title: Invalid parameters in the request URL
+  - code: bad_query_params
+    status: 400
+    title: Invalid query string parameters
+  - code: bad_http_method
+    status: 405
+    title: The HTTP method is not allowed on this path
+  - code: invalid_field
+    status: 400
+    title: A specific field in the request contains invalid data
+  - code: missing_field
+    status: 400
+    title: A required field is missing from the request
+  - code: invalid_header_value
+    status: 400
+    title: A request header carries an invalid value
+  - code: unsupported_content_type
+    status: 415
+    title: The request Content-Type is not supported
+  - code: request_too_large
+    status: 413
+    title: The request body exceeds the size limit
+  - code: invalid_file_format
+    status: 400
+    title: The supplied file is not in a format Canva accepts
+  - code: offset_too_large
+    status: 400
+    title: The pagination offset exceeds the allowed maximum
+  - code: too_many_requests
+    status: 429
+    title: Rate limit exceeded
+    remediation: >-
+      Implement exponential backoff and retry. Canva publishes no numeric limits; treat 429
+      as the only authoritative signal. For job polling see
+      https://www.canva.dev/docs/connect/api-requests-responses/#job-polling-strategies
+  - code: quota_exceeded
+    status: 403
+    title: An account quota has been exhausted
+  - code: ai_credit_quota_exceeded
+    status: 403
+    title: The user's AI credit quota is exhausted
+  - code: ai_credit_quota_cooldown
+    status: 403
+    title: The user's AI credits are in a cooldown window
+  - code: license_required
+    status: 403
+    title: The operation requires a license the user does not hold
+  - code: feature_not_available
+    status: 403
+    title: The feature is not available to this user or team
+  - code: internal_error
+    status: 500
+    title: Unexpected server-side error
+    remediation: >-
+      Retry after a delay; check https://www.canvastatus.com/ for a known incident.
+  - code: design_not_fillable
+    status: 400
+    title: The design has no autofillable data fields
+  - code: autofill_data_invalid
+    status: 400
+    title: The supplied autofill data does not match the template dataset
+  - code: unsupported_design_type
+    status: 400
+    title: The design type is not supported by this operation
+  - code: design_type_not_found
+    status: 404
+    title: The named design type does not exist
+  - code: design_generation_not_enabled
+    status: 403
+    title: Design generation is not enabled for this account
+  - code: item_in_multiple_folders
+    status: 400
+    title: The item exists in more than one folder; specify the source folder
+  - code: max_limit_reached
+    status: 400
+    title: A resource maximum has been reached
+  - code: too_many_comments
+    status: 400
+    title: The design has reached its comment limit
+  - code: too_many_replies
+    status: 400
+    title: The thread has reached its reply limit
+  - code: message_too_long
+    status: 400
+    title: The comment or reply body exceeds the maximum length
+  - code: review_dismissed
+    status: 400
+    title: The approval review has already been dismissed
+  - code: input_unsafe
+    status: 400
+    title: The input was rejected by Canva's safety checks
+  - code: invalid_grant
+    status: 400
+    title: OAuth grant is invalid or expired
+  - code: invalid_request
+    status: 400
+    title: Malformed OAuth request
+  - code: invalid_client
+    status: 401
+    title: OAuth client credentials are invalid
+  - code: unauthorized_client
+    status: 403
+    title: The OAuth client is not authorized for this grant type
+  - code: unsupported_grant_type
+    status: 400
+    title: The requested OAuth grant type is not supported
+  - code: invalid_scope
+    status: 400
+    title: One or more requested scopes are invalid
+  - code: invalid_basic_header
+    status: 401
+    title: The HTTP Basic authorization header is malformed
+  - code: unauthorized_user
+    status: 403
+    title: The user is not authorized
+  - code: user_not_found
+    status: 404
+    title: The user does not exist
+  - code: user_not_eligible
+    status: 403
+    title: The user is not eligible for this operation
+  - code: user_not_managed
+    status: 403
+    title: The user is not managed by the team
+  - code: user_not_active
+    status: 403
+    title: The user account is not active
+  - code: user_email_unverified
+    status: 403
+    title: The user's email address is unverified
+  - code: user_pending_consent
+    status: 403
+    title: The user has not completed a required consent step
+  - code: account_exists
+    status: 409
+    title: An account already exists for this identity
+  - code: display_name_unavailable
+    status: 400
+    title: The requested display name is unavailable
+  - code: team_not_found
+    status: 404
+    title: The team does not exist
+  - code: team_is_default
+    status: 400
+    title: The operation is not valid on a default team
+  - code: group_not_found
+    status: 404
+    title: The group does not exist
+  - code: permission_not_found
+    status: 404
+    title: The permission does not exist
+  - code: permission_exists
+    status: 409
+    title: The permission already exists
+  - code: content_not_found
+    status: 404
+    title: The content does not exist
+  - code: doctype_not_found
+    status: 404
+    title: The document type does not exist
+  - code: app_not_found
+    status: 404
+    title: The app does not exist
+  - code: app_has_non_draft_versions
+    status: 400
+    title: The app has published versions and cannot be modified this way
+  - code: invalid_status_transition
+    status: 400
+    title: The requested status transition is not allowed
+  - code: translation_validation_failed
+    status: 400
+    title: Supplied translations failed validation
+  - code: saml_team_id_conflict
+    status: 409
+    title: SAML team ID conflicts with an existing team
+  - code: saml_name_id_not_available
+    status: 400
+    title: The SAML NameID is not available
+notes:
+  - >-
+    HTTP status codes annotated per code are the status Canva documents or the status the
+    OpenAPI attaches to that error where one is stated; codes documented only in the flat
+    error-code list carry the conventional status for their class and should be treated as
+    indicative. The `code` string is the stable contract, not the status.
+  - >-
+    The catalog is API-wide, not per-endpoint: the same codes are returned across every
+    Connect API operation, which is what makes a single switch on `code` viable.

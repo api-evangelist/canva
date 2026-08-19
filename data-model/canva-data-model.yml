@@ -1,0 +1,251 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/canva-connect-api-openapi.yml
+docs: https://www.canva.dev/docs/connect/canva-concepts/
+description: >-
+  Entity-relationship graph of the Canva Connect API, derived from $ref links and id-reference
+  fields across the 317 schemas in the published OpenAPI. The model is design-centric: Design
+  is the hub, Folder is the container, Asset is the input, and everything else either produces
+  a Design (jobs), annotates one (threads/replies), measures one (analytics) or owns one
+  (TeamUser/Team).
+schema_count: 317
+identifiers:
+  style: opaque string ids, no type prefix
+  note: >-
+    Unlike providers that prefix ids by type (Stripe's `cus_`, `pi_`), Canva ids are opaque
+    strings with no embedded type marker. A design id and a folder id are indistinguishable
+    by inspection — the caller must track which is which.
+  special_values:
+    - value: uploads
+      applies_to: folder id
+      meaning: The user's Uploads folder (added 2025-08-11).
+    - value: root
+      applies_to: folder id
+      meaning: The user's top-level Projects folder.
+entities:
+  - name: Design
+    summary_variant: DesignSummary
+    description: A Canva design. The hub entity of the whole API.
+    key_fields: [id, title, owner, thumbnail, urls, design_types, page_count]
+    relationships:
+      - type: belongs_to
+        target: TeamUserSummary
+        via: owner
+      - type: has_one
+        target: DesignLinks
+        via: urls
+      - type: has_one
+        target: Thumbnail
+        via: thumbnail
+      - type: has_many
+        target: DesignPage
+        via: getDesignPages
+      - type: has_many
+        target: Thread
+        via: design_id
+      - type: has_one
+        target: DataField
+        via: getDesignDataset
+  - name: DesignPage
+    key_fields: [id, page_number, index, dimensions, thumbnail, design_type]
+    relationships:
+      - type: belongs_to
+        target: Design
+        via: parent resource path
+      - type: has_one
+        target: PageDimensions
+        via: dimensions
+    deprecated_fields:
+      - field: index
+        replacement: page_number
+  - name: Folder
+    summary_variant: FolderSummary
+    key_fields: [id, name, thumbnail, created_at, updated_at]
+    relationships:
+      - type: has_many
+        target: FolderItem
+        via: listFolderItems
+      - type: belongs_to
+        target: Folder
+        via: parent_folder_id
+        note: Folders nest; CreateFolderRequest takes a parent_folder_id.
+  - name: FolderItem
+    description: >-
+      Polymorphic container row — resolves to exactly one of DesignItem, FolderItem(nested),
+      ImageItem or BrandTemplateItem.
+    relationships:
+      - type: has_one
+        target: DesignSummary
+        via: design
+      - type: has_one
+        target: Folder
+        via: folder
+      - type: has_one
+        target: AssetSummary
+        via: image
+      - type: has_one
+        target: BrandTemplateSummary
+        via: brand_template
+  - name: Asset
+    summary_variant: AssetSummary
+    key_fields: [id, name, type, tags, thumbnail, metadata, import_status, owner]
+    relationships:
+      - type: belongs_to
+        target: TeamUserSummary
+        via: owner
+      - type: has_one
+        target: Thumbnail
+        via: thumbnail
+      - type: has_one
+        target: AssetMetadata
+        via: metadata
+      - type: has_one
+        target: ImportStatus
+        via: import_status
+  - name: BrandTemplate
+    summary_variant: BrandTemplateSummary
+    key_fields: [id, title, view_url, create_url, thumbnail]
+    relationships:
+      - type: has_one
+        target: Thumbnail
+        via: thumbnail
+      - type: has_many
+        target: DataField
+        via: getBrandTemplateDataset
+      - type: belongs_to
+        target: Design
+        via: design_id
+        note: PublishBrandTemplateRequest promotes a Design into a BrandTemplate.
+  - name: Thread
+    description: >-
+      A comment thread on a design. Polymorphic on thread_type — either a CommentThreadType
+      or a SuggestionThreadType.
+    key_fields: [id, design_id, author, thread_type, created_at, updated_at]
+    relationships:
+      - type: belongs_to
+        target: Design
+        via: design_id
+      - type: belongs_to
+        target: User
+        via: author
+      - type: has_many
+        target: Reply
+        via: thread_id
+      - type: has_one
+        target: User
+        via: assignee
+      - type: has_one
+        target: User
+        via: resolver
+      - type: has_many
+        target: UserMention
+        via: mentions
+  - name: Reply
+    key_fields: [id, design_id, thread_id, author, content, mentions]
+    relationships:
+      - type: belongs_to
+        target: Thread
+        via: thread_id
+      - type: belongs_to
+        target: Design
+        via: design_id
+      - type: belongs_to
+        target: User
+        via: author
+  - name: ParentComment
+    deprecated: true
+    note: >-
+      Legacy comment model behind the deprecated createComment operation. Superseded by
+      Thread/Reply. Retained for compatibility; do not build on it.
+  - name: User
+    key_fields: [id, display_name]
+  - name: TeamUser
+    summary_variant: TeamUserSummary
+    key_fields: [user_id, team_id]
+    description: >-
+      The real ownership identity — a user WITHIN a team. Ownership on Design and Asset points
+      at TeamUserSummary, not User, which is why an id alone is not enough to resolve an owner.
+    relationships:
+      - type: belongs_to
+        target: Team
+        via: team_id
+      - type: belongs_to
+        target: User
+        via: user_id
+  - name: Team
+    key_fields: [id, display_name]
+  - name: Group
+    key_fields: [id]
+    note: Appears in design-approval notification content (approver groups).
+  - name: Capability
+    description: >-
+      A plan-gated feature flag on the authenticated user (e.g. `resize`, `analytics`).
+      Operations declare required capabilities via x-required-capabilities.
+    relationships:
+      - type: belongs_to
+        target: TeamUser
+        via: getUserCapabilities
+job_entities:
+  description: >-
+    Every long-running operation is modelled identically — a job with id/status/result/error.
+    This uniformity is the single most useful thing about the model for an agent: one polling
+    routine covers eight surfaces.
+  shape:
+    id: string
+    status: in_progress | success | failed
+    result: entity-specific
+    error: '{code, message}'
+  jobs:
+    - name: AssetUploadJob
+      produces: Asset
+    - name: DesignAutofillJob
+      produces: DesignSummary
+      extras: [trial_information]
+    - name: DesignResizeJob
+      produces: DesignSummary
+      extras: [trial_information]
+    - name: DesignImportJob
+      produces: DesignSummary[]
+    - name: DesignMergeJob
+      produces: DesignSummary
+    - name: ExportJob
+      produces: export URLs
+analytics_entities:
+  - name: Viewer
+    key_fields: [viewer_id, user, viewer_type, visibility, form_factor]
+    relationships:
+      - type: belongs_to
+        target: TeamUser
+        via: user
+  - name: TrackableLink
+    key_fields: [link_id]
+  - name: PageViewDuration
+    key_fields: [page_id]
+  - name: ViewsAtTime
+notification_entities:
+  description: >-
+    Webhook payloads are modelled in the same OpenAPI as NotificationContent variants; they
+    are read-only projections over Design/Folder/Thread/User rather than new entities.
+  variants:
+    - CommentNotificationContent
+    - SuggestionNotificationContent
+    - DesignAccessRequestedNotificationContent
+    - FolderAccessRequestedNotificationContent
+    - DesignApprovalRequestedNotificationContent
+    - DesignApprovalResponseNotificationContent
+    - DesignApprovalReviewerInvalidatedNotificationContent
+    - DesignMentionNotificationContent
+    - ShareDesignNotificationContent
+    - ShareFolderNotificationContent
+    - TeamInviteNotificationContent
+  detail: asyncapi/canva-webhooks.yml
+observations:
+  - >-
+    Canva consistently ships a full entity AND a *Summary projection (Design/DesignSummary,
+    Asset/AssetSummary, Folder/FolderSummary, BrandTemplate/BrandTemplateSummary,
+    TeamUser/TeamUserSummary). List endpoints and job results return the Summary; only the
+    single-resource GET returns the full entity. Code that assumes a list row is a full
+    entity will break.
+  - >-
+    There is no cross-entity expand parameter, so resolving a list of designs to their owners
+    or datasets requires N follow-up calls.
