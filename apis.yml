@@ -28,6 +28,17 @@ specificationVersion: '0.23'
 type: Index
 url: https://www.canva.com/developers/apis.json
 tags:
+  - Application
+  - Automation
+  - Brand Management
+  - Collaboration
+  - Design
+  - Graphics
+  - Marketing
+  - Print
+  - Templates
+  - Visual Content
+tags_raw:
   - Apps
   - Automation
   - Brand Management
@@ -46,6 +57,16 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Application
+  - Content Publishing
+  - Data Connectors
+  - Design Editing
+  - Extensions
+  - Integration
+  - Intents
+  - SDK
+  - Tables
+  tags_raw:
   - Apps
   - Content Publishing
   - Data Connectors
@@ -316,6 +337,8 @@ apis:
   humanURL: https://www.canva.com/developers/
   baseURL: https://api.canva.com
   tags:
+  - brand-templates
+  tags_raw:
   - Brand Templates
   properties:
   - type: OpenAPI
@@ -517,6 +540,8 @@ apis:
   humanURL: https://www.canva.com/developers/
   baseURL: https://api.canva.com
   tags:
+  - Export
+  tags_raw:
   - Exports
   properties:
   - type: OpenAPI
@@ -718,6 +743,8 @@ apis:
   humanURL: https://www.canva.com/developers/
   baseURL: https://api.canva.com
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
