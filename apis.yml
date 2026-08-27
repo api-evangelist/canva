@@ -808,82 +808,228 @@ apis:
     url: json-ld/canva-context.jsonld
 - name: Canva Connect API
   description: >-
-    The umbrella Canva Connect REST API as Canva publishes it — 59 operations across
-    designs, assets, folders, brand templates, autofills, exports, resizes, imports,
-    merges, comments, analytics, users, OAuth and OIDC. This entry carries Canva's own
-    OpenAPI description, fetched verbatim from
-    https://www.canva.dev/sources/connect/api/latest/api.yml.
+    The umbrella Canva Connect REST API as Canva publishes it — 59 operations across designs, assets,
+    folders, brand templates, autofills, exports, resizes, imports, merges, comments, analytics, users,
+    OAuth and OIDC. This entry carries Canva's own OpenAPI description, fetched verbatim from https://www.canva.dev/sources/connect/api/latest/api.yml.
   humanURL: https://www.canva.dev/docs/connect/
   baseURL: https://api.canva.com/rest/v1
   tags:
-    - Design
-    - Automation
-    - Content
+  - Design
+  - Automation
+  - Content
   properties:
-    - type: OpenAPI
-      url: openapi/canva-connect-api-openapi.yml
-    - type: Overlay
-      url: overlays/canva-connect-api-overlay.yaml
-    - type: Documentation
-      url: https://www.canva.dev/docs/connect/
-    - type: APIReference
-      url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-    - type: GettingStarted
-      url: https://www.canva.dev/docs/connect/quickstart/
-    - type: Authentication
-      url: https://www.canva.dev/docs/connect/authentication/
-    - type: ChangeLog
-      url: https://www.canva.dev/docs/connect/changelog/
-    - type: Webhooks
-      url: asyncapi/canva-webhooks.yml
-    - type: ErrorCatalog
-      url: errors/canva-problem-types.yml
-    - type: DataModel
-      url: data-model/canva-data-model.yml
-    - type: Conventions
-      url: conventions/canva-conventions.yml
+  - type: OpenAPI
+    url: openapi/canva-connect-api-openapi.yml
+  - type: Overlay
+    url: overlays/canva-connect-api-overlay.yaml
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+  - type: GettingStarted
+    url: https://www.canva.dev/docs/connect/quickstart/
+  - type: Authentication
+    url: https://www.canva.dev/docs/connect/authentication/
+  - type: ChangeLog
+    url: https://www.canva.dev/docs/connect/changelog/
+  - type: Webhooks
+    url: asyncapi/canva-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/canva-problem-types.yml
+  - type: DataModel
+    url: data-model/canva-data-model.yml
+  - type: Conventions
+    url: conventions/canva-conventions.yml
 - name: Canva SCIM API
   description: >-
-    SCIM 2.0 API for automating provisioning and deprovisioning of Canva user accounts and
-    groups. Canva states it implements the SCIM v2 specification (RFC 7644). Available to
-    Canva Enterprise single teams; not available to multi-team or Canva for Teams
-    organizations (existing Teams users are grandfathered).
+    SCIM 2.0 API for automating provisioning and deprovisioning of Canva user accounts and groups. Canva
+    states it implements the SCIM v2 specification (RFC 7644). Available to Canva Enterprise single teams;
+    not available to multi-team or Canva for Teams organizations (existing Teams users are grandfathered).
   humanURL: https://www.canva.dev/docs/scim/
   baseURL: https://www.canva.com/_scim/v2
   tags:
-    - Identity
-    - Provisioning
-    - SCIM
-    - Enterprise
+  - Identity
+  - Provisioning
+  - SCIM
+  - Enterprise
   properties:
-    - type: Documentation
-      url: https://www.canva.dev/docs/scim/
-    - type: Authentication
-      url: https://www.canva.dev/docs/scim/authentication/
-    - type: APIReference
-      url: https://www.canva.dev/docs/scim/list-users/
-    - type: Documentation
-      url: https://www.canva.dev/docs/scim/users-groups-and-teams/
+  - type: Documentation
+    url: https://www.canva.dev/docs/scim/
+  - type: Authentication
+    url: https://www.canva.dev/docs/scim/authentication/
+  - type: APIReference
+    url: https://www.canva.dev/docs/scim/list-users/
+  - type: Documentation
+    url: https://www.canva.dev/docs/scim/users-groups-and-teams/
 - name: Canva Print API
   description: >-
-    Partner-gated REST API for print order fulfilment. Uniquely bidirectional — Canva acts
-    as the API CLIENT when sending orders to a print partner, and as the API SERVER when the
-    partner sends order status back. Date-based versions selected with the
-    X-Canva-Public-Api-Version header. Only available to partners in Canva's print
-    fulfilment network.
+    Partner-gated REST API for print order fulfilment. Uniquely bidirectional — Canva acts as the API
+    CLIENT when sending orders to a print partner, and as the API SERVER when the partner sends order
+    status back. Date-based versions selected with the X-Canva-Public-Api-Version header. Only available
+    to partners in Canva's print fulfilment network.
   humanURL: https://www.canva.dev/docs/print/
   baseURL: https://api.canva.com/rest/v1
   tags:
-    - Print
-    - Fulfillment
-    - Partners
+  - Print
+  - Fulfillment
+  - Partners
   properties:
-    - type: Documentation
-      url: https://www.canva.dev/docs/print/
-    - type: APIReference
-      url: https://www.canva.dev/docs/print/api-reference/requests-from-canva/
-    - type: APIReference
-      url: https://www.canva.dev/docs/print/api-reference/requests-to-canva/
+  - type: Documentation
+    url: https://www.canva.dev/docs/print/
+  - type: APIReference
+    url: https://www.canva.dev/docs/print/api-reference/requests-from-canva/
+  - type: APIReference
+    url: https://www.canva.dev/docs/print/api-reference/requests-to-canva/
+- aid: canva:canva-analytics-api
+  name: Canva Analytics API
+  description: The analytics API from Canva — 5 operation(s) for analytics.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-analytics-api-openapi.yml
+- aid: canva:canva-app-api
+  name: Canva App API
+  description: The app API from Canva — 1 operation(s) for app.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - app
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-app-api-openapi.yml
+- aid: canva:canva-asset-api
+  name: Canva Asset API
+  description: The asset API from Canva — 5 operation(s) for asset.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - asset
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-asset-api-openapi.yml
+- aid: canva:canva-autofill-api
+  name: Canva Autofill API
+  description: The autofill API from Canva — 2 operation(s) for autofill.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - autofill
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-autofill-api-openapi.yml
+- aid: canva:canva-brand-template-api
+  name: Canva Brand Template API
+  description: The brand_template API from Canva — 3 operation(s) for brand_template.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - brand_template
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-brand-template-api-openapi.yml
+- aid: canva:canva-comment-api
+  name: Canva Comment API
+  description: The comment API from Canva — 5 operation(s) for comment.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - comment
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-comment-api-openapi.yml
+- aid: canva:canva-design-api
+  name: Canva Design API
+  description: The design API from Canva — 7 operation(s) for design.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - design
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-design-api-openapi.yml
+- aid: canva:canva-design-import-api
+  name: Canva Design Import API
+  description: The design_import API from Canva — 4 operation(s) for design_import.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - design_import
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-design-import-api-openapi.yml
+- aid: canva:canva-export-api
+  name: Canva Export API
+  description: The export API from Canva — 3 operation(s) for export.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - export
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-export-api-openapi.yml
+- aid: canva:canva-folder-api
+  name: Canva Folder API
+  description: The folder API from Canva — 4 operation(s) for folder.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - folder
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-folder-api-openapi.yml
+- aid: canva:canva-merge-api
+  name: Canva Merge API
+  description: The merge API from Canva — 2 operation(s) for merge.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - merge
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-merge-api-openapi.yml
+- aid: canva:canva-oauth-api
+  name: Canva OAUTH API
+  description: The oauth API from Canva — 3 operation(s) for oauth.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-oauth-api-openapi.yml
+- aid: canva:canva-oidc-api
+  name: Canva Oidc API
+  description: The oidc API from Canva — 2 operation(s) for oidc.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - oidc
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-oidc-api-openapi.yml
+- aid: canva:canva-resize-api
+  name: Canva Resize API
+  description: The resize API from Canva — 2 operation(s) for resize.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - resize
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-resize-api-openapi.yml
+- aid: canva:canva-user-api
+  name: Canva User API
+  description: The user API from Canva — 3 operation(s) for user.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - user
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-user-api-openapi.yml
 common:
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/canva/overview
