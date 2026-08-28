@@ -8,6 +8,18 @@ description: >-
   enterprise identity and compliance, and the partner-gated Print API. Canva publishes its
   own OpenAPI description, a dated changelog, per-product llms.txt indexes, a hosted MCP
   server and a public set of Agent Skills.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
