@@ -1,0 +1,1462 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations with Canva via a REST api
+  license:
+    name: ©2023 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Connect Comment API
+  version: 2024-06-18
+servers:
+- description: Canva Connect API
+  url: https://api.canva.com/rest
+tags:
+- name: comment
+paths:
+  /v1/comments:
+    post:
+      deprecated: true
+      description: '<Warning>
+
+
+        This preview API is deprecated. You should use the [Create thread](https://www.canva.dev/docs/connect/api-reference/comments/create-thread/) API instead.
+
+
+        </Warning>
+
+
+        Create a new top-level comment on a design.
+
+        For information on comments and how they''re used in the Canva UI, see the
+
+        [Canva Help Center](https://www.canva.com/help/comments/). A design can have a maximum
+
+        of 1000 comments.'
+      operationId: createComment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCommentResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                assignee_not_mentioned:
+                  $ref: '#/components/examples/AssigneeNotMentionedError'
+                message_too_long:
+                  $ref: '#/components/examples/MessageTooLongError'
+                invalid_mention_ids:
+                  $ref: '#/components/examples/InvalidMentionIdsError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                too_many_comments:
+                  $ref: '#/components/examples/TooManyCommentsError'
+                not_allowed_to_comment:
+                  $ref: '#/components/examples/NotAllowedToCommentError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                design_not_found:
+                  $ref: '#/components/examples/DesignNotFoundError'
+                mentioned_user_not_found:
+                  $ref: '#/components/examples/MentionedUserNotFoundError'
+                mentioned_team_not_found:
+                  $ref: '#/components/examples/MentionedTeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - comment:write
+      tags:
+      - comment
+      x-rate-limit-per-client-user: 20
+  /v1/designs/{designId}/comments/{threadId}/replies:
+    get:
+      description: '<Warning>
+
+        This API is currently provided as a preview. Be aware of the following:
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+
+        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+        </Warning>
+
+
+        Retrieves a list of replies for a comment or suggestion thread on a design.
+
+
+        For information on comments and how they''re used in the Canva UI, see the
+
+        [Canva Help Center](https://www.canva.com/help/comments/).'
+      operationId: listReplies
+      parameters:
+      - description: The design ID.
+        explode: false
+        in: path
+        name: designId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The ID of the thread.
+        example: KeAbiEAjZEj
+        explode: false
+        in: path
+        name: threadId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          description: The number of replies to return.
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+          To retrieve all items, you might need to make multiple requests.'
+        explode: true
+        in: query
+        name: continuation
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRepliesResponse'
+          description: OK
+        '403':
+          content:
+            application/json:
+              examples:
+                not_allowed_to_fetch_replies:
+                  $ref: '#/components/examples/NotAllowedToFetchRepliesError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                design_or_thread_not_found:
+                  $ref: '#/components/examples/DesignOrThreadNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - comment:read
+      tags:
+      - comment
+      x-rate-limit-per-client-user: 100
+    post:
+      description: '<Warning>
+
+
+        This API is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+
+        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+
+        </Warning>
+
+
+        Creates a reply to a comment or suggestion thread on a design.
+
+        To reply to an existing thread, you must provide the ID of the thread
+
+        which is returned when a thread is created, or from the `thread_id` value
+
+        of an existing reply in the thread. Each thread can
+
+        have a maximum of 100 replies created for it.
+
+
+        For information on comments and how they''re used in the Canva UI, see the
+
+        [Canva Help Center](https://www.canva.com/help/comments/).'
+      operationId: createReply
+      parameters:
+      - description: The design ID.
+        explode: false
+        in: path
+        name: designId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The ID of the thread.
+        example: KeAbiEAjZEj
+        explode: false
+        in: path
+        name: threadId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReplyV2Request'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReplyV2Response'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                message_too_long:
+                  $ref: '#/components/examples/MessageTooLongError'
+                invalid_mention_ids:
+                  $ref: '#/components/examples/InvalidMentionIdsError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                too_many_replies:
+                  $ref: '#/components/examples/TooManyRepliesError'
+                not_allowed_to_reply:
+                  $ref: '#/components/examples/NotAllowedToReplyError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                design_or_comment_not_found:
+                  $ref: '#/components/examples/DesignOrCommentNotFoundForReplyError'
+                mentioned_user_not_found:
+                  $ref: '#/components/examples/MentionedUserNotFoundError'
+                mentioned_team_not_found:
+                  $ref: '#/components/examples/MentionedTeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - comment:write
+      tags:
+      - comment
+      x-rate-limit-per-client-user: 20
+  /v1/designs/{designId}/comments/{threadId}:
+    get:
+      description: '<Warning>
+
+
+        This API is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+
+        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+
+        </Warning>
+
+
+        Gets a comment or suggestion thread on a design.
+
+        To retrieve a reply to a comment thread, use the [Get reply](https://www.canva.dev/docs/connect/api-reference/comments/get-reply/) API.
+
+        For information on comments and how they''re used in the Canva UI, see the
+
+        [Canva Help Center](https://www.canva.com/help/comments/).'
+      operationId: getThread
+      parameters:
+      - description: The design ID.
+        explode: false
+        in: path
+        name: designId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The ID of the thread.
+        example: KeAbiEAjZEj
+        explode: false
+        in: path
+        name: threadId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetThreadResponse'
+          description: OK
+        '403':
+          content:
+            application/json:
+              examples:
+                not_allowed_to_fetch_comment:
+                  $ref: '#/components/examples/NotAllowedToFetchCommentError'
+                not_allowed_to_fetch_suggestion:
+                  $ref: '#/components/examples/NotAllowedToFetchSuggestionError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                thread_not_found:
+                  $ref: '#/components/examples/ThreadNotFoundError'
+                thread_not_attached_to_design:
+                  $ref: '#/components/examples/ThreadNotAttachedToDesignError'
+                suggestion_not_found:
+                  $ref: '#/components/examples/SuggestionNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - comment:read
+      tags:
+      - comment
+      x-rate-limit-per-client-user: 100
+  /v1/designs/{designId}/comments/{threadId}/replies/{replyId}:
+    get:
+      description: '<Warning>
+
+
+        This API is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+
+        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+
+        </Warning>
+
+
+        Gets a reply to a comment or suggestion thread on a design.
+
+        For information on comments and how they''re used in the Canva UI, see the
+
+        [Canva Help Center](https://www.canva.com/help/comments/).'
+      operationId: getReply
+      parameters:
+      - description: The design ID.
+        explode: false
+        in: path
+        name: designId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The ID of the thread.
+        example: KeAbiEAjZEj
+        explode: false
+        in: path
+        name: threadId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The ID of the reply.
+        example: KeAZEAjijEb
+        explode: false
+        in: path
+        name: replyId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReplyResponse'
+          description: OK
+        '403':
+          content:
+            application/json:
+              examples:
+                not_allowed_to_fetch_reply:
+                  $ref: '#/components/examples/NotAllowedToFetchReplyError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                reply_not_found:
+                  $ref: '#/components/examples/ReplyNotFoundError'
+                suggestion_reply_not_found:
+                  $ref: '#/components/examples/SuggestionReplyNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - comment:read
+      tags:
+      - comment
+      x-rate-limit-per-client-user: 100
+  /v1/designs/{designId}/comments:
+    post:
+      description: '<Warning>
+
+        This API is currently provided as a preview. Be aware of the following:
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+
+        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+        </Warning>
+
+
+        Creates a new comment thread on a design.
+
+        For information on comments and how they''re used in the Canva UI, see the
+
+        [Canva Help Center](https://www.canva.com/help/comments/).'
+      operationId: createThread
+      parameters:
+      - description: The design ID.
+        explode: false
+        in: path
+        name: designId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateThreadRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateThreadResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                assignee_not_mentioned:
+                  $ref: '#/components/examples/AssigneeNotMentionedError'
+                message_too_long:
+                  $ref: '#/components/examples/MessageTooLongError'
+                invalid_mention_ids:
+                  $ref: '#/components/examples/InvalidMentionIdsError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                too_many_comments:
+                  $ref: '#/components/examples/TooManyCommentsError'
+                not_allowed_to_comment:
+                  $ref: '#/components/examples/NotAllowedToCommentError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                design_not_found:
+                  $ref: '#/components/examples/DesignNotFoundError'
+                mentioned_user_not_found:
+                  $ref: '#/components/examples/MentionedUserNotFoundError'
+                mentioned_team_not_found:
+                  $ref: '#/components/examples/MentionedTeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - comment:write
+      tags:
+      - comment
+      x-rate-limit-per-client-user: 100
+components:
+  examples:
+    ReplyNotFoundError:
+      summary: Reply not found
+      value:
+        code: reply_not_found
+        message: Reply with ID {replyId} not found
+    NotAllowedToFetchRepliesError:
+      summary: Not allowed to fetch replies
+      value:
+        code: permission_denied
+        message: Not allowed to fetch replies
+    DesignOrCommentNotFoundForReplyError:
+      summary: Design or comment not found
+      value:
+        code: design_not_found
+        message: Design or comment not found
+    MentionedTeamNotFoundError:
+      summary: A mentioned user's team could not be found
+      value:
+        code: team_not_found
+        message: Invalid brand ID
+    SuggestionNotFoundError:
+      summary: No suggestion thread with ID found
+      value:
+        code: thread_not_found
+        message: Suggestion with ID {threadId} not found
+    AssigneeNotMentionedError:
+      summary: Assignee must be mentioned in comment content
+      value:
+        code: bad_request_body
+        message: Assignee must be mentioned in comment content
+    NotAllowedToCommentError:
+      summary: Not allowed to comment on this design
+      value:
+        code: permission_denied
+        message: Not allowed to comment on this design
+    NotAllowedToFetchSuggestionError:
+      summary: Not allowed to fetch this suggestion
+      value:
+        code: permission_denied
+        message: Not allowed to fetch this suggestion
+    MessageTooLongError:
+      summary: Message is too long
+      value:
+        code: message_too_long
+        message: Message is too long
+    NotAllowedToReplyError:
+      summary: Not allowed to reply on this design
+      value:
+        code: permission_denied
+        message: Not allowed to reply on this design
+    InvalidMentionIdsError:
+      summary: Mentions with non-obfuscated IDs are not allowed for this client
+      value:
+        code: invalid_field
+        message: Invalid IDs
+    ThreadNotAttachedToDesignError:
+      summary: Thread not attached to design
+      value:
+        code: thread_not_found
+        message: Thread with ID {threadId} is not attached to design {designId}, or design not found
+    ThreadNotFoundError:
+      summary: No thread with ID found
+      value:
+        code: thread_not_found
+        message: No thread with ID {threadId} found
+    TooManyRepliesError:
+      summary: This comment thread already has the maximum number of allowed replies
+      value:
+        code: too_many_replies
+        message: This comment thread already has the maximum number of allowed replies
+    DesignNotFoundError:
+      summary: Design not found
+      value:
+        code: design_not_found
+        message: Design not found
+    TooManyCommentsError:
+      summary: Design already has the maximum number of allowed comments
+      value:
+        code: too_many_comments
+        message: Design already has the maximum number of allowed comments
+    MentionedUserNotFoundError:
+      summary: A mentioned user could not be found
+      value:
+        code: user_not_found
+        message: Invalid user ID
+    NotAllowedToFetchCommentError:
+      summary: Not allowed to fetch this comment
+      value:
+        code: permission_denied
+        message: Not allowed to fetch this comment
+    DesignOrThreadNotFoundError:
+      summary: Design or comment not found
+      value:
+        code: design_or_thread_not_found
+        message: Design or comment not found
+    NotAllowedToFetchReplyError:
+      summary: Not allowed to fetch this reply
+      value:
+        code: permission_denied
+        message: Not allowed to fetch this reply
+    SuggestionReplyNotFoundError:
+      summary: Suggestion reply not found
+      value:
+        code: reply_not_found
+        message: Suggestion reply with ID {replyId} not found
+  schemas:
+    Reply:
+      description: 'A reply to a thread.
+
+
+        The `author` of the reply might be missing if that user account no longer exists.'
+      properties:
+        id:
+          description: The ID of the reply.
+          example: KeAZEAjijEb
+          type: string
+        design_id:
+          description: The ID of the design that the thread for this reply is attached to.
+          example: DAFVztcvd9z
+          type: string
+        thread_id:
+          description: The ID of the thread this reply is in.
+          example: KeAbiEAjZEj
+          type: string
+        author:
+          $ref: '#/components/schemas/User'
+        content:
+          $ref: '#/components/schemas/CommentContent'
+        mentions:
+          additionalProperties:
+            $ref: '#/components/schemas/UserMention'
+          description: The Canva users mentioned in the comment thread or reply.
+          example:
+            oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP:
+              tag: oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP
+              user:
+                user_id: oUnPjZ2k2yuhftbWF7873o
+                team_id: oBpVhLW22VrqtwKgaayRbP
+                display_name: John Doe
+          type: object
+        created_at:
+          description: 'When the reply was created, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692929800
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the reply was last updated, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692929900
+          format: int64
+          type: integer
+      required:
+      - content
+      - created_at
+      - design_id
+      - id
+      - mentions
+      - thread_id
+      - updated_at
+      type: object
+    DesignCommentObjectInput:
+      description: If the comment is attached to a Canva Design.
+      properties:
+        type:
+          enum:
+          - design
+          type: string
+        design_id:
+          description: The ID of the design you want to attach this comment to.
+          example: DAFVztcvd9z
+          type: string
+      required:
+      - design_id
+      - type
+      type: object
+    ParentComment:
+      deprecated: true
+      description: 'Data about the comment, including the message, author, and
+
+        the object (such as a design) the comment is attached to.'
+      properties:
+        type:
+          enum:
+          - parent
+          type: string
+        id:
+          description: 'The ID of the comment.
+
+
+            You can use this ID to create replies to the comment using the [Create reply API](https://www.canva.dev/docs/connect/api-reference/comments/create-reply/).'
+          example: KeAbiEAjZEj
+          type: string
+        attached_to:
+          $ref: '#/components/schemas/CommentObject'
+        message:
+          description: 'The comment message. This is the comment body shown in the Canva UI.
+
+            User mentions are shown here in the format `[user_id:team_id]`.'
+          example: Great work [oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP]!
+          type: string
+        author:
+          $ref: '#/components/schemas/User'
+        created_at:
+          description: 'When the comment or reply was created, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the comment or reply was last updated, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692928900
+          format: int64
+          type: integer
+        mentions:
+          additionalProperties:
+            $ref: '#/components/schemas/TeamUser'
+          deprecated: true
+          description: The Canva users mentioned in the comment.
+          example:
+            oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP:
+              user_id: oUnPjZ2k2yuhftbWF7873o
+              team_id: oBpVhLW22VrqtwKgaayRbP
+              display_name: John Doe
+          type: object
+        assignee:
+          $ref: '#/components/schemas/User'
+        resolver:
+          $ref: '#/components/schemas/User'
+      required:
+      - author
+      - id
+      - mentions
+      - message
+      - type
+      type: object
+    SuggestionThreadType:
+      description: A suggestion thread.
+      properties:
+        type:
+          enum:
+          - suggestion
+          type: string
+        suggested_edits:
+          items:
+            $ref: '#/components/schemas/SuggestedEdit'
+          minItems: 1
+          type: array
+        status:
+          $ref: '#/components/schemas/SuggestionStatus'
+      required:
+      - status
+      - suggested_edits
+      - type
+      type: object
+    CommentObject:
+      deprecated: true
+      description: Identifying information about the object (such as a design) that the comment is attached to.
+      discriminator:
+        mapping:
+          design: '#/components/schemas/DesignCommentObject'
+        propertyName: type
+      example:
+        design_id: DAFVztcvd9z
+        type: design
+      oneOf:
+      - $ref: '#/components/schemas/DesignCommentObject'
+      type: object
+    ListRepliesResponse:
+      description: Successful response from a `listReplies` request.
+      properties:
+        continuation:
+          description: 'If the success response contains a continuation token, the list contains more items
+
+            you can list. You can use this token as a query parameter and retrieve more items
+
+            from the list, for example `?continuation={continuation}`.
+
+
+            To retrieve all items, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/Reply'
+          type: array
+      required:
+      - items
+      type: object
+    Comment:
+      deprecated: true
+      description: 'The comment object, which contains metadata about the comment.
+
+        Deprecated in favor of the new `thread` object.'
+      discriminator:
+        mapping:
+          parent: '#/components/schemas/ParentComment'
+          reply: '#/components/schemas/ReplyComment'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ParentComment'
+      - $ref: '#/components/schemas/ReplyComment'
+      type: object
+    DesignCommentObject:
+      deprecated: true
+      description: If the comment is attached to a Canva Design.
+      properties:
+        type:
+          enum:
+          - design
+          type: string
+        design_id:
+          description: The ID of the design this comment is attached to.
+          example: DAFVztcvd9z
+          type: string
+      required:
+      - design_id
+      - type
+      type: object
+    ReplyComment:
+      deprecated: true
+      description: 'Data about the reply comment, including the message, author, and
+
+        the object (such as a design) the comment is attached to.'
+      properties:
+        type:
+          enum:
+          - reply
+          type: string
+        id:
+          description: The ID of the comment.
+          example: KeAZEAjijEb
+          type: string
+        attached_to:
+          $ref: '#/components/schemas/CommentObject'
+        message:
+          description: 'The comment message. This is the comment body shown in the Canva UI.
+
+            User mentions are shown here in the format `[user_id:team_id]`.'
+          example: Thanks!
+          type: string
+        author:
+          $ref: '#/components/schemas/User'
+        created_at:
+          description: 'When the comment or reply was created, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692929800
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the comment or reply was last updated, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692929900
+          format: int64
+          type: integer
+        mentions:
+          additionalProperties:
+            $ref: '#/components/schemas/TeamUser'
+          deprecated: true
+          description: The Canva users mentioned in the comment.
+          example:
+            oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP:
+              user_id: oUnPjZ2k2yuhftbWF7873o
+              team_id: oBpVhLW22VrqtwKgaayRbP
+              display_name: John Doe
+          type: object
+        thread_id:
+          description: 'The ID of the comment thread this reply is in. This ID is the same as the `id` of the
+
+            parent comment.'
+          example: KeAbiEAjZEj
+          type: string
+      required:
+      - author
+      - id
+      - mentions
+      - message
+      - thread_id
+      - type
+      type: object
+    CreateCommentResponse:
+      properties:
+        comment:
+          $ref: '#/components/schemas/ParentComment'
+      required:
+      - comment
+      type: object
+    CreateThreadResponse:
+      properties:
+        thread:
+          $ref: '#/components/schemas/Thread'
+      required:
+      - thread
+      type: object
+    CreateReplyV2Response:
+      properties:
+        reply:
+          $ref: '#/components/schemas/Reply'
+      required:
+      - reply
+      type: object
+    Thread:
+      description: 'A discussion thread on a design.
+
+
+        The `type` of the thread can be found in the `thread_type` object, along with additional type-specific properties.
+
+        The `author` of the thread might be missing if that user account no longer exists.'
+      properties:
+        id:
+          description: 'The ID of the thread.
+
+
+            You can use this ID to create replies to the thread using the [Create reply API](https://www.canva.dev/docs/connect/api-reference/comments/create-reply/).'
+          example: KeAbiEAjZEj
+          type: string
+        design_id:
+          description: The ID of the design that the discussion thread is on.
+          example: DAFVztcvd9z
+          type: string
+        thread_type:
+          $ref: '#/components/schemas/ThreadType'
+        author:
+          $ref: '#/components/schemas/User'
+        created_at:
+          description: 'When the thread was created, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the thread was last updated, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1692928900
+          format: int64
+          type: integer
+      required:
+      - created_at
+      - design_id
+      - id
+      - thread_type
+      - updated_at
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    CommentThreadType:
+      description: A comment thread.
+      properties:
+        type:
+          enum:
+          - comment
+          type: string
+        content:
+          $ref: '#/components/schemas/CommentContent'
+        mentions:
+          additionalProperties:
+            $ref: '#/components/schemas/UserMention'
+          description: The Canva users mentioned in the comment thread or reply.
+          example:
+            oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP:
+              tag: oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP
+              user:
+                user_id: oUnPjZ2k2yuhftbWF7873o
+                team_id: oBpVhLW22VrqtwKgaayRbP
+                display_name: John Doe
+          type: object
+        assignee:
+          $ref: '#/components/schemas/User'
+        resolver:
+          $ref: '#/components/schemas/User'
+      required:
+      - content
+      - mentions
+      - type
+      type: object
+    GetThreadResponse:
+      description: 'Successful response from a `getThread` request.
+
+
+        The `comment` property is deprecated.
+
+        For details of a comment thread, please use the `thread` property.'
+      properties:
+        comment:
+          $ref: '#/components/schemas/Comment'
+        thread:
+          $ref: '#/components/schemas/Thread'
+      type: object
+    FormatSuggestedEdit:
+      description: A suggestion to format some text.
+      properties:
+        type:
+          enum:
+          - format
+          type: string
+        format:
+          $ref: '#/components/schemas/SuggestionFormat'
+      required:
+      - format
+      - type
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - ai_credit_quota_exceeded
+      - ai_credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      type: string
+    CreateThreadRequest:
+      properties:
+        message_plaintext:
+          description: 'The comment message in plaintext. This is the comment body shown in the Canva UI.
+
+
+            You can also mention users in your message by specifying their User ID and Team ID
+
+            using the format `[user_id:team_id]`. If the `assignee_id` parameter is specified, you
+
+            must mention the assignee in the message.'
+          example: Great work [oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP]!
+          maxLength: 2048
+          minLength: 1
+          type: string
+        assignee_id:
+          description: 'Lets you assign the comment to a Canva user using their User ID. You _must_ mention the
+
+            assigned user in the `message`.'
+          example: oUnPjZ2k2yuhftbWF7873o
+          type: string
+      required:
+      - message_plaintext
+      type: object
+    CommentContent:
+      description: The content of a comment thread or reply.
+      properties:
+        plaintext:
+          description: 'The content in plaintext.
+
+            Any user mention tags are shown in the format `[user_id:team_id]`.'
+          example: Great work [oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP]!
+          type: string
+        markdown:
+          description: 'The content in markdown.
+
+            Any user mention tags are shown in the format `[user_id:team_id]`'
+          example: '*_Great work_* [oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP]!'
+          type: string
+      required:
+      - plaintext
+      type: object
+    CreateReplyV2Request:
+      properties:
+        message_plaintext:
+          description: 'The comment message of the reply in plaintext. This is the reply comment shown in the Canva UI.
+
+
+            You can also mention users in your message by specifying their User ID and Team ID
+
+            using the format `[user_id:team_id]`.'
+          example: Thanks!
+          maxLength: 2048
+          minLength: 1
+          type: string
+      required:
+      - message_plaintext
+      type: object
+    User:
+      description: Metadata for the user, consisting of the User ID and display name.
+      properties:
+        id:
+          description: The ID of the user.
+          example: uKakKUfI03Fg8k2gZ6OkT
+          type: string
+        display_name:
+          description: The name of the user as shown in the Canva UI.
+          example: John Doe
+          type: string
+      required:
+      - id
+      type: object
+    SuggestedEdit:
+      description: The type of the suggested edit, along with additional type-specific properties.
+      discriminator:
+        mapping:
+          add: '#/components/schemas/AddSuggestedEdit'
+          delete: '#/components/schemas/DeleteSuggestedEdit'
+          format: '#/components/schemas/FormatSuggestedEdit'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/AddSuggestedEdit'
+      - $ref: '#/components/schemas/DeleteSuggestedEdit'
+      - $ref: '#/components/schemas/FormatSuggestedEdit'
+      type: object
+    SuggestionStatus:
+      description: The current status of the suggestion.
+      enum:
+      - open
+      - accepted
+      - rejected
+      type: string
+      x-enum-descriptions:
+      - A suggestion was made, but it hasn't been accepted or rejected yet.
+      - A suggestion was accepted and applied to the design.
+      - A suggestion was rejected and not applied to the design.
+    AddSuggestedEdit:
+      description: A suggestion to add some text.
+      properties:
+        type:
+          enum:
+          - add
+          type: string
+        text:
+          example: fantastic
+          type: string
+      required:
+      - text
+      - type
+      type: object
+    SuggestionFormat:
+      description: The suggested format change.
+      enum:
+      - font_family
+      - font_size
+      - font_weight
+      - font_style
+      - color
+      - background_color
+      - decoration
+      - strikethrough
+      - link
+      - letter_spacing
+      - line_height
+      - direction
+      - text_align
+      - list_marker
+      - list_level
+      - margin_inline_start
+      - text_indent
+      - font_size_modifier
+      - vertical_align
+      example: font_style
+      type: string
+    CreateCommentRequest:
+      properties:
+        attached_to:
+          $ref: '#/components/schemas/CommentObjectInput'
+        message:
+          description: 'The comment message. This is the comment body shown in the Canva UI.
+
+
+            You can also mention users in your message by specifying their User ID and Team ID
+
+            using the format `[user_id:team_id]`. If the `assignee_id` parameter is specified, you
+
+            must mention the assignee in the message.'
+          example: Great work [oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP]!
+          maxLength: 2048
+          minLength: 1
+          type: string
+        assignee_id:
+          description: 'Lets you assign the comment to a Canva user using their User ID. You _must_ mention the
+
+            assigned user in the `message`.'
+          example: oUnPjZ2k2yuhftbWF7873o
+          type: string
+      required:
+      - attached_to
+      - message
+      type: object
+    ThreadType:
+      description: The type of the discussion thread, along with additional type-specific properties.
+      discriminator:
+        mapping:
+          comment: '#/components/schemas/CommentThreadType'
+          suggestion: '#/components/schemas/SuggestionThreadType'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/CommentThreadType'
+      - $ref: '#/components/schemas/SuggestionThreadType'
+      type: object
+    CommentObjectInput:
+      description: 'An object containing identifying information for the design or other object you want to
+
+        attach the comment to.'
+      discriminator:
+        mapping:
+          design: '#/components/schemas/DesignCommentObjectInput'
+        propertyName: type
+      example:
+        design_id: DAFVztcvd9z
+        type: design
+      oneOf:
+      - $ref: '#/components/schemas/DesignCommentObjectInput'
+      type: object
+    UserMention:
+      description: Information about the user mentioned in a comment thread or reply. Each user mention is keyed using the user's user ID and team ID separated by a colon (`user_id:team_id`).
+      properties:
+        tag:
+          description: The mention tag for the user mentioned in the comment thread or reply content. This has the format of the user's user ID and team ID separated by a colon (`user_id:team_id`).
+          example: oUnPjZ2k2yuhftbWF7873o:oBpVhLW22VrqtwKgaayRbP
+          type: string
+        user:
+          $ref: '#/components/schemas/TeamUser'
+      required:
+      - tag
+      - user
+      type: object
+    GetReplyResponse:
+      description: Successful response from a `getReply` request.
+      properties:
+        reply:
+          $ref: '#/components/schemas/Reply'
+      required:
+      - reply
+      type: object
+    DeleteSuggestedEdit:
+      description: A suggestion to delete some text.
+      properties:
+        type:
+          enum:
+          - delete
+          type: string
+        text:
+          example: just
+          type: string
+      required:
+      - text
+      - type
+      type: object
+    TeamUser:
+      description: Metadata for the user, consisting of the User ID, Team ID, and display name.
+      properties:
+        user_id:
+          description: The ID of the user.
+          example: auDAbliZ2rQNNOsUl5OLu
+          type: string
+        team_id:
+          description: The ID of the user's Canva Team.
+          example: Oi2RJILTrKk0KRhRUZozX
+          type: string
+        display_name:
+          description: The name of the user as shown in the Canva UI.
+          example: Jane Doe
+          type: string
+      type: object
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+    oauthAuthCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          scopes:
+            design:content:read: View the contents of the user's designs.
+            design:meta:read: View the metadata of the user's designs.
+            design:content:write: Create designs on the user's behalf.
+            folder:read: 'View the metadata and contents of the user''s folders, including their **Projects**
+
+              folder.'
+            folder:write: 'Add, move, or remove the user''s folders. It also lets you edit folder metadata,
+
+              such as the folder''s name.'
+            folder:permission:write: Set, update, or remove permissions assigned to the user's folders.
+            asset:read: View the metadata for the user's assets, such as uploaded images.
+            asset:write: Upload, update, or delete assets on the user's behalf.
+            comment:read: View the comments on the user's designs, and the associated metadata.
+            comment:write: Create comments and replies on the user's designs.
+            collaboration:event: Receive webhook notifications about events relevant to the user.
+            brandtemplate:meta:read: View the metadata of the brand templates associated with the user's brand.
+            brandtemplate:content:read: Read the content of the brand templates associated with the user's brand.
+            brandtemplate:content:write: Publish brand templates associated with the user's brand.
+            profile:read: Read a user's profile and account information.
+            openid: Read user information through Open ID Connect (OIDC).
+            profile: Read user profile information through OIDC.
+            email: Read user email address through OIDC.
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+      type: oauth2

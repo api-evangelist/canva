@@ -1,0 +1,734 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations with Canva via a REST api
+  license:
+    name: ©2023 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Connect Design Import API
+  version: 2024-06-18
+servers:
+- description: Canva Connect API
+  url: https://api.canva.com/rest
+tags:
+- name: design_import
+paths:
+  /v1/imports:
+    post:
+      description: 'Starts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to import an external file as a new design in Canva.
+
+
+        The request format for this endpoint has an `application/octet-stream` body of bytes,
+
+        and the information about the import is provided using an `Import-Metadata` header.
+
+
+        Supported file types for imports are listed in [Design imports overview](https://www.canva.dev/docs/connect/api-reference/design-imports/#supported-file-types).
+
+
+        <Note>
+
+
+        For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints). You can check the status and get the results of design import jobs created with this API using the [Get design import job API](https://www.canva.dev/docs/connect/api-reference/design-imports/get-design-import-job/).
+
+
+        </Note>'
+      operationId: createDesignImportJob
+      parameters:
+      - content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesignImportMetadata'
+        in: header
+        name: Import-Metadata
+        required: true
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        description: Binary of the file to import.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressDesignImportJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessDesignImportJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedDesignImportJobExample'
+              schema:
+                $ref: '#/components/schemas/CreateDesignImportJobResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - design:content:write
+      tags:
+      - design_import
+      x-rate-limit-per-client-user: 20
+  /v1/imports/{jobId}:
+    get:
+      description: 'Gets the result of a design import job created using the [Create design import job API](https://www.canva.dev/docs/connect/api-reference/design-imports/create-design-import-job/).
+
+
+        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints).'
+      operationId: getDesignImportJob
+      parameters:
+      - description: The design import job ID.
+        example: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+        explode: false
+        in: path
+        name: jobId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressDesignImportJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessDesignImportJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedDesignImportJobExample'
+              schema:
+                $ref: '#/components/schemas/GetDesignImportJobResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                job_id_invalid:
+                  $ref: '#/components/examples/JobIdInvalidError'
+                job_not_created_via_connect_api:
+                  $ref: '#/components/examples/JobNotCreatedViaConnectApiError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                design_import_job_not_creator:
+                  $ref: '#/components/examples/DesignImportJobNotCreatorError'
+                get_job_status_not_allowed:
+                  $ref: '#/components/examples/GetJobStatusNotAllowedError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                job_id_not_found:
+                  $ref: '#/components/examples/JobIdNotFoundError'
+                job_not_found:
+                  $ref: '#/components/examples/JobNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - design:content:write
+      tags:
+      - design_import
+      x-rate-limit-per-client-user: 120
+  /v1/url-imports:
+    post:
+      description: 'Starts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to import an external file from a URL as a new design in Canva.
+
+
+        Supported file types for imports are listed in [Design imports overview](https://www.canva.dev/docs/connect/api-reference/design-imports/#supported-file-types).
+
+
+        <Note>
+
+
+        For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints). You can check the status and get the results of design import jobs created with this API using the [Get URL import job API](https://www.canva.dev/docs/connect/api-reference/design-imports/get-url-import-job/).
+
+
+        </Note>'
+      operationId: createUrlImportJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUrlImportJobRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressDesignImportJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessDesignImportJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedDesignImportJobExample'
+              schema:
+                $ref: '#/components/schemas/CreateUrlImportJobResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                design_import_already_in_progress:
+                  $ref: '#/components/examples/DesignImportAlreadyInProgressError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              examples:
+                job_with_id_not_found:
+                  $ref: '#/components/examples/JobWithIdNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - design:content:write
+      tags:
+      - design_import
+      x-rate-limit-per-client-user: 20
+  /v1/url-imports/{jobId}:
+    get:
+      description: 'Gets the result of a URL import job created using the [Create URL import job API](https://www.canva.dev/docs/connect/api-reference/design-imports/create-url-import-job/).
+
+
+        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints).'
+      operationId: getUrlImportJob
+      parameters:
+      - description: The ID of the URL import job.
+        example: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+        explode: false
+        in: path
+        name: jobId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressDesignImportJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessDesignImportJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedDesignImportJobExample'
+              schema:
+                $ref: '#/components/schemas/GetUrlImportJobResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                job_not_created_via_connect_api:
+                  $ref: '#/components/examples/JobNotCreatedViaConnectApiError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                get_job_status_not_allowed:
+                  $ref: '#/components/examples/GetJobStatusNotAllowedError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                job_not_found:
+                  $ref: '#/components/examples/JobNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - design:content:write
+      tags:
+      - design_import
+      x-rate-limit-per-client-user: 120
+components:
+  schemas:
+    DesignImportStatus:
+      description: The status of the design import job.
+      enum:
+      - failed
+      - in_progress
+      - success
+      example: success
+      type: string
+    GetDesignImportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignImportJob'
+      required:
+      - job
+      type: object
+    GetUrlImportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignImportJob'
+      required:
+      - job
+      type: object
+    CreateUrlImportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignImportJob'
+      required:
+      - job
+      type: object
+    DesignImportError:
+      description: If the import job fails, this object provides details about the error.
+      properties:
+        code:
+          $ref: '#/components/schemas/DesignImportErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          example: We're sorry, but the file upload quota has exceeded. Please try again later.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    DesignLinks:
+      description: A temporary set of URLs for viewing or editing the design.
+      properties:
+        edit_url:
+          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.'
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+          type: string
+        view_url:
+          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.
+
+            '
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
+          type: string
+      required:
+      - edit_url
+      - view_url
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    DesignImportJob:
+      description: The status of the design import job.
+      properties:
+        id:
+          description: The ID of the design import job.
+          example: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        status:
+          $ref: '#/components/schemas/DesignImportStatus'
+        result:
+          $ref: '#/components/schemas/DesignImportJobResult'
+        error:
+          $ref: '#/components/schemas/DesignImportError'
+      required:
+      - id
+      - status
+      type: object
+    DesignImportMetadata:
+      description: Metadata about the design that you include as a header parameter when importing a design.
+      properties:
+        title_base64:
+          description: 'The design''s title, encoded in Base64.
+
+
+            The maximum length of a design title in Canva (unencoded) is 50 characters.
+
+
+            Base64 encoding allows titles containing emojis and other special
+
+            characters to be sent using HTTP headers.
+
+            For example, "My Awesome Design 😍" Base64 encoded
+
+            is `TXkgQXdlc29tZSBEZXNpZ24g8J+YjQ==`.'
+          example: TXkgQXdlc29tZSBEZXNpZ24g8J+YjQ==
+          minLength: 1
+          type: string
+        mime_type:
+          description: The MIME type of the file being imported. If not provided, Canva attempts to automatically detect the type of the file.
+          example: application/pdf
+          type: string
+      required:
+      - title_base64
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - ai_credit_quota_exceeded
+      - ai_credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      type: string
+    CreateDesignImportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignImportJob'
+      required:
+      - job
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    CreateUrlImportJobRequest:
+      properties:
+        title:
+          description: A title for the design.
+          example: My Awesome Design
+          maxLength: 255
+          minLength: 1
+          type: string
+        url:
+          description: The URL of the file to import. This URL must be accessible from the internet and be publicly available.
+          maxLength: 2048
+          minLength: 1
+          type: string
+        mime_type:
+          description: The MIME type of the file being imported. If not provided, Canva attempts to automatically detect the type of the file.
+          example: application/vnd.apple.keynote
+          maxLength: 100
+          minLength: 1
+          type: string
+      required:
+      - title
+      - url
+      type: object
+    DesignImportJobResult:
+      properties:
+        designs:
+          description: 'A list of designs imported from the external file. It usually contains one item.
+
+            Imports with a large number of pages or assets are split into multiple designs.'
+          items:
+            $ref: '#/components/schemas/DesignSummary'
+          type: array
+      required:
+      - designs
+      type: object
+    DesignImportErrorCode:
+      description: 'A short string about why the import failed. This field can be used to handle errors
+
+        programmatically.'
+      enum:
+      - design_creation_throttled
+      - design_import_throttled
+      - duplicate_import
+      - internal_error
+      - invalid_file
+      - fetch_failed
+      example: design_creation_throttled
+      type: string
+    DesignSummary:
+      description: Basic details about the design, such as the design's ID, title, and URL.
+      properties:
+        id:
+          description: The design ID.
+          example: DAFVztcvd9z
+          type: string
+        title:
+          description: The design title.
+          example: My summer holiday
+          type: string
+        url:
+          description: URL of the design.
+          example: https://www.canva.com/design/DAFVztcvd9z/edit
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        urls:
+          $ref: '#/components/schemas/DesignLinks'
+        created_at:
+          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
+
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
+
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        page_count:
+          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
+          example: 3
+          format: int32
+          minimum: 0
+          type: integer
+      required:
+      - created_at
+      - id
+      - updated_at
+      - urls
+      type: object
+  examples:
+    DesignImportJobNotCreatorError:
+      summary: Calling user was not the creator of the design import job
+      value:
+        code: permission_denied
+        message: Calling user was not the creator of the design import job
+    JobNotCreatedViaConnectApiError:
+      summary: The job is not created via Connect API
+      value:
+        code: invalid_request
+        message: The job is not created via Connect API.
+    JobNotFoundError:
+      summary: Job not found
+      value:
+        code: not_found
+        message: Job {jobId} not found
+    JobIdInvalidError:
+      summary: The job ID is invalid
+      value:
+        code: bad_request_params
+        message: The jobId is invalid.
+    InProgressDesignImportJobExample:
+      summary: In progress job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: in_progress
+    SuccessDesignImportJobExample:
+      summary: Successfully completed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: success
+          result:
+            designs:
+            - id: DAGQm2AkzOk
+              title: My Awesome Design
+              thumbnail:
+                width: 376
+                height: 531
+                url: https://document-export.canva.com/...
+              urls:
+                edit_url: https://www.canva.com/api/design/...
+                view_url: https://www.canva.com/api/design/...
+              created_at: 1726198998
+              updated_at: 1726199000
+    DesignImportAlreadyInProgressError:
+      summary: A design import for the URL is already in progress
+      value:
+        code: invalid_request
+        message: Design import for url {url} already in progress
+    JobWithIdNotFoundError:
+      summary: Job with ID not found
+      value:
+        code: not_found
+        message: Job with Id {jobId} not found
+    JobIdNotFoundError:
+      summary: Job ID not found
+      value:
+        code: not_found
+        message: Job ID {jobId} not found
+    GetJobStatusNotAllowedError:
+      summary: Not allowed to get the job status
+      value:
+        code: permission_denied
+        message: Not allowed to get the job status.
+    FailedDesignImportJobExample:
+      summary: Failed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: failed
+          error:
+            code: invalid_file
+            message: Document could not be imported because the file is corrupt.
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+    oauthAuthCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          scopes:
+            design:content:read: View the contents of the user's designs.
+            design:meta:read: View the metadata of the user's designs.
+            design:content:write: Create designs on the user's behalf.
+            folder:read: 'View the metadata and contents of the user''s folders, including their **Projects**
+
+              folder.'
+            folder:write: 'Add, move, or remove the user''s folders. It also lets you edit folder metadata,
+
+              such as the folder''s name.'
+            folder:permission:write: Set, update, or remove permissions assigned to the user's folders.
+            asset:read: View the metadata for the user's assets, such as uploaded images.
+            asset:write: Upload, update, or delete assets on the user's behalf.
+            comment:read: View the comments on the user's designs, and the associated metadata.
+            comment:write: Create comments and replies on the user's designs.
+            collaboration:event: Receive webhook notifications about events relevant to the user.
+            brandtemplate:meta:read: View the metadata of the brand templates associated with the user's brand.
+            brandtemplate:content:read: Read the content of the brand templates associated with the user's brand.
+            brandtemplate:content:write: Publish brand templates associated with the user's brand.
+            profile:read: Read a user's profile and account information.
+            openid: Read user information through Open ID Connect (OIDC).
+            profile: Read user profile information through OIDC.
+            email: Read user email address through OIDC.
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+      type: oauth2

@@ -1,0 +1,261 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations with Canva via a REST api
+  license:
+    name: ©2023 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Connect App API
+  version: 2024-06-18
+servers:
+- description: Canva Connect API
+  url: https://api.canva.com/rest
+tags:
+- name: app
+paths:
+  /v1/apps/{appId}/jwks:
+    get:
+      description: 'Returns the Json Web Key Set (public keys) of an app. These keys are used to
+
+        verify JWTs sent to app backends.'
+      operationId: getAppJwks
+      parameters:
+      - description: The app ID.
+        explode: false
+        in: path
+        name: appId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAppJwksResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                auth_keys_not_found:
+                  $ref: '#/components/examples/AuthKeysNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      tags:
+      - app
+components:
+  schemas:
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - ai_credit_quota_exceeded
+      - ai_credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      type: string
+    GetAppJwksResponse:
+      properties:
+        keys:
+          description: 'The value of the "keys" parameter is an array of JWK values. The order of keys has no
+
+            meaning.'
+          items:
+            $ref: '#/components/schemas/JsonWebKey'
+          type: array
+      required:
+      - keys
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    JsonWebKey:
+      description: 'Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and
+
+        https://www.rfc-editor.org/rfc/rfc7518.html.'
+      properties:
+        alg:
+          description: 'The "alg" (algorithm) parameter identifies the algorithm intended for
+
+            use with the key.
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+        kid:
+          description: 'The "kid" (key ID) parameter is used to match a specific key.  This
+
+            is used, for instance, to choose among a set of keys within a JWK Set
+
+            during key rollover. When "kid" values are used within a JWK Set,
+
+            different keys within the JWK Set SHOULD use distinct "kid" values.
+
+            The "kid" value is a case-sensitive string.
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+        kty:
+          description: 'The "kty" (key type) parameter identifies the cryptographic algorithm
+
+            family used with the key, such as "RSA" or "EC". The "kty" value is a
+
+            case-sensitive string. At the moment, only "RSA" is supported.
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+        n:
+          description: "The \"n\" (modulus) parameter contains the modulus value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3"
+          type: string
+        e:
+          description: "The \"e\" (exponent) parameter contains the exponent value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3"
+          type: string
+        use:
+          description: 'The "use" (public key use) parameter identifies the intended use of
+
+            the public key. The "use" parameter is employed to indicate whether
+
+            a public key is used for encrypting data or verifying the signature
+
+            on data. Values are commonly "sig" (signature) or "enc" (encryption).
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+      required:
+      - e
+      - kid
+      - kty
+      - n
+      type: object
+  examples:
+    AuthKeysNotFoundError:
+      summary: No auth keys exist for the specified app.
+      value:
+        code: app_not_found
+        message: Auth keys not found for app {appId}
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+    oauthAuthCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          scopes:
+            design:content:read: View the contents of the user's designs.
+            design:meta:read: View the metadata of the user's designs.
+            design:content:write: Create designs on the user's behalf.
+            folder:read: 'View the metadata and contents of the user''s folders, including their **Projects**
+
+              folder.'
+            folder:write: 'Add, move, or remove the user''s folders. It also lets you edit folder metadata,
+
+              such as the folder''s name.'
+            folder:permission:write: Set, update, or remove permissions assigned to the user's folders.
+            asset:read: View the metadata for the user's assets, such as uploaded images.
+            asset:write: Upload, update, or delete assets on the user's behalf.
+            comment:read: View the comments on the user's designs, and the associated metadata.
+            comment:write: Create comments and replies on the user's designs.
+            collaboration:event: Receive webhook notifications about events relevant to the user.
+            brandtemplate:meta:read: View the metadata of the brand templates associated with the user's brand.
+            brandtemplate:content:read: Read the content of the brand templates associated with the user's brand.
+            brandtemplate:content:write: Publish brand templates associated with the user's brand.
+            profile:read: Read a user's profile and account information.
+            openid: Read user information through Open ID Connect (OIDC).
+            profile: Read user profile information through OIDC.
+            email: Read user email address through OIDC.
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+      type: oauth2

@@ -1,0 +1,1474 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations with Canva via a REST api
+  license:
+    name: ©2023 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Connect Autofill API
+  version: 2024-06-18
+servers:
+- description: Canva Connect API
+  url: https://api.canva.com/rest
+tags:
+- name: autofill
+paths:
+  /v1/autofills:
+    post:
+      description: "WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you'll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.\n\n<Availability>\nTo use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.\n\nUsers on Canva paid plans have access to a limited trial while your integration is under development. For more information, see [Trial quotas](https://www.canva.dev/docs/connect/api-requests-responses/#trial-quotas).\n</Availability>\n\nStarts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to autofill a Canva design using input data. Use the `type` field to choose the source of the design:\n\n- `create_from_brand_template`: autofill a new design from a brand template. If `type` isn't specified in the request, the request type is assumed to be `create_from_brand_template`. To get a list of input data fields for a brand template, use the [Get brand template dataset API](https://www.canva.dev/docs/connect/api-reference/brand-templates/get-brand-template-dataset/).\n- `create_from_design`: autofill a new design from an existing design that contains autofill data fields. To get the input data fields for an existing design, use the [Get design dataset\nAPI](https://www.canva.dev/docs/connect/api-reference/designs/get-design-dataset/).\n\n  WARNING: Creating an autofilled design from an existing design is a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won't produce a new API version.\n- `update_design`: autofill an existing design in place, rather than creating a new design. To get the input data fields for the design, use the [Get design dataset API](https://www.canva.dev/docs/connect/api-reference/designs/get-design-dataset/).\n\n  WARNING: Autofilling an existing design in place is a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won't produce a new API version.\n\nData fields in brand templates or designs might change (for example, they might be renamed or removed). If you provide data for a field name that doesn't exist, it's silently skipped. Use the Get dataset APIs to confirm the current fields before creating an autofill job.\n\nAvailable data field types to autofill include:\n\n- Images (which you can autofill with an image or a video asset)\n- Text\n- Charts\n- Sheets\n\n\nWARNING: Chart and sheet data fields and autofilling a video are [preview features](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to these features which won't produce a new API version.\n\nNOTE: For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints). You can check the status and get the results of autofill jobs created with this API using the [Get design autofill job API](https://www.canva.dev/docs/connect/api-reference/autofills/get-design-autofill-job/)."
+      operationId: createDesignAutofillJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDesignAutofillJobRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressAutofillJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessAutofillJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedAutofillJobExample'
+              schema:
+                $ref: '#/components/schemas/CreateDesignAutofillJobResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                design_title_invalid:
+                  $ref: '#/components/examples/DesignTitleInvalidError'
+                chart_data_processing_unsupported:
+                  $ref: '#/components/examples/ChartDataProcessingUnsupportedError'
+                invalid_brand_template_id:
+                  $ref: '#/components/examples/InvalidBrandTemplateIdError'
+                design_not_fillable:
+                  $ref: '#/components/examples/DesignNotFillableError'
+                autofill_data_invalid:
+                  $ref: '#/components/examples/AutofillDataInvalidError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                brand_template_forbidden:
+                  $ref: '#/components/examples/BrandTemplateForbiddenError'
+                autofill_design_forbidden:
+                  $ref: '#/components/examples/AutofillDesignForbiddenError'
+                autofill_feature_forbidden:
+                  $ref: '#/components/examples/AutofillFeatureForbiddenError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                brand_template_not_found:
+                  $ref: '#/components/examples/BrandTemplateNotFoundError'
+                autofill_design_not_found:
+                  $ref: '#/components/examples/AutofillDesignNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              examples:
+                autofill_feature_quota_exceeded:
+                  $ref: '#/components/examples/AutofillFeatureQuotaExceededError'
+              schema:
+                $ref: '#/components/schemas/FeatureQuotaExceededError'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - design:content:write
+      tags:
+      - autofill
+      x-rate-limit-per-client-user: 60
+  /v1/autofills/{jobId}:
+    get:
+      description: '<Availability>
+
+        To use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.
+
+
+        Users on Canva paid plans have access to a limited trial while your integration is under development. For more information, see [Trial quotas](https://www.canva.dev/docs/connect/api-requests-responses/#trial-quotas).
+
+        </Availability>
+
+
+        Get the result of a design autofill job that was created using the [Create design autofill job
+
+        API](https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/).
+
+
+        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints).'
+      operationId: getDesignAutofillJob
+      parameters:
+      - description: The design autofill job ID.
+        explode: false
+        in: path
+        name: jobId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressAutofillJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessAutofillJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedAutofillJobExample'
+              schema:
+                $ref: '#/components/schemas/GetDesignAutofillJobResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                design_autofill_job_not_found:
+                  $ref: '#/components/examples/DesignAutofillJobNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '403':
+          content:
+            application/json:
+              examples:
+                design_autofill_job_forbidden:
+                  $ref: '#/components/examples/DesignAutofillJobForbiddenError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - design:meta:read
+      tags:
+      - autofill
+      x-rate-limit-per-client-user: 120
+components:
+  schemas:
+    AutofillError:
+      description: If the autofill job fails, this object provides details about the error.
+      properties:
+        code:
+          $ref: '#/components/schemas/AutofillErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    DataTable:
+      description: 'Tabular data, structured in rows of cells.
+
+
+        - Each cell must have a data type configured.
+
+        - All rows must have the same number of cells.
+
+        - The number of entries in `column_configs` must match the number of columns in the data.
+
+
+        WARNING: Chart and sheet data fields are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      example:
+        column_configs:
+        - name: Geographic Region
+          type: string
+        - name: Sales (millions AUD)
+          type: number
+        - name: Target (millions AUD)
+          type: number
+        - name: Target met?
+          type: boolean
+        - name: Date met
+          type: date
+        - name: Logo
+          type: media
+        rows:
+        - cells:
+          - type: string
+            value: Asia Pacific
+          - type: number
+            value: 10.2
+            metadata:
+              formatting: '#,##0.0'
+          - type: number
+            value: 10
+            metadata:
+              formatting: '#,##0.0'
+          - type: boolean
+            value: true
+          - type: date
+            value: 1721944387
+          - type: media
+            value:
+            - type: image_upload
+              url: https://example.com/apac-logo.png
+              thumbnail_url: https://example.com/apac-logo-thumb.png
+              mime_type: image/png
+              ai_disclosure: none
+            - type: video_upload
+              url: https://example.com/apac-logo.mp4
+              thumbnail_image_url: https://example.com/apac-logo-thumb.png
+              thumbnail_video_url: https://example.com/apac-logo-thumb.mp4
+              mime_type: video/mp4
+              ai_disclosure: none
+        - cells:
+          - type: string
+            value: EMEA
+          - type: number
+            value: 13.8
+            metadata:
+              formatting: '#,##0.0'
+          - type: number
+            value: 14
+            metadata:
+              formatting: '#,##0.0'
+          - type: boolean
+            value: false
+          - type: date
+          - type: media
+            value: []
+      properties:
+        column_configs:
+          description: Column definitions with names and data types.
+          items:
+            $ref: '#/components/schemas/ColumnConfig'
+          type: array
+        rows:
+          description: Rows of data.
+          items:
+            $ref: '#/components/schemas/DataTableRow'
+          type: array
+      required:
+      - rows
+      type: object
+    DatasetImageValue:
+      description: If the data field is an image field.
+      properties:
+        type:
+          enum:
+          - image
+          type: string
+        asset_id:
+          description: '`asset_id` of the image to insert into the template element.'
+          example: Msd59349ff
+          type: string
+      required:
+      - asset_id
+      - type
+      type: object
+    FeatureQuotaExceededError:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          upsell_url:
+            description: URL to redirect users to upgrade their Canva account and reset their quota.
+            type: string
+        required:
+        - upsell_url
+        type: object
+      description: Feature quota exceeded
+    DesignAutofillStatus:
+      description: Status of the design autofill job.
+      enum:
+      - in_progress
+      - success
+      - failed
+      example: success
+      type: string
+    CreateDesignAutofillJobRequest:
+      description: 'Body parameters for creating a new autofill job. Use the `type` discriminator to choose
+
+        the autofill mode:
+
+
+        - Use `create_from_brand_template` to create a new design from a brand template.
+
+
+        NOTE: For backward compatibility, if `type` isn''t specified in the request,
+
+        the request type is assumed to be `create_from_brand_template`.'
+      discriminator:
+        mapping:
+          create_from_brand_template: '#/components/schemas/CreateFromBrandTemplateAutofillJobRequest'
+          create_from_design: '#/components/schemas/CreateFromDesignAutofillJobRequest'
+          update_design: '#/components/schemas/UpdateDesignAutofillJobRequest'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/CreateFromBrandTemplateAutofillJobRequest'
+      - $ref: '#/components/schemas/CreateFromDesignAutofillJobRequest'
+      - $ref: '#/components/schemas/UpdateDesignAutofillJobRequest'
+    DataTableRow:
+      description: A single row of tabular data.
+      properties:
+        cells:
+          description: 'Cells of data in row.
+
+
+            All rows must have the same number of cells.'
+          items:
+            $ref: '#/components/schemas/DataTableCell'
+          type: array
+      required:
+      - cells
+      type: object
+    DatasetVideoValue:
+      description: 'If autofilling a video into an image data field.
+
+
+        WARNING: Autofilling a video is a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      properties:
+        type:
+          enum:
+          - video
+          type: string
+        asset_id:
+          description: '`asset_id` of the video to insert into the template element.'
+          example: VAHCkrNUANI
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+      required:
+      - asset_id
+      - type
+      type: object
+    DataTableImageMimeType:
+      description: The MIME type of an image file that's supported by Canva's backend.
+      enum:
+      - image/jpeg
+      - image/heic
+      - image/png
+      - image/svg+xml
+      - image/webp
+      - image/tiff
+      type: string
+    UpdateDesignAutofillJobRequest:
+      description: 'Autofill an existing design in place with the provided data.
+
+
+        WARNING: Autofilling an existing design in place is a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      properties:
+        type:
+          enum:
+          - update_design
+          type: string
+        design_id:
+          description: ID of the design to autofill in place.
+          example: DAFVztcvd9z
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        data:
+          additionalProperties:
+            $ref: '#/components/schemas/DatasetValue'
+          description: Data object containing the data fields and values to autofill.
+          example:
+            cute_pet_image_of_the_day:
+              type: image
+              asset_id: Msd59349ff
+            cute_pet_video_of_the_day:
+              type: video
+              asset_id: VAHCkrNUANI
+            cute_pet_witty_pet_says:
+              type: text
+              text: It was like this when I got here!
+            cute_pet_sales_chart:
+              type: chart
+              chart_data:
+                column_configs:
+                - name: Geographic Region
+                  type: string
+                - name: Sales (millions AUD)
+                  type: number
+                - name: Target (millions AUD)
+                  type: number
+                - name: Target met?
+                  type: boolean
+                - name: Date met
+                  type: date
+                rows:
+                - cells:
+                  - type: string
+                    value: Asia Pacific
+                  - type: number
+                    value: 10.2
+                  - type: number
+                    value: 10
+                  - type: boolean
+                    value: true
+                  - type: date
+                    value: 1721944387
+                - cells:
+                  - type: string
+                    value: EMEA
+                  - type: number
+                    value: 13.8
+                  - type: number
+                    value: 14
+                  - type: boolean
+                    value: false
+                  - type: date
+            cute_pet_sales_sheet:
+              type: sheet
+              sheet_data:
+                column_configs:
+                - name: Geographic Region
+                  type: string
+                - name: Sales (millions AUD)
+                  type: number
+                - name: Target (millions AUD)
+                  type: number
+                - name: Target met?
+                  type: boolean
+                - name: Date met
+                  type: date
+                rows:
+                - cells:
+                  - type: string
+                    value: Asia Pacific
+                  - type: number
+                    value: 10.2
+                  - type: number
+                    value: 10
+                  - type: boolean
+                    value: true
+                  - type: date
+                    value: 1721944387
+                - cells:
+                  - type: string
+                    value: EMEA
+                  - type: number
+                    value: 13.8
+                  - type: number
+                    value: 14
+                  - type: boolean
+                    value: false
+                  - type: date
+          type: object
+      required:
+      - data
+      - design_id
+      - type
+      type: object
+    DesignLinks:
+      description: A temporary set of URLs for viewing or editing the design.
+      properties:
+        edit_url:
+          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.'
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+          type: string
+        view_url:
+          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.
+
+            '
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
+          type: string
+      required:
+      - edit_url
+      - view_url
+      type: object
+    DataTableCell:
+      description: A single tabular data cell.
+      discriminator:
+        mapping:
+          string: '#/components/schemas/StringDataTableCell'
+          number: '#/components/schemas/NumberDataTableCell'
+          boolean: '#/components/schemas/BooleanDataTableCell'
+          date: '#/components/schemas/DateDataTableCell'
+          media: '#/components/schemas/MediaCollectionDataTableCell'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/StringDataTableCell'
+      - $ref: '#/components/schemas/NumberDataTableCell'
+      - $ref: '#/components/schemas/BooleanDataTableCell'
+      - $ref: '#/components/schemas/DateDataTableCell'
+      - $ref: '#/components/schemas/MediaCollectionDataTableCell'
+      type: object
+    DatasetTextValue:
+      description: If the data field is a text field.
+      properties:
+        type:
+          enum:
+          - text
+          type: string
+        text:
+          description: Text to insert into the template element.
+          example: It was like this when I got here!
+          type: string
+      required:
+      - text
+      - type
+      type: object
+    DatasetSheetValue:
+      description: 'If the data field is a sheet element.
+
+
+        Note the following behavior:
+
+        - `number` cells with formatting metadata are not currently supported for autofill and will result in an error response.
+
+        - `media` cells are not supported for sheet autofill and will result in an error response.
+
+
+        WARNING: Sheet element data fields are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      properties:
+        type:
+          enum:
+          - sheet
+          type: string
+        sheet_data:
+          $ref: '#/components/schemas/DataTable'
+      required:
+      - sheet_data
+      - type
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    DataTableAiDisclosure:
+      description: A disclosure identifying if the app generated this media asset using AI.
+      enum:
+      - app_generated
+      - none
+      type: string
+      x-enum-descriptions:
+      - App creates or significantly alters content using AI
+      - No AI involvement in creation or alteration
+    DataTableVideoMimeType:
+      description: The MIME type of a video file that's supported by Canva's backend.
+      enum:
+      - video/avi
+      - video/x-msvideo
+      - image/gif
+      - video/x-m4v
+      - video/x-matroska
+      - video/quicktime
+      - video/mp4
+      - video/mpeg
+      - video/webm
+      - application/json
+      type: string
+      x-enum-descriptions:
+      - ''
+      - ''
+      - GIFs are treated as videos, not images.
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+      - Used for Lottie files.
+    NumberCellMetadata:
+      description: Formatting metadata for number cells.
+      properties:
+        formatting:
+          description: 'Formatting pattern using Office Open XML Format.
+
+
+            These patterns control how numbers are displayed to users, including currency symbols,
+
+            decimal places, and separators.'
+          type: string
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - ai_credit_quota_exceeded
+      - ai_credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      type: string
+    DataTableImageUpload:
+      description: Options for uploading an image asset.
+      properties:
+        type:
+          enum:
+          - image_upload
+          type: string
+        url:
+          description: 'The URL of the image file to upload.
+
+            This can be an external URL or a data URL.'
+          type: string
+        thumbnail_url:
+          description: 'The URL of a thumbnail image to display while the image is queued for upload.
+
+            This can be an external URL or a data URL.'
+          type: string
+        mime_type:
+          $ref: '#/components/schemas/DataTableImageMimeType'
+        width:
+          description: The width of the image in pixels.
+          format: int32
+          type: integer
+        height:
+          description: The height of the image in pixels.
+          format: int32
+          type: integer
+        ai_disclosure:
+          $ref: '#/components/schemas/DataTableAiDisclosure'
+      required:
+      - ai_disclosure
+      - mime_type
+      - thumbnail_url
+      - type
+      - url
+      type: object
+    AutofillErrorCode:
+      enum:
+      - autofill_error
+      - thumbnail_generation_error
+      - create_design_error
+      - design_approval_error
+      - trial_quota_exceeded
+      - design_update_error
+      type: string
+      x-enum-descriptions:
+      - The service encountered an error when autofilling your brand template.
+      - The service encountered an error when generating a thumbnail for the autofilled design.
+      - The service encountered an error when saving the autofilled design.
+      - The service encountered an error when applying design approval settings to the autofilled design.
+      - The user has exceeded their autofill trial quota.
+      - The service encountered an error when saving the updated design.
+    GetDesignAutofillJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignAutofillJob'
+      required:
+      - job
+      type: object
+    DesignAutofillJob:
+      description: Details about the autofill job.
+      properties:
+        id:
+          description: ID of the asynchronous job that is creating the design using the provided data.
+          example: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          type: string
+        status:
+          $ref: '#/components/schemas/DesignAutofillStatus'
+        result:
+          $ref: '#/components/schemas/DesignAutofillJobResult'
+        error:
+          $ref: '#/components/schemas/AutofillError'
+      required:
+      - id
+      - status
+      type: object
+    DataTableVideoUpload:
+      description: Options for uploading a video asset.
+      properties:
+        type:
+          enum:
+          - video_upload
+          type: string
+        url:
+          description: The URL of the video file to upload.
+          type: string
+        thumbnail_image_url:
+          description: 'The URL of a thumbnail image to use as a fallback if thumbnailVideoUrl isn''t provided.
+
+            This can be an external URL or a data URL.'
+          type: string
+        thumbnail_video_url:
+          description: The URL of a thumbnail video to display while the video is queued for upload.
+          type: string
+        mime_type:
+          $ref: '#/components/schemas/DataTableVideoMimeType'
+        width:
+          description: The width of the video in pixels.
+          format: int32
+          type: integer
+        height:
+          description: The height of the video in pixels.
+          format: int32
+          type: integer
+        ai_disclosure:
+          $ref: '#/components/schemas/DataTableAiDisclosure'
+      required:
+      - ai_disclosure
+      - mime_type
+      - thumbnail_image_url
+      - type
+      - url
+      type: object
+    DatasetChartValue:
+      description: "If the data field is a chart.\n\nNote the following behavior:\n- If `column_configs` is not provided, the first row is assumed to contain column headers where applicable.\n- Chart autofill supports a maximum of 100 rows and 20 columns.\n- `number` cells with formatting metadata are not currently supported for autofill and will result in an error response.\n- `media` cells are not supported for chart autofill and will result in an error response.\n\n WARNING: Chart data fields are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won't produce a new API version."
+      properties:
+        type:
+          enum:
+          - chart
+          type: string
+        chart_data:
+          $ref: '#/components/schemas/DataTable'
+      required:
+      - chart_data
+      - type
+      type: object
+    CreateDesignAutofillJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignAutofillJob'
+      required:
+      - job
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    StringDataTableCell:
+      description: A string tabular data cell.
+      properties:
+        type:
+          enum:
+          - string
+          type: string
+        value:
+          maxLength: 10000
+          type: string
+      required:
+      - type
+      type: object
+    CreateFromBrandTemplateAutofillJobRequest:
+      description: Create a new autofilled design from a brand template.
+      properties:
+        type:
+          description: For backward compatibility, if `type` isn't specified in the request, the request type is assumed to be `create_from_brand_template`.
+          enum:
+          - create_from_brand_template
+          type: string
+        brand_template_id:
+          description: ID of the input brand template.
+          example: DAFVztcvd9z
+          type: string
+        title:
+          description: 'Title to use for the autofilled design.
+
+
+            If no design title is provided, the autofilled design will have the same title as the brand template.'
+          example: My autofilled design
+          maxLength: 255
+          minLength: 1
+          type: string
+        data:
+          additionalProperties:
+            $ref: '#/components/schemas/DatasetValue'
+          description: Data object containing the data fields and values to autofill.
+          example:
+            cute_pet_image_of_the_day:
+              type: image
+              asset_id: Msd59349ff
+            cute_pet_video_of_the_day:
+              type: video
+              asset_id: VAHCkrNUANI
+            cute_pet_witty_pet_says:
+              type: text
+              text: It was like this when I got here!
+            cute_pet_sales_chart:
+              type: chart
+              chart_data:
+                column_configs:
+                - name: Geographic Region
+                  type: string
+                - name: Sales (millions AUD)
+                  type: number
+                - name: Target (millions AUD)
+                  type: number
+                - name: Target met?
+                  type: boolean
+                - name: Date met
+                  type: date
+                rows:
+                - cells:
+                  - type: string
+                    value: Asia Pacific
+                  - type: number
+                    value: 10.2
+                  - type: number
+                    value: 10
+                  - type: boolean
+                    value: true
+                  - type: date
+                    value: 1721944387
+                - cells:
+                  - type: string
+                    value: EMEA
+                  - type: number
+                    value: 13.8
+                  - type: number
+                    value: 14
+                  - type: boolean
+                    value: false
+                  - type: date
+            cute_pet_sales_sheet:
+              type: sheet
+              sheet_data:
+                column_configs:
+                - name: Geographic Region
+                  type: string
+                - name: Sales (millions AUD)
+                  type: number
+                - name: Target (millions AUD)
+                  type: number
+                - name: Target met?
+                  type: boolean
+                - name: Date met
+                  type: date
+                rows:
+                - cells:
+                  - type: string
+                    value: Asia Pacific
+                  - type: number
+                    value: 10.2
+                  - type: number
+                    value: 10
+                  - type: boolean
+                    value: true
+                  - type: date
+                    value: 1721944387
+                - cells:
+                  - type: string
+                    value: EMEA
+                  - type: number
+                    value: 13.8
+                  - type: number
+                    value: 14
+                  - type: boolean
+                    value: false
+                  - type: date
+          type: object
+      required:
+      - brand_template_id
+      - data
+      - type
+      type: object
+    DataTableMedia:
+      discriminator:
+        mapping:
+          image_upload: '#/components/schemas/DataTableImageUpload'
+          video_upload: '#/components/schemas/DataTableVideoUpload'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/DataTableImageUpload'
+      - $ref: '#/components/schemas/DataTableVideoUpload'
+    DesignAutofillJobResult:
+      description: Result of the design autofill job. Only present if job status is `success`.
+      discriminator:
+        mapping:
+          create_design: '#/components/schemas/CreateDesignAutofillJobResult'
+          update_design: '#/components/schemas/UpdateDesignAutofillJobResult'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/CreateDesignAutofillJobResult'
+      - $ref: '#/components/schemas/UpdateDesignAutofillJobResult'
+      type: object
+    BooleanDataTableCell:
+      description: A boolean tabular data cell.
+      properties:
+        type:
+          enum:
+          - boolean
+          type: string
+        value:
+          type: boolean
+      required:
+      - type
+      type: object
+    ColumnConfig:
+      description: Configuration for a data table column.
+      properties:
+        name:
+          description: Name for the column, displayed as header text.
+          type: string
+        type:
+          $ref: '#/components/schemas/ColumnDataType'
+      required:
+      - type
+      type: object
+    DatasetValue:
+      description: The data field to autofill.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/DatasetImageValue'
+          video: '#/components/schemas/DatasetVideoValue'
+          text: '#/components/schemas/DatasetTextValue'
+          chart: '#/components/schemas/DatasetChartValue'
+          sheet: '#/components/schemas/DatasetSheetValue'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/DatasetImageValue'
+      - $ref: '#/components/schemas/DatasetVideoValue'
+      - $ref: '#/components/schemas/DatasetTextValue'
+      - $ref: '#/components/schemas/DatasetChartValue'
+      - $ref: '#/components/schemas/DatasetSheetValue'
+      type: object
+    ColumnDataType:
+      description: Expected data type for cells in this column.
+      enum:
+      - string
+      - number
+      - date
+      - boolean
+      - media
+      - variant
+      type: string
+      x-enum-descriptions:
+      - String data
+      - Numeric data
+      - Date data
+      - Boolean data
+      - Media data (such as images, videos, or combinations of both)
+      - Mixed data types (use where the column contains cells of a combination of data types)
+    NumberDataTableCell:
+      description: A number tabular data cell.
+      properties:
+        type:
+          enum:
+          - number
+          type: string
+        value:
+          format: double
+          type: number
+        metadata:
+          $ref: '#/components/schemas/NumberCellMetadata'
+      required:
+      - type
+      type: object
+    CreateDesignAutofillJobResult:
+      description: A new autofilled design has been created and saved to the user's root folder.
+      properties:
+        type:
+          enum:
+          - create_design
+          type: string
+        design:
+          $ref: '#/components/schemas/DesignSummary'
+        trial_information:
+          $ref: '#/components/schemas/AutofillTrialInformation'
+      required:
+      - design
+      - type
+      type: object
+    MediaCollectionDataTableCell:
+      description: Cell containing a media collection.
+      properties:
+        type:
+          enum:
+          - media
+          type: string
+        value:
+          description: 'Media collection values.
+
+
+            Provide an empty array for an empty cell.'
+          items:
+            $ref: '#/components/schemas/DataTableMedia'
+          maxItems: 20
+          type: array
+      required:
+      - type
+      - value
+      type: object
+    DateDataTableCell:
+      description: 'A date tabular data cell.
+
+
+        Specified as a Unix timestamp (in seconds since the Unix Epoch).'
+      properties:
+        type:
+          enum:
+          - date
+          type: string
+        value:
+          format: int64
+          type: integer
+      required:
+      - type
+      type: object
+    DesignSummary:
+      description: Basic details about the design, such as the design's ID, title, and URL.
+      properties:
+        id:
+          description: The design ID.
+          example: DAFVztcvd9z
+          type: string
+        title:
+          description: The design title.
+          example: My summer holiday
+          type: string
+        url:
+          description: URL of the design.
+          example: https://www.canva.com/design/DAFVztcvd9z/edit
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        urls:
+          $ref: '#/components/schemas/DesignLinks'
+        created_at:
+          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
+
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
+
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        page_count:
+          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
+          example: 3
+          format: int32
+          minimum: 0
+          type: integer
+      required:
+      - created_at
+      - id
+      - updated_at
+      - urls
+      type: object
+    CreateFromDesignAutofillJobRequest:
+      description: 'Create a new autofilled design from an existing design that contains autofill data fields.
+
+
+        WARNING: Creating an autofilled design from an existing design is a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      properties:
+        type:
+          enum:
+          - create_from_design
+          type: string
+        design_id:
+          description: ID of the design to use as the autofill source.
+          example: DAFVztcvd9z
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        title:
+          description: 'Title to use for the autofilled design.
+
+
+            If no design title is provided, the autofilled design will have the same title as the source design.'
+          example: My autofilled design
+          maxLength: 255
+          minLength: 1
+          type: string
+        data:
+          additionalProperties:
+            $ref: '#/components/schemas/DatasetValue'
+          description: Data object containing the data fields and values to autofill.
+          example:
+            cute_pet_image_of_the_day:
+              type: image
+              asset_id: Msd59349ff
+            cute_pet_video_of_the_day:
+              type: video
+              asset_id: VAHCkrNUANI
+            cute_pet_witty_pet_says:
+              type: text
+              text: It was like this when I got here!
+            cute_pet_sales_chart:
+              type: chart
+              chart_data:
+                column_configs:
+                - name: Geographic Region
+                  type: string
+                - name: Sales (millions AUD)
+                  type: number
+                - name: Target (millions AUD)
+                  type: number
+                - name: Target met?
+                  type: boolean
+                - name: Date met
+                  type: date
+                rows:
+                - cells:
+                  - type: string
+                    value: Asia Pacific
+                  - type: number
+                    value: 10.2
+                  - type: number
+                    value: 10
+                  - type: boolean
+                    value: true
+                  - type: date
+                    value: 1721944387
+                - cells:
+                  - type: string
+                    value: EMEA
+                  - type: number
+                    value: 13.8
+                  - type: number
+                    value: 14
+                  - type: boolean
+                    value: false
+                  - type: date
+            cute_pet_sales_sheet:
+              type: sheet
+              sheet_data:
+                column_configs:
+                - name: Geographic Region
+                  type: string
+                - name: Sales (millions AUD)
+                  type: number
+                - name: Target (millions AUD)
+                  type: number
+                - name: Target met?
+                  type: boolean
+                - name: Date met
+                  type: date
+                rows:
+                - cells:
+                  - type: string
+                    value: Asia Pacific
+                  - type: number
+                    value: 10.2
+                  - type: number
+                    value: 10
+                  - type: boolean
+                    value: true
+                  - type: date
+                    value: 1721944387
+                - cells:
+                  - type: string
+                    value: EMEA
+                  - type: number
+                    value: 13.8
+                  - type: number
+                    value: 14
+                  - type: boolean
+                    value: false
+                  - type: date
+          type: object
+      required:
+      - data
+      - design_id
+      - type
+      type: object
+    AutofillTrialInformation:
+      description: 'WARNING: Trials and trial information are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis).
+
+        There might be unannounced breaking changes to this feature which won''t produce a new API version.
+
+
+        Trial information for non-enterprise users. Non-enterprise users have a limited number of
+
+        autofill uses. Once the trial is exhausted, users must upgrade to
+
+        [Canva Enterprise](https://www.canva.com/enterprise/) to continue using the Autofill API.'
+      properties:
+        uses_remaining:
+          description: The number of uses remaining in the free trial.
+          example: 0
+          format: int32
+          minimum: 0
+          type: integer
+        upgrade_url:
+          description: The URL for a user to upgrade their Canva account to Canva Enterprise.
+          example: https://www.canva.com/enterprise/
+          type: string
+      required:
+      - upgrade_url
+      - uses_remaining
+      type: object
+    UpdateDesignAutofillJobResult:
+      description: 'The existing design has been autofilled in place.
+
+
+        WARNING: Autofilling an existing design in place is a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      properties:
+        type:
+          enum:
+          - update_design
+          type: string
+        design:
+          $ref: '#/components/schemas/DesignSummary'
+      required:
+      - design
+      - type
+      type: object
+  examples:
+    AutofillDesignNotFoundError:
+      summary: A design with the ID specified in the request could not be found.
+      value:
+        code: not_found
+        message: Design with id '{designId}' not found
+    ChartDataProcessingUnsupportedError:
+      summary: The chart_data_processing field value is not yet supported.
+      value:
+        code: bad_request_params
+        message: The chart_data_processing field is not yet supported
+    DesignTitleInvalidError:
+      summary: The design title specified in the request is not valid.
+      value:
+        code: bad_request_params
+        message: Design title invalid
+    InProgressAutofillJobExample:
+      summary: In progress job
+      value:
+        job:
+          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          status: in_progress
+    DesignAutofillJobForbiddenError:
+      summary: 'The user does not have permission to access the design autofill job with the ID
+
+        specified in the request.'
+      value:
+        code: permission_denied
+        message: Calling user was not the creator of the autofill job
+    SuccessAutofillJobExample:
+      summary: Successfully completed job
+      value:
+        job:
+          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          status: success
+          result:
+            type: create_design
+            design:
+              id: DAFVztcvd9z
+              title: My summer holiday
+              url: https://www.canva.com/design/DAFVztcvd9z/edit
+              urls:
+                edit_url: https://www.canva.com/api/ekimus8HTvsdf&/edit
+                view_url: https://www.canva.com/api/eylPinTv358hYb8n1U4/view
+              thumbnail:
+                width: 595
+                height: 335
+                url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+              created_at: 1586734043
+              updated_at: 1586734043
+            trial_information:
+              uses_remaining: 2
+              upgrade_url: https://www.canva.com/enterprise/
+    AutofillFeatureQuotaExceededError:
+      summary: Feature quota exceeded
+      value:
+        code: quota_exceeded
+        message: Free autofill quota has been exceeded. Present the `upsell_url` to the user and prompt them to upgrade their Canva account to continue using the autofill feature.
+        upsell_url: '{upsellUrl}'
+    DesignNotFillableError:
+      summary: The specified brand template does not contain any autofill capable elements.
+      value:
+        code: design_not_fillable
+        message: Design does not have any autofill capable elements
+    AutofillDesignForbiddenError:
+      summary: 'The user does not have permission to access the design with the ID
+
+        specified in the request.'
+      value:
+        code: permission_denied
+        message: Not allowed to access design with id '{designId}'
+    FailedAutofillJobExample:
+      summary: Failed job
+      value:
+        job:
+          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          status: failed
+          error:
+            code: autofill_error
+            message: Error autofilling design from brand template
+    BrandTemplateForbiddenError:
+      summary: 'The user does not have permission to access the brand template with the ID
+
+        specified in the request.'
+      value:
+        code: permission_denied
+        message: Not allowed to access brand template with id '{brandTemplateId}'
+    BrandTemplateNotFoundError:
+      summary: A brand template with the ID specified in the request could not be found.
+      value:
+        code: not_found
+        message: Brand template with id '{brandTemplateId}' not found
+    AutofillDataInvalidError:
+      summary: The provided autofill data is not valid for the specified brand template.
+      value:
+        code: autofill_data_invalid
+        message: '{message}'
+    AutofillFeatureForbiddenError:
+      summary: The user's plan does not include access to the autofill feature.
+      value:
+        code: permission_denied
+        message: 'Access the autofill feature and other powerful design tools by upgrading to Enterprise here: {upgradeUrl}'
+    DesignAutofillJobNotFoundError:
+      summary: A design autofill job with the ID specified in the request could not be found.
+      value:
+        code: not_found
+        message: Job {jobId} not found
+    InvalidBrandTemplateIdError:
+      summary: The brand template ID specified in the request is not a valid ID format.
+      value:
+        code: bad_request_params
+        message: Invalid brand template ID {brandTemplateId}
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+    oauthAuthCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          scopes:
+            design:content:read: View the contents of the user's designs.
+            design:meta:read: View the metadata of the user's designs.
+            design:content:write: Create designs on the user's behalf.
+            folder:read: 'View the metadata and contents of the user''s folders, including their **Projects**
+
+              folder.'
+            folder:write: 'Add, move, or remove the user''s folders. It also lets you edit folder metadata,
+
+              such as the folder''s name.'
+            folder:permission:write: Set, update, or remove permissions assigned to the user's folders.
+            asset:read: View the metadata for the user's assets, such as uploaded images.
+            asset:write: Upload, update, or delete assets on the user's behalf.
+            comment:read: View the comments on the user's designs, and the associated metadata.
+            comment:write: Create comments and replies on the user's designs.
+            collaboration:event: Receive webhook notifications about events relevant to the user.
+            brandtemplate:meta:read: View the metadata of the brand templates associated with the user's brand.
+            brandtemplate:content:read: Read the content of the brand templates associated with the user's brand.
+            brandtemplate:content:write: Publish brand templates associated with the user's brand.
+            profile:read: Read a user's profile and account information.
+            openid: Read user information through Open ID Connect (OIDC).
+            profile: Read user profile information through OIDC.
+            email: Read user email address through OIDC.
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+      type: oauth2

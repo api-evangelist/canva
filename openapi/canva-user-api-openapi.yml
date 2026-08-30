@@ -1,0 +1,294 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations with Canva via a REST api
+  license:
+    name: ©2023 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Connect User API
+  version: 2024-06-18
+servers:
+- description: Canva Connect API
+  url: https://api.canva.com/rest
+tags:
+- name: user
+paths:
+  /v1/users/me:
+    get:
+      description: 'Returns the User ID and Team ID of the user
+
+        account associated with the provided access token.'
+      operationId: usersMe
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersMeResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode: []
+      tags:
+      - user
+      x-rate-limit-per-client-user: 10
+  /v1/users/me/capabilities:
+    get:
+      description: Lists the API capabilities for the user account associated with the provided access token. For more information, see [Capabilities](https://www.canva.dev/docs/connect/capabilities/).
+      operationId: getUserCapabilities
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserCapabilitiesResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - profile:read
+      tags:
+      - user
+      x-rate-limit-per-client-user: 10
+  /v1/users/me/profile:
+    get:
+      description: Currently, this returns the display name of the user account associated with the provided access token. More user information is expected to be included in the future.
+      operationId: getUserProfile
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                user_not_found:
+                  $ref: '#/components/examples/UserNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - profile:read
+      tags:
+      - user
+      x-rate-limit-per-client-user: 10
+components:
+  schemas:
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - ai_credit_quota_exceeded
+      - ai_credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      type: string
+    GetUserCapabilitiesResponse:
+      properties:
+        capabilities:
+          items:
+            $ref: '#/components/schemas/Capability'
+          type: array
+      type: object
+    UserProfileResponse:
+      properties:
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+      required:
+      - profile
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    UserProfile:
+      description: Profile for the user, consisting of the display name and other attributes.
+      properties:
+        display_name:
+          description: The name of the user as shown in the Canva UI.
+          example: Jane Doe
+          type: string
+      type: object
+    UsersMeResponse:
+      properties:
+        team_user:
+          $ref: '#/components/schemas/TeamUserSummary'
+      required:
+      - team_user
+      type: object
+    Capability:
+      description: 'Some APIs are annotated with required capabilities. These endpoints require the user to
+
+        possess the required capabilities in order to be called successfully.'
+      enum:
+      - analytics
+      - autofill
+      - brand_template
+      - export_png_transparency
+      - resize
+      - team_restricted_app
+      type: string
+      x-enum-descriptions:
+      - Capability required to call the Design analytics APIs. Users that are members of a [Canva Enterprise](https://www.canva.com/enterprise/) organization have this capability.
+      - Capability required to call autofill APIs Users that are members of a [Canva Enterprise](https://www.canva.com/enterprise/) organization have this capability.
+      - Capability required to use brand template APIs. Users on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise) have this capability.
+      - Capability required to export designs in PNG with a transparent background. Users on a paid Canva plan (such as Canva Pro) have this capability.
+      - Capability required to create design resize jobs. Users on a Canva plan with premium features (such as Canva Pro) have this capability.
+      - Capability required to create a team-restricted app. Users that are members of the [Canva Enterprise](https://www.canva.com/enterprise/) or the [Canva for Education](https://www.canva.com/education/) organization have this capability.
+    TeamUserSummary:
+      description: Metadata for the user, consisting of the User ID and Team ID.
+      properties:
+        user_id:
+          description: The ID of the user.
+          example: auDAbliZ2rQNNOsUl5OLu
+          type: string
+        team_id:
+          description: The ID of the user's Canva Team.
+          example: Oi2RJILTrKk0KRhRUZozX
+          type: string
+      required:
+      - team_id
+      - user_id
+      type: object
+  examples:
+    UserNotFoundError:
+      summary: The user was not found.
+      value:
+        code: user_not_found
+        message: User not found
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+    oauthAuthCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          scopes:
+            design:content:read: View the contents of the user's designs.
+            design:meta:read: View the metadata of the user's designs.
+            design:content:write: Create designs on the user's behalf.
+            folder:read: 'View the metadata and contents of the user''s folders, including their **Projects**
+
+              folder.'
+            folder:write: 'Add, move, or remove the user''s folders. It also lets you edit folder metadata,
+
+              such as the folder''s name.'
+            folder:permission:write: Set, update, or remove permissions assigned to the user's folders.
+            asset:read: View the metadata for the user's assets, such as uploaded images.
+            asset:write: Upload, update, or delete assets on the user's behalf.
+            comment:read: View the comments on the user's designs, and the associated metadata.
+            comment:write: Create comments and replies on the user's designs.
+            collaboration:event: Receive webhook notifications about events relevant to the user.
+            brandtemplate:meta:read: View the metadata of the brand templates associated with the user's brand.
+            brandtemplate:content:read: Read the content of the brand templates associated with the user's brand.
+            brandtemplate:content:write: Publish brand templates associated with the user's brand.
+            profile:read: Read a user's profile and account information.
+            openid: Read user information through Open ID Connect (OIDC).
+            profile: Read user profile information through OIDC.
+            email: Read user email address through OIDC.
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+      type: oauth2

@@ -1,0 +1,808 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations with Canva via a REST api
+  license:
+    name: ©2023 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Connect Brand Template API
+  version: 2024-06-18
+servers:
+- description: Canva Connect API
+  url: https://api.canva.com/rest
+tags:
+- name: brand_template
+paths:
+  /v1/brand-templates:
+    get:
+      description: 'WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you''ll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.
+
+
+        AVAILABILITY: To use this API, your integration must act on behalf of a user that''s on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise).
+
+
+        Get a list of the [brand templates](https://www.canva.com/help/publish-team-template/) the user has access to.'
+      operationId: listBrandTemplates
+      parameters:
+      - description: Lets you search the brand templates available to the user using a search term or terms.
+        explode: true
+        in: query
+        name: query
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: 'If the success response contains a continuation token, the user has access to more
+
+          brand templates you can list. You can use this token as a query parameter and retrieve
+
+          more templates from the list, for example
+
+          `/v1/brand-templates?continuation={continuation}`.
+
+          To retrieve all the brand templates available to the user, you might need to make
+
+          multiple requests.'
+        explode: true
+        in: query
+        name: continuation
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The number of brand templates to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: Filter the list of brand templates based on the user's ownership of the brand templates.
+        explode: true
+        in: query
+        name: ownership
+        required: false
+        schema:
+          $ref: '#/components/schemas/OwnershipType'
+        style: form
+      - description: Sort the list of brand templates.
+        explode: true
+        in: query
+        name: sort_by
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortByType'
+        style: form
+      - description: 'Filter the list of brand templates based on the brand templates'' dataset definitions.
+
+          Brand templates with dataset definitions are mainly used with the [Autofill APIs](https://www.canva.dev/docs/connect/api-reference/autofills/).'
+        explode: true
+        in: query
+        name: dataset
+        required: false
+        schema:
+          $ref: '#/components/schemas/DatasetFilter'
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBrandTemplatesResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid_continuation:
+                  $ref: '#/components/examples/InvalidContinuationError'
+                design_type_not_available:
+                  $ref: '#/components/examples/DesignTypeNotAvailableError'
+                unable_to_fetch_designs:
+                  $ref: '#/components/examples/UnableToFetchDesignsError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                find_brand_templates_forbidden:
+                  $ref: '#/components/examples/FindBrandTemplatesForbiddenError'
+                not_allowed_to_access_design_list:
+                  $ref: '#/components/examples/ListDesignsForbiddenError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - brandtemplate:meta:read
+      tags:
+      - brand_template
+      x-rate-limit-per-client-user: 100
+    post:
+      description: '<Warning>
+
+
+        This API is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+
+        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+
+        </Warning>
+
+
+        AVAILABILITY: To use this API, your integration must act on behalf of a user that''s on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise). Additionally, the user must have one of the following [roles](https://www.canva.com/help/roles-and-permissions/): Team admin, Brand designer, Organization admin, or Organization designer.
+
+
+        Publishes a design as a [brand template](https://www.canva.com/help/publish-team-template/). Brand templates are design templates that can be shared across a team for consistent content creation.
+
+
+        This API supports two workflows:
+
+
+        - **Initial publish**: If the design is not linked to an existing brand template, a new brand template is created.
+
+        - **Republish**: If the design is a draft of an existing brand template (created by editing an existing template), the existing template is updated with the changes.
+
+
+        The API returns the published brand template immediately.
+
+
+        <Note>
+
+        The `thumbnail` field might be `null` immediately after publishing, as thumbnails are generated asynchronously. You can use the [Get brand template API](https://www.canva.dev/docs/connect/api-reference/brand-templates/get-brand-template/) to retrieve the thumbnail once it''s ready. The brand template''s `view_url` and `create_url` are available immediately.
+
+        </Note>'
+      operationId: publishBrandTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishBrandTemplateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/PublishBrandTemplateSuccessExample'
+              schema:
+                $ref: '#/components/schemas/PublishBrandTemplateResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid_design_id:
+                  $ref: '#/components/examples/InvalidDesignIdError'
+                resource_limit_exceeded:
+                  $ref: '#/components/examples/ResourceLimitExceededError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request - includes validation errors and other bad request errors
+        '403':
+          content:
+            application/json:
+              examples:
+                publish_permission_denied:
+                  $ref: '#/components/examples/PublishPermissionDeniedError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                publish_brand_template_design_not_found:
+                  $ref: '#/components/examples/PublishBrandTemplateDesignNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - brandtemplate:content:write
+      tags:
+      - brand_template
+      x-rate-limit-per-client-user: 20
+  /v1/brand-templates/{brandTemplateId}:
+    get:
+      description: 'WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you''ll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.
+
+
+        AVAILABILITY: To use this API, your integration must act on behalf of a user that''s on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise).
+
+
+        Retrieves the metadata for a brand template.'
+      operationId: getBrandTemplate
+      parameters:
+      - description: The brand template ID.
+        explode: false
+        in: path
+        name: brandTemplateId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrandTemplateResponse'
+          description: OK
+        '403':
+          content:
+            application/json:
+              examples:
+                get_brand_template_permission_denied:
+                  $ref: '#/components/examples/GetBrandTemplatePermissionDeniedError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                get_brand_template_not_found:
+                  $ref: '#/components/examples/GetBrandTemplateNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - brandtemplate:meta:read
+      tags:
+      - brand_template
+      x-rate-limit-per-client-user: 100
+  /v1/brand-templates/{brandTemplateId}/dataset:
+    get:
+      description: 'WARNING: Brand templates were migrated to use a new ID format in September 2025. If your integration stores brand template IDs, you''ll need to migrate to use the new IDs. Old brand template IDs will continue to be accepted for 6 months to give you time to migrate to the new IDs.
+
+
+        AVAILABILITY: To use this API, your integration must act on behalf of a user that''s on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise).
+
+
+        Gets the dataset definition of a brand template. If the brand
+
+        template contains autofill data fields, this API returns an object with the data field
+
+        names and the type of data they accept.
+
+
+        <Note>
+
+
+        To get the dataset definition of a design, use the
+
+        [Get design dataset API](https://www.canva.dev/docs/connect/api-reference/designs/get-design-dataset/).
+
+
+        </Note>
+
+
+        Available data field types include:
+
+
+        - Images (which you can autofill with an image or a video asset)
+
+        - Text
+
+        - Charts
+
+
+        You can autofill a brand template using the [Create a design autofill job
+
+        API](https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/).
+
+
+        WARNING: Chart data fields and autofilling a video are [preview features](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to these features which won''t produce a new API version.'
+      operationId: getBrandTemplateDataset
+      parameters:
+      - description: The brand template ID.
+        explode: false
+        in: path
+        name: brandTemplateId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrandTemplateDatasetResponse'
+          description: OK
+        '403':
+          content:
+            application/json:
+              examples:
+                get_brand_template_dataset_permission_denied:
+                  $ref: '#/components/examples/GetBrandTemplateDatasetPermissionDeniedError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                get_brand_template_dataset_not_found:
+                  $ref: '#/components/examples/GetBrandTemplateDatasetNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - brandtemplate:content:read
+      tags:
+      - brand_template
+      x-rate-limit-per-client-user: 100
+components:
+  examples:
+    ListDesignsForbiddenError:
+      summary: Not allowed to access the design list
+      value:
+        code: permission_denied
+        message: Not allowed to access design list
+    InvalidDesignIdError:
+      summary: The design ID format is invalid
+      value:
+        code: bad_request_params
+        message: Design ID '{designId}' is not valid
+    GetBrandTemplatePermissionDeniedError:
+      summary: Not allowed to access the brand template
+      value:
+        code: permission_denied
+        message: Not allowed to access brand template with id '{brandTemplateId}'
+    PublishPermissionDeniedError:
+      summary: User does not have permission to publish the design as a brand template
+      value:
+        code: permission_denied
+        message: User does not have permission to publish design {designId} as a brand template
+    UnableToFetchDesignsError:
+      summary: Unable to fetch designs
+      value:
+        code: bad_query_params
+        message: Unable to fetch designs
+    FindBrandTemplatesForbiddenError:
+      summary: Not allowed to find metadata for brand templates
+      value:
+        code: permission_denied
+        message: Not allowed to find metadata for brand templates
+    PublishBrandTemplateSuccessExample:
+      description: Response from successfully publishing a brand template. Note that the thumbnail might be null initially and will be available after async processing completes.
+      summary: Successful brand template publishing
+      value:
+        brand_template:
+          id: EABCtemplate789
+          title: My Brand Template
+          view_url: https://www.canva.com/design/EABCtemplate789/view
+          create_url: https://www.canva.com/design/EABCtemplate789/remix
+          created_at: 1704110400
+          updated_at: 1704110400
+    GetBrandTemplateDatasetNotFoundError:
+      summary: Brand template not found
+      value:
+        code: not_found
+        message: Brand template with id '{brandTemplateId}' not found
+    GetBrandTemplateDatasetPermissionDeniedError:
+      summary: Not allowed to access the brand template
+      value:
+        code: permission_denied
+        message: User does not have permission to access brand template with id '{brandTemplateId}'
+    InvalidContinuationError:
+      summary: The continuation token is invalid
+      value:
+        code: bad_query_params
+        message: 'Invalid continuation: {continuation}'
+    GetBrandTemplateNotFoundError:
+      summary: Brand template not found
+      value:
+        code: not_found
+        message: Brand template with id '{brandTemplateId}' not found
+    ResourceLimitExceededError:
+      summary: Validation error - resource limit exceeded
+      value:
+        code: bad_request_params
+        message: Design contains {count} {resource_name}, but brand templates can only contain up to {max}. Reduce the number and try again.
+    PublishBrandTemplateDesignNotFoundError:
+      summary: The design was not found
+      value:
+        code: not_found
+        message: Design with id {designId} not found
+    DesignTypeNotAvailableError:
+      summary: The design_types filter contains an unavailable design type
+      value:
+        code: invalid_field
+        message: '''design_types'' contains a design type that isn''t available: {designType}.'
+  schemas:
+    GetBrandTemplateDatasetResponse:
+      description: Successful response from a `getBrandTemplateDataset` request.
+      properties:
+        dataset:
+          additionalProperties:
+            $ref: '#/components/schemas/DataField'
+          description: 'The dataset definition. It contains the data inputs available for use with the
+
+            [Create design autofill job API](https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/).'
+          example:
+            cute_pet_image_of_the_day:
+              type: image
+            cute_pet_witty_pet_says:
+              type: text
+            cute_pet_sales_chart:
+              type: chart
+          type: object
+      type: object
+    DataField:
+      description: A named data field that can be autofilled.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/ImageDataField'
+          text: '#/components/schemas/TextDataField'
+          chart: '#/components/schemas/ChartDataField'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ImageDataField'
+      - $ref: '#/components/schemas/TextDataField'
+      - $ref: '#/components/schemas/ChartDataField'
+      type: object
+    OwnershipType:
+      default: any
+      enum:
+      - any
+      - owned
+      - shared
+      type: string
+      x-enum-descriptions:
+      - Owned by and shared with the user.
+      - Owned by the user.
+      - Shared with the user.
+    TextDataField:
+      description: A text data field. You can autofill it with a text value.
+      properties:
+        type:
+          enum:
+          - text
+          type: string
+      required:
+      - type
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    DatasetFilter:
+      default: any
+      enum:
+      - any
+      - non_empty
+      type: string
+      x-enum-descriptions:
+      - Brand templates with and without dataset definitions.
+      - Brand templates with one or more data fields defined.
+    ImageDataField:
+      description: 'An image data field. You can autofill it with an image by providing its `asset_id`.
+
+
+        You can also autofill it with a video asset. Autofilling a video is currently a [preview feature](https://www.canva.dev/docs/connect/#preview-apis).'
+      properties:
+        type:
+          enum:
+          - image
+          type: string
+      required:
+      - type
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - ai_credit_quota_exceeded
+      - ai_credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      type: string
+    ListBrandTemplatesResponse:
+      properties:
+        continuation:
+          description: 'If the success response contains a continuation token, the user has access to more
+
+            brand templates you can list. You can use this token as a query parameter and retrieve
+
+            more templates from the list, for example
+
+            `/v1/brand-templates?continuation={continuation}`.
+
+            To retrieve all the brand templates available to the user, you might need to make
+
+            multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+        items:
+          description: The list of brand templates.
+          items:
+            $ref: '#/components/schemas/BrandTemplate'
+          type: array
+      required:
+      - items
+      type: object
+    ChartDataField:
+      description: 'A chart data field. You can autofill it with tabular data.
+
+
+        WARNING: Chart data fields are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      properties:
+        type:
+          enum:
+          - chart
+          type: string
+      required:
+      - type
+      type: object
+    PublishBrandTemplateRequest:
+      description: Request body for publishing a design as a brand template
+      properties:
+        design_id:
+          description: The ID of the design to publish as a brand template. If this design is a draft of an existing brand template, that template will be updated. Otherwise, a new brand template is created.
+          example: DABCdesign123
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+      required:
+      - design_id
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    SortByType:
+      default: relevance
+      enum:
+      - relevance
+      - modified_descending
+      - modified_ascending
+      - title_descending
+      - title_ascending
+      type: string
+      x-enum-descriptions:
+      - Sort results using a relevance algorithm.
+      - Sort results by the date last modified in descending order.
+      - Sort results by the date last modified in ascending order.
+      - Sort results by title in descending order.
+      - Sort results by title in ascending order
+    PublishBrandTemplateResponse:
+      description: Response from a successful publishBrandTemplate request. Contains the published brand template with all its metadata. Note that the `thumbnail` field might be `null` initially as thumbnails are generated asynchronously.
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+      type: object
+    GetBrandTemplateResponse:
+      description: Successful response from a `getBrandTemplate` request.
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+      type: object
+    BrandTemplate:
+      description: An object representing a brand template with associated metadata.
+      properties:
+        id:
+          description: The brand template ID.
+          example: DEMzWSwy3BI
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        title:
+          description: The brand template title, as shown in the Canva UI.
+          example: Advertisement Template
+          type: string
+        view_url:
+          description: A URL Canva users can visit to view the brand template.
+          example: https://www.canva.com/design/DAE35hE8FA4/view
+          type: string
+        create_url:
+          description: A URL Canva users can visit to create a new design from the template.
+          example: https://www.canva.com/design/DAE35hE8FA4/remix
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        created_at:
+          description: 'When the brand template was created, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1704110400
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the brand template was last updated, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1719835200
+          format: int64
+          type: integer
+      required:
+      - create_url
+      - created_at
+      - id
+      - title
+      - updated_at
+      - view_url
+      type: object
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+    oauthAuthCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          scopes:
+            design:content:read: View the contents of the user's designs.
+            design:meta:read: View the metadata of the user's designs.
+            design:content:write: Create designs on the user's behalf.
+            folder:read: 'View the metadata and contents of the user''s folders, including their **Projects**
+
+              folder.'
+            folder:write: 'Add, move, or remove the user''s folders. It also lets you edit folder metadata,
+
+              such as the folder''s name.'
+            folder:permission:write: Set, update, or remove permissions assigned to the user's folders.
+            asset:read: View the metadata for the user's assets, such as uploaded images.
+            asset:write: Upload, update, or delete assets on the user's behalf.
+            comment:read: View the comments on the user's designs, and the associated metadata.
+            comment:write: Create comments and replies on the user's designs.
+            collaboration:event: Receive webhook notifications about events relevant to the user.
+            brandtemplate:meta:read: View the metadata of the brand templates associated with the user's brand.
+            brandtemplate:content:read: Read the content of the brand templates associated with the user's brand.
+            brandtemplate:content:write: Publish brand templates associated with the user's brand.
+            profile:read: Read a user's profile and account information.
+            openid: Read user information through Open ID Connect (OIDC).
+            profile: Read user profile information through OIDC.
+            email: Read user email address through OIDC.
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+      type: oauth2
