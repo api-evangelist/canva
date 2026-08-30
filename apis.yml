@@ -349,7 +349,7 @@ apis:
   humanURL: https://www.canva.com/developers/
   baseURL: https://api.canva.com
   tags:
-  - brand-templates
+  - Brand Templates
   tags_raw:
   - Brand Templates
   properties:
@@ -898,6 +898,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Analytics
+  tags_raw:
   - analytics
   properties:
   - type: OpenAPI
@@ -908,6 +910,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - App
+  tags_raw:
   - app
   properties:
   - type: OpenAPI
@@ -918,6 +922,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Asset
+  tags_raw:
   - asset
   properties:
   - type: OpenAPI
@@ -937,7 +943,8 @@ apis:
   description: The brand_template API from Canva — 3 operation(s) for brand_template.
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
-  tags:
+  tags: []
+  tags_raw:
   - brand_template
   properties:
   - type: OpenAPI
@@ -948,6 +955,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Comment
+  tags_raw:
   - comment
   properties:
   - type: OpenAPI
@@ -958,6 +967,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Design
+  tags_raw:
   - design
   properties:
   - type: OpenAPI
@@ -967,7 +978,8 @@ apis:
   description: The design_import API from Canva — 4 operation(s) for design_import.
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
-  tags:
+  tags: []
+  tags_raw:
   - design_import
   properties:
   - type: OpenAPI
@@ -978,6 +990,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Export
+  tags_raw:
   - export
   properties:
   - type: OpenAPI
@@ -988,6 +1002,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Folder
+  tags_raw:
   - folder
   properties:
   - type: OpenAPI
@@ -998,6 +1014,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Merge
+  tags_raw:
   - merge
   properties:
   - type: OpenAPI
@@ -1008,6 +1026,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Authentication
+  tags_raw:
   - oauth
   properties:
   - type: OpenAPI
@@ -1018,6 +1038,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - OIDC
+  tags_raw:
   - oidc
   properties:
   - type: OpenAPI
@@ -1038,6 +1060,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - User
+  tags_raw:
   - user
   properties:
   - type: OpenAPI
