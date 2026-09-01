@@ -349,7 +349,7 @@ apis:
   humanURL: https://www.canva.com/developers/
   baseURL: https://api.canva.com
   tags:
-  - Brand Templates
+  - brand-templates
   tags_raw:
   - Brand Templates
   properties:
