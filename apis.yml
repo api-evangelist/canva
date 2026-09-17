@@ -61,7 +61,8 @@ tags_raw:
 - Visual Content
 apis:
 - name: Canva Apps SDK
-  description: Build apps that extend Canva's editor with custom functionality, content, and integrations.
+  description: >-
+    Build apps that extend Canva's editor with custom functionality, content, and integrations.
   image: https://www.canva.com/favicon.ico
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
@@ -142,8 +143,9 @@ apis:
     url: https://www.canva.dev/docs/apps/mcp-server/
     title: MCP Server
 - name: Canva Print Partnerships API
-  description: Enables print service providers to integrate Canva design tools into their customer journey,
-    allowing customers to create designs with Canva and print them from partner websites.
+  description: >-
+    Enables print service providers to integrate Canva design tools into their customer journey, allowing
+    customers to create designs with Canva and print them from partner websites.
   image: https://www.canva.com/favicon.ico
   humanURL: https://www.canva.dev/docs/print-partnerships/
   baseURL: https://api.canva.com
@@ -182,8 +184,9 @@ apis:
     url: https://www.canva.dev/docs/print-partnerships/tutorial/initialize-partnership-sdk/
     title: Initialize SDK Tutorial
 - name: Canva Button API
-  description: Enables embedding Canva design capabilities directly into websites and applications through
-    HTML and JavaScript APIs for creating and editing designs.
+  description: >-
+    Enables embedding Canva design capabilities directly into websites and applications through HTML and
+    JavaScript APIs for creating and editing designs.
   image: https://www.canva.com/favicon.ico
   humanURL: https://www.canva.dev/docs/button/
   baseURL: https://api.canva.com
@@ -247,7 +250,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -313,7 +317,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -381,7 +386,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -447,7 +453,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -513,7 +520,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -581,7 +589,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -647,7 +656,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -713,7 +723,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -781,7 +792,8 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/connect/creating-integrations/
   - type: Documentation
-    url: https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
   - type: GitHubRepository
     url: https://github.com/canva-sdks/canva-connect-api-starter-kit
   - type: APIReference
@@ -805,9 +817,10 @@ apis:
   - type: JSONLD
     url: json-ld/canva-context.jsonld
 - name: Canva Connect API
-  description: The umbrella Canva Connect REST API as Canva publishes it — 59 operations across designs,
-    assets, folders, brand templates, autofills, exports, resizes, imports, merges, comments, analytics,
-    users, OAuth and OIDC. This entry carries Canva's own OpenAPI description, fetched verbatim from https://www.canva.dev/sources/connect/api/latest/api.yml.
+  description: >-
+    The umbrella Canva Connect REST API as Canva publishes it — 59 operations across designs, assets,
+    folders, brand templates, autofills, exports, resizes, imports, merges, comments, analytics, users,
+    OAuth and OIDC. This entry carries Canva's own OpenAPI description, fetched verbatim from https://www.canva.dev/sources/connect/api/latest/api.yml.
   humanURL: https://www.canva.dev/docs/connect/
   baseURL: https://api.canva.com/rest/v1
   tags:
@@ -838,10 +851,10 @@ apis:
   - type: Conventions
     url: conventions/canva-conventions.yml
 - name: Canva SCIM API
-  description: SCIM 2.0 API for automating provisioning and deprovisioning of Canva user accounts and
-    groups. Canva states it implements the SCIM v2 specification (RFC 7644). Available to Canva Enterprise
-    single teams; not available to multi-team or Canva for Teams organizations (existing Teams users are
-    grandfathered).
+  description: >-
+    SCIM 2.0 API for automating provisioning and deprovisioning of Canva user accounts and groups. Canva
+    states it implements the SCIM v2 specification (RFC 7644). Available to Canva Enterprise single teams;
+    not available to multi-team or Canva for Teams organizations (existing Teams users are grandfathered).
   humanURL: https://www.canva.dev/docs/scim/
   baseURL: https://www.canva.com/_scim/v2
   tags:
@@ -859,9 +872,10 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/scim/users-groups-and-teams/
 - name: Canva Print API
-  description: Partner-gated REST API for print order fulfilment. Uniquely bidirectional — Canva acts
-    as the API CLIENT when sending orders to a print partner, and as the API SERVER when the partner sends
-    order status back. Date-based versions selected with the X-Canva-Public-Api-Version header. Only available
+  description: >-
+    Partner-gated REST API for print order fulfilment. Uniquely bidirectional — Canva acts as the API
+    CLIENT when sending orders to a print partner, and as the API SERVER when the partner sends order
+    status back. Date-based versions selected with the X-Canva-Public-Api-Version header. Only available
     to partners in Canva's print fulfilment network.
   humanURL: https://www.canva.dev/docs/print/
   baseURL: https://api.canva.com/rest/v1
@@ -1004,18 +1018,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/canva-merge-api-openapi.yml
-- aid: canva:canva-oauth-api
-  name: Canva OAUTH API
-  description: The oauth API from Canva — 3 operation(s) for oauth.
-  humanURL: https://www.canva.com/developers/apps
-  baseURL: https://api.canva.com
-  tags:
-  - Authentication
-  tags_raw:
-  - oauth
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-oauth-api-openapi.yml
 - aid: canva:canva-oidc-api
   name: Canva Oidc API
   description: The oidc API from Canva — 2 operation(s) for oidc.
@@ -1050,6 +1052,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/canva-user-api-openapi.yml
+- aid: canva:canva-oauth-api
+  name: Canva O Auth API
+  description: The OAuth API from Canva — 3 operation(s) for oauth.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-oauth-api-openapi.yml
 common:
 - type: Website
   url: https://canva.dev
