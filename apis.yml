@@ -195,6 +195,12 @@ apis:
   - Design
   - Embed
   - Integration
+  - Widgets
+  tags_raw:
+  - Button
+  - Design
+  - Embed
+  - Integration
   - Widget
   properties:
   - type: Documentation
@@ -483,6 +489,8 @@ apis:
   humanURL: https://www.canva.com/developers/
   baseURL: https://api.canva.com
   tags:
+  - Design
+  tags_raw:
   - Designs
   properties:
   - type: OpenAPI
@@ -1058,6 +1066,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI
