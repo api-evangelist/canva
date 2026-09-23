@@ -13,31 +13,21 @@ servers:
 - description: Canva Connect API
   url: https://api.canva.com/rest
 tags:
-- name: analytics
+- name: Analytics
 paths:
   /v1/designs/{designId}/analytics:
     get:
-      description: '<Warning>
-
-
-        This API is currently provided as a preview. Be aware of the following:
+      description: 'This API is currently provided as a preview. Be aware of the following:
 
 
         - There might be unannounced breaking changes.
 
-        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+        - Any breaking changes to preview APIs won''t produce a new API version.
 
         - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
-        </Warning>
-
-
-        <Availability>
-
-        To use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.
-
-        </Availability>
+        To use this API, your integration must act on behalf of a user who is a member of a Canva Enterprise organization.
 
 
         Gets the aggregated analytics for a design.
@@ -117,33 +107,25 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - analytics
+      - Analytics
       x-required-capabilities:
       - analytics
       x-rate-limit-per-client-user: 100
+      summary: Get design analytics
+      x-summary-source: derived
   /v1/designs/{designId}/analytics/viewers:
     get:
-      description: '<Warning>
-
-
-        This API is currently provided as a preview. Be aware of the following:
+      description: 'This API is currently provided as a preview. Be aware of the following:
 
 
         - There might be unannounced breaking changes.
 
-        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+        - Any breaking changes to preview APIs won''t produce a new API version.
 
         - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
-        </Warning>
-
-
-        <Availability>
-
-        To use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.
-
-        </Availability>
+        To use this API, your integration must act on behalf of a user who is a member of a Canva Enterprise organization.
 
 
         Lists viewers for a design, ordered by most recent view first.'
@@ -267,33 +249,25 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - analytics
+      - Analytics
       x-required-capabilities:
       - analytics
       x-rate-limit-per-client-user: 100
+      summary: Get design analytics viewers
+      x-summary-source: derived
   /v1/designs/{designId}/analytics/views-over-time:
     get:
-      description: '<Warning>
-
-
-        This API is currently provided as a preview. Be aware of the following:
+      description: 'This API is currently provided as a preview. Be aware of the following:
 
 
         - There might be unannounced breaking changes.
 
-        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+        - Any breaking changes to preview APIs won''t produce a new API version.
 
         - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
-        </Warning>
-
-
-        <Availability>
-
-        To use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.
-
-        </Availability>
+        To use this API, your integration must act on behalf of a user who is a member of a Canva Enterprise organization.
 
 
         Lists the view counts over time for a design.
@@ -434,33 +408,25 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - analytics
+      - Analytics
       x-required-capabilities:
       - analytics
       x-rate-limit-per-client-user: 100
+      summary: Get design analytics views over time
+      x-summary-source: derived
   /v1/designs/{designId}/analytics/page-views:
     post:
-      description: '<Warning>
-
-
-        This API is currently provided as a preview. Be aware of the following:
+      description: 'This API is currently provided as a preview. Be aware of the following:
 
 
         - There might be unannounced breaking changes.
 
-        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+        - Any breaking changes to preview APIs won''t produce a new API version.
 
         - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
-        </Warning>
-
-
-        <Availability>
-
-        To use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.
-
-        </Availability>
+        To use this API, your integration must act on behalf of a user who is a member of a Canva Enterprise organization.
 
 
         Lists the page-level view duration data for a design.
@@ -550,33 +516,25 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - analytics
+      - Analytics
       x-required-capabilities:
       - analytics
       x-rate-limit-per-client-user: 100
+      summary: Get design analytics page views
+      x-summary-source: derived
   /v1/designs/{designId}/analytics/links:
     get:
-      description: '<Warning>
-
-
-        This API is currently provided as a preview. Be aware of the following:
+      description: 'This API is currently provided as a preview. Be aware of the following:
 
 
         - There might be unannounced breaking changes.
 
-        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+        - Any breaking changes to preview APIs won''t produce a new API version.
 
         - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
-        </Warning>
-
-
-        <Availability>
-
-        To use this API, your integration must act on behalf of a user who is a member of a [Canva Enterprise](https://www.canva.com/enterprise/) organization.
-
-        </Availability>
+        To use this API, your integration must act on behalf of a user who is a member of a Canva Enterprise organization.
 
 
         Lists trackable links and their metrics for a design.'
@@ -680,185 +638,70 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - analytics
+      - Analytics
       x-required-capabilities:
       - analytics
       x-rate-limit-per-client-user: 100
+      summary: Get design analytics links
+      x-summary-source: derived
 components:
-  examples:
-    AnalyticsInvalidPageViewsFilterError:
-      summary: The page views filter is invalid.
-      value:
-        code: bad_request_body
-        message: filter must include a valid type discriminator and required fields
-    FailedToReadRequestBody:
-      summary: Failed to read request body
-      value:
-        code: bad_request_body
-        message: Failed to read request body
-    AnalyticsDesignNotFoundError:
-      summary: The design was not found, or analytics are unavailable.
-      value:
-        code: design_not_found
-        message: Design not found or analytics are not available for this design
-    TooManyRequestsError:
-      summary: Rate limit exceeded
-      value:
-        code: too_many_requests
-        message: Too many requests to {operation}
-    AnalyticsInvalidTimeRangeError:
-      summary: The requested time range is invalid.
-      value:
-        code: invalid_field
-        message: start_time must be before end_time
-    AnalyticsInvalidDesignIdError:
-      summary: The design ID does not match the expected format.
-      value:
-        code: invalid_field
-        message: designId does not match expected format
-    AnalyticsInvalidTimezoneError:
-      summary: The timezone value is invalid.
-      value:
-        code: invalid_field
-        message: timezone is not a valid UTC offset
-    ExpectedLongQueryParam:
-      summary: Expected long for query parameter
-      value:
-        code: bad_query_params
-        message: Expected long for query parameter `{key}` but found {value}
-    AnalyticsPermissionDeniedError:
-      summary: The caller is not allowed to access design analytics.
-      value:
-        code: permission_denied
-        message: Not allowed to access analytics for this design
-    InvalidAccessToken:
-      summary: Access token could not be decoded or signature could not be verified.
-      value:
-        code: invalid_access_token
-        message: Access token is invalid
-    AnalyticsInvalidContinuationError:
-      summary: The continuation token is invalid or expired.
-      value:
-        code: invalid_field
-        message: Invalid continuation token
   schemas:
-    ViewsAtTime:
-      description: A single time bucket of view counts.
+    Viewer:
+      description: A viewer and their engagement metrics for the design.
       properties:
-        count:
-          description: The number of views in this bucket.
-          example: 15
+        viewer_id:
+          description: An opaque identifier for the viewer. Use this value when filtering page view results by viewer.
+          example: b2d44753-f996-46ff-8f01-d4143911550f
+          type: string
+        user:
+          allOf:
+          - $ref: '#/components/schemas/TeamUser'
+          description: The user details of the viewer. This is omitted for viewers whose identity is not visible.
+        last_viewed_at:
+          description: When the viewer most recently opened the design, as a Unix timestamp (in seconds since the Unix Epoch).
+          example: 1748044800
           format: int64
           type: integer
-        bucket_start_at:
-          description: When this time bucket starts, as a Unix timestamp (in seconds since the Unix Epoch).
+        viewer_type:
+          $ref: '#/components/schemas/DesignAnalyticsViewerType'
+        visibility:
+          $ref: '#/components/schemas/DesignAnalyticsViewerVisibility'
+        total_view_duration_seconds:
+          description: The total time this viewer has spent viewing the design, in seconds.
+          example: 312
+          format: int64
+          type: integer
+        first_viewed_at:
+          description: When the viewer first viewed the design, as a Unix timestamp (in seconds since the Unix Epoch).
           example: 1745452800
           format: int64
           type: integer
-      required:
-      - bucket_start_at
-      - count
-      type: object
-    PageViewDuration:
-      description: View duration metrics for a single page.
-      properties:
-        page_id:
-          description: The page ID. This is omitted for design types that do not support page IDs.
-          example: PBBKfZml7MRHRQVw
-          type: string
-        total_view_duration_seconds:
-          description: The total time spent viewing this page, in seconds.
-          example: 1860
+        pages_viewed:
+          description: The number of pages this viewer viewed for more than one second.
+          example: 8
           format: int64
           type: integer
-        average_duration_seconds:
-          description: The average time spent viewing this page, in seconds. This is omitted for `by_viewer` filters.
-          example: 21.5
-          format: double
-          type: number
-        unique_view_count:
-          description: The number of unique viewers for this page. This is omitted for `by_viewer` filters.
-          example: 87
-          format: int64
-          type: integer
-      required:
-      - total_view_duration_seconds
-      type: object
-    GetDesignAnalyticsLinksResponse:
-      description: Successful response from a `getDesignAnalyticsLinks` request.
-      properties:
-        items:
-          description: The list of trackable links.
-          items:
-            $ref: '#/components/schemas/TrackableLink'
-          type: array
-        continuation:
-          description: 'If the success response contains a continuation token, there are more links you can list. You can use this token as a query parameter and retrieve more links from the list, for example `/v1/designs/{designId}/analytics/links?continuation={continuation}`.
-
-
-            To retrieve all links, you might need to make multiple requests.'
-          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+        form_factor:
+          $ref: '#/components/schemas/DesignAnalyticsViewerFormFactor'
+        device_operating_system:
+          description: The simplified operating system name for the viewer's device.
+          example: macOS
           type: string
-      required:
-      - items
-      type: object
-    PageViewFilterByViewer:
-      properties:
-        type:
-          enum:
-          - by_viewer
-          example: by_viewer
+        city_country:
+          description: The viewer location as city and country. This is only returned for anonymous viewers.
+          example: Sydney, Australia
           type: string
-        link_id:
-          description: Filters to viewer traffic from a specific trackable link. Omit this field to target viewer traffic that did not come from a trackable link.
-          example: hddb98a3716
-          type: string
-        viewer_id:
-          description: The viewer ID to filter by.
-          example: b2d44753-f996-46ff-8f01-d4143911550f
-          type: string
-      required:
-      - type
-      - viewer_id
-      type: object
-    GetDesignAnalyticsResponse:
-      description: Aggregated analytics metrics for a design.
-      properties:
-        average_view_duration_seconds:
-          description: The average view duration in seconds.
-          example: 42
-          format: int64
-          type: integer
-        total_view_duration_seconds:
-          description: The total view duration in seconds.
-          example: 5040
-          format: int64
-          type: integer
-        unique_view_count:
-          description: The number of unique viewers.
-          example: 87
-          format: int64
-          type: integer
         total_view_count:
-          description: The total number of views.
-          example: 120
+          description: The number of times this viewer opened the design.
+          example: 14
           format: int64
           type: integer
       required:
-      - total_view_count
-      - unique_view_count
+      - last_viewed_at
+      - viewer_id
+      - viewer_type
+      - visibility
       type: object
-    DesignAnalyticsViewerType:
-      description: How the viewer accessed the design.
-      enum:
-      - editor
-      - commenter
-      - viewer
-      type: string
-      x-enum-descriptions:
-      - The viewer accessed the design with edit access.
-      - The viewer accessed the design with comment access.
-      - The viewer accessed the design with view-only access.
     TrackableLink:
       description: Metrics for a trackable link.
       properties:
@@ -898,32 +741,6 @@ components:
       required:
       - link_id
       type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    DesignAnalyticsViewerVisibility:
-      description: How this viewer should be presented to the caller.
-      enum:
-      - shown
-      - anonymous
-      - opt_out
-      - another_team
-      - deleted
-      type: string
-      x-enum-descriptions:
-      - The viewer's identity is visible, and their user details are included.
-      - The viewer is anonymous, so their identity is not available.
-      - The viewer has opted out of design analytics, but some data was already collected for this viewer previosly.
-      - The viewer belongs to a different team, so their identity is not shared.
-      - The viewer's account has been deleted.
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -1007,15 +824,6 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    DesignAnalyticsViewerFormFactor:
-      description: The device form factor used to view the design.
-      enum:
-      - small
-      - large
-      type: string
-      x-enum-descriptions:
-      - A small device, such as a phone.
-      - A large device, such as a laptop, desktop, or large tablet.
     GetDesignAnalyticsViewsOverTimeResponse:
       description: Successful response from a `getDesignAnalyticsViewsOverTime` request.
       properties:
@@ -1034,136 +842,30 @@ components:
       required:
       - items
       type: object
-    PageViewFilter:
-      description: A filter for page view data.
-      discriminator:
-        mapping:
-          by_viewer: '#/components/schemas/PageViewFilterByViewer'
-          for_editor: '#/components/schemas/PageViewFilterForEditor'
-          by_link: '#/components/schemas/PageViewFilterByLink'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/PageViewFilterByViewer'
-      - $ref: '#/components/schemas/PageViewFilterForEditor'
-      - $ref: '#/components/schemas/PageViewFilterByLink'
-      type: object
-    GetDesignAnalyticsPageViewsResponse:
-      description: Successful response from a `getDesignAnalyticsPageViews` request.
-      properties:
-        items:
-          description: The list of page view durations.
-          items:
-            $ref: '#/components/schemas/PageViewDuration'
-          type: array
-        continuation:
-          description: 'If the success response contains a continuation token, there are more page results you can list. You can use this token in the request body and retrieve more page results from the list.
-
-
-            To retrieve all page results, you might need to make multiple requests.'
-          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
-          type: string
-      required:
-      - items
-      type: object
-    PageViewFilterForEditor:
-      properties:
-        type:
-          enum:
-          - for_editor
-          example: for_editor
-          type: string
-      required:
-      - type
-      type: object
-    Viewer:
-      description: A viewer and their engagement metrics for the design.
-      properties:
-        viewer_id:
-          description: An opaque identifier for the viewer. Use this value when filtering page view results by viewer.
-          example: b2d44753-f996-46ff-8f01-d4143911550f
-          type: string
-        user:
-          allOf:
-          - $ref: '#/components/schemas/TeamUser'
-          description: The user details of the viewer. This is omitted for viewers whose identity is not visible.
-        last_viewed_at:
-          description: When the viewer most recently opened the design, as a Unix timestamp (in seconds since the Unix Epoch).
-          example: 1748044800
-          format: int64
-          type: integer
-        viewer_type:
-          $ref: '#/components/schemas/DesignAnalyticsViewerType'
-        visibility:
-          $ref: '#/components/schemas/DesignAnalyticsViewerVisibility'
-        total_view_duration_seconds:
-          description: The total time this viewer has spent viewing the design, in seconds.
-          example: 312
-          format: int64
-          type: integer
-        first_viewed_at:
-          description: When the viewer first viewed the design, as a Unix timestamp (in seconds since the Unix Epoch).
-          example: 1745452800
-          format: int64
-          type: integer
-        pages_viewed:
-          description: The number of pages this viewer viewed for more than one second.
-          example: 8
-          format: int64
-          type: integer
-        form_factor:
-          $ref: '#/components/schemas/DesignAnalyticsViewerFormFactor'
-        device_operating_system:
-          description: The simplified operating system name for the viewer's device.
-          example: macOS
-          type: string
-        city_country:
-          description: The viewer location as city and country. This is only returned for anonymous viewers.
-          example: Sydney, Australia
-          type: string
-        total_view_count:
-          description: The number of times this viewer opened the design.
-          example: 14
-          format: int64
-          type: integer
-      required:
-      - last_viewed_at
-      - viewer_id
-      - viewer_type
-      - visibility
-      type: object
-    GetDesignAnalyticsViewersResponse:
-      description: Successful response from a `getDesignAnalyticsViewers` request.
-      properties:
-        items:
-          description: The list of viewers.
-          items:
-            $ref: '#/components/schemas/Viewer'
-          type: array
-        continuation:
-          description: 'If the success response contains a continuation token, there are more viewers you can list. You can use this token as a query parameter and retrieve more viewers from the list, for example `/v1/designs/{designId}/analytics/viewers?continuation={continuation}`.
-
-
-            To retrieve all viewers, you might need to make multiple requests.'
-          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
-          type: string
-      required:
-      - items
-      type: object
-    PageViewFilterByLink:
-      properties:
-        type:
-          enum:
-          - by_link
-          example: by_link
-          type: string
-        link_id:
-          description: The trackable link ID to filter by.
-          example: hddb98a3716
-          type: string
-      required:
-      - link_id
-      - type
-      type: object
+    DesignAnalyticsViewerVisibility:
+      description: How this viewer should be presented to the caller.
+      enum:
+      - shown
+      - anonymous
+      - opt_out
+      - another_team
+      - deleted
+      type: string
+      x-enum-descriptions:
+      - The viewer's identity is visible, and their user details are included.
+      - The viewer is anonymous, so their identity is not available.
+      - The viewer has opted out of design analytics, but some data was already collected for this viewer previosly.
+      - The viewer belongs to a different team, so their identity is not shared.
+      - The viewer's account has been deleted.
+    DesignAnalyticsViewerFormFactor:
+      description: The device form factor used to view the design.
+      enum:
+      - small
+      - large
+      type: string
+      x-enum-descriptions:
+      - A small device, such as a phone.
+      - A large device, such as a laptop, desktop, or large tablet.
     GetDesignAnalyticsPageViewsRequest:
       description: Filters and pagination controls for page-level analytics.
       properties:
@@ -1198,6 +900,25 @@ components:
       required:
       - page_ids
       type: object
+    PageViewFilterByViewer:
+      properties:
+        type:
+          enum:
+          - by_viewer
+          example: by_viewer
+          type: string
+        link_id:
+          description: Filters to viewer traffic from a specific trackable link. Omit this field to target viewer traffic that did not come from a trackable link.
+          example: hddb98a3716
+          type: string
+        viewer_id:
+          description: The viewer ID to filter by.
+          example: b2d44753-f996-46ff-8f01-d4143911550f
+          type: string
+      required:
+      - type
+      - viewer_id
+      type: object
     TeamUser:
       description: Metadata for the user, consisting of the User ID, Team ID, and display name.
       properties:
@@ -1214,6 +935,245 @@ components:
           example: Jane Doe
           type: string
       type: object
+    PageViewFilterForEditor:
+      properties:
+        type:
+          enum:
+          - for_editor
+          example: for_editor
+          type: string
+      required:
+      - type
+      type: object
+    DesignAnalyticsViewerType:
+      description: How the viewer accessed the design.
+      enum:
+      - editor
+      - commenter
+      - viewer
+      type: string
+      x-enum-descriptions:
+      - The viewer accessed the design with edit access.
+      - The viewer accessed the design with comment access.
+      - The viewer accessed the design with view-only access.
+    GetDesignAnalyticsPageViewsResponse:
+      description: Successful response from a `getDesignAnalyticsPageViews` request.
+      properties:
+        items:
+          description: The list of page view durations.
+          items:
+            $ref: '#/components/schemas/PageViewDuration'
+          type: array
+        continuation:
+          description: 'If the success response contains a continuation token, there are more page results you can list. You can use this token in the request body and retrieve more page results from the list.
+
+
+            To retrieve all page results, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+      required:
+      - items
+      type: object
+    GetDesignAnalyticsLinksResponse:
+      description: Successful response from a `getDesignAnalyticsLinks` request.
+      properties:
+        items:
+          description: The list of trackable links.
+          items:
+            $ref: '#/components/schemas/TrackableLink'
+          type: array
+        continuation:
+          description: 'If the success response contains a continuation token, there are more links you can list. You can use this token as a query parameter and retrieve more links from the list, for example `/v1/designs/{designId}/analytics/links?continuation={continuation}`.
+
+
+            To retrieve all links, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+      required:
+      - items
+      type: object
+    GetDesignAnalyticsViewersResponse:
+      description: Successful response from a `getDesignAnalyticsViewers` request.
+      properties:
+        items:
+          description: The list of viewers.
+          items:
+            $ref: '#/components/schemas/Viewer'
+          type: array
+        continuation:
+          description: 'If the success response contains a continuation token, there are more viewers you can list. You can use this token as a query parameter and retrieve more viewers from the list, for example `/v1/designs/{designId}/analytics/viewers?continuation={continuation}`.
+
+
+            To retrieve all viewers, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+      required:
+      - items
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    PageViewFilter:
+      description: A filter for page view data.
+      discriminator:
+        mapping:
+          by_viewer: '#/components/schemas/PageViewFilterByViewer'
+          for_editor: '#/components/schemas/PageViewFilterForEditor'
+          by_link: '#/components/schemas/PageViewFilterByLink'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/PageViewFilterByViewer'
+      - $ref: '#/components/schemas/PageViewFilterForEditor'
+      - $ref: '#/components/schemas/PageViewFilterByLink'
+      type: object
+    GetDesignAnalyticsResponse:
+      description: Aggregated analytics metrics for a design.
+      properties:
+        average_view_duration_seconds:
+          description: The average view duration in seconds.
+          example: 42
+          format: int64
+          type: integer
+        total_view_duration_seconds:
+          description: The total view duration in seconds.
+          example: 5040
+          format: int64
+          type: integer
+        unique_view_count:
+          description: The number of unique viewers.
+          example: 87
+          format: int64
+          type: integer
+        total_view_count:
+          description: The total number of views.
+          example: 120
+          format: int64
+          type: integer
+      required:
+      - total_view_count
+      - unique_view_count
+      type: object
+    PageViewFilterByLink:
+      properties:
+        type:
+          enum:
+          - by_link
+          example: by_link
+          type: string
+        link_id:
+          description: The trackable link ID to filter by.
+          example: hddb98a3716
+          type: string
+      required:
+      - link_id
+      - type
+      type: object
+    PageViewDuration:
+      description: View duration metrics for a single page.
+      properties:
+        page_id:
+          description: The page ID. This is omitted for design types that do not support page IDs.
+          example: PBBKfZml7MRHRQVw
+          type: string
+        total_view_duration_seconds:
+          description: The total time spent viewing this page, in seconds.
+          example: 1860
+          format: int64
+          type: integer
+        average_duration_seconds:
+          description: The average time spent viewing this page, in seconds. This is omitted for `by_viewer` filters.
+          example: 21.5
+          format: double
+          type: number
+        unique_view_count:
+          description: The number of unique viewers for this page. This is omitted for `by_viewer` filters.
+          example: 87
+          format: int64
+          type: integer
+      required:
+      - total_view_duration_seconds
+      type: object
+    ViewsAtTime:
+      description: A single time bucket of view counts.
+      properties:
+        count:
+          description: The number of views in this bucket.
+          example: 15
+          format: int64
+          type: integer
+        bucket_start_at:
+          description: When this time bucket starts, as a Unix timestamp (in seconds since the Unix Epoch).
+          example: 1745452800
+          format: int64
+          type: integer
+      required:
+      - bucket_start_at
+      - count
+      type: object
+  examples:
+    AnalyticsInvalidTimezoneError:
+      summary: The timezone value is invalid.
+      value:
+        code: invalid_field
+        message: timezone is not a valid UTC offset
+    AnalyticsInvalidTimeRangeError:
+      summary: The requested time range is invalid.
+      value:
+        code: invalid_field
+        message: start_time must be before end_time
+    FailedToReadRequestBody:
+      summary: Failed to read request body
+      value:
+        code: bad_request_body
+        message: Failed to read request body
+    AnalyticsInvalidPageViewsFilterError:
+      summary: The page views filter is invalid.
+      value:
+        code: bad_request_body
+        message: filter must include a valid type discriminator and required fields
+    AnalyticsDesignNotFoundError:
+      summary: The design was not found, or analytics are unavailable.
+      value:
+        code: design_not_found
+        message: Design not found or analytics are not available for this design
+    AnalyticsInvalidContinuationError:
+      summary: The continuation token is invalid or expired.
+      value:
+        code: invalid_field
+        message: Invalid continuation token
+    AnalyticsPermissionDeniedError:
+      summary: The caller is not allowed to access design analytics.
+      value:
+        code: permission_denied
+        message: Not allowed to access analytics for this design
+    ExpectedLongQueryParam:
+      summary: Expected long for query parameter
+      value:
+        code: bad_query_params
+        message: Expected long for query parameter `{key}` but found {value}
+    InvalidAccessToken:
+      summary: Access token could not be decoded or signature could not be verified.
+      value:
+        code: invalid_access_token
+        message: Access token is invalid
+    AnalyticsInvalidDesignIdError:
+      summary: The design ID does not match the expected format.
+      value:
+        code: invalid_field
+        message: designId does not match expected format
+    TooManyRequestsError:
+      summary: Rate limit exceeded
+      value:
+        code: too_many_requests
+        message: Too many requests to {operation}
   securitySchemes:
     basicAuth:
       scheme: basic

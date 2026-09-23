@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Canva Connect Assets Designs API
+  title: Canva Connect Designs API
   description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
   version: 1.0.0
   contact:
@@ -201,38 +201,124 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    DesignType:
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignType'
+      - $ref: '#/components/schemas/CustomDesignType'
+      description: The type and dimensions for a new design
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+    ListDesignsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Design'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
+          example: example_value
+      required:
+      - items
+    PresetDesignType:
+      type: object
+      description: A preset design type
+      properties:
+        type:
+          type: string
+          enum:
+          - preset
+          example: preset
+        name:
+          type: string
+          description: The preset design type name
+          enum:
+          - doc
+          - whiteboard
+          - presentation
+          example: doc
+      required:
+      - type
+      - name
+    DesignResponse:
+      type: object
+      properties:
+        design:
+          $ref: '#/components/schemas/Design'
+      required:
+      - design
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
+    CreateDesignRequest:
+      type: object
+      description: Request body for creating a new design
+      properties:
+        design_type:
+          $ref: '#/components/schemas/DesignType'
+        asset_id:
+          type: string
+          description: An image asset ID to insert into the design
+          example: '500123'
+        title:
+          type: string
+          description: The design title (1-255 characters)
+          minLength: 1
+          maxLength: 255
+          example: Example Title
+      required:
+      - design_type
     Design:
       type: object
       description: A Canva design
@@ -270,67 +356,21 @@ components:
       - urls
       - created_at
       - updated_at
-    DesignUrls:
+    Owner:
       type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
+      description: The owner of a resource
       properties:
-        edit_url:
+        user_id:
           type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
-      required:
-      - edit_url
-      - view_url
-    CreateDesignRequest:
-      type: object
-      description: Request body for creating a new design
-      properties:
-        design_type:
-          $ref: '#/components/schemas/DesignType'
-        asset_id:
-          type: string
-          description: An image asset ID to insert into the design
+          description: The user ID of the owner
           example: '500123'
-        title:
+        team_id:
           type: string
-          description: The design title (1-255 characters)
-          minLength: 1
-          maxLength: 255
-          example: Example Title
+          description: The team ID of the owner
+          example: '500123'
       required:
-      - design_type
-    ListDesignsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Design'
-          example: []
-        continuation:
-          type: string
-          description: Continuation token for the next page of results
-          example: example_value
-      required:
-      - items
-    DesignType:
-      oneOf:
-      - $ref: '#/components/schemas/PresetDesignType'
-      - $ref: '#/components/schemas/CustomDesignType'
-      description: The type and dimensions for a new design
-    DesignResponse:
-      type: object
-      properties:
-        design:
-          $ref: '#/components/schemas/Design'
-      required:
-      - design
+      - user_id
+      - team_id
     CustomDesignType:
       type: object
       description: A custom design type with specific dimensions
@@ -356,77 +396,37 @@ components:
       - type
       - width
       - height
-    Owner:
-      type: object
-      description: The owner of a resource
-      properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
-      required:
-      - user_id
-      - team_id
-    PresetDesignType:
-      type: object
-      description: A preset design type
-      properties:
-        type:
-          type: string
-          enum:
-          - preset
-          example: preset
-        name:
-          type: string
-          description: The preset design type name
-          enum:
-          - doc
-          - whiteboard
-          - presentation
-          example: doc
-      required:
-      - type
-      - name
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     DesignId:
       name: designId

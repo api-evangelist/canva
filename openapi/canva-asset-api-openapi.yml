@@ -13,7 +13,7 @@ servers:
 - description: Canva Connect API
   url: https://api.canva.com/rest
 tags:
-- name: asset
+- name: Asset
 paths:
   /v1/assets/{assetId}:
     delete:
@@ -64,8 +64,10 @@ paths:
       - oauthAuthCode:
         - asset:write
       tags:
-      - asset
+      - Asset
       x-rate-limit-per-client-user: 30
+      summary: Delete asset
+      x-summary-source: derived
     get:
       description: You can retrieve the metadata of an asset by specifying its `assetId`.
       operationId: getAsset
@@ -114,8 +116,10 @@ paths:
       - oauthAuthCode:
         - asset:read
       tags:
-      - asset
+      - Asset
       x-rate-limit-per-client-user: 100
+      summary: Get asset
+      x-summary-source: derived
     patch:
       description: 'You can update the name and tags of an asset by specifying its `assetId`. Updating the tags
 
@@ -171,11 +175,13 @@ paths:
       - oauthAuthCode:
         - asset:write
       tags:
-      - asset
+      - Asset
       x-rate-limit-per-client-user: 30
+      summary: Update asset
+      x-summary-source: derived
   /v1/asset-uploads:
     post:
-      description: 'Starts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to upload an asset to the user''s content library. Supported file types for assets are listed in the [Assets API overview](https://www.canva.dev/docs/connect/api-reference/assets/).
+      description: 'Starts a new asynchronous job to upload an asset to the user''s content library. Supported file types for assets are listed in the Assets API overview.
 
 
         The request format for this endpoint is an `application/octet-stream` body of bytes. Attach
@@ -183,14 +189,7 @@ paths:
         information about the upload using an `Asset-Upload-Metadata` header.
 
 
-
-        <Note>
-
-
-        For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints). You can check the status and get the results of asset upload jobs created with this API using the [Get asset upload job API](https://www.canva.dev/docs/connect/api-reference/assets/get-asset-upload-job/).
-
-
-        </Note>'
+        For more information on the workflow for using asynchronous jobs, see API requests and responses. You can check the status and get the results of asset upload jobs created with this API using the Get asset upload job API.'
       operationId: CreateAssetUploadJob
       parameters:
       - content:
@@ -232,14 +231,16 @@ paths:
       - oauthAuthCode:
         - asset:write
       tags:
-      - asset
+      - Asset
       x-rate-limit-per-client-user: 30
+      summary: Create asset upload job
+      x-summary-source: derived
   /v1/asset-uploads/{jobId}:
     get:
-      description: 'Get the result of an asset upload job that was created using the [Create asset upload job API](https://www.canva.dev/docs/connect/api-reference/assets/create-asset-upload-job/).
+      description: 'Get the result of an asset upload job that was created using the Create asset upload job API.
 
 
-        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints).'
+        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see API requests and responses.'
       operationId: GetAssetUploadJob
       parameters:
       - description: The asset upload job ID.
@@ -299,11 +300,29 @@ paths:
       - oauthAuthCode:
         - asset:read
       tags:
-      - asset
+      - Asset
       x-rate-limit-per-client-user: 180
+      summary: Get asset upload job
+      x-summary-source: derived
   /v1/url-asset-uploads:
     post:
-      description: "<Warning>\n\nThis API is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/connect/versions/).\n- Public integrations that use preview APIs will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nStarts a new [asynchronous job](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints) to upload an asset from a URL to the user's content library. Supported file types for assets are listed in the [Assets API overview](https://www.canva.dev/docs/connect/api-reference/assets/).\n\n<Note>\n Uploading a video asset from a URL is limited to a maximum 100MB file size. For importing larger video files, use the [Create asset upload job API](https://www.canva.dev/docs/connect/api-reference/assets/create-asset-upload-job/).\n</Note>\n\n<Note>\nFor more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints). You can check the status and get the results of asset upload jobs created with this API using the [Get asset upload job via URL API](https://www.canva.dev/docs/connect/api-reference/assets/get-url-asset-upload-job/).\n</Note>"
+      description: 'This API is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new API version.
+
+        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+
+        Starts a new asynchronous job to upload an asset from a URL to the user''s content library. Supported file types for assets are listed in the Assets API overview.
+
+
+        Uploading a video asset from a URL is limited to a maximum 100MB file size. For importing larger video files, use the Create asset upload job API.
+
+
+        For more information on the workflow for using asynchronous jobs, see API requests and responses. You can check the status and get the results of asset upload jobs created with this API using the Get asset upload job via URL API.'
       operationId: createUrlAssetUploadJob
       requestBody:
         content:
@@ -355,30 +374,26 @@ paths:
       - oauthAuthCode:
         - asset:write
       tags:
-      - asset
+      - Asset
       x-rate-limit-per-client-user: 30
+      summary: Create url asset upload job
+      x-summary-source: derived
   /v1/url-asset-uploads/{jobId}:
     get:
-      description: '<Warning>
-
-
-        This API is currently provided as a preview. Be aware of the following:
+      description: 'This API is currently provided as a preview. Be aware of the following:
 
 
         - There might be unannounced breaking changes.
 
-        - Any breaking changes to preview APIs won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+        - Any breaking changes to preview APIs won''t produce a new API version.
 
         - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
-        </Warning>
+        Get the result of an asset upload job that was created using the Create asset upload job via URL API.
 
 
-        Get the result of an asset upload job that was created using the [Create asset upload job via URL API](https://www.canva.dev/docs/connect/api-reference/assets/create-url-asset-upload-job/).
-
-
-        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/connect/api-requests-responses/#asynchronous-job-endpoints).'
+        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see API requests and responses.'
       operationId: getUrlAssetUploadJob
       parameters:
       - description: The asset upload job ID.
@@ -432,125 +447,111 @@ paths:
       - oauthAuthCode:
         - asset:read
       tags:
-      - asset
+      - Asset
       x-rate-limit-per-client-user: 180
+      summary: Get url asset upload job
+      x-summary-source: derived
 components:
-  schemas:
-    GetUrlAssetUploadJobResponse:
-      properties:
+  examples:
+    AssetUpdateNotAllowedError:
+      summary: Not allowed to update the asset
+      value:
+        code: permission_denied
+        message: Not allowed to update this asset
+    InProgressAssetUploadJobExample:
+      summary: In progress job
+      value:
         job:
-          $ref: '#/components/schemas/AssetUploadJob'
-      required:
-      - job
-      type: object
-    AssetUploadJob:
-      description: The status of the asset upload job.
-      example:
-        id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-        status: success
-        asset:
-          id: Msd59349ff
-          type: image
-          name: My Awesome Upload
-          tags:
-          - image
-          - holiday
-          - best day ever
-          owner:
-            user_id: oU123456AbCdE
-            team_id: oB123456AbCdE
-          created_at: 1377396000
-          updated_at: 1692928800
-          thumbnail:
-            width: 595
-            height: 335
-            url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-      properties:
-        id:
-          description: The ID of the asset upload job.
-          example: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          type: string
-        status:
-          $ref: '#/components/schemas/AssetUploadStatus'
-        error:
-          $ref: '#/components/schemas/AssetUploadError'
-        asset:
-          $ref: '#/components/schemas/Asset'
-      required:
-      - id
-      - status
-      type: object
-    AssetUploadErrorCode:
-      description: 'A short string indicating why the upload failed. This field can be used to handle errors
-
-        programmatically.'
-      enum:
-      - file_too_big
-      - import_failed
-      - fetch_failed
-      example: file_too_big
-      type: string
-    ImportErrorCode:
-      deprecated: true
-      description: 'A short string indicating why the upload failed. This field can be used to handle errors programmatically.
-
-        '
-      enum:
-      - file_too_big
-      - import_failed
-      type: string
-    ImportStatusState:
-      deprecated: true
-      description: State of the import job for an uploaded asset.
-      enum:
-      - failed
-      - in_progress
-      - success
-      example: success
-      type: string
-    AssetType:
-      description: Type of an asset.
-      enum:
-      - image
-      - video
-      example: image
-      type: string
-    UpdateAssetRequest:
-      properties:
-        name:
-          description: 'The name of the asset. This is shown in the Canva UI.
-
-            When this field is undefined or empty, nothing is updated.'
-          example: My Awesome Upload
-          maxLength: 50
-          type: string
-        tags:
-          description: 'The replacement tags for the asset.
-
-            When this field is undefined, nothing is updated.'
-          example:
-          - image
-          - holiday
-          - best day ever
-          items:
-            maxLength: 50
-            type: string
-          maxItems: 50
-          type: array
-      type: object
-    AssetUploadError:
-      description: If the upload fails, this object provides details about the error.
-      properties:
-        code:
-          $ref: '#/components/schemas/AssetUploadErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          example: Failed to import because the file is too big.
-          type: string
-      required:
-      - code
-      - message
-      type: object
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: in_progress
+    AssetUrlInvalidError:
+      summary: The provided URL is invalid
+      value:
+        code: invalid_field
+        message: '''url'' provided is invalid.'
+    AssetAccessNotAllowedError:
+      summary: Not allowed to access the asset
+      value:
+        code: permission_denied
+        message: Not allowed to access this asset
+    AssetUploadJobNotCreatorError:
+      summary: Calling user was not the creator of the asset upload job
+      value:
+        code: permission_denied
+        message: Calling user was not the creator of the asset upload job
+    AssetUploadJobNotFoundError:
+      summary: Asset upload job not found
+      value:
+        code: not_found
+        message: Asset upload job with ID {jobId} not found
+    AssetNotFoundError:
+      summary: The asset was not found
+      value:
+        code: asset_not_found
+        message: Asset not found
+    AssetJobIdNotFoundError:
+      summary: Job ID not found
+      value:
+        code: not_found
+        message: Job ID {jobId} not found
+    AssetDeleteNotAllowedError:
+      summary: Not allowed to delete the asset
+      value:
+        code: permission_denied
+        message: Not allowed to delete this asset
+    GetThisJobStatusNotAllowedError:
+      summary: Not allowed to get this job status
+      value:
+        code: permission_denied
+        message: Not allowed to get this job status
+    AssetJobNotFoundError:
+      summary: Job not found
+      value:
+        code: not_found
+        message: Job {jobId} not found
+    AssetJobWithIdNotFoundError:
+      summary: Job with ID not found
+      value:
+        code: not_found
+        message: Job with Id {jobId} not found
+    FailedAssetUploadJobExample:
+      summary: Failed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: failed
+          error:
+            code: file_too_big
+            message: Failed to import because the file is too big
+    AssetUploadAlreadyExistsError:
+      summary: An asset upload for the URL already exists
+      value:
+        code: invalid_request
+        message: Asset Upload for url {url} already exists
+    SuccessAssetUploadJobExample:
+      summary: Successfully completed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: success
+          asset:
+            id: Msd59349ff
+            type: image
+            name: My Awesome Upload
+            tags:
+            - image
+            - holiday
+            - best day ever
+            owner:
+              user_id: oU123456AbCdE
+              team_id: oB123456AbCdE
+            created_at: 1377396000
+            updated_at: 1692928800
+            thumbnail:
+              width: 595
+              height: 335
+              url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+  schemas:
     ImportError:
       deprecated: true
       description: If the import fails, this object provides details about the error.
@@ -564,73 +565,47 @@ components:
       - code
       - message
       type: object
-    AssetUploadMetadata:
-      description: Metadata for the asset being uploaded.
+    AssetUploadErrorCode:
+      description: 'A short string indicating why the upload failed. This field can be used to handle errors
+
+        programmatically.'
+      enum:
+      - file_too_big
+      - import_failed
+      - fetch_failed
+      example: file_too_big
+      type: string
+    TeamUserSummary:
+      description: Metadata for the user, consisting of the User ID and Team ID.
       properties:
-        name_base64:
-          description: 'The asset''s name, encoded in Base64.
-
-
-            The maximum length of an asset name in Canva (unencoded) is 50 characters.
-
-
-            Base64 encoding allows names containing emojis and other special
-
-            characters to be sent using HTTP headers.
-
-            For example, "My Awesome Upload 🚀" Base64 encoded
-
-            is `TXkgQXdlc29tZSBVcGxvYWQg8J+agA==`.'
-          example: TXkgQXdlc29tZSBVcGxvYWQg8J+agA==
-          minLength: 1
+        user_id:
+          description: The ID of the user.
+          example: auDAbliZ2rQNNOsUl5OLu
+          type: string
+        team_id:
+          description: The ID of the user's Canva Team.
+          example: Oi2RJILTrKk0KRhRUZozX
           type: string
       required:
-      - name_base64
+      - team_id
+      - user_id
       type: object
-    Error:
+    GetAssetResponse:
       properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
+        asset:
+          $ref: '#/components/schemas/Asset'
       required:
-      - code
-      - message
+      - asset
       type: object
-    VideoMetadata:
-      properties:
-        type:
-          enum:
-          - video
-          type: string
-        width:
-          description: The width of the video in pixels.
-          example: 1920
-          format: int32
-          type: integer
-        height:
-          description: The height of the video in pixels.
-          example: 1080
-          format: int32
-          type: integer
-        duration:
-          description: The duration of the video in seconds.
-          example: 60
-          format: int32
-          type: integer
-      required:
-      - height
-      - type
-      - width
-      type: object
-    CreateUrlAssetUploadJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/AssetUploadJob'
-      required:
-      - job
-      type: object
+    ImportStatusState:
+      deprecated: true
+      description: State of the import job for an uploaded asset.
+      enum:
+      - failed
+      - in_progress
+      - success
+      example: success
+      type: string
     Asset:
       description: The asset object, which contains metadata about the asset.
       properties:
@@ -692,6 +667,43 @@ components:
       - type
       - updated_at
       type: object
+    AssetUploadJob:
+      description: The status of the asset upload job.
+      example:
+        id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+        status: success
+        asset:
+          id: Msd59349ff
+          type: image
+          name: My Awesome Upload
+          tags:
+          - image
+          - holiday
+          - best day ever
+          owner:
+            user_id: oU123456AbCdE
+            team_id: oB123456AbCdE
+          created_at: 1377396000
+          updated_at: 1692928800
+          thumbnail:
+            width: 595
+            height: 335
+            url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+      properties:
+        id:
+          description: The ID of the asset upload job.
+          example: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          type: string
+        status:
+          $ref: '#/components/schemas/AssetUploadStatus'
+        error:
+          $ref: '#/components/schemas/AssetUploadError'
+        asset:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - id
+      - status
+      type: object
     ImportStatus:
       deprecated: true
       description: The import status of the asset.
@@ -703,12 +715,81 @@ components:
       required:
       - state
       type: object
-    GetAssetResponse:
+    AssetUploadStatus:
+      description: Status of the asset upload job.
+      enum:
+      - failed
+      - in_progress
+      - success
+      example: success
+      type: string
+    UpdateAssetRequest:
       properties:
-        asset:
-          $ref: '#/components/schemas/Asset'
+        name:
+          description: 'The name of the asset. This is shown in the Canva UI.
+
+            When this field is undefined or empty, nothing is updated.'
+          example: My Awesome Upload
+          maxLength: 50
+          type: string
+        tags:
+          description: 'The replacement tags for the asset.
+
+            When this field is undefined, nothing is updated.'
+          example:
+          - image
+          - holiday
+          - best day ever
+          items:
+            maxLength: 50
+            type: string
+          maxItems: 50
+          type: array
+      type: object
+    AssetUploadError:
+      description: If the upload fails, this object provides details about the error.
+      properties:
+        code:
+          $ref: '#/components/schemas/AssetUploadErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          example: Failed to import because the file is too big.
+          type: string
       required:
-      - asset
+      - code
+      - message
+      type: object
+    CreateUrlAssetUploadJobRequest:
+      properties:
+        name:
+          description: A name for the asset.
+          example: My Awesome Asset
+          maxLength: 255
+          minLength: 1
+          type: string
+        url:
+          description: The URL of the file to import. This URL must be accessible from the internet and be publicly available.
+          example: https://example.com/my_asset_to_upload.jpg
+          maxLength: 2048
+          minLength: 8
+          type: string
+      required:
+      - name
+      - url
+      type: object
+    AssetType:
+      description: Type of an asset.
+      enum:
+      - image
+      - video
+      example: image
+      type: string
+    CreateUrlAssetUploadJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/AssetUploadJob'
+      required:
+      - job
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -793,14 +874,55 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    AssetUploadStatus:
-      description: Status of the asset upload job.
-      enum:
-      - failed
-      - in_progress
-      - success
-      example: success
-      type: string
+    VideoMetadata:
+      properties:
+        type:
+          enum:
+          - video
+          type: string
+        width:
+          description: The width of the video in pixels.
+          example: 1920
+          format: int32
+          type: integer
+        height:
+          description: The height of the video in pixels.
+          example: 1080
+          format: int32
+          type: integer
+        duration:
+          description: The duration of the video in seconds.
+          example: 60
+          format: int32
+          type: integer
+      required:
+      - height
+      - type
+      - width
+      type: object
+    AssetUploadMetadata:
+      description: Metadata for the asset being uploaded.
+      properties:
+        name_base64:
+          description: 'The asset''s name, encoded in Base64.
+
+
+            The maximum length of an asset name in Canva (unencoded) is 50 characters.
+
+
+            Base64 encoding allows names containing emojis and other special
+
+            characters to be sent using HTTP headers.
+
+            For example, "My Awesome Upload 🚀" Base64 encoded
+
+            is `TXkgQXdlc29tZSBVcGxvYWQg8J+agA==`.'
+          example: TXkgQXdlc29tZSBVcGxvYWQg8J+agA==
+          minLength: 1
+          type: string
+      required:
+      - name_base64
+      type: object
     Thumbnail:
       description: A thumbnail image representing the object.
       properties:
@@ -827,27 +949,57 @@ components:
       - url
       - width
       type: object
-    UpdateAssetResponse:
+    GetUrlAssetUploadJobResponse:
       properties:
-        asset:
-          $ref: '#/components/schemas/Asset'
+        job:
+          $ref: '#/components/schemas/AssetUploadJob'
       required:
-      - asset
+      - job
       type: object
-    TeamUserSummary:
-      description: Metadata for the user, consisting of the User ID and Team ID.
+    ImportErrorCode:
+      deprecated: true
+      description: 'A short string indicating why the upload failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - file_too_big
+      - import_failed
+      type: string
+    Error:
       properties:
-        user_id:
-          description: The ID of the user.
-          example: auDAbliZ2rQNNOsUl5OLu
-          type: string
-        team_id:
-          description: The ID of the user's Canva Team.
-          example: Oi2RJILTrKk0KRhRUZozX
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
           type: string
       required:
-      - team_id
-      - user_id
+      - code
+      - message
+      type: object
+    CreateAssetUploadJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/AssetUploadJob'
+      required:
+      - job
+      type: object
+    AssetMetadata:
+      description: Type-specific metadata for the asset.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/ImageMetadata'
+          video: '#/components/schemas/VideoMetadata'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ImageMetadata'
+      - $ref: '#/components/schemas/VideoMetadata'
+      type: object
+    GetAssetUploadJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/AssetUploadJob'
+      required:
+      - job
       type: object
     ImageMetadata:
       properties:
@@ -879,148 +1031,13 @@ components:
       required:
       - type
       type: object
-    CreateUrlAssetUploadJobRequest:
+    UpdateAssetResponse:
       properties:
-        name:
-          description: A name for the asset.
-          example: My Awesome Asset
-          maxLength: 255
-          minLength: 1
-          type: string
-        url:
-          description: The URL of the file to import. This URL must be accessible from the internet and be publicly available.
-          example: https://example.com/my_asset_to_upload.jpg
-          maxLength: 2048
-          minLength: 8
-          type: string
+        asset:
+          $ref: '#/components/schemas/Asset'
       required:
-      - name
-      - url
+      - asset
       type: object
-    AssetMetadata:
-      description: Type-specific metadata for the asset.
-      discriminator:
-        mapping:
-          image: '#/components/schemas/ImageMetadata'
-          video: '#/components/schemas/VideoMetadata'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/ImageMetadata'
-      - $ref: '#/components/schemas/VideoMetadata'
-      type: object
-    CreateAssetUploadJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/AssetUploadJob'
-      required:
-      - job
-      type: object
-    GetAssetUploadJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/AssetUploadJob'
-      required:
-      - job
-      type: object
-  examples:
-    GetThisJobStatusNotAllowedError:
-      summary: Not allowed to get this job status
-      value:
-        code: permission_denied
-        message: Not allowed to get this job status
-    AssetJobIdNotFoundError:
-      summary: Job ID not found
-      value:
-        code: not_found
-        message: Job ID {jobId} not found
-    FailedAssetUploadJobExample:
-      summary: Failed job
-      value:
-        job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: failed
-          error:
-            code: file_too_big
-            message: Failed to import because the file is too big
-    AssetAccessNotAllowedError:
-      summary: Not allowed to access the asset
-      value:
-        code: permission_denied
-        message: Not allowed to access this asset
-    AssetUploadAlreadyExistsError:
-      summary: An asset upload for the URL already exists
-      value:
-        code: invalid_request
-        message: Asset Upload for url {url} already exists
-    AssetUploadJobNotCreatorError:
-      summary: Calling user was not the creator of the asset upload job
-      value:
-        code: permission_denied
-        message: Calling user was not the creator of the asset upload job
-    AssetDeleteNotAllowedError:
-      summary: Not allowed to delete the asset
-      value:
-        code: permission_denied
-        message: Not allowed to delete this asset
-    AssetJobWithIdNotFoundError:
-      summary: Job with ID not found
-      value:
-        code: not_found
-        message: Job with Id {jobId} not found
-    AssetUrlInvalidError:
-      summary: The provided URL is invalid
-      value:
-        code: invalid_field
-        message: '''url'' provided is invalid.'
-    InProgressAssetUploadJobExample:
-      summary: In progress job
-      value:
-        job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: in_progress
-    AssetUpdateNotAllowedError:
-      summary: Not allowed to update the asset
-      value:
-        code: permission_denied
-        message: Not allowed to update this asset
-    SuccessAssetUploadJobExample:
-      summary: Successfully completed job
-      value:
-        job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: success
-          asset:
-            id: Msd59349ff
-            type: image
-            name: My Awesome Upload
-            tags:
-            - image
-            - holiday
-            - best day ever
-            owner:
-              user_id: oU123456AbCdE
-              team_id: oB123456AbCdE
-            created_at: 1377396000
-            updated_at: 1692928800
-            thumbnail:
-              width: 595
-              height: 335
-              url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-    AssetNotFoundError:
-      summary: The asset was not found
-      value:
-        code: asset_not_found
-        message: Asset not found
-    AssetUploadJobNotFoundError:
-      summary: Asset upload job not found
-      value:
-        code: not_found
-        message: Asset upload job with ID {jobId} not found
-    AssetJobNotFoundError:
-      summary: Job not found
-      value:
-        code: not_found
-        message: Job {jobId} not found
   securitySchemes:
     basicAuth:
       scheme: basic

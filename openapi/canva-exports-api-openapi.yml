@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Canva Connect Assets Exports API
+  title: Canva Connect Exports API
   description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
   version: 1.0.0
   contact:
@@ -110,126 +110,7 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    PptxExportFormat:
-      type: object
-      description: PowerPoint export format options
-      properties:
-        type:
-          type: string
-          enum:
-          - pptx
-          example: pptx
-        pages:
-          type: array
-          description: Page indices to export
-          items:
-            type: integer
-          example: []
-      required:
-      - type
-    JpgExportFormat:
-      type: object
-      description: JPG export format options
-      properties:
-        type:
-          type: string
-          enum:
-          - jpg
-          example: jpg
-        quality:
-          type: integer
-          description: JPG compression quality (1-100)
-          minimum: 1
-          maximum: 100
-          example: 10
-        export_quality:
-          type: string
-          enum:
-          - regular
-          - pro
-          default: regular
-          example: regular
-        width:
-          type: integer
-          description: Output width in pixels
-          minimum: 40
-          maximum: 25000
-          example: 10
-        height:
-          type: integer
-          description: Output height in pixels
-          minimum: 40
-          maximum: 25000
-          example: 10
-        pages:
-          type: array
-          description: Page indices to export
-          items:
-            type: integer
-          example: []
-      required:
-      - type
-      - quality
-    ExportJob:
-      type: object
-      description: An export job for converting a design to a downloadable format
-      properties:
-        id:
-          type: string
-          description: The export job ID
-          example: abc123
-        status:
-          type: string
-          description: The current status of the export job
-          enum:
-          - in_progress
-          - success
-          - failed
-          example: in_progress
-        urls:
-          type: array
-          description: Download URLs for the exported files (valid for 24 hours). Present only when status is success.
-          items:
-            type: string
-            format: uri
-          example: https://www.example.com
-        error:
-          $ref: '#/components/schemas/ExportError'
-      required:
-      - id
-      - status
     PngExportFormat:
       type: object
       description: PNG export format options
@@ -281,6 +162,158 @@ components:
           example: []
       required:
       - type
+    PdfExportFormat:
+      type: object
+      description: PDF export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - pdf
+          example: pdf
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        size:
+          type: string
+          description: Paper size for the PDF
+          enum:
+          - a4
+          - a3
+          - letter
+          - legal
+          default: a4
+          example: a4
+        pages:
+          type: array
+          description: Page indices to export (exports all pages if omitted)
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+    JpgExportFormat:
+      type: object
+      description: JPG export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - jpg
+          example: jpg
+        quality:
+          type: integer
+          description: JPG compression quality (1-100)
+          minimum: 1
+          maximum: 100
+          example: 10
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        width:
+          type: integer
+          description: Output width in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        height:
+          type: integer
+          description: Output height in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+      - quality
+    ExportError:
+      type: object
+      description: Error details for a failed export job
+      properties:
+        code:
+          type: string
+          description: Error code indicating the reason for failure
+          enum:
+          - license_required
+          - approval_required
+          - internal_failure
+          example: license_required
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    CreateExportJobRequest:
+      type: object
+      description: Request body for creating an export job
+      properties:
+        design_id:
+          type: string
+          description: The design ID to export
+          example: '500123'
+        format:
+          $ref: '#/components/schemas/ExportFormat'
+      required:
+      - design_id
+      - format
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    ExportJob:
+      type: object
+      description: An export job for converting a design to a downloadable format
+      properties:
+        id:
+          type: string
+          description: The export job ID
+          example: abc123
+        status:
+          type: string
+          description: The current status of the export job
+          enum:
+          - in_progress
+          - success
+          - failed
+          example: in_progress
+        urls:
+          type: array
+          description: Download URLs for the exported files (valid for 24 hours). Present only when status is success.
+          items:
+            type: string
+            format: uri
+          example: https://www.example.com
+        error:
+          $ref: '#/components/schemas/ExportError'
+      required:
+      - id
+      - status
     ExportJobResponse:
       type: object
       properties:
@@ -288,6 +321,68 @@ components:
           $ref: '#/components/schemas/ExportJob'
       required:
       - job
+    ExportFormat:
+      oneOf:
+      - $ref: '#/components/schemas/PdfExportFormat'
+      - $ref: '#/components/schemas/JpgExportFormat'
+      - $ref: '#/components/schemas/PngExportFormat'
+      - $ref: '#/components/schemas/GifExportFormat'
+      - $ref: '#/components/schemas/PptxExportFormat'
+      - $ref: '#/components/schemas/Mp4ExportFormat'
+      description: Export format configuration
+    PptxExportFormat:
+      type: object
+      description: PowerPoint export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - pptx
+          example: pptx
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+    GifExportFormat:
+      type: object
+      description: GIF export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - gif
+          example: gif
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        width:
+          type: integer
+          description: Output width in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        height:
+          type: integer
+          description: Output height in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
     Mp4ExportFormat:
       type: object
       description: MP4 video export format options
@@ -326,132 +421,6 @@ components:
       required:
       - type
       - quality
-    ExportFormat:
-      oneOf:
-      - $ref: '#/components/schemas/PdfExportFormat'
-      - $ref: '#/components/schemas/JpgExportFormat'
-      - $ref: '#/components/schemas/PngExportFormat'
-      - $ref: '#/components/schemas/GifExportFormat'
-      - $ref: '#/components/schemas/PptxExportFormat'
-      - $ref: '#/components/schemas/Mp4ExportFormat'
-      description: Export format configuration
-    GifExportFormat:
-      type: object
-      description: GIF export format options
-      properties:
-        type:
-          type: string
-          enum:
-          - gif
-          example: gif
-        export_quality:
-          type: string
-          enum:
-          - regular
-          - pro
-          default: regular
-          example: regular
-        width:
-          type: integer
-          description: Output width in pixels
-          minimum: 40
-          maximum: 25000
-          example: 10
-        height:
-          type: integer
-          description: Output height in pixels
-          minimum: 40
-          maximum: 25000
-          example: 10
-        pages:
-          type: array
-          description: Page indices to export
-          items:
-            type: integer
-          example: []
-      required:
-      - type
-    CreateExportJobRequest:
-      type: object
-      description: Request body for creating an export job
-      properties:
-        design_id:
-          type: string
-          description: The design ID to export
-          example: '500123'
-        format:
-          $ref: '#/components/schemas/ExportFormat'
-      required:
-      - design_id
-      - format
-    PdfExportFormat:
-      type: object
-      description: PDF export format options
-      properties:
-        type:
-          type: string
-          enum:
-          - pdf
-          example: pdf
-        export_quality:
-          type: string
-          enum:
-          - regular
-          - pro
-          default: regular
-          example: regular
-        size:
-          type: string
-          description: Paper size for the PDF
-          enum:
-          - a4
-          - a3
-          - letter
-          - legal
-          default: a4
-          example: a4
-        pages:
-          type: array
-          description: Page indices to export (exports all pages if omitted)
-          items:
-            type: integer
-          example: []
-      required:
-      - type
-    ExportError:
-      type: object
-      description: Error details for a failed export job
-      properties:
-        code:
-          type: string
-          description: Error code indicating the reason for failure
-          enum:
-          - license_required
-          - approval_required
-          - internal_failure
-          example: license_required
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
   parameters:
     ExportId:
       name: exportId
@@ -460,6 +429,37 @@ components:
       description: The export job ID
       schema:
         type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2:
       type: oauth2

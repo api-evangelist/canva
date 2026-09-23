@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Canva Connect Assets Brand Templates API
+  title: Canva Connect Brand Templates API
   description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
   version: 1.0.0
   contact:
@@ -194,46 +194,42 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    DatasetField:
+    ListBrandTemplatesResponse:
       type: object
-      description: A data field in a brand template dataset
       properties:
-        type:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandTemplate'
+          example: []
+        continuation:
           type: string
-          description: The data field type
-          enum:
-          - image
-          - text
-          - chart
-          example: image
+          description: Continuation token for the next page of results
+          example: example_value
       required:
-      - type
+      - items
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
     BrandTemplate:
       type: object
       description: A Canva brand template (requires Enterprise)
@@ -271,38 +267,20 @@ components:
       - title
       - created_at
       - updated_at
-    ListBrandTemplatesResponse:
+    DatasetField:
       type: object
+      description: A data field in a brand template dataset
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/BrandTemplate'
-          example: []
-        continuation:
+        type:
           type: string
-          description: Continuation token for the next page of results
-          example: example_value
+          description: The data field type
+          enum:
+          - image
+          - text
+          - chart
+          example: image
       required:
-      - items
-    BrandTemplateResponse:
-      type: object
-      properties:
-        brand_template:
-          $ref: '#/components/schemas/BrandTemplate'
-      required:
-      - brand_template
-    BrandTemplateDatasetResponse:
-      type: object
-      properties:
-        dataset:
-          type: object
-          description: Dataset fields available for autofill, keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/DatasetField'
-          example: example_value
-      required:
-      - dataset
+      - type
     Error:
       type: object
       description: An error response
@@ -318,27 +296,49 @@ components:
       required:
       - code
       - message
-    Thumbnail:
+    BrandTemplateDatasetResponse:
       type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
       properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
+        dataset:
+          type: object
+          description: Dataset fields available for autofill, keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/DatasetField'
+          example: example_value
       required:
-      - width
-      - height
-      - url
+      - dataset
+    BrandTemplateResponse:
+      type: object
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     BrandTemplateId:
       name: brandTemplateId

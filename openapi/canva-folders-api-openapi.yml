@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Canva Connect Assets Folders API
+  title: Canva Connect Folders API
   description: The Canva Connect API enables developers to integrate Canva's design platform into their applications. It provides programmatic access to create and manage designs, upload and manage assets, organize content in folders, export designs in multiple formats, manage comments, work with brand templates, autofill designs, and resize designs.
   version: 1.0.0
   contact:
@@ -192,65 +192,87 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    ImportStatus:
+    FolderItem:
       type: object
-      description: The import status of an asset (deprecated)
-      deprecated: true
+      description: An item within a folder (design, folder, or image)
       properties:
-        state:
+        type:
           type: string
-          description: The current import state
+          description: The type of folder item
           enum:
-          - failed
-          - in_progress
-          - success
-          example: failed
-        error:
-          type: object
-          description: Error details if the import failed
-          properties:
-            message:
-              type: string
-              description: Human-readable error message
-            code:
-              type: string
-              description: Error code
-              enum:
-              - file_too_big
-              - import_failed
+          - design
+          - folder
+          - image
+          example: design
+        design:
+          $ref: '#/components/schemas/Design'
+        folder:
+          $ref: '#/components/schemas/Folder'
+        image:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - type
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+    FolderResponse:
+      type: object
+      properties:
+        folder:
+          $ref: '#/components/schemas/Folder'
+      required:
+      - folder
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
           example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
     Folder:
       type: object
       description: A Canva folder
@@ -278,102 +300,20 @@ components:
       - name
       - created_at
       - updated_at
-    Design:
-      type: object
-      description: A Canva design
-      properties:
-        id:
-          type: string
-          description: The design ID
-          example: abc123
-        title:
-          type: string
-          description: The design title
-          example: Example Title
-        owner:
-          $ref: '#/components/schemas/Owner'
-        urls:
-          $ref: '#/components/schemas/DesignUrls'
-        created_at:
-          type: integer
-          description: Unix timestamp in seconds when the design was created
-          example: '2026-01-15T10:30:00Z'
-        updated_at:
-          type: integer
-          description: Unix timestamp in seconds when the design was last updated
-          example: '2026-01-15T10:30:00Z'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        page_count:
-          type: integer
-          description: The number of pages in the design
-          example: 10
-      required:
-      - id
-      - title
-      - owner
-      - urls
-      - created_at
-      - updated_at
-    DesignUrls:
-      type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
-      properties:
-        edit_url:
-          type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
-      required:
-      - edit_url
-      - view_url
-    FolderItem:
-      type: object
-      description: An item within a folder (design, folder, or image)
-      properties:
-        type:
-          type: string
-          description: The type of folder item
-          enum:
-          - design
-          - folder
-          - image
-          example: design
-        design:
-          $ref: '#/components/schemas/Design'
-        folder:
-          $ref: '#/components/schemas/Folder'
-        image:
-          $ref: '#/components/schemas/Asset'
-      required:
-      - type
-    FolderResponse:
+    ListFolderItemsResponse:
       type: object
       properties:
-        folder:
-          $ref: '#/components/schemas/Folder'
-      required:
-      - folder
-    Owner:
-      type: object
-      description: The owner of a resource
-      properties:
-        user_id:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderItem'
+          example: []
+        continuation:
           type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
+          description: Continuation token for the next page of results
+          example: example_value
       required:
-      - user_id
-      - team_id
+      - items
     Asset:
       type: object
       description: A Canva asset (image or video)
@@ -420,20 +360,70 @@ components:
       - created_at
       - updated_at
       - owner
-    ListFolderItemsResponse:
+    ImportStatus:
       type: object
+      description: The import status of an asset (deprecated)
+      deprecated: true
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/FolderItem'
-          example: []
-        continuation:
+        state:
           type: string
-          description: Continuation token for the next page of results
+          description: The current import state
+          enum:
+          - failed
+          - in_progress
+          - success
+          example: failed
+        error:
+          type: object
+          description: Error details if the import failed
+          properties:
+            message:
+              type: string
+              description: Human-readable error message
+            code:
+              type: string
+              description: Error code
+              enum:
+              - file_too_big
+              - import_failed
           example: example_value
+    Design:
+      type: object
+      description: A Canva design
+      properties:
+        id:
+          type: string
+          description: The design ID
+          example: abc123
+        title:
+          type: string
+          description: The design title
+          example: Example Title
+        owner:
+          $ref: '#/components/schemas/Owner'
+        urls:
+          $ref: '#/components/schemas/DesignUrls'
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        page_count:
+          type: integer
+          description: The number of pages in the design
+          example: 10
       required:
-      - items
+      - id
+      - title
+      - owner
+      - urls
+      - created_at
+      - updated_at
     MoveFolderItemRequest:
       type: object
       description: Request body for moving an item to a folder
@@ -453,42 +443,52 @@ components:
       required:
       - item_id
       - item_type
-    Error:
+    Owner:
       type: object
-      description: An error response
+      description: The owner of a resource
       properties:
-        code:
+        user_id:
           type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
           type: string
-          description: Human-readable error message
-          example: example_value
+          description: The team ID of the owner
+          example: '500123'
       required:
-      - code
-      - message
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
+      - user_id
+      - team_id
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     FolderId:
       name: folderId

@@ -7,13 +7,13 @@ info:
   license:
     name: ©2023 All Rights Reserved
   termsOfService: https://www.canva.com/trust/legal/
-  title: Canva Connect Oidc API
+  title: Canva Connect OIDC API
   version: 2024-06-18
 servers:
 - description: Canva Connect API
   url: https://api.canva.com/rest
 tags:
-- name: oidc
+- name: OIDC
 paths:
   /v1/oidc/jwks:
     servers:
@@ -37,7 +37,9 @@ paths:
           description: Error Response
       security: []
       tags:
-      - oidc
+      - OIDC
+      summary: Get oidc jwks
+      x-summary-source: derived
   /v1/oidc/userinfo:
     servers:
     - description: Canva Connect API
@@ -87,10 +89,77 @@ paths:
         - openid
         - email
       tags:
-      - oidc
+      - OIDC
       x-rate-limit-per-client-user: 10
+      summary: User info
+      x-summary-source: derived
 components:
   schemas:
+    UserInfoResponse:
+      example:
+        sub: UAAAAAAAAA
+        name: Alice Person
+        given_name: Alice
+        family_name: Person
+        email: alice.person@example.com
+        email_verified: true
+      properties:
+        sub:
+          description: Identifier for the End-User at the Issuer.
+          type: string
+        name:
+          description: 'End-User''s full name in displayable form including all name parts, possibly including
+
+            titles and suffixes, ordered according to the End-User''s locale and preferences.'
+          type: string
+        given_name:
+          description: 'Given name(s) or first name(s) of the End-User. Note that in some cultures, people can
+
+            have multiple given names; all can be present, with the names being separated by space
+
+            characters.'
+          type: string
+        family_name:
+          description: 'Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have
+
+            multiple family names or no family name; all can be present, with the names being
+
+            separated by space characters.'
+          type: string
+        email:
+          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322]
+
+            addr-spec syntax. The RP MUST NOT rely upon this value being unique, as discussed in
+
+            Section 5.7.'
+          format: email
+          type: string
+        email_verified:
+          description: 'True if the End-User''s e-mail address has been verified; otherwise false. When this
+
+            Claim Value is true, this means that the OP took affirmative steps to ensure that this
+
+            e-mail address was controlled by the End-User at the time the verification was
+
+            performed. The means by which an e-mail address is verified is context specific,
+
+            and dependent upon the trust framework or contractual agreements within which the
+
+            parties are operating.'
+          type: boolean
+      required:
+      - sub
+      type: object
+    JsonWebKeySet:
+      properties:
+        keys:
+          description: An array of JSON Web Key values. The order of keys has no meaning.
+          items:
+            $ref: '#/components/schemas/JsonWebKey'
+          type: array
+      required:
+      - keys
+      type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -174,61 +243,6 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    UserInfoResponse:
-      example:
-        sub: UAAAAAAAAA
-        name: Alice Person
-        given_name: Alice
-        family_name: Person
-        email: alice.person@example.com
-        email_verified: true
-      properties:
-        sub:
-          description: Identifier for the End-User at the Issuer.
-          type: string
-        name:
-          description: 'End-User''s full name in displayable form including all name parts, possibly including
-
-            titles and suffixes, ordered according to the End-User''s locale and preferences.'
-          type: string
-        given_name:
-          description: 'Given name(s) or first name(s) of the End-User. Note that in some cultures, people can
-
-            have multiple given names; all can be present, with the names being separated by space
-
-            characters.'
-          type: string
-        family_name:
-          description: 'Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have
-
-            multiple family names or no family name; all can be present, with the names being
-
-            separated by space characters.'
-          type: string
-        email:
-          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322]
-
-            addr-spec syntax. The RP MUST NOT rely upon this value being unique, as discussed in
-
-            Section 5.7.'
-          format: email
-          type: string
-        email_verified:
-          description: 'True if the End-User''s e-mail address has been verified; otherwise false. When this
-
-            Claim Value is true, this means that the OP took affirmative steps to ensure that this
-
-            e-mail address was controlled by the End-User at the time the verification was
-
-            performed. The means by which an e-mail address is verified is context specific,
-
-            and dependent upon the trust framework or contractual agreements within which the
-
-            parties are operating.'
-          type: boolean
-      required:
-      - sub
-      type: object
     Error:
       properties:
         code:
@@ -296,16 +310,6 @@ components:
       - kid
       - kty
       - n
-      type: object
-    JsonWebKeySet:
-      properties:
-        keys:
-          description: An array of JSON Web Key values. The order of keys has no meaning.
-          items:
-            $ref: '#/components/schemas/JsonWebKey'
-          type: array
-      required:
-      - keys
       type: object
   securitySchemes:
     basicAuth:
