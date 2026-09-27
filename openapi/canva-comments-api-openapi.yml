@@ -145,6 +145,13 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    CommentResponse:
+      type: object
+      properties:
+        comment:
+          $ref: '#/components/schemas/Comment'
+      required:
+      - comment
     MentionedUser:
       type: object
       description: A user mentioned in a comment
@@ -161,51 +168,6 @@ components:
           type: string
           description: The mentioned user display name
           example: example_value
-    CommentUser:
-      type: object
-      description: A user associated with a comment
-      properties:
-        id:
-          type: string
-          description: The user ID
-          example: abc123
-        display_name:
-          type: string
-          description: The user display name
-          deprecated: true
-          example: example_value
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    CommentAttachment:
-      type: object
-      description: The object a comment is attached to
-      properties:
-        type:
-          type: string
-          description: The attachment type
-          enum:
-          - design
-          example: design
-        design_id:
-          type: string
-          description: The design ID the comment is attached to
-          example: '500123'
-      required:
-      - type
-      - design_id
     CreateCommentRequest:
       type: object
       description: Request body for creating a comment
@@ -226,13 +188,21 @@ components:
       required:
       - attached_to
       - message
-    CommentResponse:
+    CreateReplyRequest:
       type: object
+      description: Request body for creating a reply to a comment
       properties:
-        comment:
-          $ref: '#/components/schemas/Comment'
+        attached_to:
+          $ref: '#/components/schemas/CommentAttachment'
+        message:
+          type: string
+          description: Reply text (1-2048 characters)
+          minLength: 1
+          maxLength: 2048
+          example: example_value
       required:
-      - comment
+      - attached_to
+      - message
     Comment:
       type: object
       description: A comment on a design
@@ -277,36 +247,54 @@ components:
       - author
       - created_at
       - updated_at
-    CreateReplyRequest:
+    CommentUser:
       type: object
-      description: Request body for creating a reply to a comment
+      description: A user associated with a comment
       properties:
-        attached_to:
-          $ref: '#/components/schemas/CommentAttachment'
+        id:
+          type: string
+          description: The user ID
+          example: abc123
+        display_name:
+          type: string
+          description: The user display name
+          deprecated: true
+          example: example_value
+    CommentAttachment:
+      type: object
+      description: The object a comment is attached to
+      properties:
+        type:
+          type: string
+          description: The attachment type
+          enum:
+          - design
+          example: design
+        design_id:
+          type: string
+          description: The design ID the comment is attached to
+          example: '500123'
+      required:
+      - type
+      - design_id
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
         message:
           type: string
-          description: Reply text (1-2048 characters)
-          minLength: 1
-          maxLength: 2048
+          description: Human-readable error message
           example: example_value
       required:
-      - attached_to
+      - code
       - message
   responses:
     Unauthorized:
       description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:
@@ -319,6 +307,18 @@ components:
             $ref: '#/components/schemas/Error'
     TooManyRequests:
       description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:

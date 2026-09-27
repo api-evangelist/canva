@@ -51,6 +51,13 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    UsersMeResponse:
+      type: object
+      properties:
+        team_user:
+          $ref: '#/components/schemas/TeamUser'
+      required:
+      - team_user
     TeamUser:
       type: object
       description: The authenticated user and their team
@@ -66,13 +73,6 @@ components:
       required:
       - user_id
       - team_id
-    UsersMeResponse:
-      type: object
-      properties:
-        team_user:
-          $ref: '#/components/schemas/TeamUser'
-      required:
-      - team_user
     Error:
       type: object
       description: An error response

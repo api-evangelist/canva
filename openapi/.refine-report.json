@@ -14,7 +14,7 @@
     "canva-export-api-openapi.yml",
     "canva-folder-api-openapi.yml",
     "canva-merge-api-openapi.yml",
-    "canva-o-auth-api-openapi.yml",
+    "canva-oauth-api-openapi.yml",
     "canva-oidc-api-openapi.yml",
     "canva-resize-api-openapi.yml",
     "canva-user-api-openapi.yml"
@@ -41,7 +41,7 @@
     "canva-export-api-openapi.yml",
     "canva-folder-api-openapi.yml",
     "canva-merge-api-openapi.yml",
-    "canva-o-auth-api-openapi.yml",
+    "canva-oauth-api-openapi.yml",
     "canva-oidc-api-openapi.yml",
     "canva-resize-api-openapi.yml",
     "canva-user-api-openapi.yml"
@@ -61,7 +61,7 @@
     "canva-export-api-openapi.yml: previously refined output kept for 3 operation(s) no archived document covers (e.g. /v1/exports post, /v1/exports/{exportId} get, /v1/print-partner/exports post); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
     "canva-folder-api-openapi.yml: previously refined output kept for 6 operation(s) no archived document covers (e.g. /v1/folders post, /v1/folders/move post, /v1/folders/{folderId} delete); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
     "canva-merge-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /v1/merges post, /v1/merges/{jobId} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
-    "canva-o-auth-api-openapi.yml: previously refined output kept for 3 operation(s) no archived document covers (e.g. /v1/oauth/introspect post, /v1/oauth/revoke post, /v1/oauth/token post); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "canva-oauth-api-openapi.yml: previously refined output kept for 3 operation(s) no archived document covers (e.g. /v1/oauth/introspect post, /v1/oauth/revoke post, /v1/oauth/token post); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
     "canva-oidc-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /v1/oidc/jwks get, /v1/oidc/userinfo get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
     "canva-resize-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /v1/resizes post, /v1/resizes/{jobId} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
     "canva-user-api-openapi.yml: previously refined output kept for 3 operation(s) no archived document covers (e.g. /v1/users/me get, /v1/users/me/capabilities get, /v1/users/me/profile get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."

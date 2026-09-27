@@ -67,6 +67,38 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    GetSigningPublicKeysResponse:
+      properties:
+        keys:
+          description: 'A Json Web Key Set (JWKS) with public keys used for signing webhooks. You can use this JWKS
+
+            to verify that a webhook was sent from Canva.'
+          example:
+          - kid: a418dc7d-ecc5-5c4b-85ce-e1104a8addbe
+            kty: OKP
+            crv: Ed25519
+            x: aIQtqd0nDfB-ug0DrzZbwTum-1ITdXvKxGFak_1VB2j
+          - kid: c8de5bec1-1b88-4ddaae04acc-ce415-5d7
+            kty: OKP
+            crv: Ed25519
+            x: m2d1FT-gfBXxIzKwdQVTra0D-aBq_ubZ1jI0GuvkDtn
+          items:
+            $ref: '#/components/schemas/EdDsaJwk'
+          type: array
+      required:
+      - keys
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
     EdDsaJwk:
       description: 'A JSON Web Key Set (JWKS) using the Edwards-curve Digital Signature Algorithm (EdDSA), as
 
@@ -199,38 +231,6 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    GetSigningPublicKeysResponse:
-      properties:
-        keys:
-          description: 'A Json Web Key Set (JWKS) with public keys used for signing webhooks. You can use this JWKS
-
-            to verify that a webhook was sent from Canva.'
-          example:
-          - kid: a418dc7d-ecc5-5c4b-85ce-e1104a8addbe
-            kty: OKP
-            crv: Ed25519
-            x: aIQtqd0nDfB-ug0DrzZbwTum-1ITdXvKxGFak_1VB2j
-          - kid: c8de5bec1-1b88-4ddaae04acc-ce415-5d7
-            kty: OKP
-            crv: Ed25519
-            x: m2d1FT-gfBXxIzKwdQVTra0D-aBq_ubZ1jI0GuvkDtn
-          items:
-            $ref: '#/components/schemas/EdDsaJwk'
-          type: array
-      required:
-      - keys
-      type: object
   securitySchemes:
     basicAuth:
       scheme: basic

@@ -192,6 +192,37 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     FolderItem:
       type: object
@@ -213,107 +244,6 @@ components:
           $ref: '#/components/schemas/Asset'
       required:
       - type
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
-    FolderResponse:
-      type: object
-      properties:
-        folder:
-          $ref: '#/components/schemas/Folder'
-      required:
-      - folder
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    DesignUrls:
-      type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
-      properties:
-        edit_url:
-          type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
-      required:
-      - edit_url
-      - view_url
-    Folder:
-      type: object
-      description: A Canva folder
-      properties:
-        id:
-          type: string
-          description: The folder ID
-          example: abc123
-        name:
-          type: string
-          description: The folder name
-          example: Example Title
-        created_at:
-          type: integer
-          description: Unix timestamp in seconds when the folder was created
-          example: '2026-01-15T10:30:00Z'
-        updated_at:
-          type: integer
-          description: Unix timestamp in seconds when the folder was last updated
-          example: '2026-01-15T10:30:00Z'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-      required:
-      - id
-      - name
-      - created_at
-      - updated_at
-    ListFolderItemsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/FolderItem'
-          example: []
-        continuation:
-          type: string
-          description: Continuation token for the next page of results
-          example: example_value
-      required:
-      - items
     Asset:
       type: object
       description: A Canva asset (image or video)
@@ -360,33 +290,47 @@ components:
       - created_at
       - updated_at
       - owner
-    ImportStatus:
+    Folder:
       type: object
-      description: The import status of an asset (deprecated)
-      deprecated: true
+      description: A Canva folder
       properties:
-        state:
+        id:
           type: string
-          description: The current import state
-          enum:
-          - failed
-          - in_progress
-          - success
-          example: failed
-        error:
-          type: object
-          description: Error details if the import failed
-          properties:
-            message:
-              type: string
-              description: Human-readable error message
-            code:
-              type: string
-              description: Error code
-              enum:
-              - file_too_big
-              - import_failed
+          description: The folder ID
+          example: abc123
+        name:
+          type: string
+          description: The folder name
+          example: Example Title
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+    ListFolderItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderItem'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
           example: example_value
+      required:
+      - items
     Design:
       type: object
       description: A Canva design
@@ -424,6 +368,101 @@ components:
       - urls
       - created_at
       - updated_at
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    ImportStatus:
+      type: object
+      description: The import status of an asset (deprecated)
+      deprecated: true
+      properties:
+        state:
+          type: string
+          description: The current import state
+          enum:
+          - failed
+          - in_progress
+          - success
+          example: failed
+        error:
+          type: object
+          description: Error details if the import failed
+          properties:
+            message:
+              type: string
+              description: Human-readable error message
+            code:
+              type: string
+              description: Error code
+              enum:
+              - file_too_big
+              - import_failed
+          example: example_value
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
     MoveFolderItemRequest:
       type: object
       description: Request body for moving an item to a folder
@@ -443,52 +482,13 @@ components:
       required:
       - item_id
       - item_type
-    Owner:
+    FolderResponse:
       type: object
-      description: The owner of a resource
       properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
+        folder:
+          $ref: '#/components/schemas/Folder'
       required:
-      - user_id
-      - team_id
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+      - folder
   parameters:
     FolderId:
       name: folderId

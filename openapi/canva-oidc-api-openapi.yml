@@ -95,61 +95,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UserInfoResponse:
-      example:
-        sub: UAAAAAAAAA
-        name: Alice Person
-        given_name: Alice
-        family_name: Person
-        email: alice.person@example.com
-        email_verified: true
-      properties:
-        sub:
-          description: Identifier for the End-User at the Issuer.
-          type: string
-        name:
-          description: 'End-User''s full name in displayable form including all name parts, possibly including
-
-            titles and suffixes, ordered according to the End-User''s locale and preferences.'
-          type: string
-        given_name:
-          description: 'Given name(s) or first name(s) of the End-User. Note that in some cultures, people can
-
-            have multiple given names; all can be present, with the names being separated by space
-
-            characters.'
-          type: string
-        family_name:
-          description: 'Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have
-
-            multiple family names or no family name; all can be present, with the names being
-
-            separated by space characters.'
-          type: string
-        email:
-          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322]
-
-            addr-spec syntax. The RP MUST NOT rely upon this value being unique, as discussed in
-
-            Section 5.7.'
-          format: email
-          type: string
-        email_verified:
-          description: 'True if the End-User''s e-mail address has been verified; otherwise false. When this
-
-            Claim Value is true, this means that the OP took affirmative steps to ensure that this
-
-            e-mail address was controlled by the End-User at the time the verification was
-
-            performed. The means by which an e-mail address is verified is context specific,
-
-            and dependent upon the trust framework or contractual agreements within which the
-
-            parties are operating.'
-          type: boolean
-      required:
-      - sub
-      type: object
     JsonWebKeySet:
       properties:
         keys:
@@ -243,16 +188,60 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    Error:
+    UserInfoResponse:
+      example:
+        sub: UAAAAAAAAA
+        name: Alice Person
+        given_name: Alice
+        family_name: Person
+        email: alice.person@example.com
+        email_verified: true
       properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
+        sub:
+          description: Identifier for the End-User at the Issuer.
           type: string
+        name:
+          description: 'End-User''s full name in displayable form including all name parts, possibly including
+
+            titles and suffixes, ordered according to the End-User''s locale and preferences.'
+          type: string
+        given_name:
+          description: 'Given name(s) or first name(s) of the End-User. Note that in some cultures, people can
+
+            have multiple given names; all can be present, with the names being separated by space
+
+            characters.'
+          type: string
+        family_name:
+          description: 'Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have
+
+            multiple family names or no family name; all can be present, with the names being
+
+            separated by space characters.'
+          type: string
+        email:
+          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322]
+
+            addr-spec syntax. The RP MUST NOT rely upon this value being unique, as discussed in
+
+            Section 5.7.'
+          format: email
+          type: string
+        email_verified:
+          description: 'True if the End-User''s e-mail address has been verified; otherwise false. When this
+
+            Claim Value is true, this means that the OP took affirmative steps to ensure that this
+
+            e-mail address was controlled by the End-User at the time the verification was
+
+            performed. The means by which an e-mail address is verified is context specific,
+
+            and dependent upon the trust framework or contractual agreements within which the
+
+            parties are operating.'
+          type: boolean
       required:
-      - code
-      - message
+      - sub
       type: object
     JsonWebKey:
       description: 'Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and
@@ -310,6 +299,17 @@ components:
       - kid
       - kty
       - n
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
       type: object
   securitySchemes:
     basicAuth:

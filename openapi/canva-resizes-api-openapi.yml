@@ -115,61 +115,7 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    JobId:
-      name: jobId
-      in: path
-      required: true
-      description: The job ID
-      schema:
-        type: string
   schemas:
-    DesignType:
-      oneOf:
-      - $ref: '#/components/schemas/PresetDesignType'
-      - $ref: '#/components/schemas/CustomDesignType'
-      description: The type and dimensions for a new design
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
-    PresetDesignType:
-      type: object
-      description: A preset design type
-      properties:
-        type:
-          type: string
-          enum:
-          - preset
-          example: preset
-        name:
-          type: string
-          description: The preset design type name
-          enum:
-          - doc
-          - whiteboard
-          - presentation
-          example: doc
-      required:
-      - type
-      - name
     ResizeJob:
       type: object
       description: A resize job for creating a resized copy of a design
@@ -217,51 +163,31 @@ components:
           $ref: '#/components/schemas/ResizeJob'
       required:
       - job
-    Error:
+    PresetDesignType:
       type: object
-      description: An error response
+      description: A preset design type
       properties:
-        code:
+        type:
           type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
+          enum:
+          - preset
+          example: preset
+        name:
           type: string
-          description: Human-readable error message
-          example: example_value
+          description: The preset design type name
+          enum:
+          - doc
+          - whiteboard
+          - presentation
+          example: doc
       required:
-      - code
-      - message
-    CreateResizeJobRequest:
-      type: object
-      description: Request body for creating a design resize job
-      properties:
-        design_id:
-          type: string
-          description: The design ID to resize
-          example: '500123'
-        design_type:
-          $ref: '#/components/schemas/DesignType'
-      required:
-      - design_id
-      - design_type
-    DesignUrls:
-      type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
-      properties:
-        edit_url:
-          type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
-      required:
-      - edit_url
-      - view_url
+      - type
+      - name
+    DesignType:
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignType'
+      - $ref: '#/components/schemas/CustomDesignType'
+      description: The type and dimensions for a new design
     Design:
       type: object
       description: A Canva design
@@ -339,9 +265,87 @@ components:
       - type
       - width
       - height
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+    CreateResizeJobRequest:
+      type: object
+      description: Request body for creating a design resize job
+      properties:
+        design_id:
+          type: string
+          description: The design ID to resize
+          example: '500123'
+        design_type:
+          $ref: '#/components/schemas/DesignType'
+      required:
+      - design_id
+      - design_type
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
   responses:
     Unauthorized:
       description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
       content:
         application/json:
           schema:
@@ -358,18 +362,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    JobId:
+      name: jobId
+      in: path
+      required: true
+      description: The job ID
+      schema:
+        type: string
   securitySchemes:
     oauth2:
       type: oauth2

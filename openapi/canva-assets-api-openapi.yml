@@ -201,50 +201,42 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    JobId:
-      name: jobId
-      in: path
-      required: true
-      description: The job ID
-      schema:
-        type: string
-    AssetId:
-      name: assetId
-      in: path
-      required: true
-      description: The asset ID
-      schema:
-        type: string
   schemas:
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
-    AssetResponse:
+    AssetUploadJobResponse:
       type: object
       properties:
-        asset:
-          $ref: '#/components/schemas/Asset'
+        job:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The upload job ID
+            status:
+              type: string
+              description: The current status of the upload job
+              enum:
+              - in_progress
+              - success
+              - failed
+            asset:
+              $ref: '#/components/schemas/Asset'
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - file_too_big
+                  - import_failed
+                  - fetch_failed
+                message:
+                  type: string
+          required:
+          - id
+          - status
+          example: example_value
       required:
-      - asset
+      - job
     Asset:
       type: object
       description: A Canva asset (image or video)
@@ -291,21 +283,49 @@ components:
       - created_at
       - updated_at
       - owner
-    Error:
+    AssetResponse:
       type: object
-      description: An error response
       properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
+        asset:
+          $ref: '#/components/schemas/Asset'
       required:
-      - code
-      - message
+      - asset
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
     ImportStatus:
       type: object
       description: The import status of an asset (deprecated)
@@ -333,56 +353,36 @@ components:
               - file_too_big
               - import_failed
           example: example_value
-    AssetUploadJobResponse:
+    Error:
       type: object
+      description: An error response
       properties:
-        job:
-          type: object
-          properties:
-            id:
-              type: string
-              description: The upload job ID
-            status:
-              type: string
-              description: The current status of the upload job
-              enum:
-              - in_progress
-              - success
-              - failed
-            asset:
-              $ref: '#/components/schemas/Asset'
-            error:
-              type: object
-              properties:
-                code:
-                  type: string
-                  enum:
-                  - file_too_big
-                  - import_failed
-                  - fetch_failed
-                message:
-                  type: string
-          required:
-          - id
-          - status
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
           example: example_value
       required:
-      - job
-    Owner:
-      type: object
-      description: The owner of a resource
-      properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
-      required:
-      - user_id
-      - team_id
+      - code
+      - message
+  parameters:
+    AssetId:
+      name: assetId
+      in: path
+      required: true
+      description: The asset ID
+      schema:
+        type: string
+    JobId:
+      name: jobId
+      in: path
+      required: true
+      description: The job ID
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Unauthorized - missing or invalid authentication
@@ -390,14 +390,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
       content:
         application/json:
           schema:
@@ -408,8 +402,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:

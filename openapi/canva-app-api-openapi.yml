@@ -58,13 +58,19 @@ paths:
       summary: Get app jwks
       x-summary-source: derived
 components:
-  examples:
-    AuthKeysNotFoundError:
-      summary: No auth keys exist for the specified app.
-      value:
-        code: app_not_found
-        message: Auth keys not found for app {appId}
   schemas:
+    GetAppJwksResponse:
+      properties:
+        keys:
+          description: 'The value of the "keys" parameter is an array of JWK values. The order of keys has no
+
+            meaning.'
+          items:
+            $ref: '#/components/schemas/JsonWebKey'
+          type: array
+      required:
+      - keys
+      type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -148,29 +154,6 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    GetAppJwksResponse:
-      properties:
-        keys:
-          description: 'The value of the "keys" parameter is an array of JWK values. The order of keys has no
-
-            meaning.'
-          items:
-            $ref: '#/components/schemas/JsonWebKey'
-          type: array
-      required:
-      - keys
-      type: object
     JsonWebKey:
       description: 'Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and
 
@@ -228,6 +211,23 @@ components:
       - kty
       - n
       type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+  examples:
+    AuthKeysNotFoundError:
+      summary: No auth keys exist for the specified app.
+      value:
+        code: app_not_found
+        message: Auth keys not found for app {appId}
   securitySchemes:
     basicAuth:
       scheme: basic

@@ -8,15 +8,20 @@ description: 'Canva is the visual design platform used by hundreds of millions o
   llms.txt indexes, a hosted MCP server and a public set of Agent Skills.'
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - canva-sdks/canva-apps-sdk-starter-kit
+    - canva-sdks/canva-connect-api-starter-kit
+  open_source: unknown
   commercial: true
   callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -48,6 +53,7 @@ tags:
 - Print
 - Templates
 - Visual Content
+- Australia
 tags_raw:
 - Apps
 - Automation
@@ -59,6 +65,7 @@ tags_raw:
 - Print
 - Templates
 - Visual Content
+- Australia
 apis:
 - name: Canva Apps SDK
   description: >-
