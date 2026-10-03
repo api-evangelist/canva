@@ -88,17 +88,6 @@ components:
       required:
       - keys
       type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
     EdDsaJwk:
       description: 'A JSON Web Key Set (JWKS) using the Edwards-curve Digital Signature Algorithm (EdDSA), as
 
@@ -231,6 +220,17 @@ components:
       - user_pending_consent
       - account_exists
       type: string
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
   securitySchemes:
     basicAuth:
       scheme: basic

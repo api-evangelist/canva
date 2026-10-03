@@ -111,42 +111,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    GifExportFormat:
-      type: object
-      description: GIF export format options
-      properties:
-        type:
-          type: string
-          enum:
-          - gif
-          example: gif
-        export_quality:
-          type: string
-          enum:
-          - regular
-          - pro
-          default: regular
-          example: regular
-        width:
-          type: integer
-          description: Output width in pixels
-          minimum: 40
-          maximum: 25000
-          example: 10
-        height:
-          type: integer
-          description: Output height in pixels
-          minimum: 40
-          maximum: 25000
-          example: 10
-        pages:
-          type: array
-          description: Page indices to export
-          items:
-            type: integer
-          example: []
-      required:
-      - type
     ExportError:
       type: object
       description: Error details for a failed export job
@@ -204,28 +168,34 @@ components:
       required:
       - type
       - quality
-    CreateExportJobRequest:
+    ExportJob:
       type: object
-      description: Request body for creating an export job
+      description: An export job for converting a design to a downloadable format
       properties:
-        design_id:
+        id:
           type: string
-          description: The design ID to export
-          example: '500123'
-        format:
-          $ref: '#/components/schemas/ExportFormat'
+          description: The export job ID
+          example: abc123
+        status:
+          type: string
+          description: The current status of the export job
+          enum:
+          - in_progress
+          - success
+          - failed
+          example: in_progress
+        urls:
+          type: array
+          description: Download URLs for the exported files (valid for 24 hours). Present only when status is success.
+          items:
+            type: string
+            format: uri
+          example: https://www.example.com
+        error:
+          $ref: '#/components/schemas/ExportError'
       required:
-      - design_id
-      - format
-    ExportFormat:
-      oneOf:
-      - $ref: '#/components/schemas/PdfExportFormat'
-      - $ref: '#/components/schemas/JpgExportFormat'
-      - $ref: '#/components/schemas/PngExportFormat'
-      - $ref: '#/components/schemas/GifExportFormat'
-      - $ref: '#/components/schemas/PptxExportFormat'
-      - $ref: '#/components/schemas/Mp4ExportFormat'
-      description: Export format configuration
+      - id
+      - status
     JpgExportFormat:
       type: object
       description: JPG export format options
@@ -269,35 +239,27 @@ components:
       required:
       - type
       - quality
-    PdfExportFormat:
+    ExportFormat:
+      oneOf:
+      - $ref: '#/components/schemas/PdfExportFormat'
+      - $ref: '#/components/schemas/JpgExportFormat'
+      - $ref: '#/components/schemas/PngExportFormat'
+      - $ref: '#/components/schemas/GifExportFormat'
+      - $ref: '#/components/schemas/PptxExportFormat'
+      - $ref: '#/components/schemas/Mp4ExportFormat'
+      description: Export format configuration
+    PptxExportFormat:
       type: object
-      description: PDF export format options
+      description: PowerPoint export format options
       properties:
         type:
           type: string
           enum:
-          - pdf
-          example: pdf
-        export_quality:
-          type: string
-          enum:
-          - regular
-          - pro
-          default: regular
-          example: regular
-        size:
-          type: string
-          description: Paper size for the PDF
-          enum:
-          - a4
-          - a3
-          - letter
-          - legal
-          default: a4
-          example: a4
+          - pptx
+          example: pptx
         pages:
           type: array
-          description: Page indices to export (exports all pages if omitted)
+          description: Page indices to export
           items:
             type: integer
           example: []
@@ -354,34 +316,6 @@ components:
           example: []
       required:
       - type
-    ExportJob:
-      type: object
-      description: An export job for converting a design to a downloadable format
-      properties:
-        id:
-          type: string
-          description: The export job ID
-          example: abc123
-        status:
-          type: string
-          description: The current status of the export job
-          enum:
-          - in_progress
-          - success
-          - failed
-          example: in_progress
-        urls:
-          type: array
-          description: Download URLs for the exported files (valid for 24 hours). Present only when status is success.
-          items:
-            type: string
-            format: uri
-          example: https://www.example.com
-        error:
-          $ref: '#/components/schemas/ExportError'
-      required:
-      - id
-      - status
     ExportJobResponse:
       type: object
       properties:
@@ -389,6 +323,89 @@ components:
           $ref: '#/components/schemas/ExportJob'
       required:
       - job
+    PdfExportFormat:
+      type: object
+      description: PDF export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - pdf
+          example: pdf
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        size:
+          type: string
+          description: Paper size for the PDF
+          enum:
+          - a4
+          - a3
+          - letter
+          - legal
+          default: a4
+          example: a4
+        pages:
+          type: array
+          description: Page indices to export (exports all pages if omitted)
+          items:
+            type: integer
+          example: []
+      required:
+      - type
+    CreateExportJobRequest:
+      type: object
+      description: Request body for creating an export job
+      properties:
+        design_id:
+          type: string
+          description: The design ID to export
+          example: '500123'
+        format:
+          $ref: '#/components/schemas/ExportFormat'
+      required:
+      - design_id
+      - format
+    GifExportFormat:
+      type: object
+      description: GIF export format options
+      properties:
+        type:
+          type: string
+          enum:
+          - gif
+          example: gif
+        export_quality:
+          type: string
+          enum:
+          - regular
+          - pro
+          default: regular
+          example: regular
+        width:
+          type: integer
+          description: Output width in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        height:
+          type: integer
+          description: Output height in pixels
+          minimum: 40
+          maximum: 25000
+          example: 10
+        pages:
+          type: array
+          description: Page indices to export
+          items:
+            type: integer
+          example: []
+      required:
+      - type
     Error:
       type: object
       description: An error response
@@ -404,32 +421,15 @@ components:
       required:
       - code
       - message
-    PptxExportFormat:
-      type: object
-      description: PowerPoint export format options
-      properties:
-        type:
-          type: string
-          enum:
-          - pptx
-          example: pptx
-        pages:
-          type: array
-          description: Page indices to export
-          items:
-            type: integer
-          example: []
-      required:
-      - type
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
+    NotFound:
+      description: Not found - the requested resource does not exist
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:
@@ -440,14 +440,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
+    BadRequest:
+      description: Bad request - invalid parameters or request body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
       content:
         application/json:
           schema:

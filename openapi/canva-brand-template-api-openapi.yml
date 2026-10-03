@@ -371,116 +371,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PublishBrandTemplateResponse:
-      description: Response from a successful publishBrandTemplate request. Contains the published brand template with all its metadata. Note that the `thumbnail` field might be `null` initially as thumbnails are generated asynchronously.
-      properties:
-        brand_template:
-          $ref: '#/components/schemas/BrandTemplate'
-      required:
-      - brand_template
-      type: object
-    DataField:
-      description: A named data field that can be autofilled.
-      discriminator:
-        mapping:
-          image: '#/components/schemas/ImageDataField'
-          text: '#/components/schemas/TextDataField'
-          chart: '#/components/schemas/ChartDataField'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/ImageDataField'
-      - $ref: '#/components/schemas/TextDataField'
-      - $ref: '#/components/schemas/ChartDataField'
-      type: object
-    ChartDataField:
-      description: 'A chart data field. You can autofill it with tabular data.
-
-
-        WARNING: Chart data fields are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
-      properties:
-        type:
-          enum:
-          - chart
-          type: string
-      required:
-      - type
-      type: object
-    BrandTemplate:
-      description: An object representing a brand template with associated metadata.
-      properties:
-        id:
-          description: The brand template ID.
-          example: DEMzWSwy3BI
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
-          type: string
-        title:
-          description: The brand template title, as shown in the Canva UI.
-          example: Advertisement Template
-          type: string
-        view_url:
-          description: A URL Canva users can visit to view the brand template.
-          example: https://www.canva.com/design/DAE35hE8FA4/view
-          type: string
-        create_url:
-          description: A URL Canva users can visit to create a new design from the template.
-          example: https://www.canva.com/design/DAE35hE8FA4/remix
-          type: string
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        created_at:
-          description: 'When the brand template was created, as a Unix timestamp
-
-            (in seconds since the Unix Epoch).'
-          example: 1704110400
-          format: int64
-          type: integer
-        updated_at:
-          description: 'When the brand template was last updated, as a Unix timestamp
-
-            (in seconds since the Unix Epoch).'
-          example: 1719835200
-          format: int64
-          type: integer
-      required:
-      - create_url
-      - created_at
-      - id
-      - title
-      - updated_at
-      - view_url
-      type: object
-    TextDataField:
-      description: A text data field. You can autofill it with a text value.
-      properties:
-        type:
-          enum:
-          - text
-          type: string
-      required:
-      - type
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    PublishBrandTemplateRequest:
-      description: Request body for publishing a design as a brand template
-      properties:
-        design_id:
-          description: The ID of the design to publish as a brand template. If this design is a draft of an existing brand template, that template will be updated. Otherwise, a new brand template is created.
-          example: DABCdesign123
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
-          type: string
-      required:
-      - design_id
-      type: object
     GetBrandTemplateDatasetResponse:
       description: Successful response from a `getBrandTemplateDataset` request.
       properties:
@@ -512,31 +402,47 @@ components:
       required:
       - type
       type: object
-    Thumbnail:
-      description: A thumbnail image representing the object.
+    TextDataField:
+      description: A text data field. You can autofill it with a text value.
       properties:
-        width:
-          description: The width of the thumbnail image in pixels.
-          example: 595
-          format: int32
-          type: integer
-        height:
-          description: The height of the thumbnail image in pixels.
-          example: 335
-          format: int32
-          type: integer
-        url:
-          description: 'A URL for retrieving the thumbnail image.
-
-            This URL expires after 15 minutes. This URL includes a query string
-
-            that''s required for retrieving the thumbnail.'
-          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+        type:
+          enum:
+          - text
           type: string
       required:
-      - height
-      - url
-      - width
+      - type
+      type: object
+    OwnershipType:
+      default: any
+      enum:
+      - any
+      - owned
+      - shared
+      type: string
+      x-enum-descriptions:
+      - Owned by and shared with the user.
+      - Owned by the user.
+      - Shared with the user.
+    GetBrandTemplateResponse:
+      description: Successful response from a `getBrandTemplate` request.
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+      type: object
+    ChartDataField:
+      description: 'A chart data field. You can autofill it with tabular data.
+
+
+        WARNING: Chart data fields are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+      properties:
+        type:
+          enum:
+          - chart
+          type: string
+      required:
+      - type
       type: object
     SortByType:
       default: relevance
@@ -553,26 +459,14 @@ components:
       - Sort results by the date last modified in ascending order.
       - Sort results by title in descending order.
       - Sort results by title in ascending order
-    OwnershipType:
-      default: any
-      enum:
-      - any
-      - owned
-      - shared
-      type: string
-      x-enum-descriptions:
-      - Owned by and shared with the user.
-      - Owned by the user.
-      - Shared with the user.
-    DatasetFilter:
-      default: any
-      enum:
-      - any
-      - non_empty
-      type: string
-      x-enum-descriptions:
-      - Brand templates with and without dataset definitions.
-      - Brand templates with one or more data fields defined.
+    PublishBrandTemplateResponse:
+      description: Response from a successful publishBrandTemplate request. Contains the published brand template with all its metadata. Note that the `thumbnail` field might be `null` initially as thumbnails are generated asynchronously.
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+      type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -656,13 +550,58 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    GetBrandTemplateResponse:
-      description: Successful response from a `getBrandTemplate` request.
+    DatasetFilter:
+      default: any
+      enum:
+      - any
+      - non_empty
+      type: string
+      x-enum-descriptions:
+      - Brand templates with and without dataset definitions.
+      - Brand templates with one or more data fields defined.
+    BrandTemplate:
+      description: An object representing a brand template with associated metadata.
       properties:
-        brand_template:
-          $ref: '#/components/schemas/BrandTemplate'
+        id:
+          description: The brand template ID.
+          example: DEMzWSwy3BI
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        title:
+          description: The brand template title, as shown in the Canva UI.
+          example: Advertisement Template
+          type: string
+        view_url:
+          description: A URL Canva users can visit to view the brand template.
+          example: https://www.canva.com/design/DAE35hE8FA4/view
+          type: string
+        create_url:
+          description: A URL Canva users can visit to create a new design from the template.
+          example: https://www.canva.com/design/DAE35hE8FA4/remix
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        created_at:
+          description: 'When the brand template was created, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1704110400
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the brand template was last updated, as a Unix timestamp
+
+            (in seconds since the Unix Epoch).'
+          example: 1719835200
+          format: int64
+          type: integer
       required:
-      - brand_template
+      - create_url
+      - created_at
+      - id
+      - title
+      - updated_at
+      - view_url
       type: object
     ListBrandTemplatesResponse:
       properties:
@@ -688,12 +627,133 @@ components:
       required:
       - items
       type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    PublishBrandTemplateRequest:
+      description: Request body for publishing a design as a brand template
+      properties:
+        design_id:
+          description: The ID of the design to publish as a brand template. If this design is a draft of an existing brand template, that template will be updated. Otherwise, a new brand template is created.
+          example: DABCdesign123
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+      required:
+      - design_id
+      type: object
+    DataField:
+      description: A named data field that can be autofilled.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/ImageDataField'
+          text: '#/components/schemas/TextDataField'
+          chart: '#/components/schemas/ChartDataField'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ImageDataField'
+      - $ref: '#/components/schemas/TextDataField'
+      - $ref: '#/components/schemas/ChartDataField'
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
   examples:
+    GetBrandTemplatePermissionDeniedError:
+      summary: Not allowed to access the brand template
+      value:
+        code: permission_denied
+        message: Not allowed to access brand template with id '{brandTemplateId}'
+    PublishPermissionDeniedError:
+      summary: User does not have permission to publish the design as a brand template
+      value:
+        code: permission_denied
+        message: User does not have permission to publish design {designId} as a brand template
+    DesignTypeNotAvailableError:
+      summary: The design_types filter contains an unavailable design type
+      value:
+        code: invalid_field
+        message: '''design_types'' contains a design type that isn''t available: {designType}.'
+    ResourceLimitExceededError:
+      summary: Validation error - resource limit exceeded
+      value:
+        code: bad_request_params
+        message: Design contains {count} {resource_name}, but brand templates can only contain up to {max}. Reduce the number and try again.
+    UnableToFetchDesignsError:
+      summary: Unable to fetch designs
+      value:
+        code: bad_query_params
+        message: Unable to fetch designs
     GetBrandTemplateDatasetPermissionDeniedError:
       summary: Not allowed to access the brand template
       value:
         code: permission_denied
         message: User does not have permission to access brand template with id '{brandTemplateId}'
+    PublishBrandTemplateDesignNotFoundError:
+      summary: The design was not found
+      value:
+        code: not_found
+        message: Design with id {designId} not found
+    FindBrandTemplatesForbiddenError:
+      summary: Not allowed to find metadata for brand templates
+      value:
+        code: permission_denied
+        message: Not allowed to find metadata for brand templates
+    InvalidDesignIdError:
+      summary: The design ID format is invalid
+      value:
+        code: bad_request_params
+        message: Design ID '{designId}' is not valid
+    GetBrandTemplateDatasetNotFoundError:
+      summary: Brand template not found
+      value:
+        code: not_found
+        message: Brand template with id '{brandTemplateId}' not found
+    GetBrandTemplateNotFoundError:
+      summary: Brand template not found
+      value:
+        code: not_found
+        message: Brand template with id '{brandTemplateId}' not found
+    ListDesignsForbiddenError:
+      summary: Not allowed to access the design list
+      value:
+        code: permission_denied
+        message: Not allowed to access design list
+    InvalidContinuationError:
+      summary: The continuation token is invalid
+      value:
+        code: bad_query_params
+        message: 'Invalid continuation: {continuation}'
     PublishBrandTemplateSuccessExample:
       description: Response from successfully publishing a brand template. Note that the thumbnail might be null initially and will be available after async processing completes.
       summary: Successful brand template publishing
@@ -705,66 +765,6 @@ components:
           create_url: https://www.canva.com/design/EABCtemplate789/remix
           created_at: 1704110400
           updated_at: 1704110400
-    GetBrandTemplateDatasetNotFoundError:
-      summary: Brand template not found
-      value:
-        code: not_found
-        message: Brand template with id '{brandTemplateId}' not found
-    GetBrandTemplatePermissionDeniedError:
-      summary: Not allowed to access the brand template
-      value:
-        code: permission_denied
-        message: Not allowed to access brand template with id '{brandTemplateId}'
-    InvalidContinuationError:
-      summary: The continuation token is invalid
-      value:
-        code: bad_query_params
-        message: 'Invalid continuation: {continuation}'
-    InvalidDesignIdError:
-      summary: The design ID format is invalid
-      value:
-        code: bad_request_params
-        message: Design ID '{designId}' is not valid
-    ResourceLimitExceededError:
-      summary: Validation error - resource limit exceeded
-      value:
-        code: bad_request_params
-        message: Design contains {count} {resource_name}, but brand templates can only contain up to {max}. Reduce the number and try again.
-    PublishPermissionDeniedError:
-      summary: User does not have permission to publish the design as a brand template
-      value:
-        code: permission_denied
-        message: User does not have permission to publish design {designId} as a brand template
-    PublishBrandTemplateDesignNotFoundError:
-      summary: The design was not found
-      value:
-        code: not_found
-        message: Design with id {designId} not found
-    DesignTypeNotAvailableError:
-      summary: The design_types filter contains an unavailable design type
-      value:
-        code: invalid_field
-        message: '''design_types'' contains a design type that isn''t available: {designType}.'
-    ListDesignsForbiddenError:
-      summary: Not allowed to access the design list
-      value:
-        code: permission_denied
-        message: Not allowed to access design list
-    FindBrandTemplatesForbiddenError:
-      summary: Not allowed to find metadata for brand templates
-      value:
-        code: permission_denied
-        message: Not allowed to find metadata for brand templates
-    UnableToFetchDesignsError:
-      summary: Unable to fetch designs
-      value:
-        code: bad_query_params
-        message: Unable to fetch designs
-    GetBrandTemplateNotFoundError:
-      summary: Brand template not found
-      value:
-        code: not_found
-        message: Brand template with id '{brandTemplateId}' not found
   securitySchemes:
     basicAuth:
       scheme: basic

@@ -194,23 +194,9 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    BrandTemplateId:
-      name: brandTemplateId
-      in: path
-      required: true
-      description: The brand template ID
-      schema:
-        type: string
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
+    NotFound:
+      description: Not found - the requested resource does not exist
       content:
         application/json:
           schema:
@@ -221,95 +207,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    BrandTemplateResponse:
-      type: object
-      properties:
-        brand_template:
-          $ref: '#/components/schemas/BrandTemplate'
-      required:
-      - brand_template
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
-    BrandTemplateDatasetResponse:
-      type: object
-      properties:
-        dataset:
-          type: object
-          description: Dataset fields available for autofill, keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/DatasetField'
-          example: example_value
-      required:
-      - dataset
-    DatasetField:
-      type: object
-      description: A data field in a brand template dataset
-      properties:
-        type:
-          type: string
-          description: The data field type
-          enum:
-          - image
-          - text
-          - chart
-          example: image
-      required:
-      - type
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    ListBrandTemplatesResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/BrandTemplate'
-          example: []
-        continuation:
-          type: string
-          description: Continuation token for the next page of results
-          example: example_value
-      required:
-      - items
     BrandTemplate:
       type: object
       description: A Canva brand template (requires Enterprise)
@@ -347,6 +257,96 @@ components:
       - title
       - created_at
       - updated_at
+    ListBrandTemplatesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandTemplate'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
+          example: example_value
+      required:
+      - items
+    BrandTemplateDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          type: object
+          description: Dataset fields available for autofill, keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/DatasetField'
+          example: example_value
+      required:
+      - dataset
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
+    DatasetField:
+      type: object
+      description: A data field in a brand template dataset
+      properties:
+        type:
+          type: string
+          description: The data field type
+          enum:
+          - image
+          - text
+          - chart
+          example: image
+      required:
+      - type
+    BrandTemplateResponse:
+      type: object
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+  parameters:
+    BrandTemplateId:
+      name: brandTemplateId
+      in: path
+      required: true
+      description: The brand template ID
+      schema:
+        type: string
   securitySchemes:
     oauth2:
       type: oauth2

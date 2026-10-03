@@ -193,24 +193,6 @@ paths:
         dispatcher: FALLBACK
 components:
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -223,7 +205,58 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    MoveFolderItemRequest:
+      type: object
+      description: Request body for moving an item to a folder
+      properties:
+        item_id:
+          type: string
+          description: The ID of the item to move
+          example: '500123'
+        item_type:
+          type: string
+          description: The type of item to move
+          enum:
+          - design
+          - folder
+          - image
+          example: design
+      required:
+      - item_id
+      - item_type
+    ListFolderItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderItem'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
+          example: example_value
+      required:
+      - items
     FolderItem:
       type: object
       description: An item within a folder (design, folder, or image)
@@ -290,47 +323,49 @@ components:
       - created_at
       - updated_at
       - owner
-    Folder:
-      type: object
-      description: A Canva folder
-      properties:
-        id:
-          type: string
-          description: The folder ID
-          example: abc123
-        name:
-          type: string
-          description: The folder name
-          example: Example Title
-        created_at:
-          type: integer
-          description: Unix timestamp in seconds when the folder was created
-          example: '2026-01-15T10:30:00Z'
-        updated_at:
-          type: integer
-          description: Unix timestamp in seconds when the folder was last updated
-          example: '2026-01-15T10:30:00Z'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-      required:
-      - id
-      - name
-      - created_at
-      - updated_at
-    ListFolderItemsResponse:
+    FolderResponse:
       type: object
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/FolderItem'
-          example: []
-        continuation:
-          type: string
-          description: Continuation token for the next page of results
-          example: example_value
+        folder:
+          $ref: '#/components/schemas/Folder'
       required:
-      - items
+      - folder
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
     Design:
       type: object
       description: A Canva design
@@ -368,42 +403,23 @@ components:
       - urls
       - created_at
       - updated_at
-    Thumbnail:
+    DesignUrls:
       type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      description: Temporary URLs for accessing a design (expire after 30 days)
       properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
+        edit_url:
           type: string
           format: uri
-          description: Thumbnail URL (expires in 15 minutes)
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
           example: https://www.example.com
       required:
-      - width
-      - height
-      - url
-    Owner:
-      type: object
-      description: The owner of a resource
-      properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
-      required:
-      - user_id
-      - team_id
+      - edit_url
+      - view_url
     ImportStatus:
       type: object
       description: The import status of an asset (deprecated)
@@ -431,6 +447,33 @@ components:
               - file_too_big
               - import_failed
           example: example_value
+    Folder:
+      type: object
+      description: A Canva folder
+      properties:
+        id:
+          type: string
+          description: The folder ID
+          example: abc123
+        name:
+          type: string
+          description: The folder name
+          example: Example Title
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
     Error:
       type: object
       description: An error response
@@ -446,49 +489,6 @@ components:
       required:
       - code
       - message
-    DesignUrls:
-      type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
-      properties:
-        edit_url:
-          type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
-      required:
-      - edit_url
-      - view_url
-    MoveFolderItemRequest:
-      type: object
-      description: Request body for moving an item to a folder
-      properties:
-        item_id:
-          type: string
-          description: The ID of the item to move
-          example: '500123'
-        item_type:
-          type: string
-          description: The type of item to move
-          enum:
-          - design
-          - folder
-          - image
-          example: design
-      required:
-      - item_id
-      - item_type
-    FolderResponse:
-      type: object
-      properties:
-        folder:
-          $ref: '#/components/schemas/Folder'
-      required:
-      - folder
   parameters:
     FolderId:
       name: folderId

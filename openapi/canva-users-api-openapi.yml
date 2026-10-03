@@ -51,13 +51,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    UsersMeResponse:
-      type: object
-      properties:
-        team_user:
-          $ref: '#/components/schemas/TeamUser'
-      required:
-      - team_user
     TeamUser:
       type: object
       description: The authenticated user and their team
@@ -73,6 +66,13 @@ components:
       required:
       - user_id
       - team_id
+    UsersMeResponse:
+      type: object
+      properties:
+        team_user:
+          $ref: '#/components/schemas/TeamUser'
+      required:
+      - team_user
     Error:
       type: object
       description: An error response
@@ -89,14 +89,14 @@ components:
       - code
       - message
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
       content:
         application/json:
           schema:

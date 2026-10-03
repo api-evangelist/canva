@@ -202,18 +202,6 @@ paths:
         dispatcher: FALLBACK
 components:
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -226,63 +214,107 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     TooManyRequests:
       description: Too many requests - rate limit exceeded
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    DesignId:
-      name: designId
-      in: path
-      required: true
-      description: The design ID
-      schema:
-        type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
+    ListDesignsResponse:
       type: object
-      description: An error response
       properties:
-        code:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Design'
+          example: []
+        continuation:
           type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
+          description: Continuation token for the next page of results
           example: example_value
       required:
-      - code
-      - message
-    PresetDesignType:
+      - items
+    DesignType:
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignType'
+      - $ref: '#/components/schemas/CustomDesignType'
+      description: The type and dimensions for a new design
+    CustomDesignType:
       type: object
-      description: A preset design type
+      description: A custom design type with specific dimensions
       properties:
         type:
           type: string
           enum:
-          - preset
-          example: preset
-        name:
-          type: string
-          description: The preset design type name
-          enum:
-          - doc
-          - whiteboard
-          - presentation
-          example: doc
+          - custom
+          example: custom
+        width:
+          type: integer
+          description: Width in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
+        height:
+          type: integer
+          description: Height in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
       required:
       - type
-      - name
-    DesignResponse:
+      - width
+      - height
+    DesignUrls:
       type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
       properties:
-        design:
-          $ref: '#/components/schemas/Design'
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
       required:
-      - design
+      - edit_url
+      - view_url
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
     Design:
       type: object
       description: A Canva design
@@ -320,46 +352,6 @@ components:
       - urls
       - created_at
       - updated_at
-    ListDesignsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Design'
-          example: []
-        continuation:
-          type: string
-          description: Continuation token for the next page of results
-          example: example_value
-      required:
-      - items
-    DesignType:
-      oneOf:
-      - $ref: '#/components/schemas/PresetDesignType'
-      - $ref: '#/components/schemas/CustomDesignType'
-      description: The type and dimensions for a new design
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
     Owner:
       type: object
       description: The owner of a resource
@@ -375,31 +367,33 @@ components:
       required:
       - user_id
       - team_id
-    CustomDesignType:
+    DesignResponse:
       type: object
-      description: A custom design type with specific dimensions
+      properties:
+        design:
+          $ref: '#/components/schemas/Design'
+      required:
+      - design
+    PresetDesignType:
+      type: object
+      description: A preset design type
       properties:
         type:
           type: string
           enum:
-          - custom
-          example: custom
-        width:
-          type: integer
-          description: Width in pixels (40-8000)
-          minimum: 40
-          maximum: 8000
-          example: 10
-        height:
-          type: integer
-          description: Height in pixels (40-8000)
-          minimum: 40
-          maximum: 8000
-          example: 10
+          - preset
+          example: preset
+        name:
+          type: string
+          description: The preset design type name
+          enum:
+          - doc
+          - whiteboard
+          - presentation
+          example: doc
       required:
       - type
-      - width
-      - height
+      - name
     CreateDesignRequest:
       type: object
       description: Request body for creating a new design
@@ -418,23 +412,29 @@ components:
           example: Example Title
       required:
       - design_type
-    DesignUrls:
+    Error:
       type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
+      description: An error response
       properties:
-        edit_url:
+        code:
           type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
+          description: Machine-readable error code
+          example: example_value
+        message:
           type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
+          description: Human-readable error message
+          example: example_value
       required:
-      - edit_url
-      - view_url
+      - code
+      - message
+  parameters:
+    DesignId:
+      name: designId
+      in: path
+      required: true
+      description: The design ID
+      schema:
+        type: string
   securitySchemes:
     oauth2:
       type: oauth2

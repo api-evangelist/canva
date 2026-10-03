@@ -328,46 +328,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ExchangeAccessTokenRequest:
-      discriminator:
-        mapping:
-          authorization_code: '#/components/schemas/ExchangeAuthCodeRequest'
-          refresh_token: '#/components/schemas/ExchangeRefreshTokenRequest'
-        propertyName: grant_type
-      oneOf:
-      - $ref: '#/components/schemas/ExchangeAuthCodeRequest'
-      - $ref: '#/components/schemas/ExchangeRefreshTokenRequest'
-      type: object
-    ExchangeAccessTokenResponse:
-      description: Exchange auth token to access token.
-      properties:
-        access_token:
-          description: The bearer access token to use to authenticate to Canva Connect API endpoints. If requested using a `authorization_code` or `refresh_token`, this allows you to act on behalf of a user.
-          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
-          type: string
-        refresh_token:
-          description: The token that you can use to refresh the access token.
-          example: JABix5nolsk9k8n2r0f8nq1gw4zjo40ht6sb4i573wgdzmkwdmiy6muh897hp0bxyab276wtgqkvtob2mg9aidt5d6rcltcbcgs101
-          type: string
-        token_type:
-          description: The token type returned. This is always `Bearer`.
-          example: Bearer
-          type: string
-        expires_in:
-          description: The expiry time (in seconds) for the access token.
-          example: 14400
-          format: int64
-          type: integer
-        scope:
-          description: The [scopes](https://www.canva.dev/docs/connect/appendix/scopes/) that the token has been granted.
-          example: asset:read design:meta:read design:permission:read folder:read
-          type: string
-      required:
-      - access_token
-      - expires_in
-      - refresh_token
-      - token_type
-      type: object
     IntrospectTokenResponse:
       description: Introspection result of access or refresh tokens
       properties:
@@ -419,30 +379,32 @@ components:
       required:
       - active
       type: object
-    OauthError:
+    IntrospectTokenRequest:
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorCode'
-        error_description:
-          description: A human-readable description of what went wrong.
+        token:
+          description: The token to introspect.
+          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
+          type: string
+        client_id:
+          description: 'Your integration''s unique ID, for authenticating the request.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: OC-FAB12-AbCdEf
+          type: string
+        client_secret:
+          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: cnvcaAbcdefg12345_hijklm6789
           type: string
       required:
-      - error
-      - error_description
-      type: object
-    RevokeTokensResponse:
-      description: The response on a successful token revocation.
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
+      - token
       type: object
     ExchangeRefreshTokenRequest:
       properties:
@@ -486,33 +448,6 @@ components:
       required:
       - grant_type
       - refresh_token
-      type: object
-    IntrospectTokenRequest:
-      properties:
-        token:
-          description: The token to introspect.
-          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
-          type: string
-        client_id:
-          description: 'Your integration''s unique ID, for authenticating the request.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: OC-FAB12-AbCdEf
-          type: string
-        client_secret:
-          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: cnvcaAbcdefg12345_hijklm6789
-          type: string
-      required:
-      - token
       type: object
     ExchangeAuthCodeRequest:
       properties:
@@ -561,6 +496,44 @@ components:
       - code
       - code_verifier
       - grant_type
+      type: object
+    RevokeTokensRequest:
+      description: Supply an access token or refresh token to have its lineage revoked.
+      properties:
+        token:
+          description: The token to revoke.
+          example: agALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
+          type: string
+        client_id:
+          description: 'Your integration''s unique ID, for authenticating the request.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: OC-FAB12-AbCdEf
+          type: string
+        client_secret:
+          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: cnvcaAbcdefg12345_hijklm6789
+          type: string
+      required:
+      - token
+      type: object
+    ExchangeAccessTokenRequest:
+      discriminator:
+        mapping:
+          authorization_code: '#/components/schemas/ExchangeAuthCodeRequest'
+          refresh_token: '#/components/schemas/ExchangeRefreshTokenRequest'
+        propertyName: grant_type
+      oneOf:
+      - $ref: '#/components/schemas/ExchangeAuthCodeRequest'
+      - $ref: '#/components/schemas/ExchangeRefreshTokenRequest'
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -645,80 +618,72 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    RevokeTokensRequest:
-      description: Supply an access token or refresh token to have its lineage revoked.
+    ExchangeAccessTokenResponse:
+      description: Exchange auth token to access token.
       properties:
-        token:
-          description: The token to revoke.
-          example: agALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
+        access_token:
+          description: The bearer access token to use to authenticate to Canva Connect API endpoints. If requested using a `authorization_code` or `refresh_token`, this allows you to act on behalf of a user.
+          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
           type: string
-        client_id:
-          description: 'Your integration''s unique ID, for authenticating the request.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: OC-FAB12-AbCdEf
+        refresh_token:
+          description: The token that you can use to refresh the access token.
+          example: JABix5nolsk9k8n2r0f8nq1gw4zjo40ht6sb4i573wgdzmkwdmiy6muh897hp0bxyab276wtgqkvtob2mg9aidt5d6rcltcbcgs101
           type: string
-        client_secret:
-          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: cnvcaAbcdefg12345_hijklm6789
+        token_type:
+          description: The token type returned. This is always `Bearer`.
+          example: Bearer
+          type: string
+        expires_in:
+          description: The expiry time (in seconds) for the access token.
+          example: 14400
+          format: int64
+          type: integer
+        scope:
+          description: The [scopes](https://www.canva.dev/docs/connect/appendix/scopes/) that the token has been granted.
+          example: asset:read design:meta:read design:permission:read folder:read
           type: string
       required:
-      - token
+      - access_token
+      - expires_in
+      - refresh_token
+      - token_type
+      type: object
+    OauthError:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorCode'
+        error_description:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - error
+      - error_description
+      type: object
+    RevokeTokensResponse:
+      description: The response on a successful token revocation.
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
       type: object
   examples:
-    TokenExchangeUnauthorizedUser:
-      summary: The user is not authorized.
-      value:
-        code: unauthorized_user
-        message: '{description}'
     TooManyTokenExchangeRequests:
       summary: Too many token exchange requests.
       value:
         code: too_many_requests
         message: Too many {grantType} requests
-    ClientSecretInvalid:
-      summary: Client secret is invalid (Unauthorized)
+    InvalidRequestError:
+      summary: The request is invalid.
       value:
-        code: invalid_access_token
-        message: Client secret is invalid for {clientAppId}
-    TokenExchangeInvalidClient:
-      summary: The client credentials are invalid.
-      value:
-        code: invalid_client
-        message: '{description}'
-    TokenExchangeUnauthorizedClient:
-      summary: The client is not authorized to use this grant type.
-      value:
-        code: unauthorized_client
-        message: '{description}'
-    ClientIdBodyParamBlank:
-      summary: client_id body parameter is blank or empty
-      value:
-        code: invalid_field
-        message: client_id body param must not be blank or empty
-    ClientIdBodyParamMultipleValues:
-      summary: client_id body parameter has multiple values
-      value:
-        code: invalid_field
-        message: client_id body param must have a single value
-    TokenExchangeInvalidScope:
-      summary: The requested scope is invalid, unknown, or malformed.
-      value:
-        code: invalid_scope
-        message: '{description}'
-    TokenExchangeInvalidGrant:
-      summary: The provided authorization grant is invalid, expired, or revoked.
-      value:
-        code: invalid_grant
-        message: '{description}'
+        code: invalid_request
+        message: Invalid request
     ClientIdBasicAuthParamBlank:
       summary: client_id basic auth parameter is blank or empty
       value:
@@ -734,46 +699,81 @@ components:
       value:
         code: invalid_field
         message: client_secret body param must have a single value
-    TokenExchangeInvalidRequest:
-      summary: The token exchange request is invalid.
+    TokenExchangeInvalidGrant:
+      summary: The provided authorization grant is invalid, expired, or revoked.
       value:
-        code: invalid_request
+        code: invalid_grant
         message: '{description}'
-    AccessTokenMissing:
-      summary: Access token is missing
+    ClientSecretInvalid:
+      summary: Client secret is invalid (Unauthorized)
       value:
         code: invalid_access_token
-        message: Access token is missing
+        message: Client secret is invalid for {clientAppId}
     BadRequestBodyTooLarge:
       summary: Request body too large
       value:
         code: bad_request_body
         message: Request body too large
-    TokenExchangeUnsupportedGrantType:
-      summary: The grant type is not supported.
+    AccessTokenMissing:
+      summary: Access token is missing
       value:
-        code: unsupported_grant_type
-        message: '{description}'
+        code: invalid_access_token
+        message: Access token is missing
     InvalidTokenError:
       summary: The token supplied is neither an access token nor a refresh token.
       value:
         code: bad_request_params
         message: Token is neither an access or refresh token
+    TokenExchangeUnauthorizedUser:
+      summary: The user is not authorized.
+      value:
+        code: unauthorized_user
+        message: '{description}'
+    ClientIdBodyParamBlank:
+      summary: client_id body parameter is blank or empty
+      value:
+        code: invalid_field
+        message: client_id body param must not be blank or empty
     InvalidRefreshToken:
       summary: The refresh token is invalid.
       value:
         code: invalid_grant
         message: Invalid refresh token
-    InvalidRequestError:
-      summary: The request is invalid.
+    TokenExchangeUnauthorizedClient:
+      summary: The client is not authorized to use this grant type.
       value:
-        code: invalid_request
-        message: Invalid request
+        code: unauthorized_client
+        message: '{description}'
+    TokenExchangeUnsupportedGrantType:
+      summary: The grant type is not supported.
+      value:
+        code: unsupported_grant_type
+        message: '{description}'
+    ClientIdBodyParamMultipleValues:
+      summary: client_id body parameter has multiple values
+      value:
+        code: invalid_field
+        message: client_id body param must have a single value
     UnauthorizedClientError:
       summary: The client must be authenticated using basic auth or body parameters.
       value:
         code: unauthorized_client
         message: The client must either be authenticated using basic auth or body parameters.
+    TokenExchangeInvalidScope:
+      summary: The requested scope is invalid, unknown, or malformed.
+      value:
+        code: invalid_scope
+        message: '{description}'
+    TokenExchangeInvalidClient:
+      summary: The client credentials are invalid.
+      value:
+        code: invalid_client
+        message: '{description}'
+    TokenExchangeInvalidRequest:
+      summary: The token exchange request is invalid.
+      value:
+        code: invalid_request
+        message: '{description}'
   securitySchemes:
     basicAuth:
       scheme: basic
