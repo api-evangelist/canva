@@ -330,47 +330,104 @@ paths:
       x-summary-source: derived
 components:
   examples:
+    SvgExportUnavailableError:
+      summary: SVG export is currently unavailable.
+      value:
+        code: feature_not_available
+        message: SVG Export is currently unavailable
     ClientThrottleError:
       summary: Too many requests for client.
       value:
         code: too_many_requests
         message: Too many export requests for client
+    DesignThrottleError:
+      summary: Too many requests for design.
+      value:
+        code: too_many_requests
+        message: Too many export requests for design
+    FailedExportJobExample:
+      summary: Failed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: failed
+          error:
+            code: license_required
+            message: User doesn't have the required license to export in PRO quality.
+    PrintPartnerUnsupportedDesignError:
+      summary: Print partner export not supported for this design.
+      value:
+        code: bad_request_body
+        message: Print partner export not supported for this design
+    ExportJobResultPermissionDeniedError:
+      summary: Not allowed to access export job result.
+      value:
+        code: permission_denied
+        message: Not allowed to access export job result
+    ExportInvalidDesignIdError:
+      summary: Request design ID does not match expected format.
+      value:
+        code: invalid_request
+        message: '{designId} does not match expected format for designId'
+    UserDailyThrottleError:
+      summary: Too many daily requests for user.
+      value:
+        code: too_many_requests
+        message: Too many daily export requests for user
+    ExportDesignNotFoundError:
+      summary: Design not found.
+      value:
+        code: design_not_found
+        message: Design with id '{designId}' not found
+    PrintPartnerUnsupportedDesignTypeError:
+      summary: Print partner export not supported for this design type.
+      value:
+        code: bad_request_body
+        message: Print partner export not supported for this design type
+    SuccessExportJobExample:
+      summary: Successfully completed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: success
+          urls:
+          - https://export-download.canva.com/...
+    ResourceUnavailableError:
+      summary: One or more of the resources in the design did not upload properly.
+      value:
+        code: permission_denied
+        message: One or more of the resources in the design did not upload properly
+    UnsupportedFormatError:
+      summary: Export format not supported for requested page(s).
+      value:
+        code: bad_request_body
+        message: '{formatType} export not supported for requested page(s) [{pageNumbers}]'
+    ExportScaleFactorOutsideRangeError:
+      summary: Requested dimensions exceed expected bounds.
+      value:
+        code: bad_request_body
+        message: Requested dimensions exceed expected bounds
+    UserThrottleError:
+      summary: Too many requests for user.
+      value:
+        code: too_many_requests
+        message: Too many export requests for user
+    ClientDailyThrottleError:
+      summary: Too many daily requests for client.
+      value:
+        code: too_many_requests
+        message: Too many daily export requests for client
+    ExportJobPermissionDeniedError:
+      summary: Not allowed to access export job.
+      value:
+        code: permission_denied
+        message: Not allowed to access export job
     InProgressExportJobExample:
       summary: In progress job
       value:
         job:
           id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
           status: in_progress
-    DesignThrottleError:
-      summary: Too many requests for design.
-      value:
-        code: too_many_requests
-        message: Too many export requests for design
-    SvgExportUnavailableError:
-      summary: SVG export is currently unavailable.
-      value:
-        code: feature_not_available
-        message: SVG Export is currently unavailable
-    ExportInvalidDesignIdError:
-      summary: Request design ID does not match expected format.
-      value:
-        code: invalid_request
-        message: '{designId} does not match expected format for designId'
-    PrintPartnerUnsupportedDesignTypeError:
-      summary: Print partner export not supported for this design type.
-      value:
-        code: bad_request_body
-        message: Print partner export not supported for this design type
-    ExportDesignNotFoundError:
-      summary: Design not found.
-      value:
-        code: design_not_found
-        message: Design with id '{designId}' not found
-    ExportJobExpiredError:
-      summary: Export job result has expired.
-      value:
-        code: not_found
-        message: export job result has expired
     LicenseRequiredError:
       summary: User doesn't have the required license to export in PRO quality.
       value:
@@ -381,93 +438,36 @@ components:
       value:
         code: bad_request_params
         message: Users on the Canva Free plan can not export PNGs with transparent background.
-    ExportJobPermissionDeniedError:
-      summary: Not allowed to access export job.
-      value:
-        code: permission_denied
-        message: Not allowed to access export job
-    UnsupportedFormatError:
-      summary: Export format not supported for requested page(s).
-      value:
-        code: bad_request_body
-        message: '{formatType} export not supported for requested page(s) [{pageNumbers}]'
-    UserThrottleError:
-      summary: Too many requests for user.
-      value:
-        code: too_many_requests
-        message: Too many export requests for user
     UnsupportedDesignType:
       summary: Export not supported for this design type.
       value:
         code: bad_request_body
         message: '{formatType} export not supported for this design type'
-    SuccessExportJobExample:
-      summary: Successfully completed job
-      value:
-        job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: success
-          urls:
-          - https://export-download.canva.com/...
-    UserDailyThrottleError:
-      summary: Too many daily requests for user.
-      value:
-        code: too_many_requests
-        message: Too many daily export requests for user
-    PrintPartnerUnsupportedDesignError:
-      summary: Print partner export not supported for this design.
-      value:
-        code: bad_request_body
-        message: Print partner export not supported for this design
-    PrintPartnerExportForbidden:
-      summary: Client does not have permission to create a Print Partner export.
-      value:
-        code: permission_denied
-        message: Client does not have permission to create a Print Partner export
-    ExportScaleFactorOutsideRangeError:
-      summary: Requested dimensions exceed expected bounds.
-      value:
-        code: bad_request_body
-        message: Requested dimensions exceed expected bounds
-    ClientDailyThrottleError:
-      summary: Too many daily requests for client.
-      value:
-        code: too_many_requests
-        message: Too many daily export requests for client
-    ExportJobResultPermissionDeniedError:
-      summary: Not allowed to access export job result.
-      value:
-        code: permission_denied
-        message: Not allowed to access export job result
-    ResourceUnavailableError:
-      summary: One or more of the resources in the design did not upload properly.
-      value:
-        code: permission_denied
-        message: One or more of the resources in the design did not upload properly
     InvalidPageRangeError:
       summary: Requested invalid page range for design.
       value:
         code: bad_request_body
         message: Requested page(s) [{badPageNumbers}] of a design with {maxPageNumber} page(s)
-    FailedExportJobExample:
-      summary: Failed job
-      value:
-        job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: failed
-          error:
-            code: license_required
-            message: User doesn't have the required license to export in PRO quality.
-    EmbeddedMediaError:
-      summary: The design contains embedded media that no longer work.
-      value:
-        code: permission_denied
-        message: The design contains embedded media that no longer work
     DesignPermissionDeniedError:
       summary: Not allowed to access design.
       value:
         code: permission_denied
         message: Not allowed to access design with id {designId}
+    EmbeddedMediaError:
+      summary: The design contains embedded media that no longer work.
+      value:
+        code: permission_denied
+        message: The design contains embedded media that no longer work
+    ExportJobExpiredError:
+      summary: Export job result has expired.
+      value:
+        code: not_found
+        message: export job result has expired
+    PrintPartnerExportForbidden:
+      summary: Client does not have permission to create a Print Partner export.
+      value:
+        code: permission_denied
+        message: Client does not have permission to create a Print Partner export
   schemas:
     ExportFormat:
       description: Details about the desired export format.
@@ -494,53 +494,34 @@ components:
       - $ref: '#/components/schemas/HtmlStandaloneExportFormat'
       - $ref: '#/components/schemas/CsvExportFormat'
       type: object
-    ExportQuality:
-      default: regular
-      description: Specifies the export quality of the design.
-      enum:
-      - regular
-      - pro
-      type: string
-      x-enum-descriptions:
-      - Regular quality export.
-      - 'Premium quality export.
+    CreatePrintPartnerDesignExportJobRequest:
+      description: 'Body parameters for starting a Print Partner export job for a design.
 
-
-        NOTE: A `pro` export might fail if the design contains [premium elements](https://www.canva.com/help/premium-elements/) and the calling user either hasn''t purchased the elements or isn''t on a Canva plan (such as Canva Pro) that has premium features.'
-    CreateDesignExportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/ExportJob'
-      required:
-      - job
-      type: object
-    DesignExportStatus:
-      description: 'The export status of the job. A newly created job will be `in_progress` and will eventually
-
-        become `success` or `failed`.'
-      enum:
-      - failed
-      - in_progress
-      - success
-      type: string
-    CreatePrintPartnerDesignExportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/ExportJob'
-      required:
-      - job
-      type: object
-    PptxExportFormat:
-      description: Export the design as a PPTX.
-      properties:
-        type:
-          enum:
-          - pptx
-          type: string
+        It must include a design ID. Canva Docs are not supported for export.'
+      example:
+        design_id: DAVZr1z5464
+        format:
+          type: pdf
         pages:
-          description: 'To specify which pages to export in a multi-page design, provide the page numbers as
+        - 2
+        - 3
+        - 4
+        dimensions:
+          width: 200
+          height: 300
+          units: px
+      properties:
+        design_id:
+          description: The design ID.
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/PrintPartnerExportDimensions'
+        format:
+          $ref: '#/components/schemas/PrintPartnerExportFormat'
+        pages:
+          description: 'To specify which pages to export in a multi-page design, provide the page
 
-            an array. The first page in a design is page `1`.
+            numbers as an array. The first page in a design is page `1`.
 
             If `pages` isn''t specified, all the pages are exported.'
           example:
@@ -553,7 +534,97 @@ components:
             type: integer
           type: array
       required:
+      - design_id
+      - format
+      type: object
+    CreateDesignExportJobRequest:
+      description: 'Body parameters for starting an export job for a design.
+
+        It must include a design ID, and one of the supported export formats.'
+      example:
+        design_id: DAVZr1z5464
+        format:
+          type: pdf
+          size: a4
+          pages:
+          - 2
+          - 3
+          - 4
+      properties:
+        design_id:
+          description: The design ID.
+          type: string
+        format:
+          $ref: '#/components/schemas/ExportFormat'
+      required:
+      - design_id
+      - format
+      type: object
+    HtmlStandaloneExportFormat:
+      description: Export the email design as a standalone HTML file with hosted assets.
+      properties:
+        type:
+          enum:
+          - html_standalone
+          type: string
+        pages:
+          description: 'The pages of the design to export. Currently only a single page can be exported. If not provided,
+
+            the first page of the design is used.'
+          example:
+          - 1
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          maxItems: 1
+          minItems: 1
+          type: array
+      required:
       - type
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    PrintPartnerExportDimensions:
+      description: 'Dimensions of the export in the specified units. The design dimensions must be
+
+        within a scale factor of 0.3 and 3 of the requested export dimensions.'
+      properties:
+        width:
+          description: 'The width of the exported image. Note the following behavior:
+
+
+            - If no height or width is specified, the image is exported using the dimensions of the design.
+
+            - If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
+
+            - If both the height and width are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
+          format: double
+          minimum: 1
+          type: number
+        height:
+          description: 'The height of the exported image.  Note the following behavior:
+
+
+            - If no height or width is specified, the image is exported using the dimensions of the design.
+
+            - If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
+
+            - If both the height and width are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
+          format: double
+          minimum: 1
+          type: number
+        units:
+          $ref: '#/components/schemas/PrintPartnerExportDimensionsUnits'
       type: object
     GifExportFormat:
       description: 'Export the design as a GIF. Height or width (or both) may be specified, otherwise the file
@@ -614,115 +685,12 @@ components:
       required:
       - type
       type: object
-    ExportPageSize:
-      default: a4
-      description: The paper size of the export PDF file. The `size` attribute is only supported for Documents (Canva Docs).
-      enum:
-      - a4
-      - a3
-      - letter
-      - legal
-      example: a4
-      type: string
-    PrintPartnerExportFormat:
-      description: Details about the desired export format.
-      discriminator:
-        mapping:
-          pdf: '#/components/schemas/PrintPartnerPdfExportFormat'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/PrintPartnerPdfExportFormat'
-      type: object
-    PrintPartnerExportDimensionsUnits:
-      default: px
-      description: The units of the dimensions. If no units are specified, pixels are used.
-      enum:
-      - px
-      - in
-      - cm
-      - mm
-      type: string
-    Mp4ExportQuality:
-      description: 'The orientation and resolution of the exported video. Orientation is either `horizontal` or
-
-        `vertical`, and resolution is one of `480p`, `720p`, `1080p` or `4k`.'
-      enum:
-      - horizontal_480p
-      - horizontal_720p
-      - horizontal_1080p
-      - horizontal_4k
-      - vertical_480p
-      - vertical_720p
-      - vertical_1080p
-      - vertical_4k
-      type: string
-    JpgExportFormat:
-      description: 'Export the design as a JPEG. Compression quality must be provided. Height or width (or both)
-
-        may be specified, otherwise the file will be exported at it''s default size.
-
-
-        If the user is on the Canva Free plan, the export height and width for a fixed-dimension design can''t be upscaled by more than a factor of `1.125`.'
+    CreatePrintPartnerDesignExportJobResponse:
       properties:
-        type:
-          enum:
-          - jpg
-          type: string
-        export_quality:
-          $ref: '#/components/schemas/ExportQuality'
-        quality:
-          description: For the `jpg` type, the `quality` of the exported JPEG determines how compressed the exported file should be. A _low_ `quality` value will create a file with a smaller file size, but the resulting file will have pixelated artifacts when compared to a file created with a _high_ `quality` value.
-          example: 80
-          format: int32
-          maximum: 100
-          minimum: 1
-          type: integer
-        height:
-          description: 'Specify the height in pixels of the exported image. Note the following behavior:
-
-
-            - If no height or width is specified, the image is exported using the dimensions of the design.
-
-            - If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
-
-            - If both the height and width are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
-          example: 400
-          format: int32
-          maximum: 25000
-          minimum: 40
-          type: integer
-        width:
-          description: 'Specify the width in pixels of the exported image. Note the following behavior:
-
-
-            - If no width or height is specified, the image is exported using the dimensions of the design.
-
-            - If only one of width or height is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
-
-            - If both the width and height are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
-          example: 400
-          format: int32
-          maximum: 25000
-          minimum: 40
-          type: integer
-        pages:
-          description: 'To specify which pages to export in a multi-page design, provide the page numbers as
-
-            an array. The first page in a design is page `1`.
-
-            If `pages` isn''t specified, all the pages are exported.'
-          example:
-          - 2
-          - 3
-          - 4
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          type: array
+        job:
+          $ref: '#/components/schemas/ExportJob'
       required:
-      - quality
-      - type
+      - job
       type: object
     PngExportFormat:
       description: 'Export the design as a PNG. Height or width (or both) may be specified, otherwise
@@ -791,58 +759,6 @@ components:
 
             When `false` (default), each page is exported as a separate image.'
           type: boolean
-        pages:
-          description: 'To specify which pages to export in a multi-page design, provide the page numbers as
-
-            an array. The first page in a design is page `1`.
-
-            If `pages` isn''t specified, all the pages are exported.'
-          example:
-          - 2
-          - 3
-          - 4
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          type: array
-      required:
-      - type
-      type: object
-    HtmlBundleExportFormat:
-      description: Export the email design as an HTML bundle. An HTML bundle is a zip file that contains an HTML file and the associated assets.
-      properties:
-        type:
-          enum:
-          - html_bundle
-          type: string
-        pages:
-          description: 'The pages of the design to export. Currently only a single page can be exported. If not provided,
-
-            the first page of the design is used.'
-          example:
-          - 1
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          maxItems: 1
-          minItems: 1
-          type: array
-      required:
-      - type
-      type: object
-    PdfExportFormat:
-      description: Export the design as a PDF. Providing a paper size is optional.
-      properties:
-        type:
-          enum:
-          - pdf
-          type: string
-        export_quality:
-          $ref: '#/components/schemas/ExportQuality'
-        size:
-          $ref: '#/components/schemas/ExportPageSize'
         pages:
           description: 'To specify which pages to export in a multi-page design, provide the page numbers as
 
@@ -944,60 +860,39 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    CreateDesignExportJobRequest:
-      description: 'Body parameters for starting an export job for a design.
+    ExportQuality:
+      default: regular
+      description: Specifies the export quality of the design.
+      enum:
+      - regular
+      - pro
+      type: string
+      x-enum-descriptions:
+      - Regular quality export.
+      - 'Premium quality export.
 
-        It must include a design ID, and one of the supported export formats.'
-      example:
-        design_id: DAVZr1z5464
-        format:
-          type: pdf
-          size: a4
-          pages:
-          - 2
-          - 3
-          - 4
-      properties:
-        design_id:
-          description: The design ID.
-          type: string
-        format:
-          $ref: '#/components/schemas/ExportFormat'
-      required:
-      - design_id
-      - format
-      type: object
-    PrintPartnerPdfExportFormat:
-      description: Export the design as a Print-quality PDF.
-      properties:
-        type:
-          enum:
-          - pdf
-          type: string
-        bleed:
-          default: 3000
-          description: The size of the bleed that should be added to the design. The units of the bleed must be microns. This should match the bleed value used when creating the design with the [Create print partner design API](https://www.canva.dev/docs/connect/api-reference/print-partner/create-print-partner-design/). Use 0 for no bleed. If bleed is not specified, a default of 3000 microns is used.
-          format: int32
-          maximum: 150000
-          minimum: 0
-          type: integer
-        crop_marks:
-          default: false
-          description: Whether crop marks should be added to the image.
-          type: boolean
-        cmyk:
-          default: false
-          description: Whether the PDF color space should be converted to CMYK.
-          type: boolean
-        pdfx:
-          default: false
-          description: 'Whether the PDF standard should be updated to PDF/X, a printer friendly
 
-            standard.'
-          type: boolean
-      required:
-      - type
-      type: object
+        NOTE: A `pro` export might fail if the design contains [premium elements](https://www.canva.com/help/premium-elements/) and the calling user either hasn''t purchased the elements or isn''t on a Canva plan (such as Canva Pro) that has premium features.'
+    ExportErrorCode:
+      description: If the export failed, this specifies the reason why it failed.
+      enum:
+      - license_required
+      - approval_required
+      - internal_failure
+      type: string
+      x-enum-descriptions:
+      - The design contains [premium elements](https://www.canva.com/help/premium-elements/) that haven't been purchased. You can either buy the elements or upgrade to a Canva plan (such as Canva Pro) that has premium features, then try again. Alternatively, you can set `export_quality` to `regular` to export your document in regular quality.
+      - The design requires [reviewer approval](https://www.canva.com/en_au/help/design-approval/) before it can be exported.
+      - The service encountered an error when exporting your design.
+    DesignExportStatus:
+      description: 'The export status of the job. A newly created job will be `in_progress` and will eventually
+
+        become `success` or `failed`.'
+      enum:
+      - failed
+      - in_progress
+      - success
+      type: string
     ExportError:
       description: If the export fails, this object provides details about the error.
       properties:
@@ -1010,17 +905,149 @@ components:
       - code
       - message
       type: object
-    Mp4ExportFormat:
-      description: Export the design as an MP4. You must specify the quality of the exported video.
+    PrintPartnerExportDimensionsUnits:
+      default: px
+      description: The units of the dimensions. If no units are specified, pixels are used.
+      enum:
+      - px
+      - in
+      - cm
+      - mm
+      type: string
+    CsvExportFormat:
+      description: 'Export the design as a CSV file. CSV export is only available for designs that contain
+
+        tabular data, such as Canva Sheets.'
       properties:
         type:
           enum:
-          - mp4
+          - csv
+          type: string
+        pages:
+          description: 'To specify which pages to export in a multi-page design, provide the page numbers as
+
+            an array. The first page in a design is page `1`.
+
+            If `pages` isn''t specified, all the pages are exported.'
+          example:
+          - 2
+          - 3
+          - 4
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          type: array
+      required:
+      - type
+      type: object
+    PrintPartnerExportFormat:
+      description: Details about the desired export format.
+      discriminator:
+        mapping:
+          pdf: '#/components/schemas/PrintPartnerPdfExportFormat'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/PrintPartnerPdfExportFormat'
+      type: object
+    PptxExportFormat:
+      description: Export the design as a PPTX.
+      properties:
+        type:
+          enum:
+          - pptx
+          type: string
+        pages:
+          description: 'To specify which pages to export in a multi-page design, provide the page numbers as
+
+            an array. The first page in a design is page `1`.
+
+            If `pages` isn''t specified, all the pages are exported.'
+          example:
+          - 2
+          - 3
+          - 4
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          type: array
+      required:
+      - type
+      type: object
+    CreateDesignExportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/ExportJob'
+      required:
+      - job
+      type: object
+    GetDesignExportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/ExportJob'
+      required:
+      - job
+      type: object
+    ExportPageSize:
+      default: a4
+      description: The paper size of the export PDF file. The `size` attribute is only supported for Documents (Canva Docs).
+      enum:
+      - a4
+      - a3
+      - letter
+      - legal
+      example: a4
+      type: string
+    JpgExportFormat:
+      description: 'Export the design as a JPEG. Compression quality must be provided. Height or width (or both)
+
+        may be specified, otherwise the file will be exported at it''s default size.
+
+
+        If the user is on the Canva Free plan, the export height and width for a fixed-dimension design can''t be upscaled by more than a factor of `1.125`.'
+      properties:
+        type:
+          enum:
+          - jpg
           type: string
         export_quality:
           $ref: '#/components/schemas/ExportQuality'
         quality:
-          $ref: '#/components/schemas/Mp4ExportQuality'
+          description: For the `jpg` type, the `quality` of the exported JPEG determines how compressed the exported file should be. A _low_ `quality` value will create a file with a smaller file size, but the resulting file will have pixelated artifacts when compared to a file created with a _high_ `quality` value.
+          example: 80
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        height:
+          description: 'Specify the height in pixels of the exported image. Note the following behavior:
+
+
+            - If no height or width is specified, the image is exported using the dimensions of the design.
+
+            - If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
+
+            - If both the height and width are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
+          example: 400
+          format: int32
+          maximum: 25000
+          minimum: 40
+          type: integer
+        width:
+          description: 'Specify the width in pixels of the exported image. Note the following behavior:
+
+
+            - If no width or height is specified, the image is exported using the dimensions of the design.
+
+            - If only one of width or height is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
+
+            - If both the width and height are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
+          example: 400
+          format: int32
+          maximum: 25000
+          minimum: 40
+          type: integer
         pages:
           description: 'To specify which pages to export in a multi-page design, provide the page numbers as
 
@@ -1065,38 +1092,17 @@ components:
       - id
       - status
       type: object
-    HtmlStandaloneExportFormat:
-      description: Export the email design as a standalone HTML file with hosted assets.
+    PdfExportFormat:
+      description: Export the design as a PDF. Providing a paper size is optional.
       properties:
         type:
           enum:
-          - html_standalone
+          - pdf
           type: string
-        pages:
-          description: 'The pages of the design to export. Currently only a single page can be exported. If not provided,
-
-            the first page of the design is used.'
-          example:
-          - 1
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          maxItems: 1
-          minItems: 1
-          type: array
-      required:
-      - type
-      type: object
-    CsvExportFormat:
-      description: 'Export the design as a CSV file. CSV export is only available for designs that contain
-
-        tabular data, such as Canva Sheets.'
-      properties:
-        type:
-          enum:
-          - csv
-          type: string
+        export_quality:
+          $ref: '#/components/schemas/ExportQuality'
+        size:
+          $ref: '#/components/schemas/ExportPageSize'
         pages:
           description: 'To specify which pages to export in a multi-page design, provide the page numbers as
 
@@ -1115,34 +1121,89 @@ components:
       required:
       - type
       type: object
-    CreatePrintPartnerDesignExportJobRequest:
-      description: 'Body parameters for starting a Print Partner export job for a design.
+    Mp4ExportQuality:
+      description: 'The orientation and resolution of the exported video. Orientation is either `horizontal` or
 
-        It must include a design ID. Canva Docs are not supported for export.'
-      example:
-        design_id: DAVZr1z5464
-        format:
-          type: pdf
-        pages:
-        - 2
-        - 3
-        - 4
-        dimensions:
-          width: 200
-          height: 300
-          units: px
+        `vertical`, and resolution is one of `480p`, `720p`, `1080p` or `4k`.'
+      enum:
+      - horizontal_480p
+      - horizontal_720p
+      - horizontal_1080p
+      - horizontal_4k
+      - vertical_480p
+      - vertical_720p
+      - vertical_1080p
+      - vertical_4k
+      type: string
+    PrintPartnerPdfExportFormat:
+      description: Export the design as a Print-quality PDF.
       properties:
-        design_id:
-          description: The design ID.
+        type:
+          enum:
+          - pdf
           type: string
-        dimensions:
-          $ref: '#/components/schemas/PrintPartnerExportDimensions'
-        format:
-          $ref: '#/components/schemas/PrintPartnerExportFormat'
-        pages:
-          description: 'To specify which pages to export in a multi-page design, provide the page
+        bleed:
+          default: 3000
+          description: The size of the bleed that should be added to the design. The units of the bleed must be microns. This should match the bleed value used when creating the design with the [Create print partner design API](https://www.canva.dev/docs/connect/api-reference/print-partner/create-print-partner-design/). Use 0 for no bleed. If bleed is not specified, a default of 3000 microns is used.
+          format: int32
+          maximum: 150000
+          minimum: 0
+          type: integer
+        crop_marks:
+          default: false
+          description: Whether crop marks should be added to the image.
+          type: boolean
+        cmyk:
+          default: false
+          description: Whether the PDF color space should be converted to CMYK.
+          type: boolean
+        pdfx:
+          default: false
+          description: 'Whether the PDF standard should be updated to PDF/X, a printer friendly
 
-            numbers as an array. The first page in a design is page `1`.
+            standard.'
+          type: boolean
+      required:
+      - type
+      type: object
+    HtmlBundleExportFormat:
+      description: Export the email design as an HTML bundle. An HTML bundle is a zip file that contains an HTML file and the associated assets.
+      properties:
+        type:
+          enum:
+          - html_bundle
+          type: string
+        pages:
+          description: 'The pages of the design to export. Currently only a single page can be exported. If not provided,
+
+            the first page of the design is used.'
+          example:
+          - 1
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          maxItems: 1
+          minItems: 1
+          type: array
+      required:
+      - type
+      type: object
+    Mp4ExportFormat:
+      description: Export the design as an MP4. You must specify the quality of the exported video.
+      properties:
+        type:
+          enum:
+          - mp4
+          type: string
+        export_quality:
+          $ref: '#/components/schemas/ExportQuality'
+        quality:
+          $ref: '#/components/schemas/Mp4ExportQuality'
+        pages:
+          description: 'To specify which pages to export in a multi-page design, provide the page numbers as
+
+            an array. The first page in a design is page `1`.
 
             If `pages` isn''t specified, all the pages are exported.'
           example:
@@ -1155,69 +1216,8 @@ components:
             type: integer
           type: array
       required:
-      - design_id
-      - format
-      type: object
-    PrintPartnerExportDimensions:
-      description: 'Dimensions of the export in the specified units. The design dimensions must be
-
-        within a scale factor of 0.3 and 3 of the requested export dimensions.'
-      properties:
-        width:
-          description: 'The width of the exported image. Note the following behavior:
-
-
-            - If no height or width is specified, the image is exported using the dimensions of the design.
-
-            - If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
-
-            - If both the height and width are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
-          format: double
-          minimum: 1
-          type: number
-        height:
-          description: 'The height of the exported image.  Note the following behavior:
-
-
-            - If no height or width is specified, the image is exported using the dimensions of the design.
-
-            - If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design''s aspect ratio.
-
-            - If both the height and width are specified, but the values don''t match the design''s aspect ratio, the export defaults to the larger dimension.'
-          format: double
-          minimum: 1
-          type: number
-        units:
-          $ref: '#/components/schemas/PrintPartnerExportDimensionsUnits'
-      type: object
-    GetDesignExportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/ExportJob'
-      required:
-      - job
-      type: object
-    ExportErrorCode:
-      description: If the export failed, this specifies the reason why it failed.
-      enum:
-      - license_required
-      - approval_required
-      - internal_failure
-      type: string
-      x-enum-descriptions:
-      - The design contains [premium elements](https://www.canva.com/help/premium-elements/) that haven't been purchased. You can either buy the elements or upgrade to a Canva plan (such as Canva Pro) that has premium features, then try again. Alternatively, you can set `export_quality` to `regular` to export your document in regular quality.
-      - The design requires [reviewer approval](https://www.canva.com/en_au/help/design-approval/) before it can be exported.
-      - The service encountered an error when exporting your design.
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
+      - quality
+      - type
       type: object
   securitySchemes:
     basicAuth:

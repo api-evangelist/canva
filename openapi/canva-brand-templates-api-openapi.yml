@@ -195,20 +195,14 @@ paths:
         dispatcher: FALLBACK
 components:
   responses:
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     TooManyRequests:
       description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
       content:
         application/json:
           schema:
@@ -219,7 +213,42 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    DatasetField:
+      type: object
+      description: A data field in a brand template dataset
+      properties:
+        type:
+          type: string
+          description: The data field type
+          enum:
+          - image
+          - text
+          - chart
+          example: image
+      required:
+      - type
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
     BrandTemplate:
       type: object
       description: A Canva brand template (requires Enterprise)
@@ -257,6 +286,27 @@ components:
       - title
       - created_at
       - updated_at
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
     ListBrandTemplatesResponse:
       type: object
       properties:
@@ -282,41 +332,6 @@ components:
           example: example_value
       required:
       - dataset
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
-    DatasetField:
-      type: object
-      description: A data field in a brand template dataset
-      properties:
-        type:
-          type: string
-          description: The data field type
-          enum:
-          - image
-          - text
-          - chart
-          example: image
-      required:
-      - type
     BrandTemplateResponse:
       type: object
       properties:
@@ -324,21 +339,6 @@ components:
           $ref: '#/components/schemas/BrandTemplate'
       required:
       - brand_template
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
   parameters:
     BrandTemplateId:
       name: brandTemplateId

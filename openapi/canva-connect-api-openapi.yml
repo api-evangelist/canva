@@ -67,76 +67,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    GetSigningPublicKeysResponse:
-      properties:
-        keys:
-          description: 'A Json Web Key Set (JWKS) with public keys used for signing webhooks. You can use this JWKS
-
-            to verify that a webhook was sent from Canva.'
-          example:
-          - kid: a418dc7d-ecc5-5c4b-85ce-e1104a8addbe
-            kty: OKP
-            crv: Ed25519
-            x: aIQtqd0nDfB-ug0DrzZbwTum-1ITdXvKxGFak_1VB2j
-          - kid: c8de5bec1-1b88-4ddaae04acc-ce415-5d7
-            kty: OKP
-            crv: Ed25519
-            x: m2d1FT-gfBXxIzKwdQVTra0D-aBq_ubZ1jI0GuvkDtn
-          items:
-            $ref: '#/components/schemas/EdDsaJwk'
-          type: array
-      required:
-      - keys
-      type: object
-    EdDsaJwk:
-      description: 'A JSON Web Key Set (JWKS) using the Edwards-curve Digital Signature Algorithm (EdDSA), as
-
-        described in [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#appendix-A).'
-      properties:
-        kid:
-          description: 'The `kid` (key ID) is a unique identifier for a public key. When the keys used
-
-            to sign webhooks are rotated, you can use this ID to select the correct key
-
-            within a JWK Set during the key rollover. The `kid` value is case-sensitive.'
-          type: string
-        kty:
-          description: 'The `kty` (key type) identifies the cryptographic algorithm family used with
-
-            the key, such as "RSA" or "EC". Only Octet Key Pairs
-
-            (`OKPs`) are supported.
-
-            The `kty` value is case-sensitive. For more information on the `kty` property
-
-            and OKPs, see [RFC-8037 — "kty" (Key Type)
-
-            Parameter](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).'
-          type: string
-        crv:
-          description: 'The `crv` (curve) property identifies the curve used for elliptical curve
-
-            encryptions. Only "Ed25519" is supported. For more information on the `crv`
-
-            property, see [RFC-8037 — Key Type
-
-            "OKP"](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).'
-          type: string
-        x:
-          description: 'The `x` property is the public key of an elliptical curve encryption. The key
-
-            is Base64urlUInt-encoded. For more information on the `x` property, see
-
-            [RFC-8037 — "x" (X Coordinate)
-
-            Parameter](https://www.rfc-editor.org/rfc/rfc8037#section-2).'
-          type: string
-      required:
-      - crv
-      - kid
-      - kty
-      - x
-      type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -220,6 +150,55 @@ components:
       - user_pending_consent
       - account_exists
       type: string
+    EdDsaJwk:
+      description: 'A JSON Web Key Set (JWKS) using the Edwards-curve Digital Signature Algorithm (EdDSA), as
+
+        described in [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#appendix-A).'
+      properties:
+        kid:
+          description: 'The `kid` (key ID) is a unique identifier for a public key. When the keys used
+
+            to sign webhooks are rotated, you can use this ID to select the correct key
+
+            within a JWK Set during the key rollover. The `kid` value is case-sensitive.'
+          type: string
+        kty:
+          description: 'The `kty` (key type) identifies the cryptographic algorithm family used with
+
+            the key, such as "RSA" or "EC". Only Octet Key Pairs
+
+            (`OKPs`) are supported.
+
+            The `kty` value is case-sensitive. For more information on the `kty` property
+
+            and OKPs, see [RFC-8037 — "kty" (Key Type)
+
+            Parameter](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).'
+          type: string
+        crv:
+          description: 'The `crv` (curve) property identifies the curve used for elliptical curve
+
+            encryptions. Only "Ed25519" is supported. For more information on the `crv`
+
+            property, see [RFC-8037 — Key Type
+
+            "OKP"](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).'
+          type: string
+        x:
+          description: 'The `x` property is the public key of an elliptical curve encryption. The key
+
+            is Base64urlUInt-encoded. For more information on the `x` property, see
+
+            [RFC-8037 — "x" (X Coordinate)
+
+            Parameter](https://www.rfc-editor.org/rfc/rfc8037#section-2).'
+          type: string
+      required:
+      - crv
+      - kid
+      - kty
+      - x
+      type: object
     Error:
       properties:
         code:
@@ -230,6 +209,27 @@ components:
       required:
       - code
       - message
+      type: object
+    GetSigningPublicKeysResponse:
+      properties:
+        keys:
+          description: 'A Json Web Key Set (JWKS) with public keys used for signing webhooks. You can use this JWKS
+
+            to verify that a webhook was sent from Canva.'
+          example:
+          - kid: a418dc7d-ecc5-5c4b-85ce-e1104a8addbe
+            kty: OKP
+            crv: Ed25519
+            x: aIQtqd0nDfB-ug0DrzZbwTum-1ITdXvKxGFak_1VB2j
+          - kid: c8de5bec1-1b88-4ddaae04acc-ce415-5d7
+            kty: OKP
+            crv: Ed25519
+            x: m2d1FT-gfBXxIzKwdQVTra0D-aBq_ubZ1jI0GuvkDtn
+          items:
+            $ref: '#/components/schemas/EdDsaJwk'
+          type: array
+      required:
+      - keys
       type: object
   securitySchemes:
     basicAuth:

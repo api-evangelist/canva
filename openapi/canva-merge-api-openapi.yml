@@ -185,238 +185,60 @@ paths:
       summary: Get design merge job
       x-summary-source: derived
 components:
-  examples:
-    UnauthorizedPrivateResourceError:
-      summary: Unauthorized access to private resource
-      value:
-        code: permission_denied
-        message: Source design contains private resources that you don't have access to.
-    InvalidMergeJobTypeError:
-      summary: Invalid merge job type
-      value:
-        code: invalid_request
-        message: 'Invalid merge job type: {jobType}'
-    InvalidOperationError:
-      summary: Invalid operation
-      value:
-        code: bad_request_params
-        message: 'Invalid operation: {message}'
-    InvalidPageNumberError:
-      summary: Invalid page number
-      value:
-        code: bad_request_params
-        message: Page number {pageNumber} is out of range (design has {totalPages} pages)
-    RequestTooLargeError:
-      summary: Request too large
-      value:
-        code: bad_request_params
-        message: The request size exceeds the maximum allowed limit. Try reducing the number of pages per request, using simpler page content, or splitting into multiple smaller operations.
-    UnsupportedPageTypeError:
-      summary: Unsupported page type
-      value:
-        code: bad_request_params
-        message: 'Source design ''{designId}'' has unsupported page type: {pageType}. Only fixed pages are supported.'
-    DesignForbiddenError:
-      summary: Not allowed to access design
-      value:
-        code: permission_denied
-        message: Not allowed to access design '{designId}'
-    OperationNotSupportedError:
-      summary: Operation not supported
-      value:
-        code: bad_request_params
-        message: '{message}'
-    UnsupportedDocumentTypeError:
-      summary: Unsupported document type
-      value:
-        code: bad_request_params
-        message: 'Design ''{designId}'' has unsupported document type: {documentType}.'
-    MergeDesignNotFoundError:
-      summary: Design not found for merge operation
-      value:
-        code: not_found
-        message: Design '{designId}' not found
-    MergeJobForbiddenError:
-      summary: Not allowed to access this merge job
-      value:
-        code: permission_denied
-        message: Not allowed to access this merge job
-    MergeJobNotFoundError:
-      summary: Merge job not found
-      value:
-        code: not_found
-        message: Merge job '{jobId}' not found
   schemas:
-    GetDesignMergeJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/DesignMergeJob'
-      required:
-      - job
-      type: object
-    DesignMergeErrorCode:
-      enum:
-      - thumbnail_generation_error
-      - merge_error
-      - create_design_error
-      - modify_design_error
-      type: string
-    DesignMergeJobStatus:
-      enum:
-      - in_progress
-      - success
-      - failed
-      type: string
-      x-enum-descriptions:
-      - The merge job is still running.
-      - The merge job completed successfully.
-      - The merge job failed.
-    InsertPagesDesignMergeOperation:
-      description: Inserts pages from a source design into the target design.
+    DesignMergeSourceForInsertPagesOperation:
+      description: A design source from which pages are inserted.
       properties:
         type:
-          description: The type of merge operation.
+          description: The type of source to insert pages from.
           enum:
-          - insert_pages
-          example: insert_pages
+          - design
+          example: design
           type: string
-        source:
-          $ref: '#/components/schemas/MergeSourceForInsertPagesOperation'
-        after_page_number:
-          description: 'Insert after this one-based page number in the evolving target layout. Use 0 to insert at the beginning, and the default is inserting at the end (append).
-
-            '
-          example: 2
-          format: int32
-          minimum: 0
-          type: integer
-      required:
-      - source
-      - type
-      type: object
-    MovePagesDesignMergeOperation:
-      description: Moves pages within the target design to a new position.
-      properties:
-        type:
-          description: The type of merge operation.
-          enum:
-          - move_pages
-          example: move_pages
+        design_id:
+          description: The ID of the source design.
+          example: DAFVztcvd9z
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
           type: string
-        from_page_numbers:
-          description: One-based number of the pages to move (evaluated at the time this operation runs). Pages are moved in order.
+        page_numbers:
+          description: One-based page numbers to insert from the source design. If omitted, all pages from the design are inserted.
           example:
           - 1
-          - 3
+          - 2
           items:
             format: int32
             minimum: 1
             type: integer
           minItems: 1
           type: array
-        to_after_page_number:
-          description: 'Destination position: insert the moved pages after this one-based page number. Use 0 to move to the beginning.
-
-            '
-          example: 2
-          format: int32
-          minimum: 0
-          type: integer
-      required:
-      - from_page_numbers
-      - to_after_page_number
-      - type
-      type: object
-    DesignMergeJob:
-      description: The details of a design merge job.
-      properties:
-        id:
-          description: The ID of the design merge job.
-          example: a7by3wd-abc123
-          type: string
-        status:
-          $ref: '#/components/schemas/DesignMergeJobStatus'
-        result:
-          $ref: '#/components/schemas/DesignMergeJobResult'
-        error:
-          $ref: '#/components/schemas/DesignMergeError'
-      required:
-      - id
-      - status
-      type: object
-    ModifyDesignCreateDesignMergeJobRequest:
-      description: Modifies an existing design by inserting, moving, or deleting pages.
-      properties:
-        type:
-          description: The type of merge job to create.
-          enum:
-          - modify_existing_design
-          example: modify_existing_design
-          type: string
-        design_id:
-          description: The ID of the design to modify.
-          example: DAFVztcvd9z
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
-          type: string
-        operations:
-          description: Supports insert, move, and delete operations.
-          items:
-            $ref: '#/components/schemas/DesignMergeOperation'
-          maxItems: 500
-          minItems: 1
-          type: array
-        title:
-          description: Optional new title for the design.
-          example: My updated design
-          maxLength: 255
-          minLength: 1
-          type: string
       required:
       - design_id
-      - operations
       - type
       type: object
-    CreateDesignMergeJobResponse:
+    DeletePagesDesignMergeOperation:
+      description: Deletes pages from the target design.
       properties:
-        job:
-          $ref: '#/components/schemas/DesignMergeJob'
-      required:
-      - job
-      type: object
-    DesignLinks:
-      description: A temporary set of URLs for viewing or editing the design.
-      properties:
-        edit_url:
-          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.'
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+        type:
+          description: The type of merge operation.
+          enum:
+          - delete_pages
+          example: delete_pages
           type: string
-        view_url:
-          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.
-
-            '
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
-          type: string
+        page_numbers:
+          description: One-based numbers of the pages to delete (evaluated at the time this operation runs). Pages are deleted in reverse order to maintain page numbers.
+          example:
+          - 2
+          - 4
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          minItems: 1
+          type: array
       required:
-      - edit_url
-      - view_url
+      - page_numbers
+      - type
       type: object
-    DesignMergeOperation:
-      discriminator:
-        mapping:
-          insert_pages: '#/components/schemas/InsertPagesDesignMergeOperation'
-          move_pages: '#/components/schemas/MovePagesDesignMergeOperation'
-          delete_pages: '#/components/schemas/DeletePagesDesignMergeOperation'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/InsertPagesDesignMergeOperation'
-      - $ref: '#/components/schemas/MovePagesDesignMergeOperation'
-      - $ref: '#/components/schemas/DeletePagesDesignMergeOperation'
     NewDesignCreateDesignMergeJobRequest:
       description: Creates a new design by inserting pages from other designs.
       properties:
@@ -443,6 +265,24 @@ components:
       - operations
       - title
       - type
+      type: object
+    CreateDesignMergeJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignMergeJob'
+      required:
+      - job
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -527,59 +367,41 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    DeletePagesDesignMergeOperation:
-      description: Deletes pages from the target design.
+    DesignMergeJob:
+      description: The details of a design merge job.
       properties:
-        type:
-          description: The type of merge operation.
-          enum:
-          - delete_pages
-          example: delete_pages
+        id:
+          description: The ID of the design merge job.
+          example: a7by3wd-abc123
           type: string
-        page_numbers:
-          description: One-based numbers of the pages to delete (evaluated at the time this operation runs). Pages are deleted in reverse order to maintain page numbers.
-          example:
-          - 2
-          - 4
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          minItems: 1
-          type: array
+        status:
+          $ref: '#/components/schemas/DesignMergeJobStatus'
+        result:
+          $ref: '#/components/schemas/DesignMergeJobResult'
+        error:
+          $ref: '#/components/schemas/DesignMergeError'
       required:
-      - page_numbers
-      - type
+      - id
+      - status
       type: object
-    DesignMergeSourceForInsertPagesOperation:
-      description: A design source from which pages are inserted.
-      properties:
-        type:
-          description: The type of source to insert pages from.
-          enum:
-          - design
-          example: design
-          type: string
-        design_id:
-          description: The ID of the source design.
-          example: DAFVztcvd9z
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
-          type: string
-        page_numbers:
-          description: One-based page numbers to insert from the source design. If omitted, all pages from the design are inserted.
-          example:
-          - 1
-          - 2
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          minItems: 1
-          type: array
-      required:
-      - design_id
-      - type
-      type: object
+    DesignMergeOperation:
+      discriminator:
+        mapping:
+          insert_pages: '#/components/schemas/InsertPagesDesignMergeOperation'
+          move_pages: '#/components/schemas/MovePagesDesignMergeOperation'
+          delete_pages: '#/components/schemas/DeletePagesDesignMergeOperation'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/InsertPagesDesignMergeOperation'
+      - $ref: '#/components/schemas/MovePagesDesignMergeOperation'
+      - $ref: '#/components/schemas/DeletePagesDesignMergeOperation'
+    MergeSourceForInsertPagesOperation:
+      discriminator:
+        mapping:
+          design: '#/components/schemas/DesignMergeSourceForInsertPagesOperation'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/DesignMergeSourceForInsertPagesOperation'
     DesignSummary:
       description: Basic details about the design, such as the design's ID, title, and URL.
       properties:
@@ -625,18 +447,22 @@ components:
       - updated_at
       - urls
       type: object
-    DesignMergeError:
-      description: If the merge job fails, this object provides details about the error.
+    DesignMergeJobStatus:
+      enum:
+      - in_progress
+      - success
+      - failed
+      type: string
+      x-enum-descriptions:
+      - The merge job is still running.
+      - The merge job completed successfully.
+      - The merge job failed.
+    DesignMergeJobResult:
       properties:
-        code:
-          $ref: '#/components/schemas/DesignMergeErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          example: The merge job failed due to an internal error.
-          type: string
+        design:
+          $ref: '#/components/schemas/DesignSummary'
       required:
-      - code
-      - message
+      - design
       type: object
     CreateDesignMergeJobRequest:
       discriminator:
@@ -647,20 +473,20 @@ components:
       oneOf:
       - $ref: '#/components/schemas/NewDesignCreateDesignMergeJobRequest'
       - $ref: '#/components/schemas/ModifyDesignCreateDesignMergeJobRequest'
-    MergeSourceForInsertPagesOperation:
-      discriminator:
-        mapping:
-          design: '#/components/schemas/DesignMergeSourceForInsertPagesOperation'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/DesignMergeSourceForInsertPagesOperation'
-    DesignMergeJobResult:
+    GetDesignMergeJobResponse:
       properties:
-        design:
-          $ref: '#/components/schemas/DesignSummary'
+        job:
+          $ref: '#/components/schemas/DesignMergeJob'
       required:
-      - design
+      - job
       type: object
+    DesignMergeErrorCode:
+      enum:
+      - thumbnail_generation_error
+      - merge_error
+      - create_design_error
+      - modify_design_error
+      type: string
     Thumbnail:
       description: A thumbnail image representing the object.
       properties:
@@ -687,17 +513,191 @@ components:
       - url
       - width
       type: object
-    Error:
+    ModifyDesignCreateDesignMergeJobRequest:
+      description: Modifies an existing design by inserting, moving, or deleting pages.
+      properties:
+        type:
+          description: The type of merge job to create.
+          enum:
+          - modify_existing_design
+          example: modify_existing_design
+          type: string
+        design_id:
+          description: The ID of the design to modify.
+          example: DAFVztcvd9z
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        operations:
+          description: Supports insert, move, and delete operations.
+          items:
+            $ref: '#/components/schemas/DesignMergeOperation'
+          maxItems: 500
+          minItems: 1
+          type: array
+        title:
+          description: Optional new title for the design.
+          example: My updated design
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - design_id
+      - operations
+      - type
+      type: object
+    MovePagesDesignMergeOperation:
+      description: Moves pages within the target design to a new position.
+      properties:
+        type:
+          description: The type of merge operation.
+          enum:
+          - move_pages
+          example: move_pages
+          type: string
+        from_page_numbers:
+          description: One-based number of the pages to move (evaluated at the time this operation runs). Pages are moved in order.
+          example:
+          - 1
+          - 3
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          minItems: 1
+          type: array
+        to_after_page_number:
+          description: 'Destination position: insert the moved pages after this one-based page number. Use 0 to move to the beginning.
+
+            '
+          example: 2
+          format: int32
+          minimum: 0
+          type: integer
+      required:
+      - from_page_numbers
+      - to_after_page_number
+      - type
+      type: object
+    DesignLinks:
+      description: A temporary set of URLs for viewing or editing the design.
+      properties:
+        edit_url:
+          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.'
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+          type: string
+        view_url:
+          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.
+
+            '
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
+          type: string
+      required:
+      - edit_url
+      - view_url
+      type: object
+    InsertPagesDesignMergeOperation:
+      description: Inserts pages from a source design into the target design.
+      properties:
+        type:
+          description: The type of merge operation.
+          enum:
+          - insert_pages
+          example: insert_pages
+          type: string
+        source:
+          $ref: '#/components/schemas/MergeSourceForInsertPagesOperation'
+        after_page_number:
+          description: 'Insert after this one-based page number in the evolving target layout. Use 0 to insert at the beginning, and the default is inserting at the end (append).
+
+            '
+          example: 2
+          format: int32
+          minimum: 0
+          type: integer
+      required:
+      - source
+      - type
+      type: object
+    DesignMergeError:
+      description: If the merge job fails, this object provides details about the error.
       properties:
         code:
-          $ref: '#/components/schemas/ErrorCode'
+          $ref: '#/components/schemas/DesignMergeErrorCode'
         message:
           description: A human-readable description of what went wrong.
+          example: The merge job failed due to an internal error.
           type: string
       required:
       - code
       - message
       type: object
+  examples:
+    DesignForbiddenError:
+      summary: Not allowed to access design
+      value:
+        code: permission_denied
+        message: Not allowed to access design '{designId}'
+    MergeJobNotFoundError:
+      summary: Merge job not found
+      value:
+        code: not_found
+        message: Merge job '{jobId}' not found
+    UnsupportedPageTypeError:
+      summary: Unsupported page type
+      value:
+        code: bad_request_params
+        message: 'Source design ''{designId}'' has unsupported page type: {pageType}. Only fixed pages are supported.'
+    InvalidMergeJobTypeError:
+      summary: Invalid merge job type
+      value:
+        code: invalid_request
+        message: 'Invalid merge job type: {jobType}'
+    InvalidOperationError:
+      summary: Invalid operation
+      value:
+        code: bad_request_params
+        message: 'Invalid operation: {message}'
+    UnauthorizedPrivateResourceError:
+      summary: Unauthorized access to private resource
+      value:
+        code: permission_denied
+        message: Source design contains private resources that you don't have access to.
+    UnsupportedDocumentTypeError:
+      summary: Unsupported document type
+      value:
+        code: bad_request_params
+        message: 'Design ''{designId}'' has unsupported document type: {documentType}.'
+    RequestTooLargeError:
+      summary: Request too large
+      value:
+        code: bad_request_params
+        message: The request size exceeds the maximum allowed limit. Try reducing the number of pages per request, using simpler page content, or splitting into multiple smaller operations.
+    OperationNotSupportedError:
+      summary: Operation not supported
+      value:
+        code: bad_request_params
+        message: '{message}'
+    MergeJobForbiddenError:
+      summary: Not allowed to access this merge job
+      value:
+        code: permission_denied
+        message: Not allowed to access this merge job
+    MergeDesignNotFoundError:
+      summary: Design not found for merge operation
+      value:
+        code: not_found
+        message: Design '{designId}' not found
+    InvalidPageNumberError:
+      summary: Invalid page number
+      value:
+        code: bad_request_params
+        message: Page number {pageNumber} is out of range (design has {totalPages} pages)
   securitySchemes:
     basicAuth:
       scheme: basic

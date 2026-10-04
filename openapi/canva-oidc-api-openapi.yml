@@ -207,6 +207,17 @@ components:
       - kty
       - n
       type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
     JsonWebKeySet:
       properties:
         keys:
@@ -300,17 +311,6 @@ components:
       - user_pending_consent
       - account_exists
       type: string
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
   securitySchemes:
     basicAuth:
       scheme: basic

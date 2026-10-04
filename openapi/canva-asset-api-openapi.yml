@@ -453,26 +453,61 @@ paths:
       x-summary-source: derived
 components:
   examples:
-    AssetUrlInvalidError:
-      summary: The provided URL is invalid
+    AssetDeleteNotAllowedError:
+      summary: Not allowed to delete the asset
       value:
-        code: invalid_field
-        message: '''url'' provided is invalid.'
+        code: permission_denied
+        message: Not allowed to delete this asset
+    AssetUploadJobNotCreatorError:
+      summary: Calling user was not the creator of the asset upload job
+      value:
+        code: permission_denied
+        message: Calling user was not the creator of the asset upload job
+    AssetJobIdNotFoundError:
+      summary: Job ID not found
+      value:
+        code: not_found
+        message: Job ID {jobId} not found
+    AssetNotFoundError:
+      summary: The asset was not found
+      value:
+        code: asset_not_found
+        message: Asset not found
     AssetJobNotFoundError:
       summary: Job not found
       value:
         code: not_found
         message: Job {jobId} not found
-    AssetUpdateNotAllowedError:
-      summary: Not allowed to update the asset
+    GetThisJobStatusNotAllowedError:
+      summary: Not allowed to get this job status
       value:
         code: permission_denied
-        message: Not allowed to update this asset
+        message: Not allowed to get this job status
     AssetUploadAlreadyExistsError:
       summary: An asset upload for the URL already exists
       value:
         code: invalid_request
         message: Asset Upload for url {url} already exists
+    AssetJobWithIdNotFoundError:
+      summary: Job with ID not found
+      value:
+        code: not_found
+        message: Job with Id {jobId} not found
+    AssetUploadJobNotFoundError:
+      summary: Asset upload job not found
+      value:
+        code: not_found
+        message: Asset upload job with ID {jobId} not found
+    AssetAccessNotAllowedError:
+      summary: Not allowed to access the asset
+      value:
+        code: permission_denied
+        message: Not allowed to access this asset
+    AssetUpdateNotAllowedError:
+      summary: Not allowed to update the asset
+      value:
+        code: permission_denied
+        message: Not allowed to update this asset
     FailedAssetUploadJobExample:
       summary: Failed job
       value:
@@ -482,16 +517,6 @@ components:
           error:
             code: file_too_big
             message: Failed to import because the file is too big
-    AssetJobWithIdNotFoundError:
-      summary: Job with ID not found
-      value:
-        code: not_found
-        message: Job with Id {jobId} not found
-    AssetJobIdNotFoundError:
-      summary: Job ID not found
-      value:
-        code: not_found
-        message: Job ID {jobId} not found
     SuccessAssetUploadJobExample:
       summary: Successfully completed job
       value:
@@ -515,182 +540,35 @@ components:
               width: 595
               height: 335
               url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-    AssetNotFoundError:
-      summary: The asset was not found
+    AssetUrlInvalidError:
+      summary: The provided URL is invalid
       value:
-        code: asset_not_found
-        message: Asset not found
-    AssetAccessNotAllowedError:
-      summary: Not allowed to access the asset
-      value:
-        code: permission_denied
-        message: Not allowed to access this asset
-    AssetUploadJobNotCreatorError:
-      summary: Calling user was not the creator of the asset upload job
-      value:
-        code: permission_denied
-        message: Calling user was not the creator of the asset upload job
-    GetThisJobStatusNotAllowedError:
-      summary: Not allowed to get this job status
-      value:
-        code: permission_denied
-        message: Not allowed to get this job status
+        code: invalid_field
+        message: '''url'' provided is invalid.'
     InProgressAssetUploadJobExample:
       summary: In progress job
       value:
         job:
           id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
           status: in_progress
-    AssetDeleteNotAllowedError:
-      summary: Not allowed to delete the asset
-      value:
-        code: permission_denied
-        message: Not allowed to delete this asset
-    AssetUploadJobNotFoundError:
-      summary: Asset upload job not found
-      value:
-        code: not_found
-        message: Asset upload job with ID {jobId} not found
   schemas:
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
     CreateUrlAssetUploadJobResponse:
       properties:
         job:
           $ref: '#/components/schemas/AssetUploadJob'
       required:
       - job
-      type: object
-    GetUrlAssetUploadJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/AssetUploadJob'
-      required:
-      - job
-      type: object
-    AssetType:
-      description: Type of an asset.
-      enum:
-      - image
-      - video
-      example: image
-      type: string
-    ImageMetadata:
-      properties:
-        type:
-          enum:
-          - image
-          type: string
-        width:
-          description: The width of the image in pixels.
-          example: 1920
-          format: int32
-          type: integer
-        height:
-          description: The height of the image in pixels.
-          example: 1080
-          format: int32
-          type: integer
-        smart_tags:
-          description: AI-generated tags for the image.
-          example:
-          - landscape
-          - sunset
-          - mountains
-          - nature
-          items:
-            maxLength: 50
-            type: string
-          type: array
-      required:
-      - type
-      type: object
-    Asset:
-      description: The asset object, which contains metadata about the asset.
-      properties:
-        type:
-          $ref: '#/components/schemas/AssetType'
-        id:
-          description: The ID of the asset.
-          example: Msd59349ff
-          type: string
-        name:
-          description: The name of the asset.
-          example: My Awesome Upload
-          type: string
-        tags:
-          description: 'The user-facing tags attached to the asset.
-
-            Users can add these tags to their uploaded assets, and they can search their uploaded
-
-            assets in the Canva UI by searching for these tags. For information on how users use
-
-            tags, see the
-
-            [Canva Help Center page on asset tags](https://www.canva.com/help/add-edit-tags/).'
-          example:
-          - image
-          - holiday
-          - best day ever
-          items:
-            type: string
-          type: array
-        import_status:
-          $ref: '#/components/schemas/ImportStatus'
-        created_at:
-          description: 'When the asset was added to Canva, as a Unix timestamp (in seconds since the Unix
-
-            Epoch).'
-          example: 1377396000
-          format: int64
-          type: integer
-        updated_at:
-          description: 'When the asset was last updated in Canva, as a Unix timestamp (in seconds since the
-
-            Unix Epoch).'
-          example: 1692928800
-          format: int64
-          type: integer
-        owner:
-          $ref: '#/components/schemas/TeamUserSummary'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        metadata:
-          $ref: '#/components/schemas/AssetMetadata'
-      required:
-      - created_at
-      - id
-      - name
-      - owner
-      - tags
-      - type
-      - updated_at
-      type: object
-    TeamUserSummary:
-      description: Metadata for the user, consisting of the User ID and Team ID.
-      properties:
-        user_id:
-          description: The ID of the user.
-          example: auDAbliZ2rQNNOsUl5OLu
-          type: string
-        team_id:
-          description: The ID of the user's Canva Team.
-          example: Oi2RJILTrKk0KRhRUZozX
-          type: string
-      required:
-      - team_id
-      - user_id
-      type: object
-    AssetUploadError:
-      description: If the upload fails, this object provides details about the error.
-      properties:
-        code:
-          $ref: '#/components/schemas/AssetUploadErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          example: Failed to import because the file is too big.
-          type: string
-      required:
-      - code
-      - message
       type: object
     ImportStatusState:
       deprecated: true
@@ -701,87 +579,6 @@ components:
       - success
       example: success
       type: string
-    ImportErrorCode:
-      deprecated: true
-      description: 'A short string indicating why the upload failed. This field can be used to handle errors programmatically.
-
-        '
-      enum:
-      - file_too_big
-      - import_failed
-      type: string
-    AssetUploadErrorCode:
-      description: 'A short string indicating why the upload failed. This field can be used to handle errors
-
-        programmatically.'
-      enum:
-      - file_too_big
-      - import_failed
-      - fetch_failed
-      example: file_too_big
-      type: string
-    AssetMetadata:
-      description: Type-specific metadata for the asset.
-      discriminator:
-        mapping:
-          image: '#/components/schemas/ImageMetadata'
-          video: '#/components/schemas/VideoMetadata'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/ImageMetadata'
-      - $ref: '#/components/schemas/VideoMetadata'
-      type: object
-    CreateAssetUploadJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/AssetUploadJob'
-      required:
-      - job
-      type: object
-    AssetUploadJob:
-      description: The status of the asset upload job.
-      example:
-        id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-        status: success
-        asset:
-          id: Msd59349ff
-          type: image
-          name: My Awesome Upload
-          tags:
-          - image
-          - holiday
-          - best day ever
-          owner:
-            user_id: oU123456AbCdE
-            team_id: oB123456AbCdE
-          created_at: 1377396000
-          updated_at: 1692928800
-          thumbnail:
-            width: 595
-            height: 335
-            url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-      properties:
-        id:
-          description: The ID of the asset upload job.
-          example: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          type: string
-        status:
-          $ref: '#/components/schemas/AssetUploadStatus'
-        error:
-          $ref: '#/components/schemas/AssetUploadError'
-        asset:
-          $ref: '#/components/schemas/Asset'
-      required:
-      - id
-      - status
-      type: object
-    GetAssetResponse:
-      properties:
-        asset:
-          $ref: '#/components/schemas/Asset'
-      required:
-      - asset
-      type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -865,6 +662,91 @@ components:
       - user_pending_consent
       - account_exists
       type: string
+    ImageMetadata:
+      properties:
+        type:
+          enum:
+          - image
+          type: string
+        width:
+          description: The width of the image in pixels.
+          example: 1920
+          format: int32
+          type: integer
+        height:
+          description: The height of the image in pixels.
+          example: 1080
+          format: int32
+          type: integer
+        smart_tags:
+          description: AI-generated tags for the image.
+          example:
+          - landscape
+          - sunset
+          - mountains
+          - nature
+          items:
+            maxLength: 50
+            type: string
+          type: array
+      required:
+      - type
+      type: object
+    AssetUploadStatus:
+      description: Status of the asset upload job.
+      enum:
+      - failed
+      - in_progress
+      - success
+      example: success
+      type: string
+    CreateAssetUploadJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/AssetUploadJob'
+      required:
+      - job
+      type: object
+    UpdateAssetResponse:
+      properties:
+        asset:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - asset
+      type: object
+    ImportError:
+      deprecated: true
+      description: If the import fails, this object provides details about the error.
+      properties:
+        code:
+          $ref: '#/components/schemas/ImportErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    GetAssetUploadJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/AssetUploadJob'
+      required:
+      - job
+      type: object
+    AssetUploadError:
+      description: If the upload fails, this object provides details about the error.
+      properties:
+        code:
+          $ref: '#/components/schemas/AssetUploadErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          example: Failed to import because the file is too big.
+          type: string
+      required:
+      - code
+      - message
+      type: object
     VideoMetadata:
       properties:
         type:
@@ -891,36 +773,20 @@ components:
       - type
       - width
       type: object
-    ImportError:
-      deprecated: true
-      description: If the import fails, this object provides details about the error.
+    TeamUserSummary:
+      description: Metadata for the user, consisting of the User ID and Team ID.
       properties:
-        code:
-          $ref: '#/components/schemas/ImportErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
+        user_id:
+          description: The ID of the user.
+          example: auDAbliZ2rQNNOsUl5OLu
+          type: string
+        team_id:
+          description: The ID of the user's Canva Team.
+          example: Oi2RJILTrKk0KRhRUZozX
           type: string
       required:
-      - code
-      - message
-      type: object
-    ImportStatus:
-      deprecated: true
-      description: The import status of the asset.
-      properties:
-        state:
-          $ref: '#/components/schemas/ImportStatusState'
-        error:
-          $ref: '#/components/schemas/ImportError'
-      required:
-      - state
-      type: object
-    GetAssetUploadJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/AssetUploadJob'
-      required:
-      - job
+      - team_id
+      - user_id
       type: object
     CreateUrlAssetUploadJobRequest:
       properties:
@@ -940,29 +806,40 @@ components:
       - name
       - url
       type: object
-    UpdateAssetRequest:
+    AssetType:
+      description: Type of an asset.
+      enum:
+      - image
+      - video
+      example: image
+      type: string
+    GetAssetResponse:
       properties:
-        name:
-          description: 'The name of the asset. This is shown in the Canva UI.
-
-            When this field is undefined or empty, nothing is updated.'
-          example: My Awesome Upload
-          maxLength: 50
-          type: string
-        tags:
-          description: 'The replacement tags for the asset.
-
-            When this field is undefined, nothing is updated.'
-          example:
-          - image
-          - holiday
-          - best day ever
-          items:
-            maxLength: 50
-            type: string
-          maxItems: 50
-          type: array
+        asset:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - asset
       type: object
+    AssetMetadata:
+      description: Type-specific metadata for the asset.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/ImageMetadata'
+          video: '#/components/schemas/VideoMetadata'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ImageMetadata'
+      - $ref: '#/components/schemas/VideoMetadata'
+      type: object
+    ImportErrorCode:
+      deprecated: true
+      description: 'A short string indicating why the upload failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - file_too_big
+      - import_failed
+      type: string
     Thumbnail:
       description: A thumbnail image representing the object.
       properties:
@@ -989,14 +866,155 @@ components:
       - url
       - width
       type: object
-    AssetUploadStatus:
-      description: Status of the asset upload job.
+    ImportStatus:
+      deprecated: true
+      description: The import status of the asset.
+      properties:
+        state:
+          $ref: '#/components/schemas/ImportStatusState'
+        error:
+          $ref: '#/components/schemas/ImportError'
+      required:
+      - state
+      type: object
+    AssetUploadErrorCode:
+      description: 'A short string indicating why the upload failed. This field can be used to handle errors
+
+        programmatically.'
       enum:
-      - failed
-      - in_progress
-      - success
-      example: success
+      - file_too_big
+      - import_failed
+      - fetch_failed
+      example: file_too_big
       type: string
+    Asset:
+      description: The asset object, which contains metadata about the asset.
+      properties:
+        type:
+          $ref: '#/components/schemas/AssetType'
+        id:
+          description: The ID of the asset.
+          example: Msd59349ff
+          type: string
+        name:
+          description: The name of the asset.
+          example: My Awesome Upload
+          type: string
+        tags:
+          description: 'The user-facing tags attached to the asset.
+
+            Users can add these tags to their uploaded assets, and they can search their uploaded
+
+            assets in the Canva UI by searching for these tags. For information on how users use
+
+            tags, see the
+
+            [Canva Help Center page on asset tags](https://www.canva.com/help/add-edit-tags/).'
+          example:
+          - image
+          - holiday
+          - best day ever
+          items:
+            type: string
+          type: array
+        import_status:
+          $ref: '#/components/schemas/ImportStatus'
+        created_at:
+          description: 'When the asset was added to Canva, as a Unix timestamp (in seconds since the Unix
+
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the asset was last updated in Canva, as a Unix timestamp (in seconds since the
+
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        owner:
+          $ref: '#/components/schemas/TeamUserSummary'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        metadata:
+          $ref: '#/components/schemas/AssetMetadata'
+      required:
+      - created_at
+      - id
+      - name
+      - owner
+      - tags
+      - type
+      - updated_at
+      type: object
+    AssetUploadJob:
+      description: The status of the asset upload job.
+      example:
+        id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+        status: success
+        asset:
+          id: Msd59349ff
+          type: image
+          name: My Awesome Upload
+          tags:
+          - image
+          - holiday
+          - best day ever
+          owner:
+            user_id: oU123456AbCdE
+            team_id: oB123456AbCdE
+          created_at: 1377396000
+          updated_at: 1692928800
+          thumbnail:
+            width: 595
+            height: 335
+            url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+      properties:
+        id:
+          description: The ID of the asset upload job.
+          example: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          type: string
+        status:
+          $ref: '#/components/schemas/AssetUploadStatus'
+        error:
+          $ref: '#/components/schemas/AssetUploadError'
+        asset:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - id
+      - status
+      type: object
+    GetUrlAssetUploadJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/AssetUploadJob'
+      required:
+      - job
+      type: object
+    UpdateAssetRequest:
+      properties:
+        name:
+          description: 'The name of the asset. This is shown in the Canva UI.
+
+            When this field is undefined or empty, nothing is updated.'
+          example: My Awesome Upload
+          maxLength: 50
+          type: string
+        tags:
+          description: 'The replacement tags for the asset.
+
+            When this field is undefined, nothing is updated.'
+          example:
+          - image
+          - holiday
+          - best day ever
+          items:
+            maxLength: 50
+            type: string
+          maxItems: 50
+          type: array
+      type: object
     AssetUploadMetadata:
       description: Metadata for the asset being uploaded.
       properties:
@@ -1019,24 +1037,6 @@ components:
           type: string
       required:
       - name_base64
-      type: object
-    UpdateAssetResponse:
-      properties:
-        asset:
-          $ref: '#/components/schemas/Asset'
-      required:
-      - asset
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
       type: object
   securitySchemes:
     basicAuth:

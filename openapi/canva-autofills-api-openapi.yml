@@ -120,22 +120,59 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    AutofillTextValue:
+    AutofillImageValue:
       type: object
-      description: Text data for autofill
+      description: Image data for autofill
       properties:
         type:
           type: string
           enum:
-          - text
-          example: text
-        text:
+          - image
+          example: image
+        asset_id:
           type: string
-          description: The text content
-          example: example_value
+          description: The asset ID of the image to use
+          example: '500123'
       required:
       - type
-      - text
+      - asset_id
+    Design:
+      type: object
+      description: A Canva design
+      properties:
+        id:
+          type: string
+          description: The design ID
+          example: abc123
+        title:
+          type: string
+          description: The design title
+          example: Example Title
+        owner:
+          $ref: '#/components/schemas/Owner'
+        urls:
+          $ref: '#/components/schemas/DesignUrls'
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        page_count:
+          type: integer
+          description: The number of pages in the design
+          example: 10
+      required:
+      - id
+      - title
+      - owner
+      - urls
+      - created_at
+      - updated_at
     AutofillJobResponse:
       type: object
       properties:
@@ -143,54 +180,29 @@ components:
           $ref: '#/components/schemas/AutofillJob'
       required:
       - job
-    AutofillChartValue:
+    CreateAutofillJobRequest:
       type: object
-      description: Chart data for autofill (preview feature)
+      description: Request body for creating a design autofill job
       properties:
-        type:
+        brand_template_id:
           type: string
-          enum:
-          - chart
-          example: chart
-        chart_data:
+          description: The brand template ID to autofill
+          example: '500123'
+        title:
+          type: string
+          description: Title for the generated design (1-255 characters). Defaults to the brand template title.
+          minLength: 1
+          maxLength: 255
+          example: Example Title
+        data:
           type: object
-          description: Tabular data for the chart
-          properties:
-            rows:
-              type: array
-              description: Chart data rows (max 100)
-              maxItems: 100
-              items:
-                type: object
-                properties:
-                  cells:
-                    type: array
-                    description: Cell values in the row (max 20)
-                    maxItems: 20
-                    items:
-                      type: object
-                      properties:
-                        type:
-                          type: string
-                          enum:
-                          - string
-                          - number
-                          - boolean
-                          - date
-                        value:
-                          type: string
-                          description: The cell value
-                      required:
-                      - type
-                      - value
-                required:
-                - cells
-          required:
-          - rows
+          description: Data fields to populate, keyed by field name from the brand template dataset
+          additionalProperties:
+            $ref: '#/components/schemas/AutofillDataValue'
           example: example_value
       required:
-      - type
-      - chart_data
+      - brand_template_id
+      - data
     AutofillJob:
       type: object
       description: An autofill job for generating designs from brand templates
@@ -242,104 +254,27 @@ components:
       required:
       - id
       - status
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
     AutofillDataValue:
       oneOf:
       - $ref: '#/components/schemas/AutofillTextValue'
       - $ref: '#/components/schemas/AutofillImageValue'
       - $ref: '#/components/schemas/AutofillChartValue'
       description: A data value for autofilling a design field
-    Owner:
-      type: object
-      description: The owner of a resource
-      properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
-      required:
-      - user_id
-      - team_id
-    Design:
-      type: object
-      description: A Canva design
-      properties:
-        id:
-          type: string
-          description: The design ID
-          example: abc123
-        title:
-          type: string
-          description: The design title
-          example: Example Title
-        owner:
-          $ref: '#/components/schemas/Owner'
-        urls:
-          $ref: '#/components/schemas/DesignUrls'
-        created_at:
-          type: integer
-          description: Unix timestamp in seconds when the design was created
-          example: '2026-01-15T10:30:00Z'
-        updated_at:
-          type: integer
-          description: Unix timestamp in seconds when the design was last updated
-          example: '2026-01-15T10:30:00Z'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        page_count:
-          type: integer
-          description: The number of pages in the design
-          example: 10
-      required:
-      - id
-      - title
-      - owner
-      - urls
-      - created_at
-      - updated_at
-    DesignUrls:
-      type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
-      properties:
-        edit_url:
-          type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
-      required:
-      - edit_url
-      - view_url
-    CreateAutofillJobRequest:
-      type: object
-      description: Request body for creating a design autofill job
-      properties:
-        brand_template_id:
-          type: string
-          description: The brand template ID to autofill
-          example: '500123'
-        title:
-          type: string
-          description: Title for the generated design (1-255 characters). Defaults to the brand template title.
-          minLength: 1
-          maxLength: 255
-          example: Example Title
-        data:
-          type: object
-          description: Data fields to populate, keyed by field name from the brand template dataset
-          additionalProperties:
-            $ref: '#/components/schemas/AutofillDataValue'
-          example: example_value
-      required:
-      - brand_template_id
-      - data
     Thumbnail:
       type: object
       description: A thumbnail image for a resource (URL expires in 15 minutes)
@@ -361,46 +296,105 @@ components:
       - width
       - height
       - url
-    AutofillImageValue:
+    AutofillTextValue:
       type: object
-      description: Image data for autofill
+      description: Text data for autofill
       properties:
         type:
           type: string
           enum:
-          - image
-          example: image
-        asset_id:
+          - text
+          example: text
+        text:
           type: string
-          description: The asset ID of the image to use
-          example: '500123'
+          description: The text content
+          example: example_value
       required:
       - type
-      - asset_id
-    Error:
+      - text
+    AutofillChartValue:
       type: object
-      description: An error response
+      description: Chart data for autofill (preview feature)
       properties:
-        code:
+        type:
           type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
+          enum:
+          - chart
+          example: chart
+        chart_data:
+          type: object
+          description: Tabular data for the chart
+          properties:
+            rows:
+              type: array
+              description: Chart data rows (max 100)
+              maxItems: 100
+              items:
+                type: object
+                properties:
+                  cells:
+                    type: array
+                    description: Cell values in the row (max 20)
+                    maxItems: 20
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          - number
+                          - boolean
+                          - date
+                        value:
+                          type: string
+                          description: The cell value
+                      required:
+                      - type
+                      - value
+                required:
+                - cells
+          required:
+          - rows
           example: example_value
       required:
-      - code
-      - message
+      - type
+      - chart_data
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
   responses:
     NotFound:
       description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:
@@ -419,6 +413,12 @@ components:
             $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:
