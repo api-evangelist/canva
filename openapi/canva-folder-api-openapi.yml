@@ -511,139 +511,131 @@ components:
       value:
         code: invalid_field
         message: The item id `{value}` is invalid
-    TargetFolderSizeLimitReachedError:
-      summary: The target folder has reached its size limit
-      value:
-        code: quota_exceeded
-        message: Target folder has reached size limit
     MoveUploadsFolderNotAllowedError:
       summary: Not allowed to move the Uploads folder
       value:
         code: permission_denied
         message: Not allowed to move the Uploads folder.
-    FolderItemAccessNotAllowedError:
-      summary: Not allowed to access the folder item
+    TargetFolderSizeLimitReachedError:
+      summary: The target folder has reached its size limit
       value:
-        code: permission_denied
-        message: Not allowed to access folder item '{itemId}'
-    ItemInMultipleFoldersError:
-      summary: The item exists in multiple folders
-      value:
-        code: item_in_multiple_folders
-        message: The item lives in multiple folders. Please move it to the new folder via Canva Desktop App or Canva in a browser.
-    ToFolderSameAsItemError:
-      summary: The destination folder can't be the same as the item being moved
-      value:
-        code: bad_request_params
-        message: '''to_folder_id'' and ''item_id'' cannot be the same.'
-    UploadsFolderNotAllowedError:
-      summary: The operation is not allowed on the uploads folder
-      value:
-        code: permission_denied
-        message: '{method} is not allowed on the ''uploads'' folder.'
-    ParentFolderNotFoundError:
-      summary: The parent folder was not found
-      value:
-        code: folder_not_found
-        message: Parent folder not found
-    FolderNotFoundError:
-      summary: The folder was not found
-      value:
-        code: folder_not_found
-        message: Folder not found
-    RootFolderNotSupportedError:
-      summary: The root ID is an alias, not a folder
-      value:
-        code: bad_request_params
-        message: The 'root' ID is an alias to list items without a folder. It's not a folder.
-    FolderInvalidRequestParametersError:
-      summary: The request parameters are invalid
-      value:
-        code: bad_request_body
-        message: Invalid request parameters
-    ListItemsInvalidContinuationError:
-      summary: The provided continuation token is invalid
-      value:
-        code: bad_query_params
-        message: '{message}'
+        code: quota_exceeded
+        message: Target folder has reached size limit
     FolderAccessNotAllowedError:
       summary: Not allowed to access the folder
       value:
         code: permission_denied
         message: '{message}'
-    ToFolderNotFoundError:
-      summary: The destination folder was not found
+    FolderNotFoundError:
+      summary: The folder was not found
       value:
         code: folder_not_found
-        message: To folder {folderId} not found
+        message: Folder not found
+    UploadsFolderNotAllowedError:
+      summary: The operation is not allowed on the uploads folder
+      value:
+        code: permission_denied
+        message: '{method} is not allowed on the ''uploads'' folder.'
     FolderItemNotFoundError:
       summary: The folder item was not found
       value:
         code: not_found
         message: Folder item '{itemId}' not found
+    ToFolderSameAsItemError:
+      summary: The destination folder can't be the same as the item being moved
+      value:
+        code: bad_request_params
+        message: '''to_folder_id'' and ''item_id'' cannot be the same.'
     SharedDesignNotAllowedInRootError:
       summary: Shared designs are not allowed in the root folder
       value:
         code: permission_denied
         message: Shared designs are not allowed in the root folder
+    ItemInMultipleFoldersError:
+      summary: The item exists in multiple folders
+      value:
+        code: item_in_multiple_folders
+        message: The item lives in multiple folders. Please move it to the new folder via Canva Desktop App or Canva in a browser.
+    ListItemsInvalidContinuationError:
+      summary: The provided continuation token is invalid
+      value:
+        code: bad_query_params
+        message: '{message}'
+    ParentFolderNotFoundError:
+      summary: The parent folder was not found
+      value:
+        code: folder_not_found
+        message: Parent folder not found
+    RootFolderNotSupportedError:
+      summary: The root ID is an alias, not a folder
+      value:
+        code: bad_request_params
+        message: The 'root' ID is an alias to list items without a folder. It's not a folder.
+    ToFolderNotFoundError:
+      summary: The destination folder was not found
+      value:
+        code: folder_not_found
+        message: To folder {folderId} not found
+    FolderInvalidRequestParametersError:
+      summary: The request parameters are invalid
+      value:
+        code: bad_request_body
+        message: Invalid request parameters
+    FolderItemAccessNotAllowedError:
+      summary: Not allowed to access the folder item
+      value:
+        code: permission_denied
+        message: Not allowed to access folder item '{itemId}'
   schemas:
-    BrandTemplateItem:
-      description: Details about the brand template.
+    DesignItem:
+      description: Details about the design.
       properties:
         type:
           enum:
-          - brand_template
+          - design
           type: string
-        brand_template:
-          $ref: '#/components/schemas/BrandTemplateSummary'
+        design:
+          $ref: '#/components/schemas/DesignSummary'
       required:
-      - brand_template
+      - design
       - type
       type: object
-    FolderItemSummary:
-      description: Details about the folder item.
-      discriminator:
-        mapping:
-          folder: '#/components/schemas/FolderItem'
-          design: '#/components/schemas/DesignItem'
-          image: '#/components/schemas/ImageItem'
-          brand_template: '#/components/schemas/BrandTemplateItem'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/FolderItem'
-      - $ref: '#/components/schemas/DesignItem'
-      - $ref: '#/components/schemas/ImageItem'
-      - $ref: '#/components/schemas/BrandTemplateItem'
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    GetFolderResponse:
-      description: The folder ID.
+    CreateFolderResponse:
+      description: Details about the new folder.
       properties:
         folder:
           $ref: '#/components/schemas/Folder'
-      required:
-      - folder
       type: object
-    FolderItemPinStatus:
-      default: any
-      description: Filter folder items by their pinned status.
+    FolderItemType:
       enum:
-      - any
-      - pinned
+      - design
+      - folder
+      - image
+      - brand_template
+      type: string
+    FolderItemSortBy:
+      default: modified_descending
+      enum:
+      - created_ascending
+      - created_descending
+      - modified_ascending
+      - modified_descending
+      - title_ascending
+      - title_descending
       type: string
       x-enum-descriptions:
-      - Return all items regardless of pinned status (default).
-      - Return only pinned items.
+      - Sort results by creation date, in ascending order.
+      - Sort results by creation date, in descending order.
+      - Sort results by the last modified date, in ascending order.
+      - Sort results by the last modified date, in descending order.
+      - Sort results by title, in ascending order. The title is either the `name` field for a folder or asset, or the `title` field for a design or brand template.
+      - Sort results by title, in descending order. The title is either the `name` field for a folder or asset, or the `title` field for a design or brand template.
+    UpdateFolderResponse:
+      description: Details about the updated folder.
+      properties:
+        folder:
+          $ref: '#/components/schemas/Folder'
+      type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -727,6 +719,152 @@ components:
       - user_pending_consent
       - account_exists
       type: string
+    GetFolderResponse:
+      description: The folder ID.
+      properties:
+        folder:
+          $ref: '#/components/schemas/Folder'
+      required:
+      - folder
+      type: object
+    AssetType:
+      description: Type of an asset.
+      enum:
+      - image
+      - video
+      example: image
+      type: string
+    BrandTemplateItem:
+      description: Details about the brand template.
+      properties:
+        type:
+          enum:
+          - brand_template
+          type: string
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplateSummary'
+      required:
+      - brand_template
+      - type
+      type: object
+    CreateFolderRequest:
+      description: Body parameters for creating a new folder.
+      properties:
+        name:
+          description: The name of the folder.
+          example: My awesome holiday
+          maxLength: 255
+          minLength: 1
+          type: string
+        parent_folder_id:
+          description: 'The folder ID of the parent folder. To create a new folder at the top level of a user''s
+
+            [projects](https://www.canva.com/help/find-designs-and-folders/), use the ID `root`.
+
+            To create it in their Uploads folder, use `uploads`.'
+          example: FAF2lZtloor
+          maxLength: 50
+          minLength: 1
+          type: string
+      required:
+      - name
+      - parent_folder_id
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    FolderItemPinStatus:
+      default: any
+      description: Filter folder items by their pinned status.
+      enum:
+      - any
+      - pinned
+      type: string
+      x-enum-descriptions:
+      - Return all items regardless of pinned status (default).
+      - Return only pinned items.
+    UpdateFolderRequest:
+      description: Body parameters for updating the folder's details.
+      properties:
+        name:
+          description: The folder name, as shown in the Canva UI.
+          example: My awesome holiday
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - name
+      type: object
+    MoveFolderItemRequest:
+      description: Body parameters for moving the folder.
+      properties:
+        to_folder_id:
+          description: 'The ID of the folder you want to move the item to (the destination folder).
+
+            If you want to move the item to the top level of a Canva user''s
+
+            [projects](https://www.canva.com/help/find-designs-and-folders/), use the ID `root`.'
+          example: FAF2lZtloor
+          maxLength: 50
+          minLength: 1
+          type: string
+        item_id:
+          description: The ID of the item you want to move. Currently, video assets are not supported.
+          example: Msd59349ff
+          maxLength: 50
+          minLength: 1
+          type: string
+      required:
+      - item_id
+      - to_folder_id
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    FolderItem:
+      description: Details about the folder.
+      properties:
+        type:
+          enum:
+          - folder
+          type: string
+        folder:
+          $ref: '#/components/schemas/Folder'
+      required:
+      - folder
+      - type
+      type: object
     BrandTemplateSummary:
       description: An object representing a brand template with associated metadata.
       properties:
@@ -804,75 +942,63 @@ components:
       - name
       - updated_at
       type: object
-    FolderItemSortBy:
-      default: modified_descending
-      enum:
-      - created_ascending
-      - created_descending
-      - modified_ascending
-      - modified_descending
-      - title_ascending
-      - title_descending
-      type: string
-      x-enum-descriptions:
-      - Sort results by creation date, in ascending order.
-      - Sort results by creation date, in descending order.
-      - Sort results by the last modified date, in ascending order.
-      - Sort results by the last modified date, in descending order.
-      - Sort results by title, in ascending order. The title is either the `name` field for a folder or asset, or the `title` field for a design or brand template.
-      - Sort results by title, in descending order. The title is either the `name` field for a folder or asset, or the `title` field for a design or brand template.
-    FolderItemType:
-      enum:
-      - design
-      - folder
-      - image
-      - brand_template
-      type: string
-    CreateFolderRequest:
-      description: Body parameters for creating a new folder.
+    ListFolderItemsResponse:
+      description: 'A list of the items in a folder.
+
+        If the success response contains a continuation token, the folder contains more items
+
+        you can list. You can use this token as a query parameter and retrieve more
+
+        items from the list, for example
+
+        `/v1/folders/{folderId}/items?continuation={continuation}`.
+
+
+        To retrieve all the items in a folder, you might need to make multiple requests.'
       properties:
-        name:
-          description: The name of the folder.
-          example: My awesome holiday
-          maxLength: 255
-          minLength: 1
-          type: string
-        parent_folder_id:
-          description: 'The folder ID of the parent folder. To create a new folder at the top level of a user''s
+        items:
+          description: An array of items in the folder.
+          items:
+            $ref: '#/components/schemas/FolderItemSummary'
+          type: array
+        continuation:
+          description: 'If the success response contains a continuation token, the folder contains more items
 
-            [projects](https://www.canva.com/help/find-designs-and-folders/), use the ID `root`.
+            you can list. You can use this token as a query parameter and retrieve more
 
-            To create it in their Uploads folder, use `uploads`.'
-          example: FAF2lZtloor
-          maxLength: 50
-          minLength: 1
+            items from the list, for example
+
+            `/v1/folders/{folderId}/items?continuation={continuation}`.
+
+
+            To retrieve all the items in a folder, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
           type: string
       required:
-      - name
-      - parent_folder_id
+      - items
       type: object
-    MoveFolderItemRequest:
-      description: Body parameters for moving the folder.
+    DesignLinks:
+      description: A temporary set of URLs for viewing or editing the design.
       properties:
-        to_folder_id:
-          description: 'The ID of the folder you want to move the item to (the destination folder).
+        edit_url:
+          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
 
-            If you want to move the item to the top level of a Canva user''s
 
-            [projects](https://www.canva.com/help/find-designs-and-folders/), use the ID `root`.'
-          example: FAF2lZtloor
-          maxLength: 50
-          minLength: 1
+            NOTE: This is not a permanent URL, it is only valid for 30 days.'
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
           type: string
-        item_id:
-          description: The ID of the item you want to move. Currently, video assets are not supported.
-          example: Msd59349ff
-          maxLength: 50
-          minLength: 1
+        view_url:
+          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.
+
+            '
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
           type: string
       required:
-      - item_id
-      - to_folder_id
+      - edit_url
+      - view_url
       type: object
     ImageItem:
       description: Details about the image asset.
@@ -986,146 +1112,20 @@ components:
       - type
       - updated_at
       type: object
-    CreateFolderResponse:
-      description: Details about the new folder.
-      properties:
-        folder:
-          $ref: '#/components/schemas/Folder'
-      type: object
-    FolderItem:
-      description: Details about the folder.
-      properties:
-        type:
-          enum:
-          - folder
-          type: string
-        folder:
-          $ref: '#/components/schemas/Folder'
-      required:
-      - folder
-      - type
-      type: object
-    DesignItem:
-      description: Details about the design.
-      properties:
-        type:
-          enum:
-          - design
-          type: string
-        design:
-          $ref: '#/components/schemas/DesignSummary'
-      required:
-      - design
-      - type
-      type: object
-    AssetType:
-      description: Type of an asset.
-      enum:
-      - image
-      - video
-      example: image
-      type: string
-    UpdateFolderRequest:
-      description: Body parameters for updating the folder's details.
-      properties:
-        name:
-          description: The folder name, as shown in the Canva UI.
-          example: My awesome holiday
-          maxLength: 255
-          minLength: 1
-          type: string
-      required:
-      - name
-      type: object
-    Thumbnail:
-      description: A thumbnail image representing the object.
-      properties:
-        width:
-          description: The width of the thumbnail image in pixels.
-          example: 595
-          format: int32
-          type: integer
-        height:
-          description: The height of the thumbnail image in pixels.
-          example: 335
-          format: int32
-          type: integer
-        url:
-          description: 'A URL for retrieving the thumbnail image.
-
-            This URL expires after 15 minutes. This URL includes a query string
-
-            that''s required for retrieving the thumbnail.'
-          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-          type: string
-      required:
-      - height
-      - url
-      - width
-      type: object
-    ListFolderItemsResponse:
-      description: 'A list of the items in a folder.
-
-        If the success response contains a continuation token, the folder contains more items
-
-        you can list. You can use this token as a query parameter and retrieve more
-
-        items from the list, for example
-
-        `/v1/folders/{folderId}/items?continuation={continuation}`.
-
-
-        To retrieve all the items in a folder, you might need to make multiple requests.'
-      properties:
-        items:
-          description: An array of items in the folder.
-          items:
-            $ref: '#/components/schemas/FolderItemSummary'
-          type: array
-        continuation:
-          description: 'If the success response contains a continuation token, the folder contains more items
-
-            you can list. You can use this token as a query parameter and retrieve more
-
-            items from the list, for example
-
-            `/v1/folders/{folderId}/items?continuation={continuation}`.
-
-
-            To retrieve all the items in a folder, you might need to make multiple requests.'
-          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
-          type: string
-      required:
-      - items
-      type: object
-    UpdateFolderResponse:
-      description: Details about the updated folder.
-      properties:
-        folder:
-          $ref: '#/components/schemas/Folder'
-      type: object
-    DesignLinks:
-      description: A temporary set of URLs for viewing or editing the design.
-      properties:
-        edit_url:
-          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.'
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
-          type: string
-        view_url:
-          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.
-
-            '
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
-          type: string
-      required:
-      - edit_url
-      - view_url
+    FolderItemSummary:
+      description: Details about the folder item.
+      discriminator:
+        mapping:
+          folder: '#/components/schemas/FolderItem'
+          design: '#/components/schemas/DesignItem'
+          image: '#/components/schemas/ImageItem'
+          brand_template: '#/components/schemas/BrandTemplateItem'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/FolderItem'
+      - $ref: '#/components/schemas/DesignItem'
+      - $ref: '#/components/schemas/ImageItem'
+      - $ref: '#/components/schemas/BrandTemplateItem'
       type: object
   securitySchemes:
     basicAuth:

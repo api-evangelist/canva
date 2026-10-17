@@ -202,6 +202,70 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    DesignType:
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignType'
+      - $ref: '#/components/schemas/CustomDesignType'
+      description: The type and dimensions for a new design
+    PresetDesignType:
+      type: object
+      description: A preset design type
+      properties:
+        type:
+          type: string
+          enum:
+          - preset
+          example: preset
+        name:
+          type: string
+          description: The preset design type name
+          enum:
+          - doc
+          - whiteboard
+          - presentation
+          example: doc
+      required:
+      - type
+      - name
+    CustomDesignType:
+      type: object
+      description: A custom design type with specific dimensions
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          example: custom
+        width:
+          type: integer
+          description: Width in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
+        height:
+          type: integer
+          description: Height in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
+      required:
+      - type
+      - width
+      - height
+    ListDesignsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Design'
+          example: []
+        continuation:
+          type: string
+          description: Continuation token for the next page of results
+          example: example_value
+      required:
+      - items
     Design:
       type: object
       description: A Canva design
@@ -256,58 +320,24 @@ components:
       required:
       - edit_url
       - view_url
-    CustomDesignType:
+    CreateDesignRequest:
       type: object
-      description: A custom design type with specific dimensions
+      description: Request body for creating a new design
       properties:
-        type:
+        design_type:
+          $ref: '#/components/schemas/DesignType'
+        asset_id:
           type: string
-          enum:
-          - custom
-          example: custom
-        width:
-          type: integer
-          description: Width in pixels (40-8000)
-          minimum: 40
-          maximum: 8000
-          example: 10
-        height:
-          type: integer
-          description: Height in pixels (40-8000)
-          minimum: 40
-          maximum: 8000
-          example: 10
-      required:
-      - type
-      - width
-      - height
-    PresetDesignType:
-      type: object
-      description: A preset design type
-      properties:
-        type:
+          description: An image asset ID to insert into the design
+          example: '500123'
+        title:
           type: string
-          enum:
-          - preset
-          example: preset
-        name:
-          type: string
-          description: The preset design type name
-          enum:
-          - doc
-          - whiteboard
-          - presentation
-          example: doc
+          description: The design title (1-255 characters)
+          minLength: 1
+          maxLength: 255
+          example: Example Title
       required:
-      - type
-      - name
-    DesignResponse:
-      type: object
-      properties:
-        design:
-          $ref: '#/components/schemas/Design'
-      required:
-      - design
+      - design_type
     Error:
       type: object
       description: An error response
@@ -323,21 +353,13 @@ components:
       required:
       - code
       - message
-    Owner:
+    DesignResponse:
       type: object
-      description: The owner of a resource
       properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
+        design:
+          $ref: '#/components/schemas/Design'
       required:
-      - user_id
-      - team_id
+      - design
     Thumbnail:
       type: object
       description: A thumbnail image for a resource (URL expires in 15 minutes)
@@ -359,58 +381,36 @@ components:
       - width
       - height
       - url
-    DesignType:
-      oneOf:
-      - $ref: '#/components/schemas/PresetDesignType'
-      - $ref: '#/components/schemas/CustomDesignType'
-      description: The type and dimensions for a new design
-    ListDesignsResponse:
+    Owner:
       type: object
+      description: The owner of a resource
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Design'
-          example: []
-        continuation:
+        user_id:
           type: string
-          description: Continuation token for the next page of results
-          example: example_value
-      required:
-      - items
-    CreateDesignRequest:
-      type: object
-      description: Request body for creating a new design
-      properties:
-        design_type:
-          $ref: '#/components/schemas/DesignType'
-        asset_id:
-          type: string
-          description: An image asset ID to insert into the design
+          description: The user ID of the owner
           example: '500123'
-        title:
+        team_id:
           type: string
-          description: The design title (1-255 characters)
-          minLength: 1
-          maxLength: 255
-          example: Example Title
+          description: The team ID of the owner
+          example: '500123'
       required:
-      - design_type
+      - user_id
+      - team_id
   responses:
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     BadRequest:
       description: Bad request - invalid parameters or request body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
       content:
         application/json:
           schema:
@@ -421,8 +421,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
       content:
         application/json:
           schema:

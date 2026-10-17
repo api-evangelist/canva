@@ -201,50 +201,22 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    AssetId:
+      name: assetId
+      in: path
+      required: true
+      description: The asset ID
+      schema:
+        type: string
+    JobId:
+      name: jobId
+      in: path
+      required: true
+      description: The job ID
+      schema:
+        type: string
   schemas:
-    AssetResponse:
-      type: object
-      properties:
-        asset:
-          $ref: '#/components/schemas/Asset'
-      required:
-      - asset
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
     ImportStatus:
       type: object
       description: The import status of an asset (deprecated)
@@ -272,6 +244,48 @@ components:
               - file_too_big
               - import_failed
           example: example_value
+    AssetResponse:
+      type: object
+      properties:
+        asset:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - asset
+    AssetUploadJobResponse:
+      type: object
+      properties:
+        job:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The upload job ID
+            status:
+              type: string
+              description: The current status of the upload job
+              enum:
+              - in_progress
+              - success
+              - failed
+            asset:
+              $ref: '#/components/schemas/Asset'
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - file_too_big
+                  - import_failed
+                  - fetch_failed
+                message:
+                  type: string
+          required:
+          - id
+          - status
+          example: example_value
+      required:
+      - job
     Asset:
       type: object
       description: A Canva asset (image or video)
@@ -318,41 +332,42 @@ components:
       - created_at
       - updated_at
       - owner
-    AssetUploadJobResponse:
+    Error:
       type: object
+      description: An error response
       properties:
-        job:
-          type: object
-          properties:
-            id:
-              type: string
-              description: The upload job ID
-            status:
-              type: string
-              description: The current status of the upload job
-              enum:
-              - in_progress
-              - success
-              - failed
-            asset:
-              $ref: '#/components/schemas/Asset'
-            error:
-              type: object
-              properties:
-                code:
-                  type: string
-                  enum:
-                  - file_too_big
-                  - import_failed
-                  - fetch_failed
-                message:
-                  type: string
-          required:
-          - id
-          - status
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
           example: example_value
       required:
-      - job
+      - code
+      - message
+    Thumbnail:
+      type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      properties:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
+      required:
+      - width
+      - height
+      - url
     Owner:
       type: object
       description: The owner of a resource
@@ -369,14 +384,14 @@ components:
       - user_id
       - team_id
   responses:
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
+    BadRequest:
+      description: Bad request - invalid parameters or request body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:
@@ -393,27 +408,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    JobId:
-      name: jobId
-      in: path
-      required: true
-      description: The job ID
-      schema:
-        type: string
-    AssetId:
-      name: assetId
-      in: path
-      required: true
-      description: The asset ID
-      schema:
-        type: string
   securitySchemes:
     oauth2:
       type: oauth2

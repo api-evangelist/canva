@@ -95,129 +95,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UserInfoResponse:
-      example:
-        sub: UAAAAAAAAA
-        name: Alice Person
-        given_name: Alice
-        family_name: Person
-        email: alice.person@example.com
-        email_verified: true
-      properties:
-        sub:
-          description: Identifier for the End-User at the Issuer.
-          type: string
-        name:
-          description: 'End-User''s full name in displayable form including all name parts, possibly including
-
-            titles and suffixes, ordered according to the End-User''s locale and preferences.'
-          type: string
-        given_name:
-          description: 'Given name(s) or first name(s) of the End-User. Note that in some cultures, people can
-
-            have multiple given names; all can be present, with the names being separated by space
-
-            characters.'
-          type: string
-        family_name:
-          description: 'Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have
-
-            multiple family names or no family name; all can be present, with the names being
-
-            separated by space characters.'
-          type: string
-        email:
-          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322]
-
-            addr-spec syntax. The RP MUST NOT rely upon this value being unique, as discussed in
-
-            Section 5.7.'
-          format: email
-          type: string
-        email_verified:
-          description: 'True if the End-User''s e-mail address has been verified; otherwise false. When this
-
-            Claim Value is true, this means that the OP took affirmative steps to ensure that this
-
-            e-mail address was controlled by the End-User at the time the verification was
-
-            performed. The means by which an e-mail address is verified is context specific,
-
-            and dependent upon the trust framework or contractual agreements within which the
-
-            parties are operating.'
-          type: boolean
-      required:
-      - sub
-      type: object
-    JsonWebKey:
-      description: 'Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and
-
-        https://www.rfc-editor.org/rfc/rfc7518.html.'
-      properties:
-        alg:
-          description: 'The "alg" (algorithm) parameter identifies the algorithm intended for
-
-            use with the key.
-
-            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
-          type: string
-        kid:
-          description: 'The "kid" (key ID) parameter is used to match a specific key.  This
-
-            is used, for instance, to choose among a set of keys within a JWK Set
-
-            during key rollover. When "kid" values are used within a JWK Set,
-
-            different keys within the JWK Set SHOULD use distinct "kid" values.
-
-            The "kid" value is a case-sensitive string.
-
-            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
-          type: string
-        kty:
-          description: 'The "kty" (key type) parameter identifies the cryptographic algorithm
-
-            family used with the key, such as "RSA" or "EC". The "kty" value is a
-
-            case-sensitive string. At the moment, only "RSA" is supported.
-
-            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
-          type: string
-        n:
-          description: "The \"n\" (modulus) parameter contains the modulus value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3"
-          type: string
-        e:
-          description: "The \"e\" (exponent) parameter contains the exponent value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3"
-          type: string
-        use:
-          description: 'The "use" (public key use) parameter identifies the intended use of
-
-            the public key. The "use" parameter is employed to indicate whether
-
-            a public key is used for encrypting data or verifying the signature
-
-            on data. Values are commonly "sig" (signature) or "enc" (encryption).
-
-            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
-          type: string
-      required:
-      - e
-      - kid
-      - kty
-      - n
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
     JsonWebKeySet:
       properties:
         keys:
@@ -311,6 +188,129 @@ components:
       - user_pending_consent
       - account_exists
       type: string
+    UserInfoResponse:
+      example:
+        sub: UAAAAAAAAA
+        name: Alice Person
+        given_name: Alice
+        family_name: Person
+        email: alice.person@example.com
+        email_verified: true
+      properties:
+        sub:
+          description: Identifier for the End-User at the Issuer.
+          type: string
+        name:
+          description: 'End-User''s full name in displayable form including all name parts, possibly including
+
+            titles and suffixes, ordered according to the End-User''s locale and preferences.'
+          type: string
+        given_name:
+          description: 'Given name(s) or first name(s) of the End-User. Note that in some cultures, people can
+
+            have multiple given names; all can be present, with the names being separated by space
+
+            characters.'
+          type: string
+        family_name:
+          description: 'Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have
+
+            multiple family names or no family name; all can be present, with the names being
+
+            separated by space characters.'
+          type: string
+        email:
+          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322]
+
+            addr-spec syntax. The RP MUST NOT rely upon this value being unique, as discussed in
+
+            Section 5.7.'
+          format: email
+          type: string
+        email_verified:
+          description: 'True if the End-User''s e-mail address has been verified; otherwise false. When this
+
+            Claim Value is true, this means that the OP took affirmative steps to ensure that this
+
+            e-mail address was controlled by the End-User at the time the verification was
+
+            performed. The means by which an e-mail address is verified is context specific,
+
+            and dependent upon the trust framework or contractual agreements within which the
+
+            parties are operating.'
+          type: boolean
+      required:
+      - sub
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    JsonWebKey:
+      description: 'Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and
+
+        https://www.rfc-editor.org/rfc/rfc7518.html.'
+      properties:
+        alg:
+          description: 'The "alg" (algorithm) parameter identifies the algorithm intended for
+
+            use with the key.
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+        kid:
+          description: 'The "kid" (key ID) parameter is used to match a specific key.  This
+
+            is used, for instance, to choose among a set of keys within a JWK Set
+
+            during key rollover. When "kid" values are used within a JWK Set,
+
+            different keys within the JWK Set SHOULD use distinct "kid" values.
+
+            The "kid" value is a case-sensitive string.
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+        kty:
+          description: 'The "kty" (key type) parameter identifies the cryptographic algorithm
+
+            family used with the key, such as "RSA" or "EC". The "kty" value is a
+
+            case-sensitive string. At the moment, only "RSA" is supported.
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+        n:
+          description: "The \"n\" (modulus) parameter contains the modulus value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3"
+          type: string
+        e:
+          description: "The \"e\" (exponent) parameter contains the exponent value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3"
+          type: string
+        use:
+          description: 'The "use" (public key use) parameter identifies the intended use of
+
+            the public key. The "use" parameter is employed to indicate whether
+
+            a public key is used for encrypting data or verifying the signature
+
+            on data. Values are commonly "sig" (signature) or "enc" (encryption).
+
+            See https://www.rfc-editor.org/rfc/rfc7517#section-4'
+          type: string
+      required:
+      - e
+      - kid
+      - kty
+      - n
+      type: object
   securitySchemes:
     basicAuth:
       scheme: basic

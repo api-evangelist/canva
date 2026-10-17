@@ -116,6 +116,63 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    DesignType:
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignType'
+      - $ref: '#/components/schemas/CustomDesignType'
+      description: The type and dimensions for a new design
+    PresetDesignType:
+      type: object
+      description: A preset design type
+      properties:
+        type:
+          type: string
+          enum:
+          - preset
+          example: preset
+        name:
+          type: string
+          description: The preset design type name
+          enum:
+          - doc
+          - whiteboard
+          - presentation
+          example: doc
+      required:
+      - type
+      - name
+    CustomDesignType:
+      type: object
+      description: A custom design type with specific dimensions
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          example: custom
+        width:
+          type: integer
+          description: Width in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
+        height:
+          type: integer
+          description: Height in pixels (40-8000)
+          minimum: 40
+          maximum: 8000
+          example: 10
+      required:
+      - type
+      - width
+      - height
+    ResizeJobResponse:
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/ResizeJob'
+      required:
+      - job
     Design:
       type: object
       description: A Canva design
@@ -153,99 +210,36 @@ components:
       - urls
       - created_at
       - updated_at
-    CustomDesignType:
+    CreateResizeJobRequest:
       type: object
-      description: A custom design type with specific dimensions
+      description: Request body for creating a design resize job
       properties:
-        type:
+        design_id:
           type: string
-          enum:
-          - custom
-          example: custom
-        width:
-          type: integer
-          description: Width in pixels (40-8000)
-          minimum: 40
-          maximum: 8000
-          example: 10
-        height:
-          type: integer
-          description: Height in pixels (40-8000)
-          minimum: 40
-          maximum: 8000
-          example: 10
+          description: The design ID to resize
+          example: '500123'
+        design_type:
+          $ref: '#/components/schemas/DesignType'
       required:
-      - type
-      - width
-      - height
-    PresetDesignType:
+      - design_id
+      - design_type
+    DesignUrls:
       type: object
-      description: A preset design type
+      description: Temporary URLs for accessing a design (expire after 30 days)
       properties:
-        type:
-          type: string
-          enum:
-          - preset
-          example: preset
-        name:
-          type: string
-          description: The preset design type name
-          enum:
-          - doc
-          - whiteboard
-          - presentation
-          example: doc
-      required:
-      - type
-      - name
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    ResizeJobResponse:
-      type: object
-      properties:
-        job:
-          $ref: '#/components/schemas/ResizeJob'
-      required:
-      - job
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
+        edit_url:
           type: string
           format: uri
-          description: Thumbnail URL (expires in 15 minutes)
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
           example: https://www.example.com
       required:
-      - width
-      - height
-      - url
-    DesignType:
-      oneOf:
-      - $ref: '#/components/schemas/PresetDesignType'
-      - $ref: '#/components/schemas/CustomDesignType'
-      description: The type and dimensions for a new design
+      - edit_url
+      - view_url
     ResizeJob:
       type: object
       description: A resize job for creating a resized copy of a design
@@ -286,36 +280,42 @@ components:
       required:
       - id
       - status
-    CreateResizeJobRequest:
+    Error:
       type: object
-      description: Request body for creating a design resize job
+      description: An error response
       properties:
-        design_id:
+        code:
           type: string
-          description: The design ID to resize
-          example: '500123'
-        design_type:
-          $ref: '#/components/schemas/DesignType'
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
       required:
-      - design_id
-      - design_type
-    DesignUrls:
+      - code
+      - message
+    Thumbnail:
       type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
       properties:
-        edit_url:
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
           type: string
           format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
+          description: Thumbnail URL (expires in 15 minutes)
           example: https://www.example.com
       required:
-      - edit_url
-      - view_url
+      - width
+      - height
+      - url
     Owner:
       type: object
       description: The owner of a resource
@@ -332,8 +332,14 @@ components:
       - user_id
       - team_id
   responses:
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
       content:
         application/json:
           schema:
@@ -344,20 +350,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
       content:
         application/json:
           schema:

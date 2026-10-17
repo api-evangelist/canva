@@ -144,58 +144,58 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    CommentUser:
+    CreateCommentRequest:
       type: object
-      description: A user associated with a comment
+      description: Request body for creating a comment
       properties:
-        id:
-          type: string
-          description: The user ID
-          example: abc123
-        display_name:
-          type: string
-          description: The user display name
-          deprecated: true
-          example: example_value
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
+        attached_to:
+          $ref: '#/components/schemas/CommentAttachment'
         message:
           type: string
-          description: Human-readable error message
+          description: Comment text (1-2048 characters). Mention users with [user_id:team_id] format.
+          minLength: 1
+          maxLength: 2048
           example: example_value
+        assignee_id:
+          type: string
+          description: User ID to assign the comment to
+          deprecated: true
+          example: '500123'
       required:
-      - code
+      - attached_to
       - message
-    MentionedUser:
-      type: object
-      description: A user mentioned in a comment
-      properties:
-        user_id:
-          type: string
-          description: The mentioned user ID
-          example: '500123'
-        team_id:
-          type: string
-          description: The mentioned user team ID
-          example: '500123'
-        display_name:
-          type: string
-          description: The mentioned user display name
-          example: example_value
-    CommentResponse:
-      type: object
-      properties:
-        comment:
-          $ref: '#/components/schemas/Comment'
-      required:
-      - comment
     Comment:
       type: object
       description: A comment on a design
@@ -240,6 +240,56 @@ components:
       - author
       - created_at
       - updated_at
+    CommentUser:
+      type: object
+      description: A user associated with a comment
+      properties:
+        id:
+          type: string
+          description: The user ID
+          example: abc123
+        display_name:
+          type: string
+          description: The user display name
+          deprecated: true
+          example: example_value
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
+    CreateReplyRequest:
+      type: object
+      description: Request body for creating a reply to a comment
+      properties:
+        attached_to:
+          $ref: '#/components/schemas/CommentAttachment'
+        message:
+          type: string
+          description: Reply text (1-2048 characters)
+          minLength: 1
+          maxLength: 2048
+          example: example_value
+      required:
+      - attached_to
+      - message
+    CommentResponse:
+      type: object
+      properties:
+        comment:
+          $ref: '#/components/schemas/Comment'
+      required:
+      - comment
     CommentAttachment:
       type: object
       description: The object a comment is attached to
@@ -257,72 +307,22 @@ components:
       required:
       - type
       - design_id
-    CreateReplyRequest:
+    MentionedUser:
       type: object
-      description: Request body for creating a reply to a comment
+      description: A user mentioned in a comment
       properties:
-        attached_to:
-          $ref: '#/components/schemas/CommentAttachment'
-        message:
+        user_id:
           type: string
-          description: Reply text (1-2048 characters)
-          minLength: 1
-          maxLength: 2048
-          example: example_value
-      required:
-      - attached_to
-      - message
-    CreateCommentRequest:
-      type: object
-      description: Request body for creating a comment
-      properties:
-        attached_to:
-          $ref: '#/components/schemas/CommentAttachment'
-        message:
-          type: string
-          description: Comment text (1-2048 characters). Mention users with [user_id:team_id] format.
-          minLength: 1
-          maxLength: 2048
-          example: example_value
-        assignee_id:
-          type: string
-          description: User ID to assign the comment to
-          deprecated: true
+          description: The mentioned user ID
           example: '500123'
-      required:
-      - attached_to
-      - message
-  responses:
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+        team_id:
+          type: string
+          description: The mentioned user team ID
+          example: '500123'
+        display_name:
+          type: string
+          description: The mentioned user display name
+          example: example_value
   securitySchemes:
     oauth2:
       type: oauth2
