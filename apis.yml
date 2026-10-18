@@ -1039,9 +1039,10 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
-  - OIDC
+  - OpenID Connect
   tags_raw:
   - oidc
+  - OIDC
   properties:
   - type: OpenAPI
     url: openapi/canva-oidc-api-openapi.yml
