@@ -3,21 +3,21 @@ info:
   contact:
     name: Canva Developer Community
     url: https://community.canva.dev/
-  description: API for building integrations with Canva via a REST api
+  description: API for building apps with Canva via a REST api
   license:
     name: ©2023 All Rights Reserved
   termsOfService: https://www.canva.com/trust/legal/
-  title: Canva Connect OIDC API
+  title: Canva REST Oidc API
   version: 2024-06-18
 servers:
-- description: Canva Connect API
+- description: Canva REST APIs
   url: https://api.canva.com/rest
 tags:
 - name: OIDC
 paths:
   /v1/oidc/jwks:
     servers:
-    - description: Canva Connect API
+    - description: Canva REST APIs
       url: https://api.canva.com/auth
     get:
       description: Gets the JSON Web Key Set (public keys) for OIDC. These keys are used to verify JWTs in OpenID Connect flows.
@@ -42,7 +42,7 @@ paths:
       x-summary-source: derived
   /v1/oidc/userinfo:
     servers:
-    - description: Canva Connect API
+    - description: Canva REST APIs
       url: https://api.canva.com/auth
     get:
       description: 'Fetches the current UserInfo claims for the authorized user. This is the same fields
@@ -137,13 +137,15 @@ components:
       - invalid_basic_header
       - invalid_file_format
       - quota_exceeded
-      - ai_credit_quota_exceeded
-      - ai_credit_quota_cooldown
+      - credit_quota_exceeded
+      - credit_quota_cooldown
       - unsupported_content_type
       - request_too_large
       - folder_not_found
       - item_in_multiple_folders
       - asset_not_found
+      - unsupported_asset
+      - asset_not_ready
       - max_limit_reached
       - permission_not_found
       - permission_exists
@@ -177,16 +179,20 @@ components:
       - feature_not_available
       - unsupported_design_type
       - design_generation_not_enabled
+      - design_generation_rejected
       - license_required
       - input_unsafe
       - display_name_unavailable
       - user_not_managed
       - saml_team_id_conflict
       - saml_name_id_not_available
+      - user_linked_to_another_idp
       - user_email_unverified
       - user_not_active
       - user_pending_consent
       - account_exists
+      - domain_restricted
+      - user_already_member
       type: string
     UserInfoResponse:
       example:

@@ -3,23 +3,23 @@ info:
   contact:
     name: Canva Developer Community
     url: https://community.canva.dev/
-  description: API for building integrations with Canva via a REST api
+  description: API for building apps with Canva via a REST api
   license:
     name: ©2023 All Rights Reserved
   termsOfService: https://www.canva.com/trust/legal/
-  title: Canva Connect O Auth OAuth API
+  title: Canva REST OAuth API
   version: 2024-06-18
 servers:
-- description: Canva Connect API
+- description: Canva REST APIs
   url: https://api.canva.com/rest
 tags:
 - name: OAuth
 paths:
   /v1/oauth/token:
     servers:
-    - description: Canva Connect API
+    - description: Canva REST APIs
       url: https://api.canva.com/auth
-    - description: Canva Connect API (deprecated)
+    - description: Canva REST APIs (deprecated)
       url: https://api.canva.com/rest
     post:
       description: 'This endpoint implements the OAuth 2.0 `token` endpoint, as part of the Authorization Code flow with Proof Key for Code Exchange (PKCE). For more information, see Authentication.
@@ -33,7 +33,7 @@ paths:
         - A refresh token
 
 
-        Generating a token using either an authorization code or a refresh token allows your integration to act on behalf of a user. You must first obtain user authorization and get an authorization code.
+        Generating a token using either an authorization code or a refresh token allows your app to act on behalf of a user. You must first obtain user authorization and get an authorization code.
 
 
         Access tokens may be up to 4 KB in size, and are only valid for a specified period of time. The expiry time (currently 4 hours) is shown in the endpoint response and is subject to change.
@@ -47,10 +47,10 @@ paths:
 
         - **Basic access authentication** (Recommended): For basic access authentication, the `{credentials}` string must be a Base64 encoded value of `{client id}:{client secret}`.
 
-        - **Body parameters**: Provide your integration''s credentials using the `client_id` and `client_secret` body parameters.
+        - **Body parameters**: Provide your app''s credentials using the `client_id` and `client_secret` body parameters.
 
 
-        This endpoint can''t be called from a user''s web-browser client because it uses client authentication with client secrets. Requests must come from your integration''s backend, otherwise they''ll be blocked by Canva''s Cross-Origin Resource Sharing (CORS) policy.
+        This endpoint can''t be called from a user''s web-browser client because it uses client authentication with client secrets. Requests must come from your app''s backend, otherwise they''ll be blocked by Canva''s Cross-Origin Resource Sharing (CORS) policy.
 
 
         **Generate an access token using an authorization code**
@@ -63,7 +63,7 @@ paths:
 
         - Provide the `code_verifier` value that you generated when creating the user authorization URL.
 
-        - Provide the authorization code you received after the user authorized the integration.
+        - Provide the authorization code you received after the user authorized the app.
 
 
         **Generate an access token using a refresh token**
@@ -164,9 +164,9 @@ paths:
       x-summary-source: derived
   /v1/oauth/introspect:
     servers:
-    - description: Canva Connect API
+    - description: Canva REST APIs
       url: https://api.canva.com/auth
-    - description: Canva Connect API (deprecated)
+    - description: Canva REST APIs (deprecated)
       url: https://api.canva.com/rest
     post:
       description: 'Introspect an access token to see whether it is valid and active. You can also verify some token properties, such as its claims, scopes, and validity times.
@@ -177,10 +177,10 @@ paths:
 
         - **Basic access authentication** (Recommended): For basic access authentication, the `{credentials}` string must be a Base64 encoded value of `{client id}:{client secret}`.
 
-        - **Body parameters**: Provide your integration''s credentials using the `client_id` and `client_secret` body parameters.
+        - **Body parameters**: Provide your app''s credentials using the `client_id` and `client_secret` body parameters.
 
 
-        This endpoint can''t be called from a user''s web-browser client because it uses client authentication with client secrets. Requests must come from your integration''s backend, otherwise they''ll be blocked by Canva''s Cross-Origin Resource Sharing (CORS) policy.'
+        This endpoint can''t be called from a user''s web-browser client because it uses client authentication with client secrets. Requests must come from your app''s backend, otherwise they''ll be blocked by Canva''s Cross-Origin Resource Sharing (CORS) policy.'
       operationId: introspectToken
       requestBody:
         content:
@@ -240,9 +240,9 @@ paths:
       x-summary-source: derived
   /v1/oauth/revoke:
     servers:
-    - description: Canva Connect API
+    - description: Canva REST APIs
       url: https://api.canva.com/auth
-    - description: Canva Connect API (deprecated)
+    - description: Canva REST APIs (deprecated)
       url: https://api.canva.com/rest
     post:
       description: 'Revoke an access token or a refresh token.
@@ -253,7 +253,7 @@ paths:
 
         - The refresh token''s lineage is also revoked. This means that access tokens created from that refresh token are also revoked.
 
-        - The user''s consent for your integration is also revoked. This means that the user must go through the OAuth process again to use your integration.
+        - The user''s consent for your app is also revoked. This means that the user must go through the OAuth process again to use your app.
 
 
         Requests to this endpoint require authentication with your client ID and client secret, using _one_ of the following methods:
@@ -261,10 +261,10 @@ paths:
 
         - **Basic access authentication** (Recommended): For basic access authentication, the `{credentials}` string must be a Base64 encoded value of `{client id}:{client secret}`.
 
-        - **Body parameters**: Provide your integration''s credentials using the `client_id` and `client_secret` body parameters.
+        - **Body parameters**: Provide your app''s credentials using the `client_id` and `client_secret` body parameters.
 
 
-        This endpoint can''t be called from a user''s web-browser client because it uses client authentication with client secrets. Requests must come from your integration''s backend, otherwise they''ll be blocked by Canva''s Cross-Origin Resource Sharing (CORS) policy.'
+        This endpoint can''t be called from a user''s web-browser client because it uses client authentication with client secrets. Requests must come from your app''s backend, otherwise they''ll be blocked by Canva''s Cross-Origin Resource Sharing (CORS) policy.'
       operationId: revokeTokens
       requestBody:
         content:
@@ -328,91 +328,16 @@ paths:
       x-summary-source: derived
 components:
   examples:
-    InvalidTokenError:
-      summary: The token supplied is neither an access token nor a refresh token.
-      value:
-        code: bad_request_params
-        message: Token is neither an access or refresh token
-    ClientIdBodyParamMultipleValues:
-      summary: client_id body parameter has multiple values
-      value:
-        code: invalid_field
-        message: client_id body param must have a single value
-    TooManyTokenExchangeRequests:
-      summary: Too many token exchange requests.
-      value:
-        code: too_many_requests
-        message: Too many {grantType} requests
-    UnauthorizedClientError:
-      summary: The client must be authenticated using basic auth or body parameters.
-      value:
-        code: unauthorized_client
-        message: The client must either be authenticated using basic auth or body parameters.
-    ClientSecretInvalid:
-      summary: Client secret is invalid (Unauthorized)
-      value:
-        code: invalid_access_token
-        message: Client secret is invalid for {clientAppId}
-    TokenExchangeInvalidGrant:
-      summary: The provided authorization grant is invalid, expired, or revoked.
-      value:
-        code: invalid_grant
-        message: '{description}'
-    BadRequestBodyTooLarge:
-      summary: Request body too large
-      value:
-        code: bad_request_body
-        message: Request body too large
-    AccessTokenMissing:
-      summary: Access token is missing
-      value:
-        code: invalid_access_token
-        message: Access token is missing
-    InvalidRefreshToken:
-      summary: The refresh token is invalid.
-      value:
-        code: invalid_grant
-        message: Invalid refresh token
-    SecretBasicAuthParamBlank:
-      summary: secret basic auth parameter is blank or empty
-      value:
-        code: invalid_field
-        message: secret basic auth parameter must not be blank or empty
-    ClientSecretBodyParamMultipleValues:
-      summary: client_secret body parameter has multiple values
-      value:
-        code: invalid_field
-        message: client_secret body param must have a single value
-    TokenExchangeUnauthorizedUser:
-      summary: The user is not authorized.
-      value:
-        code: unauthorized_user
-        message: '{description}'
-    InvalidRequestError:
-      summary: The request is invalid.
-      value:
-        code: invalid_request
-        message: Invalid request
-    TokenExchangeInvalidScope:
-      summary: The requested scope is invalid, unknown, or malformed.
-      value:
-        code: invalid_scope
-        message: '{description}'
-    TokenExchangeInvalidClient:
-      summary: The client credentials are invalid.
-      value:
-        code: invalid_client
-        message: '{description}'
     TokenExchangeUnauthorizedClient:
       summary: The client is not authorized to use this grant type.
       value:
         code: unauthorized_client
         message: '{description}'
-    TokenExchangeUnsupportedGrantType:
-      summary: The grant type is not supported.
+    ClientIdBodyParamMultipleValues:
+      summary: client_id body parameter has multiple values
       value:
-        code: unsupported_grant_type
-        message: '{description}'
+        code: invalid_field
+        message: client_id body param must have a single value
     TokenExchangeInvalidRequest:
       summary: The token exchange request is invalid.
       value:
@@ -423,32 +348,89 @@ components:
       value:
         code: invalid_field
         message: client_id body param must not be blank or empty
+    SecretBasicAuthParamBlank:
+      summary: secret basic auth parameter is blank or empty
+      value:
+        code: invalid_field
+        message: secret basic auth parameter must not be blank or empty
+    TokenExchangeInvalidGrant:
+      summary: The provided authorization grant is invalid, expired, or revoked.
+      value:
+        code: invalid_grant
+        message: '{description}'
+    InvalidTokenError:
+      summary: The token supplied is neither an access token nor a refresh token.
+      value:
+        code: bad_request_params
+        message: Token is neither an access or refresh token
+    TooManyTokenExchangeRequests:
+      summary: Too many token exchange requests.
+      value:
+        code: too_many_requests
+        message: Too many {grantType} requests
+    TokenExchangeUnauthorizedUser:
+      summary: The user is not authorized.
+      value:
+        code: unauthorized_user
+        message: '{description}'
     ClientIdBasicAuthParamBlank:
       summary: client_id basic auth parameter is blank or empty
       value:
         code: invalid_field
         message: client_id basic auth parameter must not be blank or empty
+    TokenExchangeUnsupportedGrantType:
+      summary: The grant type is not supported.
+      value:
+        code: unsupported_grant_type
+        message: '{description}'
+    TokenExchangeInvalidScope:
+      summary: The requested scope is invalid, unknown, or malformed.
+      value:
+        code: invalid_scope
+        message: '{description}'
+    BadRequestBodyTooLarge:
+      summary: Request body too large
+      value:
+        code: bad_request_body
+        message: Request body too large
+    UnauthorizedClientError:
+      summary: The client must be authenticated using basic auth or body parameters.
+      value:
+        code: unauthorized_client
+        message: The client must either be authenticated using basic auth or body parameters.
+    ClientSecretInvalid:
+      summary: Client secret is invalid (Unauthorized)
+      value:
+        code: invalid_access_token
+        message: Client secret is invalid for {clientAppId}
+    InvalidRefreshToken:
+      summary: The refresh token is invalid.
+      value:
+        code: invalid_grant
+        message: Invalid refresh token
+    ClientSecretBodyParamMultipleValues:
+      summary: client_secret body parameter has multiple values
+      value:
+        code: invalid_field
+        message: client_secret body param must have a single value
+    AccessTokenMissing:
+      summary: Access token is missing
+      value:
+        code: invalid_access_token
+        message: Access token is missing
+    TokenExchangeInvalidClient:
+      summary: The client credentials are invalid.
+      value:
+        code: invalid_client
+        message: '{description}'
+    InvalidRequestError:
+      summary: The request is invalid.
+      value:
+        code: invalid_request
+        message: Invalid request
   schemas:
-    OauthError:
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorCode'
-        error_description:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - error
-      - error_description
-      type: object
-    ExchangeAccessTokenRequest:
-      discriminator:
-        mapping:
-          authorization_code: '#/components/schemas/ExchangeAuthCodeRequest'
-          refresh_token: '#/components/schemas/ExchangeRefreshTokenRequest'
-        propertyName: grant_type
-      oneOf:
-      - $ref: '#/components/schemas/ExchangeAuthCodeRequest'
-      - $ref: '#/components/schemas/ExchangeRefreshTokenRequest'
+    RevokeTokensResponse:
+      description: The response on a successful token revocation.
       type: object
     ExchangeRefreshTokenRequest:
       properties:
@@ -459,7 +441,7 @@ components:
           example: refresh_token
           type: string
         client_id:
-          description: 'Your integration''s unique ID, for authenticating the request.
+          description: 'Your app''s unique ID, for authenticating the request.
 
 
             NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
@@ -468,7 +450,7 @@ components:
           example: OC-FAB12-AbCdEf
           type: string
         client_secret:
-          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
+          description: 'Your app''s client secret, for authenticating the request. Begins with `cnvca`.
 
 
             NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
@@ -481,7 +463,7 @@ components:
           example: JABix5nolsk9k8n2r0f8nq1gw4zjo40ht6sb4i573wgdzmkwdmiy6muh897hp0bxyab276wtgqkvtob2mg9aidt5d6rcltcbcgs101
           type: string
         scope:
-          description: 'Optional scope value when refreshing an access token. Separate multiple [scopes](https://www.canva.dev/docs/connect/appendix/scopes/) with a single space between each scope.
+          description: 'Optional scope value when refreshing an access token. Separate multiple [scopes](https://www.canva.dev/docs/apps/rest-apis/scopes/) with a single space between each scope.
 
 
             The requested scope cannot include any permissions not already granted, so this parameter allows you to limit the scope when refreshing a token. If omitted, the scope for the token remains unchanged.
@@ -493,35 +475,44 @@ components:
       - grant_type
       - refresh_token
       type: object
-    ExchangeAccessTokenResponse:
-      description: Exchange auth token to access token.
+    RevokeTokensRequest:
+      description: Supply an access token or refresh token to have its lineage revoked.
       properties:
-        access_token:
-          description: The bearer access token to use to authenticate to Canva Connect API endpoints. If requested using a `authorization_code` or `refresh_token`, this allows you to act on behalf of a user.
-          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
+        token:
+          description: The token to revoke.
+          example: agALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
           type: string
-        refresh_token:
-          description: The token that you can use to refresh the access token.
-          example: JABix5nolsk9k8n2r0f8nq1gw4zjo40ht6sb4i573wgdzmkwdmiy6muh897hp0bxyab276wtgqkvtob2mg9aidt5d6rcltcbcgs101
+        client_id:
+          description: 'Your app''s unique ID, for authenticating the request.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: OC-FAB12-AbCdEf
           type: string
-        token_type:
-          description: The token type returned. This is always `Bearer`.
-          example: Bearer
-          type: string
-        expires_in:
-          description: The expiry time (in seconds) for the access token.
-          example: 14400
-          format: int64
-          type: integer
-        scope:
-          description: The [scopes](https://www.canva.dev/docs/connect/appendix/scopes/) that the token has been granted.
-          example: asset:read design:meta:read design:permission:read folder:read
+        client_secret:
+          description: 'Your app''s client secret, for authenticating the request. Begins with `cnvca`.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: cnvcaAbcdefg12345_hijklm6789
           type: string
       required:
-      - access_token
-      - expires_in
-      - refresh_token
-      - token_type
+      - token
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -555,13 +546,15 @@ components:
       - invalid_basic_header
       - invalid_file_format
       - quota_exceeded
-      - ai_credit_quota_exceeded
-      - ai_credit_quota_cooldown
+      - credit_quota_exceeded
+      - credit_quota_cooldown
       - unsupported_content_type
       - request_too_large
       - folder_not_found
       - item_in_multiple_folders
       - asset_not_found
+      - unsupported_asset
+      - asset_not_ready
       - max_limit_reached
       - permission_not_found
       - permission_exists
@@ -595,17 +588,147 @@ components:
       - feature_not_available
       - unsupported_design_type
       - design_generation_not_enabled
+      - design_generation_rejected
       - license_required
       - input_unsafe
       - display_name_unavailable
       - user_not_managed
       - saml_team_id_conflict
       - saml_name_id_not_available
+      - user_linked_to_another_idp
       - user_email_unverified
       - user_not_active
       - user_pending_consent
       - account_exists
+      - domain_restricted
+      - user_already_member
       type: string
+    OauthError:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorCode'
+        error_description:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - error
+      - error_description
+      type: object
+    ExchangeAuthCodeRequest:
+      properties:
+        grant_type:
+          description: For exchanging an authorization code for an access token.
+          enum:
+          - authorization_code
+          example: authorization_code
+          type: string
+        code_verifier:
+          description: The `code_verifier` value that you generated when creating the user authorization URL.
+          example: i541qdcfkb4htnork0w92lnu43en99ls5a48ittv6udqgiflqon8vusojojakbq4
+          type: string
+        code:
+          description: The authorization code you received after the user authorized the app.
+          example: kp8nnroja7qnx00.opyc1p76rcbyflsxbycjqfp3ub8vzsvltpzwafy9q5l45dn5fxzhe7i7a6mg1i2t8jpsa6sebdeumkzzhicskabgevrxsssec4dvjwfvhq4gs3ugghguar0voiqpfb7axsapiojoter8v3w2s5s3st84jpv2l06h667iw241xngy9c8=vu1tnjp7sz
+          type: string
+        client_id:
+          description: 'Your app''s unique ID, for authenticating the request.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: OC-FAB12-AbCdEf
+          type: string
+        client_secret:
+          description: 'Your app''s client secret, for authenticating the request. Begins with `cnvca`.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: cnvcaAbcdefg12345_hijklm6789
+          type: string
+        redirect_uri:
+          description: 'Only required if a redirect URL was supplied when you [created the user authorization URL](https://www.canva.dev/docs/apps/rest-apis/authentication/#create-the-authorization-url).
+
+
+            Must be one of those already specified by the client. If not supplied, the first redirect_uri defined for the client will be used by default.
+
+            '
+          example: https://example.com/process-auth
+          type: string
+      required:
+      - code
+      - code_verifier
+      - grant_type
+      type: object
+    ExchangeAccessTokenRequest:
+      discriminator:
+        mapping:
+          authorization_code: '#/components/schemas/ExchangeAuthCodeRequest'
+          refresh_token: '#/components/schemas/ExchangeRefreshTokenRequest'
+        propertyName: grant_type
+      oneOf:
+      - $ref: '#/components/schemas/ExchangeAuthCodeRequest'
+      - $ref: '#/components/schemas/ExchangeRefreshTokenRequest'
+      type: object
+    IntrospectTokenRequest:
+      properties:
+        token:
+          description: The token to introspect.
+          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
+          type: string
+        client_id:
+          description: 'Your app''s unique ID, for authenticating the request.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: OC-FAB12-AbCdEf
+          type: string
+        client_secret:
+          description: 'Your app''s client secret, for authenticating the request. Begins with `cnvca`.
+
+
+            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
+
+            '
+          example: cnvcaAbcdefg12345_hijklm6789
+          type: string
+      required:
+      - token
+      type: object
+    ExchangeAccessTokenResponse:
+      description: Exchange auth token to access token.
+      properties:
+        access_token:
+          description: The bearer access token to use to authenticate to Canva REST API endpoints. If requested using a `authorization_code` or `refresh_token`, this allows you to act on behalf of a user.
+          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
+          type: string
+        refresh_token:
+          description: The token that you can use to refresh the access token.
+          example: JABix5nolsk9k8n2r0f8nq1gw4zjo40ht6sb4i573wgdzmkwdmiy6muh897hp0bxyab276wtgqkvtob2mg9aidt5d6rcltcbcgs101
+          type: string
+        token_type:
+          description: The token type returned. This is always `Bearer`.
+          example: Bearer
+          type: string
+        expires_in:
+          description: The expiry time (in seconds) for the access token.
+          example: 14400
+          format: int64
+          type: integer
+        scope:
+          description: The [scopes](https://www.canva.dev/docs/apps/rest-apis/scopes/) that the token has been granted.
+          example: asset:read design:meta:read design:permission:read folder:read
+          type: string
+      required:
+      - access_token
+      - expires_in
+      - refresh_token
+      - token_type
+      type: object
     IntrospectTokenResponse:
       description: Introspection result of access or refresh tokens
       properties:
@@ -619,7 +742,7 @@ components:
           example: true
           type: boolean
         scope:
-          description: The [scopes](https://www.canva.dev/docs/connect/appendix/scopes/) that the token has been granted.
+          description: The [scopes](https://www.canva.dev/docs/apps/rest-apis/scopes/) that the token has been granted.
           example: asset:read design:meta:read design:permission:read folder:read
           type: string
         client:
@@ -649,130 +772,13 @@ components:
           description: 'The subject of the claim. This is the ID of the Canva user that the access token acts on behalf of.
 
 
-            This is an obfuscated value, so a single user has a unique ID for each integration. If the same user authorizes another integration, their ID in that other integration is different.
+            This is an obfuscated value, so a single user has a unique ID for each app. If the same user authorizes another app, their ID in that other app is different.
 
             '
           example: oBCdEF1Gh2i3jkLmno-pq
           type: string
       required:
       - active
-      type: object
-    RevokeTokensResponse:
-      description: The response on a successful token revocation.
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    RevokeTokensRequest:
-      description: Supply an access token or refresh token to have its lineage revoked.
-      properties:
-        token:
-          description: The token to revoke.
-          example: agALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
-          type: string
-        client_id:
-          description: 'Your integration''s unique ID, for authenticating the request.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: OC-FAB12-AbCdEf
-          type: string
-        client_secret:
-          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: cnvcaAbcdefg12345_hijklm6789
-          type: string
-      required:
-      - token
-      type: object
-    IntrospectTokenRequest:
-      properties:
-        token:
-          description: The token to introspect.
-          example: JagALLazU0i2ld9WW4zTO4kaG0lkvP8Y5sSO206ZwxNF4E1y3xKJKF7TzN17BXTfaNOeY0P88AeRCE6cRF7SJzvf3Sx97rA80sGHtFplFo
-          type: string
-        client_id:
-          description: 'Your integration''s unique ID, for authenticating the request.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: OC-FAB12-AbCdEf
-          type: string
-        client_secret:
-          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: cnvcaAbcdefg12345_hijklm6789
-          type: string
-      required:
-      - token
-      type: object
-    ExchangeAuthCodeRequest:
-      properties:
-        grant_type:
-          description: For exchanging an authorization code for an access token.
-          enum:
-          - authorization_code
-          example: authorization_code
-          type: string
-        code_verifier:
-          description: The `code_verifier` value that you generated when creating the user authorization URL.
-          example: i541qdcfkb4htnork0w92lnu43en99ls5a48ittv6udqgiflqon8vusojojakbq4
-          type: string
-        code:
-          description: The authorization code you received after the user authorized the integration.
-          example: kp8nnroja7qnx00.opyc1p76rcbyflsxbycjqfp3ub8vzsvltpzwafy9q5l45dn5fxzhe7i7a6mg1i2t8jpsa6sebdeumkzzhicskabgevrxsssec4dvjwfvhq4gs3ugghguar0voiqpfb7axsapiojoter8v3w2s5s3st84jpv2l06h667iw241xngy9c8=vu1tnjp7sz
-          type: string
-        client_id:
-          description: 'Your integration''s unique ID, for authenticating the request.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: OC-FAB12-AbCdEf
-          type: string
-        client_secret:
-          description: 'Your integration''s client secret, for authenticating the request. Begins with `cnvca`.
-
-
-            NOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.
-
-            '
-          example: cnvcaAbcdefg12345_hijklm6789
-          type: string
-        redirect_uri:
-          description: 'Only required if a redirect URL was supplied when you [created the user authorization URL](https://www.canva.dev/docs/connect/authentication/#create-the-authorization-url).
-
-
-            Must be one of those already specified by the client. If not supplied, the first redirect_uri defined for the client will be used by default.
-
-            '
-          example: https://example.com/process-auth
-          type: string
-      required:
-      - code
-      - code_verifier
-      - grant_type
       type: object
   securitySchemes:
     basicAuth:

@@ -1,0 +1,12 @@
+{
+ "url": "https://www.canva.dev/sources/connect/api/latest/api.yml",
+ "final": "https://www.canva.dev/sources/connect/api/latest/api.yml",
+ "status": 200,
+ "content_type": "binary/octet-stream",
+ "bytes": 541636,
+ "sha256": "40ca7f6a753b5601207af343534541c88bfa25688fa12e7f32a84e3ee9a0ed09",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

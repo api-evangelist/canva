@@ -220,617 +220,6 @@ apis:
   - type: Documentation
     url: https://www.canva.dev/docs/button/platform-concepts/html-api-vs-js-api/
     title: HTML API vs JavaScript API
-- aid: canva:canva-assets-api
-  name: Canva Assets API
-  description: Upload and manage image and video assets
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - Assets
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-assets-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-autofills-api
-  name: Canva Autofills API
-  description: Create designs from brand templates using autofill data
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - Autofills
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-autofills-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-brand-templates-api
-  name: Canva Brand Templates API
-  description: List and retrieve brand templates and their datasets
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - brand-templates
-  tags_raw:
-  - Brand Templates
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-brand-templates-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-comments-api
-  name: Canva Comments API
-  description: Create and manage comments on designs
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - Comments
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-comments-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-designs-api
-  name: Canva Designs API
-  description: Create, retrieve, and list designs
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - Design
-  tags_raw:
-  - Designs
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-designs-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-exports-api
-  name: Canva Exports API
-  description: Export designs to PDF, PNG, JPG, GIF, PPTX, and MP4
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - Export
-  tags_raw:
-  - Exports
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-exports-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-folders-api
-  name: Canva Folders API
-  description: Retrieve folders and list folder contents
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - Folders
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-folders-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-resizes-api
-  name: Canva Resizes API
-  description: Resize designs to different dimensions or preset types
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - Resizes
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-resizes-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
-- aid: canva:canva-users-api
-  name: Canva Users API
-  description: Retrieve information about the authenticated user
-  humanURL: https://www.canva.com/developers/
-  baseURL: https://api.canva.com
-  tags:
-  - User
-  tags_raw:
-  - Users
-  properties:
-  - type: OpenAPI
-    url: openapi/canva-users-api-openapi.yml
-  - type: Documentation
-    url: https://www.canva.com/developers/docs/connect-api/
-  - type: Authentication
-    url: https://www.canva.com/developers/docs/connect-api/authentication/
-  - type: GettingStarted
-    url: https://www.canva.com/developers/docs/connect-api/get-started/
-  - type: APIReference
-    url: https://www.canva.com/developers/docs/connect-api/api-reference/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/
-  - type: GettingStarted
-    url: https://www.canva.dev/docs/connect/quickstart/
-  - type: Authentication
-    url: https://www.canva.dev/docs/connect/authentication/
-  - type: ChangeLog
-    url: https://www.canva.dev/docs/connect/changelog/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/webhooks/
-  - type: RateLimits
-    url: https://www.canva.dev/docs/connect/api-requests-responses/
-  - type: Security
-    url: https://www.canva.dev/docs/connect/guidelines/security/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/appendix/scopes/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/canva-concepts/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/autofill-guide/
-  - type: Versioning
-    url: https://www.canva.dev/docs/connect/versions/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/creating-integrations/
-  - type: Documentation
-    url: >-
-      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
-  - type: GitHubRepository
-    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
-  - type: APIReference
-    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
-  - type: Documentation
-    url: https://www.canva.dev/docs/connect/mcp-server/
-  - type: JSONSchema
-    url: json-schema/canva-design-schema.json
-  - type: JSONLD
-    url: json-ld/canva-context.jsonld
 - name: Canva Connect API
   description: >-
     The umbrella Canva Connect REST API as Canva publishes it — 59 operations across designs, assets,
@@ -1080,6 +469,207 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/canva-oauth-api-openapi.yml
+- aid: canva:canva-design-generation-api
+  name: Canva Design Generation API
+  description: The design_generation API from Canva — 2 operation(s) for design_generation.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - design_generation
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-design-generation-api-openapi.yml
+  - type: Documentation
+    url: https://www.canva.com/developers/docs/connect-api/
+  - type: Authentication
+    url: https://www.canva.com/developers/docs/connect-api/authentication/
+  - type: GettingStarted
+    url: https://www.canva.com/developers/docs/connect-api/get-started/
+  - type: APIReference
+    url: https://www.canva.com/developers/docs/connect-api/api-reference/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/
+  - type: GettingStarted
+    url: https://www.canva.dev/docs/connect/quickstart/
+  - type: Authentication
+    url: https://www.canva.dev/docs/connect/authentication/
+  - type: ChangeLog
+    url: https://www.canva.dev/docs/connect/changelog/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/webhooks/
+  - type: RateLimits
+    url: https://www.canva.dev/docs/connect/api-requests-responses/
+  - type: Security
+    url: https://www.canva.dev/docs/connect/guidelines/security/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/appendix/scopes/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/canva-concepts/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/autofill-guide/
+  - type: Versioning
+    url: https://www.canva.dev/docs/connect/versions/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/creating-integrations/
+  - type: Documentation
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+  - type: GitHubRepository
+    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/mcp-server/
+  - type: JSONSchema
+    url: json-schema/canva-design-schema.json
+  - type: JSONLD
+    url: json-ld/canva-context.jsonld
+- aid: canva:canva-image-generation-api
+  name: Canva Image Generation API
+  description: The image_generation API from Canva — 2 operation(s) for image_generation.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - image_generation
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-image-generation-api-openapi.yml
+  - type: Documentation
+    url: https://www.canva.com/developers/docs/connect-api/
+  - type: Authentication
+    url: https://www.canva.com/developers/docs/connect-api/authentication/
+  - type: GettingStarted
+    url: https://www.canva.com/developers/docs/connect-api/get-started/
+  - type: APIReference
+    url: https://www.canva.com/developers/docs/connect-api/api-reference/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/
+  - type: GettingStarted
+    url: https://www.canva.dev/docs/connect/quickstart/
+  - type: Authentication
+    url: https://www.canva.dev/docs/connect/authentication/
+  - type: ChangeLog
+    url: https://www.canva.dev/docs/connect/changelog/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/webhooks/
+  - type: RateLimits
+    url: https://www.canva.dev/docs/connect/api-requests-responses/
+  - type: Security
+    url: https://www.canva.dev/docs/connect/guidelines/security/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/appendix/scopes/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/canva-concepts/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/autofill-guide/
+  - type: Versioning
+    url: https://www.canva.dev/docs/connect/versions/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/creating-integrations/
+  - type: Documentation
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+  - type: GitHubRepository
+    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/mcp-server/
+  - type: JSONSchema
+    url: json-schema/canva-design-schema.json
+  - type: JSONLD
+    url: json-ld/canva-context.jsonld
+- aid: canva:canva-image-transformation-api
+  name: Canva Image Transformation API
+  description: The image_transformation API from Canva — 2 operation(s) for image_transformation.
+  humanURL: https://www.canva.com/developers/apps
+  baseURL: https://api.canva.com
+  tags:
+  - image_transformation
+  properties:
+  - type: OpenAPI
+    url: openapi/canva-image-transformation-api-openapi.yml
+  - type: Documentation
+    url: https://www.canva.com/developers/docs/connect-api/
+  - type: Authentication
+    url: https://www.canva.com/developers/docs/connect-api/authentication/
+  - type: GettingStarted
+    url: https://www.canva.com/developers/docs/connect-api/get-started/
+  - type: APIReference
+    url: https://www.canva.com/developers/docs/connect-api/api-reference/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/
+  - type: GettingStarted
+    url: https://www.canva.dev/docs/connect/quickstart/
+  - type: Authentication
+    url: https://www.canva.dev/docs/connect/authentication/
+  - type: ChangeLog
+    url: https://www.canva.dev/docs/connect/changelog/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/webhooks/
+  - type: RateLimits
+    url: https://www.canva.dev/docs/connect/api-requests-responses/
+  - type: Security
+    url: https://www.canva.dev/docs/connect/guidelines/security/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/appendix/scopes/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/canva-concepts/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/autofill-guide/
+  - type: Versioning
+    url: https://www.canva.dev/docs/connect/versions/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/creating-integrations/
+  - type: Documentation
+    url: >-
+      https://www.postman.com/canva-developers/canva-developers/collection/oi7dfns/canva-connect-api
+  - type: GitHubRepository
+    url: https://github.com/canva-sdks/canva-connect-api-starter-kit
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/brand-templates/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/designs/create-design/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/resizes/create-design-resize-job/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/users/users-me/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/assets/get-asset/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/folders/get-folder/
+  - type: APIReference
+    url: https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/
+  - type: Documentation
+    url: https://www.canva.dev/docs/connect/mcp-server/
+  - type: JSONSchema
+    url: json-schema/canva-design-schema.json
+  - type: JSONLD
+    url: json-ld/canva-context.jsonld
 common:
 - type: Website
   url: https://canva.dev

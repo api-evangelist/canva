@@ -3,14 +3,14 @@ info:
   contact:
     name: Canva Developer Community
     url: https://community.canva.dev/
-  description: API for building integrations with Canva via a REST api
+  description: API for building apps with Canva via a REST api
   license:
     name: ©2023 All Rights Reserved
   termsOfService: https://www.canva.com/trust/legal/
-  title: Canva Connect User API
+  title: Canva REST User API
   version: 2024-06-18
 servers:
-- description: Canva Connect API
+- description: Canva REST APIs
   url: https://api.canva.com/rest
 tags:
 - name: User
@@ -102,12 +102,12 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UserProfileResponse:
+    UsersMeResponse:
       properties:
-        profile:
-          $ref: '#/components/schemas/UserProfile'
+        team_user:
+          $ref: '#/components/schemas/TeamUserSummary'
       required:
-      - profile
+      - team_user
       type: object
     GetUserCapabilitiesResponse:
       properties:
@@ -116,12 +116,13 @@ components:
             $ref: '#/components/schemas/Capability'
           type: array
       type: object
-    UsersMeResponse:
+    UserProfile:
+      description: Profile for the user, consisting of the display name and other attributes.
       properties:
-        team_user:
-          $ref: '#/components/schemas/TeamUserSummary'
-      required:
-      - team_user
+        display_name:
+          description: The name of the user as shown in the Canva UI.
+          example: Jane Doe
+          type: string
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -155,13 +156,15 @@ components:
       - invalid_basic_header
       - invalid_file_format
       - quota_exceeded
-      - ai_credit_quota_exceeded
-      - ai_credit_quota_cooldown
+      - credit_quota_exceeded
+      - credit_quota_cooldown
       - unsupported_content_type
       - request_too_large
       - folder_not_found
       - item_in_multiple_folders
       - asset_not_found
+      - unsupported_asset
+      - asset_not_ready
       - max_limit_reached
       - permission_not_found
       - permission_exists
@@ -195,25 +198,46 @@ components:
       - feature_not_available
       - unsupported_design_type
       - design_generation_not_enabled
+      - design_generation_rejected
       - license_required
       - input_unsafe
       - display_name_unavailable
       - user_not_managed
       - saml_team_id_conflict
       - saml_name_id_not_available
+      - user_linked_to_another_idp
       - user_email_unverified
       - user_not_active
       - user_pending_consent
       - account_exists
+      - domain_restricted
+      - user_already_member
       type: string
-    UserProfile:
-      description: Profile for the user, consisting of the display name and other attributes.
-      properties:
-        display_name:
-          description: The name of the user as shown in the Canva UI.
-          example: Jane Doe
-          type: string
-      type: object
+    Capability:
+      description: 'Some APIs are annotated with required capabilities. These endpoints require the user to
+
+        possess the required capabilities in order to be called successfully.'
+      enum:
+      - analytics
+      - autofill
+      - background_removal
+      - brand_template
+      - design_generation
+      - export_png_transparency
+      - image_to_design_imports
+      - resize
+      - team_restricted_app
+      type: string
+      x-enum-descriptions:
+      - Capability required to call the Design analytics APIs. Users that are members of a [Canva Enterprise](https://www.canva.com/enterprise/) organization have this capability.
+      - Capability required to call autofill APIs. Users on a Canva plan with access to autofill (such as Canva Pro, Canva Teams, or Canva Enterprise) have this capability.
+      - Capability required to apply the `background_removal` transformation using the Image transformation APIs. Users on a Canva plan with premium features (such as Canva Pro) have this capability.
+      - Capability required to use brand template APIs. Users on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise) have this capability.
+      - Capability required to call the Design Generation APIs. Users whose feature eligibility and team permissions allow design generation have this capability.
+      - Capability required to export designs in PNG with a transparent background. Users on a paid Canva plan (such as Canva Pro) have this capability.
+      - Capability required to call the Image to Design Import APIs. Users whose [team permission settings](https://www.canva.com/en_au/help/setting-up-team-permissions/) allow "[Magic Layers](https://www.canva.com/magic-layers/)" have this capability.
+      - Capability required to create design resize jobs. Users on a Canva plan with premium features (such as Canva Pro) have this capability.
+      - Capability required to create a team-restricted app. Users that are members of the [Canva Enterprise](https://www.canva.com/enterprise/) or the [Canva for Education](https://www.canva.com/education/) organization have this capability.
     Error:
       properties:
         code:
@@ -225,25 +249,6 @@ components:
       - code
       - message
       type: object
-    Capability:
-      description: 'Some APIs are annotated with required capabilities. These endpoints require the user to
-
-        possess the required capabilities in order to be called successfully.'
-      enum:
-      - analytics
-      - autofill
-      - brand_template
-      - export_png_transparency
-      - resize
-      - team_restricted_app
-      type: string
-      x-enum-descriptions:
-      - Capability required to call the Design analytics APIs. Users that are members of a [Canva Enterprise](https://www.canva.com/enterprise/) organization have this capability.
-      - Capability required to call autofill APIs Users that are members of a [Canva Enterprise](https://www.canva.com/enterprise/) organization have this capability.
-      - Capability required to use brand template APIs. Users on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise) have this capability.
-      - Capability required to export designs in PNG with a transparent background. Users on a paid Canva plan (such as Canva Pro) have this capability.
-      - Capability required to create design resize jobs. Users on a Canva plan with premium features (such as Canva Pro) have this capability.
-      - Capability required to create a team-restricted app. Users that are members of the [Canva Enterprise](https://www.canva.com/enterprise/) or the [Canva for Education](https://www.canva.com/education/) organization have this capability.
     TeamUserSummary:
       description: Metadata for the user, consisting of the User ID and Team ID.
       properties:
@@ -258,6 +263,13 @@ components:
       required:
       - team_id
       - user_id
+      type: object
+    UserProfileResponse:
+      properties:
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+      required:
+      - profile
       type: object
   examples:
     UserNotFoundError:

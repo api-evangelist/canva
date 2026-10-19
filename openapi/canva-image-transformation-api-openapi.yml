@@ -1,0 +1,995 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building apps with Canva via a REST api
+  license:
+    name: ©2023 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva REST Image Transformation API
+  version: 2024-06-18
+servers:
+- description: Canva REST APIs
+  url: https://api.canva.com/rest
+tags:
+- name: image_transformation
+paths:
+  /v1/image-transformations:
+    post:
+      description: 'This API is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new API version.
+
+        - Public apps that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+
+        Starts a new asynchronous job to apply one or more transformations to an image asset. A successful job produces a single new image asset with all of the requested transformations applied. The source asset isn''t modified, and intermediate results aren''t returned.
+
+
+        The request requires the ID of the source asset and at least one transformation. The source asset must be an image asset, such as one created using the Asset upload APIs.
+
+
+        Transformations are applied in the order provided, with each one stacked on the result of the previous one.
+
+
+        Starting a job consumes the user''s AI credit allowance. If the user has reached their AI allowance limit, the request returns a `429` error with the `credit_quota_exceeded` code. Polling for the result of a job using the Get image transformation job API doesn''t consume any of the allowance.
+
+
+        For more information on the workflow for using asynchronous jobs, see API requests and responses. You can check the status and get the results of image transformation jobs created with this API using the Get image transformation job API.'
+      operationId: createImageTransformationJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateImageTransformationJobRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressImageTransformationJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessImageTransformationJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedImageTransformationJobExample'
+              schema:
+                $ref: '#/components/schemas/CreateImageTransformationJobResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                bad_request_field:
+                  $ref: '#/components/examples/BadRequestFieldError'
+                unsupported_content_type:
+                  $ref: '#/components/examples/UnsupportedAssetTypeError'
+                asset_not_ready:
+                  $ref: '#/components/examples/AssetNotReadyError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              examples:
+                InvalidClientError:
+                  $ref: '#/components/examples/InvalidClientError'
+                InvalidAccessToken:
+                  $ref: '#/components/examples/InvalidAccessToken'
+                MissingClientCredentialsOrBodyAuthError:
+                  $ref: '#/components/examples/MissingClientCredentialsOrBodyAuthError'
+                MalformedAuthorizationHeaderComponents:
+                  $ref: '#/components/examples/MalformedAuthorizationHeaderComponents'
+                MalformedAuthorizationHeaderMode:
+                  $ref: '#/components/examples/MalformedAuthorizationHeaderMode'
+                TokenIntrospectionFailed:
+                  $ref: '#/components/examples/TokenIntrospectionFailed'
+                RevokedAccessToken:
+                  $ref: '#/components/examples/RevokedAccessToken'
+                MissingAuthorizationHeader:
+                  $ref: '#/components/examples/MissingAuthorizationHeader'
+                MalformedAuthorizationHeader:
+                  $ref: '#/components/examples/MalformedAuthorizationHeader'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+          x-http-status-code: 401
+        '403':
+          content:
+            application/json:
+              examples:
+                image_transformation_not_enabled:
+                  $ref: '#/components/examples/ImageTransformationNotEnabledError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                asset_not_found:
+                  $ref: '#/components/examples/AssetNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              examples:
+                credit_quota_exceeded:
+                  $ref: '#/components/examples/CreditQuotaExceededError'
+                credit_quota_cooldown:
+                  $ref: '#/components/examples/CreditQuotaCooldownError'
+              schema:
+                $ref: '#/components/schemas/CreditQuotaError'
+          description: Credit Quota Exceeded
+          x-http-status-code: 429
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - asset:read
+        - asset:write
+      tags:
+      - image_transformation
+      x-rate-limit-per-client-user: 20
+      summary: Create image transformation job
+      x-summary-source: derived
+  /v1/image-transformations/{jobId}:
+    get:
+      description: 'This API is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview APIs won''t produce a new API version.
+
+        - Public apps that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+
+
+        Gets the result of an image transformation job that was created using the Create image transformation job API.
+
+
+        If the job is successful, the job''s `result` contains the new image asset produced by the transformations.
+
+
+        You might need to make multiple requests to this endpoint until you get a `success` or `failed` status. For more information on the workflow for using asynchronous jobs, see API requests and responses.'
+      operationId: getImageTransformationJob
+      parameters:
+      - description: The image transformation job ID.
+        explode: false
+        in: path
+        name: jobId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                in_progress:
+                  $ref: '#/components/examples/InProgressImageTransformationJobExample'
+                success:
+                  $ref: '#/components/examples/SuccessImageTransformationJobExample'
+                failed:
+                  $ref: '#/components/examples/FailedImageTransformationJobExample'
+              schema:
+                $ref: '#/components/schemas/GetImageTransformationJobResponse'
+          description: OK
+        '401':
+          content:
+            application/json:
+              examples:
+                InvalidClientError:
+                  $ref: '#/components/examples/InvalidClientError'
+                InvalidAccessToken:
+                  $ref: '#/components/examples/InvalidAccessToken'
+                MissingClientCredentialsOrBodyAuthError:
+                  $ref: '#/components/examples/MissingClientCredentialsOrBodyAuthError'
+                MalformedAuthorizationHeaderComponents:
+                  $ref: '#/components/examples/MalformedAuthorizationHeaderComponents'
+                MalformedAuthorizationHeaderMode:
+                  $ref: '#/components/examples/MalformedAuthorizationHeaderMode'
+                TokenIntrospectionFailed:
+                  $ref: '#/components/examples/TokenIntrospectionFailed'
+                RevokedAccessToken:
+                  $ref: '#/components/examples/RevokedAccessToken'
+                MissingAuthorizationHeader:
+                  $ref: '#/components/examples/MissingAuthorizationHeader'
+                MalformedAuthorizationHeader:
+                  $ref: '#/components/examples/MalformedAuthorizationHeader'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+          x-http-status-code: 401
+        '404':
+          content:
+            application/json:
+              examples:
+                image_transformation_job_not_found:
+                  $ref: '#/components/examples/ImageTransformationJobNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              examples:
+                TooManyRequestsError:
+                  $ref: '#/components/examples/TooManyRequestsError'
+                ThrottledTooManyRequests:
+                  $ref: '#/components/examples/ThrottledTooManyRequests'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Too Many Requests
+          x-http-status-code: 429
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthAuthCode:
+        - asset:read
+      tags:
+      - image_transformation
+      x-rate-limit-per-client-user: 120
+      summary: Get image transformation job
+      x-summary-source: derived
+components:
+  schemas:
+    ImageTransformationJobResult:
+      description: Result of the image transformation job. Only present if the job status is `success`.
+      properties:
+        asset:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          description: The new image asset produced by applying all of the requested transformations.
+      required:
+      - asset
+      type: object
+    CreditQuotaUsageSummary:
+      description: A summary of the caller's credit quota usage at the time of the request.
+      properties:
+        used_percentage:
+          description: 'The percentage of the caller''s credit quota that has been consumed in the current
+
+            billing interval, from 0 to 100.'
+          format: int32
+          maximum: 100
+          minimum: 0
+          type: integer
+        resets_at:
+          description: 'Unix timestamp (seconds from the Unix epoch) of when the credit quota resets for
+
+            the caller.'
+          format: int64
+          type: integer
+        using_bonus_credits:
+          description: 'Whether the caller is currently consuming bonus credits (credits beyond their base
+
+            plan allocation).'
+          type: boolean
+      type: object
+    GetImageTransformationJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/ImageTransformationJob'
+      required:
+      - job
+      type: object
+    ImageTransformationError:
+      description: 'If the image transformation job fails, this object provides details about the error.
+
+        Only present if the job status is `failed`.'
+      properties:
+        code:
+          $ref: '#/components/schemas/ImageTransformationErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ImageTransformationJobStatus:
+      description: 'The status of the image transformation job. A newly created job will be `in_progress`
+
+        and will eventually become `success` or `failed`. A job may also complete
+
+        immediately, returning `success` or `failed` from job creation. If the status is
+
+        `success`, the job''s `result` is present.'
+      enum:
+      - failed
+      - in_progress
+      - success
+      type: string
+    ImportStatus:
+      deprecated: true
+      description: The import status of the asset.
+      properties:
+        state:
+          $ref: '#/components/schemas/ImportStatusState'
+        error:
+          $ref: '#/components/schemas/ImportError'
+      required:
+      - state
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ImportError:
+      deprecated: true
+      description: If the import fails, this object provides details about the error.
+      properties:
+        code:
+          $ref: '#/components/schemas/ImportErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    ImageTransformationErrorCode:
+      description: Error code indicating what went wrong with the image transformation.
+      enum:
+      - no_foreground_found
+      - quota_exceeded
+      - internal_error
+      type: string
+      x-enum-descriptions:
+      - No foreground subject was found in the image, so there is no background to remove.
+      - The user has run out of quota, such as their AI credit quota. The quota isn't necessarily specific to the requested transformations.
+      - An unexpected error occurred during the transformation.
+    CreditQuotaError:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          quota_usage:
+            allOf:
+            - $ref: '#/components/schemas/CreditQuotaErrorInfo'
+            description: Credit quota usage at the time of the error. Not present if quota data is unavailable.
+        type: object
+      description: 'Returned when a request is rejected because the caller has exceeded their credit quota
+
+        or is in a cooldown period after heavy usage.'
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - credit_quota_exceeded
+      - credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - unsupported_asset
+      - asset_not_ready
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - design_generation_rejected
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_linked_to_another_idp
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      - domain_restricted
+      - user_already_member
+      type: string
+    CreateImageTransformationJobRequest:
+      properties:
+        asset_id:
+          description: 'The ID of the source asset to transform. The asset must be an image asset;
+
+            referencing any other asset type (such as a video) fails with an
+
+            `unsupported_content_type` error.
+
+
+            The asset must also have finished uploading. An asset that is still uploading has no
+
+            image to transform yet and fails with an `asset_not_ready` error. If you''ve just
+
+            created the asset, poll its upload job — for example with the
+
+            [Get asset upload job](https://www.canva.dev/docs/apps/rest-apis/reference/assets/get-asset-upload-job/)
+
+            endpoint — until it returns a `success` status before starting a transformation.'
+          example: Msd59349ff
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        name:
+          description: 'A name for the new image asset that the job produces. Canva doesn''t localize this
+
+            value, so provide a name in the user''s language. When omitted, the new asset inherits
+
+            the name of the source asset.'
+          example: My Awesome Upload with the background removed
+          maxLength: 255
+          minLength: 1
+          type: string
+        transformations:
+          description: 'The transformations to apply, in order. Must contain at least one transformation.
+
+            Each transformation is stacked on the result of the previous one. The job''s result
+
+            is a single new image asset with all of the transformations applied; intermediate
+
+            results are not returned.'
+          items:
+            $ref: '#/components/schemas/ImageTransformationType'
+          maxItems: 20
+          minItems: 1
+          type: array
+      required:
+      - asset_id
+      - transformations
+      type: object
+    AssetMetadata:
+      description: Type-specific metadata for the asset.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/ImageMetadata'
+          video: '#/components/schemas/VideoMetadata'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ImageMetadata'
+      - $ref: '#/components/schemas/VideoMetadata'
+      type: object
+    ImageMetadata:
+      properties:
+        type:
+          enum:
+          - image
+          type: string
+        width:
+          description: The width of the image in pixels.
+          example: 1920
+          format: int32
+          type: integer
+        height:
+          description: The height of the image in pixels.
+          example: 1080
+          format: int32
+          type: integer
+        smart_tags:
+          description: AI-generated tags for the image.
+          example:
+          - landscape
+          - sunset
+          - mountains
+          - nature
+          items:
+            maxLength: 50
+            type: string
+          type: array
+      required:
+      - type
+      type: object
+    ImageTransformationType:
+      description: 'A transformation to apply to the image asset. Each transformation type is identified
+
+        by its `type` value and declares its own parameters; `background_removal` takes no
+
+        parameters.'
+      discriminator:
+        mapping:
+          background_removal: '#/components/schemas/BackgroundRemovalImageTransformation'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/BackgroundRemovalImageTransformation'
+    VideoMetadata:
+      properties:
+        type:
+          enum:
+          - video
+          type: string
+        width:
+          description: The width of the video in pixels.
+          example: 1920
+          format: int32
+          type: integer
+        height:
+          description: The height of the video in pixels.
+          example: 1080
+          format: int32
+          type: integer
+        duration:
+          description: The duration of the video in seconds.
+          example: 60
+          format: int32
+          type: integer
+      required:
+      - height
+      - type
+      - width
+      type: object
+    CreditQuotaErrorInfo:
+      allOf:
+      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
+      - properties:
+          upgrade_url:
+            description: 'URL built from the user''s current plan and eligibility for an AI pass. Not present
+
+              if no upgrade path is available (e.g. already on highest plan or ineligible for AI pass).'
+            type: string
+          cooldown_ends_at:
+            description: 'Unix timestamp (seconds from the Unix epoch) of when the cooldown period ends. Only
+
+              set when `code` is `credit_quota_cooldown`. Not present for `credit_quota_exceeded`
+
+              errors.'
+            format: int64
+            type: integer
+          is_admin:
+            description: 'Whether the caller is a team admin. Allows clients to tailor error messaging
+
+              (e.g. "contact your admin" vs "upgrade your plan").'
+            type: boolean
+          generation_pending:
+            description: 'True if another generation is currently in flight and consuming quota. Only
+
+              meaningful for paid users with cooldown enabled. Not present for free users where this
+
+              cannot be determined.'
+            type: boolean
+        required:
+        - is_admin
+        type: object
+      description: 'Credit quota information returned when a request is rejected due to quota exhaustion
+
+        or a cooldown period.'
+    TeamUserSummary:
+      description: Metadata for the user, consisting of the User ID and Team ID.
+      properties:
+        user_id:
+          description: The ID of the user.
+          example: auDAbliZ2rQNNOsUl5OLu
+          type: string
+        team_id:
+          description: The ID of the user's Canva Team.
+          example: Oi2RJILTrKk0KRhRUZozX
+          type: string
+      required:
+      - team_id
+      - user_id
+      type: object
+    ImportStatusState:
+      deprecated: true
+      description: State of the import job for an uploaded asset.
+      enum:
+      - failed
+      - in_progress
+      - success
+      example: success
+      type: string
+    CreateImageTransformationJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/ImageTransformationJob'
+      required:
+      - job
+      type: object
+    BackgroundRemovalImageTransformation:
+      description: 'Removes the background from an image, keeping the foreground subject. The resulting
+
+        image has a transparent background. This transformation takes no parameters.
+
+
+        The output image is limited to a maximum of 10 megapixels. If the source image is
+
+        larger, the output image is scaled down to stay within this limit.
+
+
+        Requires the user to have the `background_removal` capability. To check this before
+
+        creating a job, use the
+
+        [Get user capabilities API](https://www.canva.dev/docs/apps/rest-apis/reference/users/get-user-capabilities/).'
+      properties:
+        type:
+          description: 'The type of transformation to apply. Currently, the only supported value is
+
+            `background_removal`.'
+          enum:
+          - background_removal
+          example: background_removal
+          type: string
+      required:
+      - type
+      type: object
+    ImportErrorCode:
+      deprecated: true
+      description: 'A short string indicating why the upload failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - file_too_big
+      - import_failed
+      type: string
+    Asset:
+      description: The asset object, which contains metadata about the asset.
+      properties:
+        type:
+          $ref: '#/components/schemas/AssetType'
+        id:
+          description: The ID of the asset.
+          example: Msd59349ff
+          type: string
+        name:
+          description: The name of the asset.
+          example: My Awesome Upload
+          type: string
+        tags:
+          description: 'The user-facing tags attached to the asset.
+
+            Users can add these tags to their uploaded assets, and they can search their uploaded
+
+            assets in the Canva UI by searching for these tags. For information on how users use
+
+            tags, see the
+
+            [Canva Help Center page on asset tags](https://www.canva.com/help/add-edit-tags/).'
+          example:
+          - image
+          - holiday
+          - best day ever
+          items:
+            type: string
+          type: array
+        import_status:
+          $ref: '#/components/schemas/ImportStatus'
+        created_at:
+          description: 'When the asset was added to Canva, as a Unix timestamp (in seconds since the Unix
+
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the asset was last updated in Canva, as a Unix timestamp (in seconds since the
+
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        owner:
+          $ref: '#/components/schemas/TeamUserSummary'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        metadata:
+          $ref: '#/components/schemas/AssetMetadata'
+      required:
+      - created_at
+      - id
+      - name
+      - owner
+      - tags
+      - type
+      - updated_at
+      type: object
+    ImageTransformationJob:
+      description: 'Details about the image transformation job. If the job status is `success`, the job''s
+
+        `result` is present.'
+      properties:
+        id:
+          description: 'The image transformation job ID. Only present if the job status is `in_progress`.
+
+            A job that completes immediately returns its `result` or `error` directly and has
+
+            no ID to poll.'
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        status:
+          $ref: '#/components/schemas/ImageTransformationJobStatus'
+        result:
+          $ref: '#/components/schemas/ImageTransformationJobResult'
+        error:
+          $ref: '#/components/schemas/ImageTransformationError'
+      required:
+      - status
+      type: object
+    AssetType:
+      description: Type of an asset.
+      enum:
+      - image
+      - video
+      example: image
+      type: string
+  examples:
+    InvalidAccessToken:
+      summary: Access token could not be decoded or signature could not be verified.
+      value:
+        code: invalid_access_token
+        message: Access token is invalid
+    MissingClientCredentialsOrBodyAuthError:
+      summary: Client credentials or body auth are missing from the request
+      value:
+        code: invalid_client
+        message: Client credentials or body auth are missing from the request.
+    ImageTransformationNotEnabledError:
+      summary: Image transformation is not enabled for this client
+      value:
+        code: permission_denied
+        message: Image transformation is not enabled
+    MalformedAuthorizationHeaderMode:
+      summary: Authorization header has invalid mode
+      value:
+        code: invalid_access_token
+        message: 'Malformed Authorization header: invalid mode'
+    SuccessImageTransformationJobExample:
+      summary: Successfully completed job
+      value:
+        job:
+          status: success
+          result:
+            asset:
+              id: Msd59349ff
+              type: image
+              name: My Awesome Upload with the background removed
+              tags:
+              - image
+              - holiday
+              - best day ever
+              owner:
+                user_id: oU123456AbCdE
+                team_id: oB123456AbCdE
+              created_at: 1377396000
+              updated_at: 1692928800
+              thumbnail:
+                width: 595
+                height: 335
+                url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+    FailedImageTransformationJobExample:
+      summary: Failed job
+      value:
+        job:
+          status: failed
+          error:
+            code: no_foreground_found
+            message: No foreground subject was found in the image, so there is no background to remove.
+    CreditQuotaExceededError:
+      summary: User has reached their credit quota limit
+      value:
+        code: credit_quota_exceeded
+        message: User has exceeded their credit quota
+        quota_usage:
+          used_percentage: 100
+          resets_at: 1735689600
+          using_bonus_credits: false
+          upgrade_url: https://www.canva.com/upgrade
+          is_admin: false
+          generation_pending: false
+    BadRequestFieldError:
+      summary: The request field does not match expected format
+      value:
+        code: invalid_request
+        message: '{fieldValue} does not match expected format for {fieldName}'
+    InvalidClientError:
+      summary: The OAuth client credentials are invalid
+      value:
+        code: invalid_client
+        message: Client {clientId} not available
+    ImageTransformationJobNotFoundError:
+      summary: The image transformation job was not found
+      value:
+        code: not_found
+        message: 'Image transformation job not found: {jobId}'
+    MalformedAuthorizationHeaderComponents:
+      summary: Authorization header has wrong number of components
+      value:
+        code: invalid_access_token
+        message: 'Malformed Authorization header: wrong number of components'
+    MissingAuthorizationHeader:
+      summary: Missing Authorization header
+      value:
+        code: invalid_access_token
+        message: Missing Authorization header
+    TooManyRequestsError:
+      summary: Rate limit exceeded
+      value:
+        code: too_many_requests
+        message: Too many requests to {operation}
+    ThrottledTooManyRequests:
+      summary: Throttled because too many requests
+      value:
+        code: too_many_requests
+        message: Throttled because too many requests
+    AssetNotFoundError:
+      summary: The asset was not found
+      value:
+        code: asset_not_found
+        message: Asset not found
+    InProgressImageTransformationJobExample:
+      summary: In progress job
+      value:
+        job:
+          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          status: in_progress
+    RevokedAccessToken:
+      summary: Access token is revoked
+      value:
+        code: revoked_access_token
+        message: Access token is revoked
+    MalformedAuthorizationHeader:
+      summary: Malformed Authorization header
+      value:
+        code: invalid_access_token
+        message: Malformed Authorization header
+    TokenIntrospectionFailed:
+      summary: Token couldn't be introspected
+      value:
+        code: invalid_access_token
+        message: Token couldn't be introspected
+    CreditQuotaCooldownError:
+      summary: User is in a cooldown period after heavy credit usage
+      value:
+        code: credit_quota_cooldown
+        message: Credit quota cooldown is active
+        quota_usage:
+          used_percentage: 100
+          resets_at: 1735689600
+          using_bonus_credits: false
+          upgrade_url: https://www.canva.com/upgrade
+          cooldown_ends_at: 1767182400
+          is_admin: false
+          generation_pending: true
+    UnsupportedAssetTypeError:
+      summary: The asset is not an image asset
+      value:
+        code: unsupported_content_type
+        message: 'Asset is not an image asset: {assetId}'
+    AssetNotReadyError:
+      summary: The asset is still being uploaded, so it can't be transformed yet
+      value:
+        code: asset_not_ready
+        message: 'Asset is still being uploaded and has no image to transform yet: {assetId}'
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+    oauthAuthCode:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.canva.com/api/oauth/authorize
+          scopes:
+            design:content:read: View the contents of the user's designs.
+            design:meta:read: View the metadata of the user's designs.
+            design:content:write: Create designs on the user's behalf.
+            folder:read: 'View the metadata and contents of the user''s folders, including their **Projects**
+
+              folder.'
+            folder:write: 'Add, move, or remove the user''s folders. It also lets you edit folder metadata,
+
+              such as the folder''s name.'
+            folder:permission:write: Set, update, or remove permissions assigned to the user's folders.
+            asset:read: View the metadata for the user's assets, such as uploaded images.
+            asset:write: Upload, update, or delete assets on the user's behalf.
+            comment:read: View the comments on the user's designs, and the associated metadata.
+            comment:write: Create comments and replies on the user's designs.
+            collaboration:event: Receive webhook notifications about events relevant to the user.
+            brandtemplate:meta:read: View the metadata of the brand templates associated with the user's brand.
+            brandtemplate:content:read: Read the content of the brand templates associated with the user's brand.
+            brandtemplate:content:write: Publish brand templates associated with the user's brand.
+            profile:read: Read a user's profile and account information.
+            openid: Read user information through Open ID Connect (OIDC).
+            profile: Read user profile information through OIDC.
+            email: Read user email address through OIDC.
+          tokenUrl: https://api.canva.com/rest/v1/oauth/token
+      type: oauth2

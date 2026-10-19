@@ -3,14 +3,14 @@ info:
   contact:
     name: Canva Developer Community
     url: https://community.canva.dev/
-  description: API for building integrations with Canva via a REST api
+  description: API for building apps with Canva via a REST api
   license:
     name: ©2023 All Rights Reserved
   termsOfService: https://www.canva.com/trust/legal/
-  title: Canva Connect App API
+  title: Canva REST App API
   version: 2024-06-18
 servers:
-- description: Canva Connect API
+- description: Canva REST APIs
   url: https://api.canva.com/rest
 tags:
 - name: App
@@ -58,13 +58,19 @@ paths:
       summary: Get app jwks
       x-summary-source: derived
 components:
-  examples:
-    AuthKeysNotFoundError:
-      summary: No auth keys exist for the specified app.
-      value:
-        code: app_not_found
-        message: Auth keys not found for app {appId}
   schemas:
+    GetAppJwksResponse:
+      properties:
+        keys:
+          description: 'The value of the "keys" parameter is an array of JWK values. The order of keys has no
+
+            meaning.'
+          items:
+            $ref: '#/components/schemas/JsonWebKey'
+          type: array
+      required:
+      - keys
+      type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -97,13 +103,15 @@ components:
       - invalid_basic_header
       - invalid_file_format
       - quota_exceeded
-      - ai_credit_quota_exceeded
-      - ai_credit_quota_cooldown
+      - credit_quota_exceeded
+      - credit_quota_cooldown
       - unsupported_content_type
       - request_too_large
       - folder_not_found
       - item_in_multiple_folders
       - asset_not_found
+      - unsupported_asset
+      - asset_not_ready
       - max_limit_reached
       - permission_not_found
       - permission_exists
@@ -137,16 +145,20 @@ components:
       - feature_not_available
       - unsupported_design_type
       - design_generation_not_enabled
+      - design_generation_rejected
       - license_required
       - input_unsafe
       - display_name_unavailable
       - user_not_managed
       - saml_team_id_conflict
       - saml_name_id_not_available
+      - user_linked_to_another_idp
       - user_email_unverified
       - user_not_active
       - user_pending_consent
       - account_exists
+      - domain_restricted
+      - user_already_member
       type: string
     Error:
       properties:
@@ -158,18 +170,6 @@ components:
       required:
       - code
       - message
-      type: object
-    GetAppJwksResponse:
-      properties:
-        keys:
-          description: 'The value of the "keys" parameter is an array of JWK values. The order of keys has no
-
-            meaning.'
-          items:
-            $ref: '#/components/schemas/JsonWebKey'
-          type: array
-      required:
-      - keys
       type: object
     JsonWebKey:
       description: 'Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and
@@ -228,6 +228,12 @@ components:
       - kty
       - n
       type: object
+  examples:
+    AuthKeysNotFoundError:
+      summary: No auth keys exist for the specified app.
+      value:
+        code: app_not_found
+        message: Auth keys not found for app {appId}
   securitySchemes:
     basicAuth:
       scheme: basic

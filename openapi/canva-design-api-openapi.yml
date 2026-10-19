@@ -3,17 +3,17 @@ info:
   contact:
     name: Canva Developer Community
     url: https://community.canva.dev/
-  description: API for building integrations with Canva via a REST api
+  description: API for building apps with Canva via a REST api
   license:
     name: ©2023 All Rights Reserved
   termsOfService: https://www.canva.com/trust/legal/
-  title: Canva Connect Design API
+  title: Canva REST Design API
   version: 2024-06-18
 servers:
-- description: Canva Connect API
+- description: Canva REST APIs
   url: https://api.canva.com/rest
 tags:
-- name: Design
+- name: design
 paths:
   /v1/designs:
     get:
@@ -132,7 +132,7 @@ paths:
       - oauthAuthCode:
         - design:meta:read
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 100
       summary: List designs
       x-summary-source: derived
@@ -153,6 +153,9 @@ paths:
 
 
         For preset and custom designs, you can also provide the `asset_id` of an asset in the user''s projects to add to the new design. Currently, this only supports image assets. To list the assets in a folder in the user''s projects, use the List folder items API.
+
+
+        An asset provided this way is placed in the design as a single flat image, which the user can move, resize, or replace, but not edit as separate elements. If you want the elements of an image to become separate editable layers in the design, use the Create image-to-design import job API instead.
 
 
         NOTE: Blank designs created with this API are automatically deleted if they''re not edited within 7 days. These blank designs bypass the user''s Canva trash and are permanently deleted.'
@@ -237,7 +240,7 @@ paths:
       - oauthAuthCode:
         - design:content:write
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 20
       summary: Create design
       x-summary-source: derived
@@ -290,7 +293,7 @@ paths:
       - oauthAuthCode:
         - design:meta:read
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 100
       summary: Get design
       x-summary-source: derived
@@ -303,7 +306,7 @@ paths:
 
         - Any breaking changes to preview APIs won''t produce a new API version.
 
-        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+        - Public apps that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
         Lists metadata for pages in a design, such as page-specific thumbnails.
@@ -399,7 +402,7 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 100
       summary: Get design pages
       x-summary-source: derived
@@ -457,23 +460,13 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 100
       summary: Get design export formats
       x-summary-source: derived
   /v1/designs/{designId}/dataset:
     get:
-      description: 'This API is currently provided as a preview. Be aware of the following:
-
-
-        - There might be unannounced breaking changes.
-
-        - Any breaking changes to preview APIs won''t produce a new API version.
-
-        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
-
-
-        Gets the dataset definition of a design. If the design contains autofill data fields, this API
+      description: 'Gets the dataset definition of a design. If the design contains autofill data fields, this API
 
         returns an object with the data field names and the type of data they accept.
 
@@ -492,15 +485,14 @@ paths:
 
         - Charts
 
+        - Sheets
+
 
         Use the returned field names and types to build the `data` payload for the
 
         Create a design autofill job API
 
-        with `type: create_from_design`.
-
-
-        WARNING: Chart data fields and autofilling a video are preview features. There might be unannounced breaking changes to these features which won''t produce a new API version.'
+        with `type: create_from_design`.'
       operationId: getDesignDataset
       parameters:
       - description: The design ID.
@@ -547,7 +539,7 @@ paths:
       - oauthAuthCode:
         - design:content:read
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 100
       summary: Get design dataset
       x-summary-source: derived
@@ -560,7 +552,7 @@ paths:
 
         - Any breaking changes to preview APIs won''t produce a new API version.
 
-        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+        - Public apps that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
         AVAILABILITY: This API is only available to Print Partners.
@@ -632,7 +624,7 @@ paths:
       - oauthAuthCode:
         - design:content:write
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 20
       summary: Create print partner design
       x-summary-source: derived
@@ -645,7 +637,7 @@ paths:
 
         - Any breaking changes to preview APIs won''t produce a new API version.
 
-        - Public integrations that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
+        - Public apps that use preview APIs will not pass the review process, and can''t be made available to all Canva users.
 
 
         AVAILABILITY: This API is only available to Print Partners.
@@ -749,227 +741,53 @@ paths:
       - oauthAuthCode:
         - design:meta:read
       tags:
-      - Design
+      - design
       x-rate-limit-per-client-user: 100
       summary: Get print partner design
       x-summary-source: derived
 components:
   schemas:
-    DesignPage:
-      description: Basic details about a page in a design, such as the page number and thumbnail.
-      properties:
-        id:
-          description: 'The ID of the page. This ID is unique within the design and can be used to
-
-            correlate a page with per-page data from other APIs.
-
-
-            Some designs might not have page IDs, in which case this property is omitted.'
-          example: PB2NFQ9W78kLDFCK
-          type: string
-        index:
-          deprecated: true
-          description: 'WARNING: This property is deprecated. Use `page_number` instead, which returns an identical value.
-
-
-            The index of the page in the design. The first page in a design has the index value `1`.'
-          format: int32
-          maximum: 500
-          minimum: 1
-          type: integer
-        page_number:
-          description: The 1-based page number within the design. The first page in a design has the value `1`.
-          example: 1
-          format: int32
-          maximum: 500
-          minimum: 1
-          type: integer
-        dimensions:
-          $ref: '#/components/schemas/PageDimensions'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        design_type:
-          $ref: '#/components/schemas/DesignTypeOutputName'
-      required:
-      - design_type
-      - index
-      - page_number
+    PrintPartnerDesignSource:
+      description: The desired source for the design creation.
+      discriminator:
+        mapping:
+          dimensions: '#/components/schemas/PrintPartnerDimensionsDesignSource'
+          partner_product_id: '#/components/schemas/PrintPartnerProductIdDesignSource'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/PrintPartnerDimensionsDesignSource'
+      - $ref: '#/components/schemas/PrintPartnerProductIdDesignSource'
       type: object
-    PrintPartnerDimensionsDesignSource:
-      description: Creates a design that matches your dimensions. Add a product type for more precise template matches.
-      properties:
-        type:
-          enum:
-          - dimensions
-          type: string
-        dimensions:
-          $ref: '#/components/schemas/PrintPartnerDesignDimensions'
-        product_type:
-          description: The product type is used alongside your dimensions to find a matching product in Canva Print's product catalogue, and templates for that product are recommended. If no match is found, only dimensions are used, so templates may include unrelated product types.
-          example: tshirt
-          type: string
-      required:
-      - dimensions
-      - type
-      type: object
-    CreatePrintPartnerDesignRequest:
-      description: Body parameters for creating a new design for a Print Partner.
-      properties:
-        design_source:
-          $ref: '#/components/schemas/PrintPartnerDesignSource'
-        title:
-          description: The name of the design.
-          example: My Holiday Presentation
-          maxLength: 255
-          minLength: 1
-          type: string
-        bleed:
-          default: 3000
-          description: 'Bleed in microns to apply around the design in the editor. Bleed is the area
-
-            outside the trim line used to avoid white edges after cutting. Use 0 for no bleed. If bleed is not
-
-            specified, a default of 3000 microns is used.'
-          format: int32
-          maximum: 150000
-          minimum: 0
-          type: integer
-        min_pages:
-          description: 'Minimum number of pages the design must have in the editor. The user cannot
-
-            reduce the page count below this value. If both min_pages and max_pages are
-
-            provided, min_pages must be less than or equal to max_pages.'
-          format: int32
-          maximum: 500
-          minimum: 1
-          type: integer
-        max_pages:
-          description: 'Maximum number of pages the design can have in the editor. The user cannot
-
-            add pages beyond this value. If both min_pages and max_pages are provided,
-
-            min_pages must be less than or equal to max_pages.'
-          format: int32
-          maximum: 500
-          minimum: 1
-          type: integer
-      required:
-      - design_source
-      type: object
-    ErrorCode:
-      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
-
-        '
-      enum:
-      - internal_error
-      - invalid_field
-      - invalid_header_value
-      - permission_denied
-      - too_many_requests
-      - not_found
-      - bad_request_body
-      - bad_http_method
-      - bad_request_params
-      - bad_query_params
-      - user_role_required
-      - endpoint_not_found
-      - endpoint_gone
-      - unsupported_version
-      - invalid_access_token
-      - revoked_access_token
-      - missing_field
-      - missing_scope
-      - invalid_grant
-      - invalid_request
-      - invalid_client
-      - unauthorized_client
-      - unsupported_grant_type
-      - invalid_scope
-      - invalid_basic_header
-      - invalid_file_format
-      - quota_exceeded
-      - ai_credit_quota_exceeded
-      - ai_credit_quota_cooldown
-      - unsupported_content_type
-      - request_too_large
-      - folder_not_found
-      - item_in_multiple_folders
-      - asset_not_found
-      - max_limit_reached
-      - permission_not_found
-      - permission_exists
-      - unauthorized_user
-      - user_not_found
-      - user_not_eligible
-      - group_not_found
-      - app_not_found
-      - app_has_non_draft_versions
-      - invalid_status_transition
-      - translation_validation_failed
-      - content_not_found
-      - doctype_not_found
-      - design_not_found
-      - offset_too_large
-      - page_not_found
-      - design_or_comment_not_found
-      - design_or_thread_not_found
-      - review_dismissed
-      - design_type_not_found
-      - team_not_found
-      - team_is_default
-      - comment_not_found
-      - too_many_comments
-      - too_many_replies
-      - message_too_long
-      - thread_not_found
-      - reply_not_found
-      - design_not_fillable
-      - autofill_data_invalid
-      - feature_not_available
-      - unsupported_design_type
-      - design_generation_not_enabled
-      - license_required
-      - input_unsafe
-      - display_name_unavailable
-      - user_not_managed
-      - saml_team_id_conflict
-      - saml_name_id_not_available
-      - user_email_unverified
-      - user_not_active
-      - user_pending_consent
-      - account_exists
-      type: string
-    DesignCreateDesignRequest:
+    BrandTemplateCreateDesignRequest:
       description: '<Warning>
 
 
-        Creating a copy of an existing design is currently provided as a preview. Be aware of the following:
+        Creating a copy from a brand template is currently provided as a preview. Be aware of the following:
 
 
         - There might be unannounced breaking changes.
 
-        - Any breaking changes to preview features won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
+        - Any breaking changes to preview features won''t produce a new [API version](https://www.canva.dev/docs/apps/rest-apis/versions/).
 
-        - Public integrations that use preview features will not pass the review process, and can''t be made available to all Canva users.
+        - Public apps that use preview features will not pass the review process, and can''t be made available to all Canva users.
 
 
         </Warning>
 
 
-        Body parameters for creating a copy of an existing design.'
+        Body parameters for creating a copy from a brand template.'
       properties:
         type:
           enum:
-          - design
+          - brand_template
           type: string
-        design_id:
-          description: The ID of the design to copy.
-          example: DAFVztcvetc
+        brand_template_id:
+          description: The ID of the brand template used to create a design copy.
+          example: EDMzWSwy3BI
           pattern: ^[a-zA-Z0-9_-]{1,50}$
           type: string
         page_numbers:
-          description: 'The pages to copy from the source design. If not specified, all pages are copied.
+          description: 'The pages to copy from the brand template. If not specified, all pages are copied.
 
             Pages are indexed using one-based numbering.'
           items:
@@ -979,121 +797,9 @@ components:
           minItems: 1
           type: array
       required:
-      - design_id
+      - brand_template_id
       - type
       type: object
-    JpgExportFormatOption:
-      description: Whether the design can be exported as a JPEG.
-      properties:
-        page_numbers:
-          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
-          example:
-          - 1
-          - 2
-          - 3
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          type: array
-      type: object
-    PrintPartnerDesignDimensions:
-      description: 'Dimensions of the design. Used to match a product type, or to create a custom-size design if
-
-        no product matches.'
-      properties:
-        width:
-          description: The width of the design.
-          example: 595
-          format: double
-          minimum: 1
-          type: number
-        height:
-          description: The height of the design.
-          example: 1295
-          format: double
-          minimum: 1
-          type: number
-        units:
-          $ref: '#/components/schemas/PrintPartnerDesignDimensionsUnits'
-      required:
-      - height
-      - units
-      - width
-      type: object
-    ExportFormatOptions:
-      description: The available file formats for exporting the design.
-      properties:
-        pdf:
-          $ref: '#/components/schemas/PdfExportFormatOption'
-        jpg:
-          $ref: '#/components/schemas/JpgExportFormatOption'
-        png:
-          $ref: '#/components/schemas/PngExportFormatOption'
-        svg:
-          $ref: '#/components/schemas/SvgExportFormatOption'
-        pptx:
-          $ref: '#/components/schemas/PptxExportFormatOption'
-        gif:
-          $ref: '#/components/schemas/GifExportFormatOption'
-        mp4:
-          $ref: '#/components/schemas/Mp4ExportFormatOption'
-        html_bundle:
-          $ref: '#/components/schemas/HtmlBundleExportFormatOption'
-        html_standalone:
-          $ref: '#/components/schemas/HtmlStandaloneExportFormatOption'
-        csv:
-          $ref: '#/components/schemas/CsvExportFormatOption'
-      type: object
-    DesignTypeInput:
-      description: The desired design type.
-      discriminator:
-        mapping:
-          preset: '#/components/schemas/PresetDesignTypeInput'
-          custom: '#/components/schemas/CustomDesignTypeInput'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/PresetDesignTypeInput'
-      - $ref: '#/components/schemas/CustomDesignTypeInput'
-      type: object
-    CreatePrintPartnerDesignResponse:
-      description: Details about the new design.
-      properties:
-        design:
-          $ref: '#/components/schemas/Design'
-      required:
-      - design
-      type: object
-    GetPrintPartnerDesignResponse:
-      description: Successful response from a `getPrintPartnerDesign` request.
-      properties:
-        design:
-          $ref: '#/components/schemas/Design'
-      required:
-      - design
-      type: object
-    PrintPartnerDesignSource:
-      description: The desired source for the design creation.
-      discriminator:
-        mapping:
-          partner_product_id: '#/components/schemas/PrintPartnerProductIdDesignSource'
-          dimensions: '#/components/schemas/PrintPartnerDimensionsDesignSource'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/PrintPartnerProductIdDesignSource'
-      - $ref: '#/components/schemas/PrintPartnerDimensionsDesignSource'
-      type: object
-    OwnershipType:
-      default: any
-      enum:
-      - any
-      - owned
-      - shared
-      type: string
-      x-enum-descriptions:
-      - Owned by and shared with the user.
-      - Owned by the user.
-      - Shared with the user.
     CreateDesignResponse:
       description: Details about the new design.
       properties:
@@ -1102,45 +808,35 @@ components:
       required:
       - design
       type: object
-    DesignTypeCreateDesignRequest:
-      description: 'Create a design by specifying the design type and/or an asset.
-
-        At least one of `design_type` or `asset_id` must be defined.'
+    PresetDesignTypeInput:
+      description: Provide the common design type.
       properties:
         type:
-          description: For backward compatibility, if `type` isn't specified in the request, the request type will be assumed to be `type_and_asset`.
           enum:
-          - type_and_asset
+          - preset
           type: string
-        design_type:
-          $ref: '#/components/schemas/DesignTypeInput'
-        asset_id:
-          description: The ID of an asset to insert into the created design. Currently, this only supports image assets.
-          example: Msd59349ff
-          type: string
-        title:
-          description: The name of the design.
-          example: My Holiday Presentation
-          maxLength: 255
-          minLength: 1
-          type: string
+        name:
+          $ref: '#/components/schemas/PresetDesignTypeName'
       required:
+      - name
       - type
       type: object
-    CsvExportFormatOption:
-      description: Whether the design can be exported as a CSV file.
+    PageDimensions:
+      description: The dimensions of a design page, if it is bounded. Design pages for non-bounded designs like Whiteboards and Docs will not include this property.
       properties:
-        page_numbers:
-          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
-          example:
-          - 1
-          - 2
-          - 3
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          type: array
+        width:
+          description: The width of the design page in pixels.
+          example: 595
+          format: double
+          type: number
+        height:
+          description: The height of the design page in pixels.
+          example: 1295
+          format: double
+          type: number
+      required:
+      - height
+      - width
       type: object
     Design:
       description: The design object, which contains metadata about the design.
@@ -1194,145 +890,55 @@ components:
       - updated_at
       - urls
       type: object
-    DesignLinks:
-      description: A temporary set of URLs for viewing or editing the design.
+    GetDesignExportFormatsResponse:
+      description: Successful response from a `getDesignExportFormats` request.
       properties:
-        edit_url:
-          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.'
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
-          type: string
-        view_url:
-          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/connect/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.
-
-            '
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
-          type: string
+        formats:
+          $ref: '#/components/schemas/ExportFormatOptions'
       required:
-      - edit_url
-      - view_url
+      - formats
       type: object
-    PngExportFormatOption:
-      description: Whether the design can be exported as a PNG.
+    Thumbnail:
+      description: A thumbnail image representing the object.
       properties:
-        page_numbers:
-          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
-          example:
-          - 1
-          - 2
-          - 3
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          type: array
-      type: object
-    HtmlBundleExportFormatOption:
-      description: Whether the design can be exported as an HTML bundle.
-      properties:
-        page_numbers:
-          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
-          example:
-          - 1
-          - 2
-          - 3
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          type: array
-      type: object
-    TextDataField:
-      description: A text data field. You can autofill it with a text value.
-      properties:
-        type:
-          enum:
-          - text
-          type: string
-      required:
-      - type
-      type: object
-    CustomDesignTypeInput:
-      description: 'Provide the width and height to define a custom design type.
-
-
-        Each dimension must be between 40 and 8000 pixels, and the
-
-        total area (width × height) must not exceed 25,000,000 pixels
-
-        squared. For example, a design with a width of 8000 pixels can
-
-        have a maximum height of 3125 pixels.'
-      properties:
-        type:
-          enum:
-          - custom
-          type: string
         width:
-          description: The width of the design, in pixels.
-          example: 320
+          description: The width of the thumbnail image in pixels.
+          example: 595
           format: int32
-          maximum: 8000
-          minimum: 40
           type: integer
         height:
-          description: The height of the design, in pixels.
-          example: 200
+          description: The height of the thumbnail image in pixels.
+          example: 335
           format: int32
-          maximum: 8000
-          minimum: 40
           type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
       required:
       - height
-      - type
+      - url
       - width
       type: object
-    SvgExportFormatOption:
-      description: Whether the design can be exported as an SVG.
-      properties:
-        page_numbers:
-          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
-          example:
-          - 1
-          - 2
-          - 3
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          type: array
-      type: object
-    DesignTypeOutputName:
-      description: The type of content a design or page contains. The list of design types may grow over time. The `unknown` value represents design types that haven't been added to the list.
-      enum:
-      - doc
-      - email
-      - presentation
-      - sheet
-      - whiteboard
-      - custom
-      - unknown
-      example: presentation
-      type: string
-    PrintPartnerProductIdDesignSource:
-      description: Creates a design using an external partner product ID.
+    PrintPartnerDimensionsDesignSource:
+      description: Creates a design that matches your dimensions. Add a product type for more precise template matches.
       properties:
         type:
           enum:
-          - partner_product_id
+          - dimensions
           type: string
-        partner_product_id:
-          description: The ID of the partner-defined product.
-          example: CVAFDC1091
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
+        dimensions:
+          $ref: '#/components/schemas/PrintPartnerDesignDimensions'
+        product_type:
+          description: The product type is used alongside your dimensions to find a matching product in Canva Print's product catalogue, and templates for that product are recommended. If no match is found, only dimensions are used, so templates may include unrelated product types.
+          example: tshirt
           type: string
       required:
-      - partner_product_id
+      - dimensions
       - type
       type: object
     HtmlStandaloneExportFormatOption:
@@ -1350,79 +956,32 @@ components:
             type: integer
           type: array
       type: object
-    SortByType:
-      default: relevance
-      enum:
-      - relevance
-      - modified_descending
-      - modified_ascending
-      - title_descending
-      - title_ascending
-      type: string
-      x-enum-descriptions:
-      - Sort results using a relevance algorithm.
-      - Sort results by the date last modified in descending order.
-      - Sort results by the date last modified in ascending order.
-      - Sort results by title in descending order.
-      - Sort results by title in ascending order
-    ChartDataField:
-      description: 'A chart data field. You can autofill it with tabular data.
-
-
-        WARNING: Chart data fields are a [preview feature](https://www.canva.dev/docs/connect/#preview-apis). There might be unannounced breaking changes to this feature which won''t produce a new API version.'
+    ExportFormatOptions:
+      description: The available file formats for exporting the design.
       properties:
-        type:
-          enum:
-          - chart
-          type: string
-      required:
-      - type
+        pdf:
+          $ref: '#/components/schemas/PdfExportFormatOption'
+        jpg:
+          $ref: '#/components/schemas/JpgExportFormatOption'
+        png:
+          $ref: '#/components/schemas/PngExportFormatOption'
+        svg:
+          $ref: '#/components/schemas/SvgExportFormatOption'
+        pptx:
+          $ref: '#/components/schemas/PptxExportFormatOption'
+        gif:
+          $ref: '#/components/schemas/GifExportFormatOption'
+        mp4:
+          $ref: '#/components/schemas/Mp4ExportFormatOption'
+        html_bundle:
+          $ref: '#/components/schemas/HtmlBundleExportFormatOption'
+        html_standalone:
+          $ref: '#/components/schemas/HtmlStandaloneExportFormatOption'
+        csv:
+          $ref: '#/components/schemas/CsvExportFormatOption'
       type: object
-    GetDesignDatasetResponse:
-      description: Successful response from a `getDesignDataset` request.
-      properties:
-        dataset:
-          additionalProperties:
-            $ref: '#/components/schemas/DataField'
-          description: 'The dataset definition. It contains the data inputs available for use with the
-
-            [Create design autofill job API](https://www.canva.dev/docs/connect/api-reference/autofills/create-design-autofill-job/).'
-          example:
-            cute_pet_image_of_the_day:
-              type: image
-            cute_pet_witty_pet_says:
-              type: text
-            cute_pet_sales_chart:
-              type: chart
-          type: object
-      type: object
-    GetDesignExportFormatsResponse:
-      description: Successful response from a `getDesignExportFormats` request.
-      properties:
-        formats:
-          $ref: '#/components/schemas/ExportFormatOptions'
-      required:
-      - formats
-      type: object
-    PageDimensions:
-      description: The dimensions of a design page, if it is bounded. Design pages for non-bounded designs like Whiteboards and Docs will not include this property.
-      properties:
-        width:
-          description: The width of the design page in pixels.
-          example: 595
-          format: double
-          type: number
-        height:
-          description: The height of the design page in pixels.
-          example: 1295
-          format: double
-          type: number
-      required:
-      - height
-      - width
-      type: object
-    Mp4ExportFormatOption:
-      description: Whether the design can be exported as an MP4.
+    JpgExportFormatOption:
+      description: Whether the design can be exported as a JPEG.
       properties:
         page_numbers:
           description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
@@ -1436,33 +995,132 @@ components:
             type: integer
           type: array
       type: object
-    CreateDesignRequest:
-      description: 'Body parameters for creating a new design. Use the `type` discriminator to choose the creation mode:
-
-
-        - Use `type_and_asset` to create a design by specifying the design type and/or an asset.
-
-        - Use `design` to create a copy of an existing design (currently a [preview feature](https://www.canva.dev/docs/connect/#preview-apis)).
-
-        - Use `brand_template` to create a design from a brand template (currently a [preview feature](https://www.canva.dev/docs/connect/#preview-apis)).
-
-
-        NOTE: For backward compatibility, if `type` isn''t specified in the request,
-
-        the request type will be assumed to be `type_and_asset`.'
-      discriminator:
-        mapping:
-          type_and_asset: '#/components/schemas/DesignTypeCreateDesignRequest'
-          design: '#/components/schemas/DesignCreateDesignRequest'
-          brand_template: '#/components/schemas/BrandTemplateCreateDesignRequest'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/DesignTypeCreateDesignRequest'
-      - $ref: '#/components/schemas/DesignCreateDesignRequest'
-      - $ref: '#/components/schemas/BrandTemplateCreateDesignRequest'
-      type: object
+    OwnershipType:
+      default: any
+      enum:
+      - any
+      - owned
+      - shared
+      type: string
+      x-enum-descriptions:
+      - Owned by and shared with the user.
+      - Owned by the user.
+      - Shared with the user.
     PptxExportFormatOption:
       description: Whether the design can be exported as a PPTX.
+      properties:
+        page_numbers:
+          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          type: array
+      type: object
+    DesignTypeInput:
+      description: The desired design type.
+      discriminator:
+        mapping:
+          preset: '#/components/schemas/PresetDesignTypeInput'
+          custom: '#/components/schemas/CustomDesignTypeInput'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignTypeInput'
+      - $ref: '#/components/schemas/CustomDesignTypeInput'
+      type: object
+    SvgExportFormatOption:
+      description: Whether the design can be exported as an SVG.
+      properties:
+        page_numbers:
+          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          type: array
+      type: object
+    PrintPartnerDesignDimensions:
+      description: 'Dimensions of the design. Used to match a product type, or to create a custom-size design if
+
+        no product matches.'
+      properties:
+        width:
+          description: The width of the design.
+          example: 595
+          format: double
+          minimum: 1
+          type: number
+        height:
+          description: The height of the design.
+          example: 1295
+          format: double
+          minimum: 1
+          type: number
+        units:
+          $ref: '#/components/schemas/PrintPartnerDesignDimensionsUnits'
+      required:
+      - height
+      - units
+      - width
+      type: object
+    DesignLinks:
+      description: A temporary set of URLs for viewing or editing the design.
+      properties:
+        edit_url:
+          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.'
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+          type: string
+        view_url:
+          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.
+
+            '
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
+          type: string
+      required:
+      - edit_url
+      - view_url
+      type: object
+    DesignTypeCreateDesignRequest:
+      description: 'Create a design by specifying the design type and/or an asset.
+
+        At least one of `design_type` or `asset_id` must be defined.'
+      properties:
+        type:
+          description: For backward compatibility, if `type` isn't specified in the request, the request type will be assumed to be `type_and_asset`.
+          enum:
+          - type_and_asset
+          type: string
+        design_type:
+          $ref: '#/components/schemas/DesignTypeInput'
+        asset_id:
+          description: The ID of an asset to insert into the created design. Currently, this only supports image assets.
+          example: Msd59349ff
+          type: string
+        title:
+          description: The name of the design.
+          example: My Holiday Presentation
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - type
+      type: object
+    PdfExportFormatOption:
+      description: Whether the design can be exported as a PDF.
       properties:
         page_numbers:
           description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
@@ -1501,15 +1159,20 @@ components:
       required:
       - items
       type: object
-    PrintPartnerDesignDimensionsUnits:
-      description: The units of the dimensions.
+    DesignTypeOutputName:
+      description: The type of content a design or page contains. The list of design types may grow over time. The `unknown` value represents design types that haven't been added to the list.
       enum:
-      - in
-      - cm
-      - mm
+      - doc
+      - email
+      - presentation
+      - sheet
+      - whiteboard
+      - custom
+      - unknown
+      example: presentation
       type: string
-    PdfExportFormatOption:
-      description: Whether the design can be exported as a PDF.
+    HtmlBundleExportFormatOption:
+      description: Whether the design can be exported as an HTML bundle.
       properties:
         page_numbers:
           description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
@@ -1523,27 +1186,132 @@ components:
             type: integer
           type: array
       type: object
-    GetDesignResponse:
-      description: Successful response from a `getDesign` request.
+    PresetDesignTypeName:
+      description: The name of the design type.
+      enum:
+      - doc
+      - email
+      - presentation
+      - whiteboard
+      type: string
+      x-enum-descriptions:
+      - A [Canva doc](https://www.canva.com/docs/); a document for Canva's online text editor.
+      - An [email](https://www.canva.com/emails/); for creating email campaign designs.
+      - A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.
+      - A [whiteboard](https://www.canva.com/online-whiteboard/); a design which gives you infinite space to collaborate.
+    GetDesignDatasetResponse:
+      description: Successful response from a `getDesignDataset` request.
       properties:
-        design:
-          $ref: '#/components/schemas/Design'
-      required:
-      - design
+        dataset:
+          additionalProperties:
+            $ref: '#/components/schemas/DataField'
+          description: 'The dataset definition. It contains the data inputs available for use with the
+
+            [Create design autofill job API](https://www.canva.dev/docs/apps/rest-apis/reference/autofills/create-design-autofill-job/).'
+          example:
+            cute_pet_image_of_the_day:
+              type: image
+            cute_pet_witty_pet_says:
+              type: text
+            cute_pet_sales_chart:
+              type: chart
+          type: object
       type: object
-    PresetDesignTypeInput:
-      description: Provide the common design type.
+    Mp4ExportFormatOption:
+      description: Whether the design can be exported as an MP4.
+      properties:
+        page_numbers:
+          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          type: array
+      type: object
+    PngExportFormatOption:
+      description: Whether the design can be exported as a PNG.
+      properties:
+        page_numbers:
+          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          type: array
+      type: object
+    DesignPage:
+      description: Basic details about a page in a design, such as the page number and thumbnail.
+      properties:
+        id:
+          description: 'The ID of the page. This ID is unique within the design and can be used to
+
+            correlate a page with per-page data from other APIs.
+
+
+            Some designs might not have page IDs, in which case this property is omitted.'
+          example: PB2NFQ9W78kLDFCK
+          type: string
+        index:
+          deprecated: true
+          description: 'WARNING: This property is deprecated. Use `page_number` instead, which returns an identical value.
+
+
+            The index of the page in the design. The first page in a design has the index value `1`.'
+          format: int32
+          maximum: 500
+          minimum: 1
+          type: integer
+        page_number:
+          description: The 1-based page number within the design. The first page in a design has the value `1`.
+          example: 1
+          format: int32
+          maximum: 500
+          minimum: 1
+          type: integer
+        dimensions:
+          $ref: '#/components/schemas/PageDimensions'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        design_type:
+          $ref: '#/components/schemas/DesignTypeOutputName'
+      required:
+      - design_type
+      - index
+      - page_number
+      type: object
+    ChartDataField:
+      description: A chart data field. You can autofill it with tabular data.
       properties:
         type:
           enum:
-          - preset
+          - chart
           type: string
-        name:
-          $ref: '#/components/schemas/PresetDesignTypeName'
       required:
-      - name
       - type
       type: object
+    SortByType:
+      default: relevance
+      enum:
+      - relevance
+      - modified_descending
+      - modified_ascending
+      - title_descending
+      - title_ascending
+      type: string
+      x-enum-descriptions:
+      - Sort results using a relevance algorithm.
+      - Sort results by the date last modified in descending order.
+      - Sort results by the date last modified in ascending order.
+      - Sort results by title in descending order.
+      - Sort results by title in ascending order
     GifExportFormatOption:
       description: Whether the design can be exported as a GIF.
       properties:
@@ -1559,86 +1327,66 @@ components:
             type: integer
           type: array
       type: object
-    BrandTemplateCreateDesignRequest:
-      description: '<Warning>
-
-
-        Creating a copy from a brand template is currently provided as a preview. Be aware of the following:
-
-
-        - There might be unannounced breaking changes.
-
-        - Any breaking changes to preview features won''t produce a new [API version](https://www.canva.dev/docs/connect/versions/).
-
-        - Public integrations that use preview features will not pass the review process, and can''t be made available to all Canva users.
-
-
-        </Warning>
-
-
-        Body parameters for creating a copy from a brand template.'
+    CreatePrintPartnerDesignRequest:
+      description: Body parameters for creating a new design for a Print Partner.
       properties:
-        type:
-          enum:
-          - brand_template
+        design_source:
+          $ref: '#/components/schemas/PrintPartnerDesignSource'
+        title:
+          description: The name of the design.
+          example: My Holiday Presentation
+          maxLength: 255
+          minLength: 1
           type: string
-        brand_template_id:
-          description: The ID of the brand template used to create a design copy.
-          example: EDMzWSwy3BI
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
-          type: string
-        page_numbers:
-          description: 'The pages to copy from the brand template. If not specified, all pages are copied.
+        bleed:
+          default: 3000
+          description: 'Bleed in microns to apply around the design in the editor. Bleed is the area
 
-            Pages are indexed using one-based numbering.'
-          items:
-            format: int32
-            minimum: 1
-            type: integer
-          minItems: 1
-          type: array
-      required:
-      - brand_template_id
-      - type
-      type: object
-    ImageDataField:
-      description: 'An image data field. You can autofill it with an image by providing its `asset_id`.
+            outside the trim line used to avoid white edges after cutting. Use 0 for no bleed. If bleed is not
 
-
-        You can also autofill it with a video asset. Autofilling a video is currently a [preview feature](https://www.canva.dev/docs/connect/#preview-apis).'
-      properties:
-        type:
-          enum:
-          - image
-          type: string
-      required:
-      - type
-      type: object
-    Thumbnail:
-      description: A thumbnail image representing the object.
-      properties:
-        width:
-          description: The width of the thumbnail image in pixels.
-          example: 595
+            specified, a default of 3000 microns is used.'
           format: int32
+          maximum: 150000
+          minimum: 0
           type: integer
-        height:
-          description: The height of the thumbnail image in pixels.
-          example: 335
+        min_pages:
+          description: 'Minimum number of pages the design must have in the editor. The user cannot
+
+            reduce the page count below this value. If both min_pages and max_pages are
+
+            provided, min_pages must be less than or equal to max_pages.'
           format: int32
+          maximum: 500
+          minimum: 1
           type: integer
-        url:
-          description: 'A URL for retrieving the thumbnail image.
+        max_pages:
+          description: 'Maximum number of pages the design can have in the editor. The user cannot
 
-            This URL expires after 15 minutes. This URL includes a query string
+            add pages beyond this value. If both min_pages and max_pages are provided,
 
-            that''s required for retrieving the thumbnail.'
-          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-          type: string
+            min_pages must be less than or equal to max_pages.'
+          format: int32
+          maximum: 500
+          minimum: 1
+          type: integer
       required:
-      - height
-      - url
-      - width
+      - design_source
+      type: object
+    GetPrintPartnerDesignResponse:
+      description: Successful response from a `getPrintPartnerDesign` request.
+      properties:
+        design:
+          $ref: '#/components/schemas/Design'
+      required:
+      - design
+      type: object
+    CreatePrintPartnerDesignResponse:
+      description: Details about the new design.
+      properties:
+        design:
+          $ref: '#/components/schemas/Design'
+      required:
+      - design
       type: object
     GetDesignPagesResponse:
       description: Successful response from a `getDesignPages` request.
@@ -1651,19 +1399,77 @@ components:
       required:
       - items
       type: object
-    DataField:
-      description: A named data field that can be autofilled.
+    CreateDesignRequest:
+      description: 'Body parameters for creating a new design. Use the `type` discriminator to choose the creation mode:
+
+
+        - Use `type_and_asset` to create a design by specifying the design type and/or an asset.
+
+        - Use `design` to create a copy of an existing design (currently a [preview feature](https://www.canva.dev/docs/apps/rest-apis/#preview-apis)).
+
+        - Use `brand_template` to create a design from a brand template (currently a [preview feature](https://www.canva.dev/docs/apps/rest-apis/#preview-apis)).
+
+
+        NOTE: For backward compatibility, if `type` isn''t specified in the request,
+
+        the request type will be assumed to be `type_and_asset`.'
       discriminator:
         mapping:
-          image: '#/components/schemas/ImageDataField'
-          text: '#/components/schemas/TextDataField'
-          chart: '#/components/schemas/ChartDataField'
+          type_and_asset: '#/components/schemas/DesignTypeCreateDesignRequest'
+          design: '#/components/schemas/DesignCreateDesignRequest'
+          brand_template: '#/components/schemas/BrandTemplateCreateDesignRequest'
         propertyName: type
       oneOf:
-      - $ref: '#/components/schemas/ImageDataField'
-      - $ref: '#/components/schemas/TextDataField'
-      - $ref: '#/components/schemas/ChartDataField'
+      - $ref: '#/components/schemas/DesignTypeCreateDesignRequest'
+      - $ref: '#/components/schemas/DesignCreateDesignRequest'
+      - $ref: '#/components/schemas/BrandTemplateCreateDesignRequest'
       type: object
+    PrintPartnerProductIdDesignSource:
+      description: Creates a design using an external partner product ID.
+      properties:
+        type:
+          enum:
+          - partner_product_id
+          type: string
+        partner_product_id:
+          description: The ID of the partner-defined product.
+          example: CVAFDC1091
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+      required:
+      - partner_product_id
+      - type
+      type: object
+    GetDesignResponse:
+      description: Successful response from a `getDesign` request.
+      properties:
+        design:
+          $ref: '#/components/schemas/Design'
+      required:
+      - design
+      type: object
+    CsvExportFormatOption:
+      description: Whether the design can be exported as a CSV file.
+      properties:
+        page_numbers:
+          description: The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          type: array
+      type: object
+    PrintPartnerDesignDimensionsUnits:
+      description: The units of the dimensions.
+      enum:
+      - in
+      - cm
+      - mm
+      type: string
     Error:
       properties:
         code:
@@ -1675,19 +1481,207 @@ components:
       - code
       - message
       type: object
-    PresetDesignTypeName:
-      description: The name of the design type.
+    CustomDesignTypeInput:
+      description: 'Provide the width and height to define a custom design type.
+
+
+        Each dimension must be between 40 and 8000 pixels, and the
+
+        total area (width × height) must not exceed 25,000,000 pixels
+
+        squared. For example, a design with a width of 8000 pixels can
+
+        have a maximum height of 3125 pixels.'
+      properties:
+        type:
+          enum:
+          - custom
+          type: string
+        width:
+          description: The width of the design, in pixels.
+          example: 320
+          format: int32
+          maximum: 8000
+          minimum: 40
+          type: integer
+        height:
+          description: The height of the design, in pixels.
+          example: 200
+          format: int32
+          maximum: 8000
+          minimum: 40
+          type: integer
+      required:
+      - height
+      - type
+      - width
+      type: object
+    DataField:
+      description: A named data field that can be autofilled.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/ImageDataField'
+          text: '#/components/schemas/TextDataField'
+          chart: '#/components/schemas/ChartDataField'
+          sheet: '#/components/schemas/SheetDataField'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ImageDataField'
+      - $ref: '#/components/schemas/TextDataField'
+      - $ref: '#/components/schemas/ChartDataField'
+      - $ref: '#/components/schemas/SheetDataField'
+      type: object
+    TextDataField:
+      description: A text data field. You can autofill it with a text value.
+      properties:
+        type:
+          enum:
+          - text
+          type: string
+      required:
+      - type
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
       enum:
-      - doc
-      - email
-      - presentation
-      - whiteboard
+      - internal_error
+      - invalid_field
+      - invalid_header_value
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - user_role_required
+      - endpoint_not_found
+      - endpoint_gone
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - missing_field
+      - missing_scope
+      - invalid_grant
+      - invalid_request
+      - invalid_client
+      - unauthorized_client
+      - unsupported_grant_type
+      - invalid_scope
+      - invalid_basic_header
+      - invalid_file_format
+      - quota_exceeded
+      - credit_quota_exceeded
+      - credit_quota_cooldown
+      - unsupported_content_type
+      - request_too_large
+      - folder_not_found
+      - item_in_multiple_folders
+      - asset_not_found
+      - unsupported_asset
+      - asset_not_ready
+      - max_limit_reached
+      - permission_not_found
+      - permission_exists
+      - unauthorized_user
+      - user_not_found
+      - user_not_eligible
+      - group_not_found
+      - app_not_found
+      - app_has_non_draft_versions
+      - invalid_status_transition
+      - translation_validation_failed
+      - content_not_found
+      - doctype_not_found
+      - design_not_found
+      - offset_too_large
+      - page_not_found
+      - design_or_comment_not_found
+      - design_or_thread_not_found
+      - review_dismissed
+      - design_type_not_found
+      - team_not_found
+      - team_is_default
+      - comment_not_found
+      - too_many_comments
+      - too_many_replies
+      - message_too_long
+      - thread_not_found
+      - reply_not_found
+      - design_not_fillable
+      - autofill_data_invalid
+      - feature_not_available
+      - unsupported_design_type
+      - design_generation_not_enabled
+      - design_generation_rejected
+      - license_required
+      - input_unsafe
+      - display_name_unavailable
+      - user_not_managed
+      - saml_team_id_conflict
+      - saml_name_id_not_available
+      - user_linked_to_another_idp
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      - domain_restricted
+      - user_already_member
       type: string
-      x-enum-descriptions:
-      - A [Canva doc](https://www.canva.com/docs/); a document for Canva's online text editor.
-      - An [email](https://www.canva.com/emails/); for creating email campaign designs.
-      - A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.
-      - A [whiteboard](https://www.canva.com/online-whiteboard/); a design which gives you infinite space to collaborate.
+    DesignCreateDesignRequest:
+      description: '<Warning>
+
+
+        Creating a copy of an existing design is currently provided as a preview. Be aware of the following:
+
+
+        - There might be unannounced breaking changes.
+
+        - Any breaking changes to preview features won''t produce a new [API version](https://www.canva.dev/docs/apps/rest-apis/versions/).
+
+        - Public apps that use preview features will not pass the review process, and can''t be made available to all Canva users.
+
+
+        </Warning>
+
+
+        Body parameters for creating a copy of an existing design.'
+      properties:
+        type:
+          enum:
+          - design
+          type: string
+        design_id:
+          description: The ID of the design to copy.
+          example: DAFVztcvetc
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        page_numbers:
+          description: 'The pages to copy from the source design. If not specified, all pages are copied.
+
+            Pages are indexed using one-based numbering.'
+          items:
+            format: int32
+            minimum: 1
+            type: integer
+          minItems: 1
+          type: array
+      required:
+      - design_id
+      - type
+      type: object
+    SheetDataField:
+      description: A sheet data field. You can autofill it with tabular sheet data.
+      properties:
+        type:
+          enum:
+          - sheet
+          type: string
+      required:
+      - type
+      type: object
     TeamUserSummary:
       description: Metadata for the user, consisting of the User ID and Team ID.
       properties:
@@ -1703,37 +1697,50 @@ components:
       - team_id
       - user_id
       type: object
+    ImageDataField:
+      description: 'An image data field. You can autofill it with an image by providing its `asset_id`.
+
+
+        You can also autofill it with a video asset.'
+      properties:
+        type:
+          enum:
+          - image
+          type: string
+      required:
+      - type
+      type: object
   examples:
-    AssetIdNotImageError:
-      summary: The asset_id does not belong to an image asset
-      value:
-        code: bad_request_params
-        message: '`asset_id` must belong to an image asset'
-    InvalidSortByError:
-      summary: The sort_by value is invalid
-      value:
-        code: invalid_field
-        message: 'Invalid sort by value: {sortBy}'
     MissingDesignTypeOrAssetIdError:
       summary: Neither design_type nor asset_id was provided
       value:
         code: invalid_field
         message: One of 'design_type' or 'asset_id' must be defined.
-    InvalidDesignTypeError:
-      summary: The requested preset design type is not available.
-      value:
-        code: bad_request_body
-        message: Design type '{name}' is invalid.
-    DesignTypeNotAvailableError:
-      summary: The design_types filter contains an unavailable design type
-      value:
-        code: invalid_field
-        message: '''design_types'' contains a design type that isn''t available: {designType}.'
-    CreatePrintPartnerDesignForbiddenError:
-      summary: Client does not have permission to create a Print Partner design
+    DesignAccessForbiddenError:
+      summary: Not allowed to access the design
       value:
         code: permission_denied
-        message: Client does not have permission to create a Print Partner design
+        message: Not allowed to access design
+    GetDesignDatasetDesignNotFoundError:
+      summary: Design not found
+      value:
+        code: not_found
+        message: Design with id '{designId}' not found
+    InvalidContinuationError:
+      summary: The continuation token is invalid
+      value:
+        code: bad_query_params
+        message: 'Invalid continuation: {continuation}'
+    AssetAccessNotAllowedError:
+      summary: Not allowed to access the asset
+      value:
+        code: permission_denied
+        message: Not allowed to access this asset
+    BlankDesignIdError:
+      summary: The design_id must not be blank
+      value:
+        code: bad_request_body
+        message: design_id must not be blank
     FindDocumentsForbiddenError:
       summary: Not allowed to find documents
       value:
@@ -1744,96 +1751,81 @@ components:
       value:
         code: not_found
         message: Design with id '{designId}' not found
-    InvalidDesignDimensionsError:
-      summary: The specified dimensions for the design are invalid
-      value:
-        code: invalid_field
-        message: The specified dimensions for the design are invalid.
-    DesignPagesOffsetTooLargeError:
-      summary: The offset is outside the range of pages in the design
-      value:
-        code: offset_too_large
-        message: Offset {offset} is outside range of [1, {pageCount}]
-    RefDesignTypeNotFoundError:
-      summary: The design type was not found
-      value:
-        code: design_type_not_found
-        message: Design type '{refDesignTypeId}' not found.
-    BlankDesignIdError:
-      summary: The design_id must not be blank
-      value:
-        code: bad_request_body
-        message: design_id must not be blank
     ProductSizeNotFoundError:
       summary: Product size not found
       value:
         code: not_found
         message: Product size not found for product {productId}
-    BlankBrandTemplateIdError:
-      summary: The brand_template_id must not be blank
-      value:
-        code: bad_request_body
-        message: brand_template_id must not be blank
-    InvalidContinuationError:
-      summary: The continuation token is invalid
-      value:
-        code: bad_query_params
-        message: 'Invalid continuation: {continuation}'
-    InvalidOwnershipError:
-      summary: The ownership value is invalid
-      value:
-        code: invalid_field
-        message: Invalid ownership
-    CreateDesignThrottledError:
-      summary: Design creation throttling threshold reached
-      value:
-        code: too_many_requests
-        message: You have reached the design creation throttling threshold.
-    AssetAccessNotAllowedError:
-      summary: Not allowed to access the asset
-      value:
-        code: permission_denied
-        message: Not allowed to access this asset
     GetPrintPartnerDesignForbiddenError:
       summary: Client does not have permission to get a Print Partner design
       value:
         code: permission_denied
         message: Client does not have permission to get a Print Partner design
-    GetDesignDatasetDesignNotFoundError:
-      summary: Design not found
+    AssetNotFoundError:
+      summary: The asset was not found
       value:
-        code: not_found
-        message: Design with id '{designId}' not found
-    DesignHasNoPagesError:
-      summary: Canva docs don't have pages
+        code: asset_not_found
+        message: Asset not found
+    CreateDesignThrottledError:
+      summary: Design creation throttling threshold reached
       value:
-        code: page_not_found
-        message: Design {designId} has no pages because it's a Canva doc.
-    DesignIdNotFoundError:
-      summary: The design was not found
+        code: too_many_requests
+        message: You have reached the design creation throttling threshold.
+    InvalidOwnershipError:
+      summary: The ownership value is invalid
       value:
-        code: design_not_found
-        message: Design with id '{designId}' not found
+        code: invalid_field
+        message: Invalid ownership
+    DesignPagesOffsetTooLargeError:
+      summary: The offset is outside the range of pages in the design
+      value:
+        code: offset_too_large
+        message: Offset {offset} is outside range of [1, {pageCount}]
+    CreatePrintPartnerDesignForbiddenError:
+      summary: Client does not have permission to create a Print Partner design
+      value:
+        code: permission_denied
+        message: Client does not have permission to create a Print Partner design
+    InvalidDesignTypeError:
+      summary: The requested preset design type is not available.
+      value:
+        code: bad_request_body
+        message: Design type '{name}' is invalid.
+    RefDesignTypeNotFoundError:
+      summary: The design type was not found
+      value:
+        code: design_type_not_found
+        message: Design type '{refDesignTypeId}' not found.
     CreateDesignBrandTemplateAccessDeniedError:
       summary: Not allowed to access the brand template
       value:
         code: permission_denied
         message: Not allowed to access brand template with id '{brandTemplateId}'
+    GetDesignDatasetPermissionDeniedError:
+      summary: Not allowed to access the design
+      value:
+        code: permission_denied
+        message: Not allowed to access design with id '{designId}'
     UnableToFetchDesignsError:
       summary: Unable to fetch designs
       value:
         code: bad_query_params
         message: Unable to fetch designs
-    DesignAccessForbiddenError:
-      summary: Not allowed to access the design
+    InvalidSortByError:
+      summary: The sort_by value is invalid
       value:
-        code: permission_denied
-        message: Not allowed to access design
-    DesignAccessDeniedError:
-      summary: Not allowed to access the design
+        code: invalid_field
+        message: 'Invalid sort by value: {sortBy}'
+    AssetIdNotImageError:
+      summary: The asset_id does not belong to an image asset
       value:
-        code: permission_denied
-        message: Not allowed to access design with id {designId}
+        code: bad_request_params
+        message: '`asset_id` must belong to an image asset'
+    InvalidDesignDimensionsError:
+      summary: The specified dimensions for the design are invalid
+      value:
+        code: invalid_field
+        message: The specified dimensions for the design are invalid.
     CreateBrandTemplateNotFoundError:
       summary: A brand template with the ID specified in the request could not be found.
       value:
@@ -1844,16 +1836,31 @@ components:
       value:
         code: permission_denied
         message: Not allowed to access design list
-    GetDesignDatasetPermissionDeniedError:
+    DesignAccessDeniedError:
       summary: Not allowed to access the design
       value:
         code: permission_denied
-        message: Not allowed to access design with id '{designId}'
-    AssetNotFoundError:
-      summary: The asset was not found
+        message: Not allowed to access design with id {designId}
+    DesignTypeNotAvailableError:
+      summary: The design_types filter contains an unavailable design type
       value:
-        code: asset_not_found
-        message: Asset not found
+        code: invalid_field
+        message: '''design_types'' contains a design type that isn''t available: {designType}.'
+    DesignIdNotFoundError:
+      summary: The design was not found
+      value:
+        code: design_not_found
+        message: Design with id '{designId}' not found
+    BlankBrandTemplateIdError:
+      summary: The brand_template_id must not be blank
+      value:
+        code: bad_request_body
+        message: brand_template_id must not be blank
+    DesignHasNoPagesError:
+      summary: Canva docs don't have pages
+      value:
+        code: page_not_found
+        message: Design {designId} has no pages because it's a Canva doc.
   securitySchemes:
     basicAuth:
       scheme: basic
