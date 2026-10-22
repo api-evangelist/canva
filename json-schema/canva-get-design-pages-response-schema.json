@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-design-pages-response-schema.json",
+  "title": "GetDesignPagesResponse",
+  "description": "Successful response from a `getDesignPages` request.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-api-openapi.yml#/components/schemas/GetDesignPagesResponse",
+  "properties": {
+    "items": {
+      "description": "The list of pages.",
+      "items": {
+        "$ref": "#/$defs/DesignPage"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "type": "object",
+  "$defs": {
+    "DesignPage": {
+      "description": "Basic details about a page in a design, such as the page number and thumbnail.",
+      "properties": {
+        "id": {
+          "description": "The ID of the page. This ID is unique within the design and can be used to\ncorrelate a page with per-page data from other APIs.\n\nSome designs might not have page IDs, in which case this property is omitted.",
+          "type": "string"
+        },
+        "index": {
+          "deprecated": true,
+          "description": "WARNING: This property is deprecated. Use `page_number` instead, which returns an identical value.\n\nThe index of the page in the design. The first page in a design has the index value `1`.",
+          "format": "int32",
+          "maximum": 500,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "page_number": {
+          "description": "The 1-based page number within the design. The first page in a design has the value `1`.",
+          "format": "int32",
+          "maximum": 500,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "dimensions": {
+          "$ref": "#/$defs/PageDimensions"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "design_type": {
+          "$ref": "#/$defs/DesignTypeOutputName"
+        }
+      },
+      "required": [
+        "design_type",
+        "index",
+        "page_number"
+      ],
+      "type": "object"
+    },
+    "DesignTypeOutputName": {
+      "description": "The type of content a design or page contains. The list of design types may grow over time. The `unknown` value represents design types that haven't been added to the list.",
+      "enum": [
+        "doc",
+        "email",
+        "presentation",
+        "sheet",
+        "whiteboard",
+        "custom",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "PageDimensions": {
+      "description": "The dimensions of a design page, if it is bounded. Design pages for non-bounded designs like Whiteboards and Docs will not include this property.",
+      "properties": {
+        "width": {
+          "description": "The width of the design page in pixels.",
+          "format": "double",
+          "type": "number"
+        },
+        "height": {
+          "description": "The height of the design page in pixels.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "height",
+        "width"
+      ],
+      "type": "object"
+    },
+    "Thumbnail": {
+      "description": "A thumbnail image representing the object.",
+      "properties": {
+        "width": {
+          "description": "The width of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "url": {
+          "description": "A URL for retrieving the thumbnail image.\nThis URL expires after 15 minutes. This URL includes a query string\nthat's required for retrieving the thumbnail.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "height",
+        "url",
+        "width"
+      ],
+      "type": "object"
+    }
+  }
+}

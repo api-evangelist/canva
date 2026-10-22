@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-design-analytics-page-views-request-schema.json",
+  "title": "GetDesignAnalyticsPageViewsRequest",
+  "description": "Filters and pagination controls for page-level analytics.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsPageViewsRequest",
+  "properties": {
+    "page_ids": {
+      "description": "The design page IDs to retrieve view duration data for.",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "type": "array"
+    },
+    "limit": {
+      "default": 50,
+      "description": "The maximum number of page results to return per page.",
+      "format": "int32",
+      "maximum": 100,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "continuation": {
+      "description": "If the success response contains a continuation token, there are more page results you can list. You can use this token in the request body and retrieve more page results from the list.\n\nTo retrieve all page results, you might need to make multiple requests.",
+      "type": "string"
+    },
+    "filter": {
+      "$ref": "#/$defs/PageViewFilter"
+    }
+  },
+  "required": [
+    "page_ids"
+  ],
+  "type": "object",
+  "$defs": {
+    "PageViewFilter": {
+      "description": "A filter for page view data.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/PageViewFilterByViewer"
+        },
+        {
+          "$ref": "#/$defs/PageViewFilterForEditor"
+        },
+        {
+          "$ref": "#/$defs/PageViewFilterByLink"
+        }
+      ],
+      "type": "object"
+    },
+    "PageViewFilterByLink": {
+      "properties": {
+        "type": {
+          "enum": [
+            "by_link"
+          ],
+          "type": "string"
+        },
+        "link_id": {
+          "description": "The trackable link ID to filter by.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "link_id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "PageViewFilterByViewer": {
+      "properties": {
+        "type": {
+          "enum": [
+            "by_viewer"
+          ],
+          "type": "string"
+        },
+        "link_id": {
+          "description": "Filters to viewer traffic from a specific trackable link. Omit this field to target viewer traffic that did not come from a trackable link.",
+          "type": "string"
+        },
+        "viewer_id": {
+          "description": "The viewer ID to filter by.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "viewer_id"
+      ],
+      "type": "object"
+    },
+    "PageViewFilterForEditor": {
+      "properties": {
+        "type": {
+          "enum": [
+            "for_editor"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

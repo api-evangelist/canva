@@ -1,0 +1,3595 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations to manage Canva Print orders with suppliers
+  license:
+    name: ©2024 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Print API
+  version: 2025-04-14
+servers:
+- description: Canva Print API
+  url: https://api.canva.com/print
+tags:
+- name: api_specification
+- name: key
+- name: order_cost
+- name: order_event
+paths:
+  /v1/api-specifications/{version}:
+    get:
+      description: Returns the OpenAPI specification for the requested API version
+        as a YAML document. Use this to download the machine-readable contract for
+        the Canva Print API.
+      operationId: getApiSpecification
+      parameters:
+      - description: "The API version to return the specification for, for example\
+          \ `latest`."
+        explode: false
+        in: path
+        name: version
+        required: true
+        schema:
+          example: latest
+          pattern: "^[a-zA-Z0-9_-]{1,50}$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/yaml:
+              schema:
+                format: binary
+                type: string
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      tags:
+      - api_specification
+  /v1/keys:
+    get:
+      description: |-
+        Gets a JSON Web Key Set (JWKS) containing public keys that are used to verify the authenticity of requests from the Canva Print API. The JWKS format follows [RFC-7517](https://www.rfc-editor.org/rfc/rfc7517#section-2) specifications.
+
+        You must use these keys to decrypt request signatures and verify that requests originated from Canva. This helps protect against [replay attacks](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/).
+
+        Canva might occasionally rotate these keys. We recommend you cache the keys returned from this API, and only access this API when you receive a request signed with an unrecognized key. This lets you verify requests quicker than fetching keys every time you receive a request from Canva.
+      operationId: getPrintKeys
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPrintKeysResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      tags:
+      - key
+  /v1/events/order-cost-summary:
+    post:
+      description: |-
+        Creates an event to notify Canva about the break down of costs and taxes for an order in the print partner's system.
+
+        It's expected that partners will send a cost summary after the order is completely shipped or is ready for pickup. Partners can omit shipment cost information for shipments that use Canva-provided shipping accounts.
+
+        WARNING: This endpoint isn't a replacement for the established invoicing flow. This endpoint is for tracking purposes only, and isn't associated with any payable account.
+      operationId: orderCostSummaryEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              multi_item_delivery_order:
+                $ref: '#/components/examples/MultiItemDeliveryOrderCostSummary'
+              addon_delivery_order:
+                $ref: '#/components/examples/AddonDeliveryOrderCostSummary'
+              pickup_order:
+                $ref: '#/components/examples/PickupOrderCostSummary'
+            schema:
+              $ref: '#/components/schemas/OrderCostSummaryEvent'
+      responses:
+        "204":
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        "400":
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: "The request is missing a required parameter, includes\
+                      \ an invalid parameter value, includes a parameter more than\
+                      \ once, or is otherwise malformed."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: "Invalid request. For example, an invalid data format."
+        "401":
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        "403":
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the
+                      request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_cost
+  /v1/events/order-production:
+    post:
+      description: Creates an event to notify Canva about a production update for
+        an order in the print partner's system.
+      operationId: orderProductionEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              single_item_production:
+                $ref: '#/components/examples/SingleItemProduction'
+              multi_item_production:
+                $ref: '#/components/examples/MultiItemProduction'
+            schema:
+              $ref: '#/components/schemas/OrderProductionEvent'
+      responses:
+        "204":
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        "400":
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: "The request is missing a required parameter, includes\
+                      \ an invalid parameter value, includes a parameter more than\
+                      \ once, or is otherwise malformed."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: "Invalid request. For example, an invalid data format."
+        "401":
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        "403":
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the
+                      request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_event
+  /v1/events/order-error:
+    post:
+      description: Creates an event to notify Canva about errors and issues for an
+        order in the print partner's system.
+      operationId: orderErrorEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              single_item_error:
+                $ref: '#/components/examples/SingleItemError'
+              multi_item_error:
+                $ref: '#/components/examples/MultiItemError'
+            schema:
+              $ref: '#/components/schemas/OrderErrorEvent'
+      responses:
+        "204":
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        "400":
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: "The request is missing a required parameter, includes\
+                      \ an invalid parameter value, includes a parameter more than\
+                      \ once, or is otherwise malformed."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: "Invalid request. For example, an invalid data format."
+        "401":
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        "403":
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the
+                      request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_event
+  /v1/events/order-shipment:
+    post:
+      description: Creates an event to notify Canva about a shipment for an order
+        in the print partner's system.
+      operationId: orderShipmentEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              single_item_shipment:
+                $ref: '#/components/examples/SingleItemShipment'
+              multi_item_shipment:
+                $ref: '#/components/examples/MultiItemShipment'
+              multi_shipment_item:
+                $ref: '#/components/examples/MultiShipmentItem'
+            schema:
+              $ref: '#/components/schemas/OrderShipmentEvent'
+      responses:
+        "204":
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        "400":
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: "The request is missing a required parameter, includes\
+                      \ an invalid parameter value, includes a parameter more than\
+                      \ once, or is otherwise malformed."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: "Invalid request. For example, an invalid data format."
+        "401":
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        "403":
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the
+                      request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_event
+components:
+  examples:
+    CreateOrderDeliveryRequest:
+      summary: "Create order: delivery, single item (invitation)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          preferred_production_location_reference: partnerLocation1234
+          preferred_dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+    CreateOrderTshirtDeliveryRequest:
+      summary: "Create order: delivery, single item (T-shirt)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: TSHIRT_DELUXE_WHITE_MENS_M
+            artworks:
+            - url: https://print-prepress-file.canva.com/JIB6bESKbphJ/9hi0gly7f7e016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: front
+              orientation: portrait
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: back
+              orientation: portrait
+            mockup_url: https://print-prepress-file.canva.com/KIB6bRTYbphJ/325135e5c95c0161e2d3770dad48bba05db8c6ef2ef43e0d34c3612954f3f555.png?X-Amz-Algorithm=AWS4-HMAC-SHA256
+            quantity: 1
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          preferred_production_location_reference: partnerLocation1234
+          preferred_dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+    CreateOrderPhotobookDeliveryRequest:
+      summary: "Create order: delivery, single item (photobook)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: PHBOOK_11X8.5IN_HARD-COVER_SOFT-TOUCH
+            artworks:
+            - url: https://print-prepress-file.canva.com/JIB6bESKbphJ/9hi0gly7f7e016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: cover
+              orientation: portrait
+              pages: 1
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 20
+            quantity: 1
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          preferred_production_location_reference: partnerLocation1234
+          preferred_dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+    CreateOrderCanvasDeliveryRequest:
+      summary: "Create order: delivery, single item (canvas)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: CANVAS_PREMIUM_11X14IN_WOODGRAIN-FRAME
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+            quantity: 1
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          preferred_production_location_reference: partnerLocation1234
+          preferred_dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+    CreateOrderAddonsDeliveryRequest:
+      summary: "Create order: delivery, single item (invitations) with add ons (envelopes)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          preferred_production_location_reference: partnerLocation1234
+          preferred_dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+    CreateOrderMultiItemDeliveryRequest:
+      summary: "Create Order: delivery, multiple items (canvas and invitations)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: CANVAS_PREMIUM_11X14IN_WOODGRAIN-FRAME
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+            quantity: 1
+            attributes: {}
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          preferred_production_location_reference: partnerLocation1234
+          preferred_dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+    CreateOrderMultiItemAddonsDeliveryRequest:
+      summary: "Create Order: delivery, multiple items (canvas and invitations) with\
+        \ add ons (envelopes)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: CANVAS_PREMIUM_11X14IN_WOODGRAIN-FRAME
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+            quantity: 1
+            attributes: {}
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          preferred_production_location_reference: partnerLocation1234
+          preferred_dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+    CreateOrderPickupRequest:
+      summary: "Create order: pickup, single item (invitations)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          preferred_production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+    CreateOrderAddonsPickupRequest:
+      summary: "Create order: pickup, single item (invitations) with add ons (envelopes)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          preferred_production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+    CreateOrderMultiItemPickupRequest:
+      summary: "Create order: pickup, multiple items (invitations and canvas)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          - item_reference_id: FI123456789
+            sku_reference: CANVAS_PREMIUM_11X14IN_WOODGRAIN-FRAME
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+            quantity: 1
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          preferred_production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+    CreateOrderMultiItemAddonsPickupRequest:
+      summary: "Create order: pickup, multiple items (invitations) with add ons (envelopes)"
+      value:
+        request_type: create_order
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          items:
+          - item_reference_id: FI123456789
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            artworks:
+            - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          - item_reference_id: FI987654321
+            sku_reference: IN00030
+            artworks:
+            - url: https://print-prepress-file.canva.com/Sy55hyF6YuT_/16e9b4c0b2b7555552a0155555a5ac4d48bba05dbe053c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+              print_area: sheets
+              orientation: portrait
+              pages: 2
+            quantity: 50
+            attributes: {}
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          preferred_production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+    UpdateOrderDeliveryRequest:
+      summary: Update customer details and delivery address for a delivery order
+      value:
+        request_type: update_order
+        order_reference_id: FB123456789
+        updates:
+          customer_details:
+            name: NotCharles Boyle
+            phone: (555) 555-0000
+            email: notcharlesboyle@email.com
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 2
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+    UpdateOrderPickupRequest:
+      summary: Update customer details for a pickup order
+      value:
+        request_type: update_order
+        order_reference_id: FB123456789
+        updates:
+          customer_details:
+            name: NotCharles Boyle
+            phone: (555) 555-0000
+            email: notcharlesboyle@email.com
+    UpdatedDeliveryOrder:
+      summary: Update customer details and delivery address for a delivery order
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: NotCharles Boyle
+            phone: (555) 555-0000
+            email: notcharlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            quantity: 50
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 2
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726449800
+    UpdatedPickupOrder:
+      summary: Update customer details for a pickup order
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          customer_details:
+            name: NotCharles Boyle
+            phone: (555) 555-0000
+            email: notcharlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            quantity: 50
+          production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726449800
+    CancelOrderRequest:
+      summary: Cancel item in an order
+      value:
+        request_type: cancel_order
+        order_reference_id: FO123456789
+        cancel_details:
+          item_reference_ids:
+          - FI123456789
+    CanceledOrder:
+      summary: Cancel delivery order
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: canceled
+            sku_reference: IN00030
+            quantity: 50
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726449800
+    PartiallyCanceledMultiItemOrder:
+      summary: "Partially cancel order: delivery order, multiple items (invitation\
+        \ and canvas) with add ons (envelopes)"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: canceled
+            sku_reference: IN00030
+            quantity: 50
+          - item_reference_id: FI987654321
+            status: received
+            sku_reference: CANVAS_PREMIUM_16X20_STRETCHED
+            quantity: 5
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+          created_at: 1726448251
+          updated_at: 1726449000
+    DeliveryOrder:
+      summary: "Delivery order, single item (invitation)"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            quantity: 50
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448251
+    AddonsDeliveryOrder:
+      summary: "Delivery order, single item (invitation) with add ons (envelopes)"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448251
+    DeliveryOrderWithShipmentObject:
+      summary: "Delivery order, single item (invitation) with add ons (envelopes),\
+        \ with shipment"
+      value:
+        order_reference_id: FB123456789
+        order_type: delivery
+        customer_details:
+          name: Charles Boyle
+          phone: (555) 555-1234
+          email: charlesboyle@email.com
+        items:
+        - item_reference_id: FI123456789
+          status: shipped
+          sku_reference: IN00030
+          add_on_sku_reference: EN00006
+          quantity: 50
+        delivery_address:
+          address_line1: "374 Johnson Ave, Brooklyn"
+          address_line2: Unit 1
+          city: New York
+          subdivision: US-NY
+          postcode: "11206"
+          country: US
+        shipments:
+        - tracking_number: "123456789"
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 50
+          dispatched_at: 1726448500
+          dispatch_location_reference: partnerLocation1234
+        delivery_shipping_tier: economy
+        production_location_reference: partnerLocation1234
+        dispatch_location_reference: partnerLocation1234
+        order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+        created_at: 1726448251
+        updated_at: 1726448500
+    DeliveryOrderWithShipment:
+      summary: "Delivery order, single item (invitation) with add ons (envelopes),\
+        \ with shipment"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: shipped
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          shipments:
+          - tracking_number: "123456789"
+            carrier: fedex
+            items:
+            - item_reference_id: FI123456789
+              quantity: 50
+            dispatched_at: 1726448500
+            dispatch_location_reference: partnerLocation1234
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448500
+    DeliveryOrderWithError:
+      summary: "Delivery order, single item (invitation) with add ons (envelopes),\
+        \ with error"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: producing
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+            error_details:
+              issue_origin: user_address
+              description: Address cannot be found. Please specify a valid delivery
+                address.
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448500
+    MultiItemAddonsDeliveryOrder:
+      summary: "Delivery order, multiple items (invitation and canvas) with add ons\
+        \ (envelopes)"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+          - item_reference_id: FI987654321
+            status: received
+            sku_reference: CANVAS_PREMIUM_16X20_STRETCHED
+            quantity: 5
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+          created_at: 1726448251
+          updated_at: 1726448251
+    MultiItemAddonsDeliveryOrderWithShipments:
+      summary: "Delivery order, multiple items (invitation and canvas) with add ons\
+        \ (envelopes), with shipments"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: delivery
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: shipped
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+          - item_reference_id: FI987654321
+            status: shipped
+            sku_reference: CANVAS_PREMIUM_16X20_STRETCHED
+            quantity: 5
+          delivery_address:
+            address_line1: "374 Johnson Ave, Brooklyn"
+            address_line2: Unit 1
+            city: New York
+            subdivision: US-NY
+            postcode: "11206"
+            country: US
+          shipments:
+          - tracking_number: "123456789"
+            carrier: fedex
+            items:
+            - item_reference_id: FI123456789
+              quantity: 1000
+            dispatched_at: 1726448500
+            dispatch_location_reference: partnerLocation1234
+          - tracking_number: "987654321"
+            carrier: fedex
+            items:
+            - item_reference_id: FI987654321
+              quantity: 5
+            dispatched_at: 1726448500
+            dispatch_location_reference: partnerLocation1234
+          delivery_shipping_tier: economy
+          production_location_reference: partnerLocation1234
+          dispatch_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice.pdf
+          created_at: 1726448251
+          updated_at: 1726448500
+    PickupOrderObject:
+      summary: "Pickup order, single item (invitation)"
+      value:
+        order_reference_id: FB123456789
+        order_type: pickup
+        customer_details:
+          name: Charles Boyle
+          phone: (555) 555-1234
+          email: charlesboyle@email.com
+        items:
+        - item_reference_id: FI123456789
+          status: received
+          sku_reference: IN00030
+          quantity: 50
+        production_location_reference: partnerLocation1234
+        pickup_location_reference: partnerLocation1234
+        order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+        created_at: 1726448251
+        updated_at: 1726448251
+    PickupOrder:
+      summary: "Pickup order, single item (invitation)"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            quantity: 50
+          production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448251
+    AddonsPickupOrder:
+      summary: "Pickup order, single item (invitation) with add ons (envelopes)"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+          production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448251
+    PickupOrderWithError:
+      summary: "Pickup order, single item (invitation), with error"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: producing
+            sku_reference: IN00030
+            quantity: 50
+            error_details:
+              issue_origin: order_url
+              description: Unable to access design url.
+          production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448500
+    MultiItemAddonsPickupOrder:
+      summary: "Pickup order, multiple items (invitation and canvas) with add ons\
+        \ (envelopes)"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: received
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+          - item_reference_id: FI987654321
+            status: received
+            sku_reference: CANVAS_PREMIUM_16X20_STRETCHED
+            quantity: 5
+          production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448251
+    MultiItemAddonsPickupOrderWithError:
+      summary: "Pickup order, multiple item (invitation and canvas) with add ons (envelopes),\
+        \ with error"
+      value:
+        order:
+          order_reference_id: FB123456789
+          order_type: pickup
+          customer_details:
+            name: Charles Boyle
+            phone: (555) 555-1234
+            email: charlesboyle@email.com
+          items:
+          - item_reference_id: FI123456789
+            status: producing
+            sku_reference: IN00030
+            add_on_sku_reference: EN00006
+            quantity: 50
+            error_details:
+              issue_origin: order_url
+              description: Unable to access design url.
+          - item_reference_id: FI987654321
+            status: producing
+            sku_reference: CANVAS_PREMIUM_16X20_STRETCHED
+            quantity: 5
+            error_details:
+              issue_origin: order_url
+              description: Unable to access design url.
+          production_location_reference: partnerLocation1234
+          pickup_location_reference: partnerLocation1234
+          order_invoice_url: https://s3-external-1.amazonaws.com/bucket/FI123456789/invoice
+          created_at: 1726448251
+          updated_at: 1726448500
+    MultiItemDeliveryOrderCostSummary:
+      summary: "Delivery order: multiple items, multiple shipments"
+      value:
+        request_type: cost_summary_event
+        order_reference_id: FB123456789
+        handling_major_units: "0.35"
+        pre_tax_total_major_units: "16.02"
+        tax_major_units: "1.75"
+        post_tax_total_major_units: "17.77"
+        currency: USD
+        order_cost_items:
+        - type: product
+          item_reference_id: FI123456789
+          cost_major_units: "3.60"
+          tax_major_units: "0.40"
+          total_major_units: "4.00"
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: "0.40"
+          tax_major_units: "0.04"
+          total_major_units: "0.44"
+          currency: USD
+        - type: product
+          item_reference_id: FI123456788
+          cost_major_units: "3.60"
+          tax_major_units: "0.40"
+          total_major_units: "4.00"
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456788
+          cost_major_units: "0.40"
+          tax_major_units: "0.04"
+          total_major_units: "0.44"
+          currency: USD
+        - type: shipment
+          tracking_number: TR12345671
+          cost_major_units: "4.55"
+          tax_major_units: "0.45"
+          total_major_units: "5.00"
+          currency: USD
+        - type: shipment
+          tracking_number: TR12345672
+          cost_major_units: "3.12"
+          tax_major_units: "0.42"
+          total_major_units: "3.54"
+          currency: USD
+    AddonDeliveryOrderCostSummary:
+      summary: Delivery order with add on
+      value:
+        request_type: cost_summary_event
+        order_reference_id: FB123456789
+        handling_major_units: "0.35"
+        pre_tax_total_major_units: "16.02"
+        tax_major_units: "1.75"
+        post_tax_total_major_units: "17.77"
+        currency: USD
+        order_cost_items:
+        - type: product
+          item_reference_id: FI123456789
+          cost_major_units: "3.60"
+          tax_major_units: "0.40"
+          total_major_units: "4.00"
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: "0.40"
+          tax_major_units: "0.04"
+          total_major_units: "0.44"
+          currency: USD
+        - type: add_on
+          item_reference_id: FI123456789
+          cost_major_units: "3.60"
+          tax_major_units: "0.40"
+          total_major_units: "4.00"
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: "0.40"
+          tax_major_units: "0.04"
+          total_major_units: "0.44"
+          currency: USD
+        - type: shipment
+          tracking_number: TR12345671
+          cost_major_units: "4.55"
+          tax_major_units: "0.45"
+          total_major_units: "5.00"
+          currency: USD
+    PickupOrderCostSummary:
+      summary: Pickup order
+      value:
+        request_type: cost_summary_event
+        order_reference_id: FB123456789
+        handling_major_units: "0.35"
+        pre_tax_total_major_units: "16.02"
+        tax_major_units: "1.75"
+        post_tax_total_major_units: "17.77"
+        currency: USD
+        order_cost_items:
+        - type: product
+          item_reference_id: FI123456789
+          cost_major_units: "3.60"
+          tax_major_units: "0.40"
+          total_major_units: "4.00"
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: "0.40"
+          tax_major_units: "0.04"
+          total_major_units: "0.44"
+          currency: USD
+        - type: add_on
+          item_reference_id: FI123456789
+          cost_major_units: "3.60"
+          tax_major_units: "0.40"
+          total_major_units: "4.00"
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: "0.40"
+          tax_major_units: "0.04"
+          total_major_units: "0.44"
+          currency: USD
+    SingleItemError:
+      summary: "Single item, single error"
+      value:
+        request_type: error_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          error_details:
+            issue_origin: user_address
+            description: Address cannot be found. Please specify a valid delivery
+              address.
+    MultiItemError:
+      summary: "Multi item, multi error"
+      value:
+        request_type: error_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          error_details:
+            issue_origin: user_address
+            description: Address cannot be found. Please specify a valid delivery
+              address.
+        - item_reference_id: F987654321
+          error_details:
+            issue_origin: user_address
+            description: Address cannot be found. Please specify a valid delivery
+              address.
+    SingleItemProduction:
+      summary: Single item
+      value:
+        request_type: production_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          status: producing
+          production_location_reference: partnerLocation1234
+    MultiItemProduction:
+      summary: Multi item
+      value:
+        request_type: production_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          status: producing
+          production_location_reference: partnerLocation1234
+        - item_reference_id: FI987654321
+          status: producing
+          production_location_reference: partnerLocation1234
+    SingleItemShipment:
+      summary: "Single item, single shipment"
+      value:
+        request_type: shipment_event
+        order_reference_id: FO123456789
+        shipments:
+        - tracking_number: "123456789"
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 50
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+    MultiItemShipment:
+      summary: "Multiple items, single shipment"
+      value:
+        request_type: shipment_event
+        order_reference_id: FO123456789
+        shipments:
+        - tracking_number: "123456789"
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 50
+          - item_reference_id: FI987654321
+            quantity: 10
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+    MultiShipmentItem:
+      summary: "Single item, multi shipment"
+      value:
+        request_type: shipment_event
+        order_reference_id: FO123456789
+        shipments:
+        - tracking_number: "123456789"
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 25
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+        - tracking_number: "987654321"
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 25
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+  headers:
+    X-Canva-Public-Api-Version:
+      description: The version of the Canva Print Standard API used in the request.
+      explode: false
+      schema:
+        example: 2025-08-10
+        format: date
+        type: string
+      style: simple
+  parameters:
+    ApiSpecificationVersionPath:
+      description: "The API version to return the specification for, for example `latest`."
+      explode: false
+      in: path
+      name: version
+      required: true
+      schema:
+        example: latest
+        pattern: "^[a-zA-Z0-9_-]{1,50}$"
+        type: string
+      style: simple
+    FindLocationsCountryQuery:
+      description: The ISO 3166-1 alpha-2 country code to filter the returned partner
+        locations.
+      explode: true
+      in: query
+      name: country
+      required: false
+      schema:
+        example: US
+        type: string
+      style: form
+    FindLocationsContinuationQuery:
+      description: |-
+        If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list.
+
+        To retrieve all items, you might need to make multiple requests.
+      explode: true
+      in: query
+      name: continuation
+      required: false
+      schema:
+        type: string
+      style: form
+    FindLocationsLimitQuery:
+      description: "The limit for the number of results to return. If the available\
+        \ items are more than the limit, then the response will include a continuation\
+        \ token."
+      explode: true
+      in: query
+      name: limit
+      required: true
+      schema:
+        type: integer
+      style: form
+    OrderReferenceIdPath:
+      description: "Unique, case-sensitive string identifying the order in Canva's\
+        \ system."
+      explode: false
+      in: path
+      name: orderReferenceId
+      required: true
+      schema:
+        example: FB123456789
+        pattern: "^[a-zA-Z0-9_-]{1,11}$"
+        type: string
+      style: simple
+    ApiVersionHeader:
+      description: "The version of the Canva Print API used in the request. If not\
+        \ specified, the latest version is assumed."
+      explode: false
+      in: header
+      name: X-Canva-Public-Api-Version
+      required: false
+      schema:
+        example: 2025-08-10
+        format: date
+        type: string
+      style: simple
+    ApiSignatureHeader:
+      description: The Canva request signature. This is used to verify the request
+        is legitimate and was not tampered with in transit.
+      explode: false
+      in: header
+      name: X-Canva-Signature
+      required: true
+      schema:
+        example: xxx.yyy.zzz
+        type: string
+      style: simple
+    PrintClientIdHeader:
+      description: Unique ID of the print partner making the request.
+      example: Ym9zY236Ym9zY28=
+      explode: false
+      in: header
+      name: X-Canva-Print-Client-Id
+      required: true
+      schema:
+        type: string
+      style: simple
+  requestBodies:
+    CreateOrderRequest:
+      content:
+        application/json:
+          examples:
+            delivery_order:
+              $ref: '#/components/examples/CreateOrderDeliveryRequest'
+            tshirt_delivery_order:
+              $ref: '#/components/examples/CreateOrderTshirtDeliveryRequest'
+            photobook_delivery_order:
+              $ref: '#/components/examples/CreateOrderPhotobookDeliveryRequest'
+            canvas_delivery_order:
+              $ref: '#/components/examples/CreateOrderCanvasDeliveryRequest'
+            addons_delivery_order:
+              $ref: '#/components/examples/CreateOrderAddonsDeliveryRequest'
+            multi_item_delivery_order:
+              $ref: '#/components/examples/CreateOrderMultiItemDeliveryRequest'
+            multi_item_addons_delivery_order:
+              $ref: '#/components/examples/CreateOrderMultiItemAddonsDeliveryRequest'
+            pickup_order:
+              $ref: '#/components/examples/CreateOrderPickupRequest'
+            addons_pickup_order:
+              $ref: '#/components/examples/CreateOrderAddonsPickupRequest'
+            multi_item_pickup_order:
+              $ref: '#/components/examples/CreateOrderMultiItemPickupRequest'
+            multi_item_addons_pickup_order:
+              $ref: '#/components/examples/CreateOrderMultiItemAddonsPickupRequest'
+          schema:
+            $ref: '#/components/schemas/CreateOrderRequest'
+      description: A JSON object describing the order to create.
+      required: true
+    UpdateOrderRequest:
+      content:
+        application/json:
+          examples:
+            delivery_order:
+              $ref: '#/components/examples/UpdateOrderDeliveryRequest'
+            pickup_order:
+              $ref: '#/components/examples/UpdateOrderPickupRequest'
+          schema:
+            $ref: '#/components/schemas/UpdateOrderRequest'
+      description: A JSON object containing the updates to be made to an existing
+        order.
+      required: true
+    CancelOrderRequest:
+      content:
+        application/json:
+          examples:
+            order:
+              $ref: '#/components/examples/CancelOrderRequest'
+          schema:
+            $ref: '#/components/schemas/CancelOrderRequest'
+      description: A JSON object containing the cancellations to be made to an existing
+        order.
+      required: true
+  responses:
+    "400":
+      description: "Bad Request. For example, an invalid payload format."
+    "401":
+      description: "Unauthorized. For example, an invalid signature."
+    "403":
+      description: "Forbidden. For example, an idempotent order issue, or the order\
+        \ doesn't exist."
+    "405":
+      description: "Not Allowed. For example, the request isn't allowed because of\
+        \ the order state, or it isn't supported or implemented."
+    FindLocationsSuccessResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FindLocationsResponse'
+      description: OK
+      headers:
+        X-Canva-Public-Api-Version:
+          description: The version of the Canva Print API used in the request.
+          explode: false
+          schema:
+            example: 2025-08-10
+            format: date
+            type: string
+          style: simple
+    CreateOrderSuccessResponse:
+      content:
+        application/json:
+          examples:
+            deliveryOrder:
+              $ref: '#/components/examples/DeliveryOrder'
+            addonsDeliveryOrder:
+              $ref: '#/components/examples/AddonsDeliveryOrder'
+            multiItemAddonsDeliveryOrder:
+              $ref: '#/components/examples/MultiItemAddonsDeliveryOrder'
+            pickUpOrder:
+              $ref: '#/components/examples/PickupOrder'
+            addonsPickUpOrder:
+              $ref: '#/components/examples/AddonsPickupOrder'
+            multiItemAddonsPickupOrder:
+              $ref: '#/components/examples/MultiItemAddonsPickupOrder'
+          schema:
+            $ref: '#/components/schemas/OrderResponse'
+      description: Order was created successfully.
+      headers:
+        X-Canva-Public-Api-Version:
+          $ref: '#/components/headers/X-Canva-Public-Api-Version'
+    GetOrderSuccessResponse:
+      content:
+        application/json:
+          examples:
+            deliveryOrder:
+              $ref: '#/components/examples/DeliveryOrder'
+            addonsDeliveryOrder:
+              $ref: '#/components/examples/AddonsDeliveryOrder'
+            deliveryOrderWithShipment:
+              $ref: '#/components/examples/DeliveryOrderWithShipment'
+            deliveryOrderWithError:
+              $ref: '#/components/examples/DeliveryOrderWithError'
+            multiItemAddonsDeliveryOrder:
+              $ref: '#/components/examples/MultiItemAddonsDeliveryOrder'
+            multiItemAddonsDeliveryOrderWithShipments:
+              $ref: '#/components/examples/MultiItemAddonsDeliveryOrderWithShipments'
+            pickUpOrder:
+              $ref: '#/components/examples/PickupOrder'
+            addonsPickUpOrder:
+              $ref: '#/components/examples/AddonsPickupOrder'
+            pickupOrderWithError:
+              $ref: '#/components/examples/PickupOrderWithError'
+            multiItemAddonsPickupOrder:
+              $ref: '#/components/examples/MultiItemAddonsPickupOrder'
+            multiItemAddonsPickupOrderWithError:
+              $ref: '#/components/examples/MultiItemAddonsPickupOrderWithError'
+          schema:
+            $ref: '#/components/schemas/OrderResponse'
+      description: Order was successfully retrieved.
+      headers:
+        X-Canva-Public-Api-Version:
+          $ref: '#/components/headers/X-Canva-Public-Api-Version'
+    UpdateOrderSuccessResponse:
+      content:
+        application/json:
+          examples:
+            deliveryOrder:
+              $ref: '#/components/examples/UpdatedDeliveryOrder'
+            pickOrder:
+              $ref: '#/components/examples/UpdatedPickupOrder'
+          schema:
+            $ref: '#/components/schemas/OrderResponse'
+      description: Successfully updated all items in the order.
+      headers:
+        X-Canva-Public-Api-Version:
+          $ref: '#/components/headers/X-Canva-Public-Api-Version'
+    CancelOrderSuccessResponse:
+      content:
+        application/json:
+          examples:
+            canceledOrder:
+              $ref: '#/components/examples/CanceledOrder'
+            partiallyCanceledOrder:
+              $ref: '#/components/examples/PartiallyCanceledMultiItemOrder'
+          schema:
+            $ref: '#/components/schemas/OrderResponse'
+      description: Order items were successfully canceled.
+      headers:
+        X-Canva-Public-Api-Version:
+          $ref: '#/components/headers/X-Canva-Public-Api-Version'
+    OrderCostSummaryEventSuccess:
+      description: Order event received.
+      headers:
+        X-Canva-Public-Api-Version:
+          $ref: '#/components/headers/X-Canva-Public-Api-Version'
+    OrderCostSummaryEventBadRequest:
+      content:
+        application/json:
+          examples:
+            badRequest:
+              summary: Bad request
+              value:
+                code: invalid_request
+                message: "The request is missing a required parameter, includes an\
+                  \ invalid parameter value, includes a parameter more than once,\
+                  \ or is otherwise malformed."
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: "Invalid request. For example, an invalid data format."
+    OrderCostSummaryEventUnauthorized:
+      content:
+        application/json:
+          examples:
+            unauthorized:
+              summary: Unauthorized
+              value:
+                code: unauthorized_client
+                message: The client is not authorized for action.
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Invalid or unauthorized client ID or secret.
+    OrderCostSummaryEventForbidden:
+      content:
+        application/json:
+          examples:
+            forbidden:
+              summary: Forbidden
+              value:
+                code: permission_denied
+                message: The resource owner or authorization server denied the request.
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Partner has no access to the order.
+    OrderEventSuccess:
+      description: Order event received.
+      headers:
+        X-Canva-Public-Api-Version:
+          $ref: '#/components/headers/X-Canva-Public-Api-Version'
+    OrderEventBadRequest:
+      content:
+        application/json:
+          examples:
+            badRequest:
+              summary: Bad request
+              value:
+                code: invalid_request
+                message: "The request is missing a required parameter, includes an\
+                  \ invalid parameter value, includes a parameter more than once,\
+                  \ or is otherwise malformed."
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: "Invalid request. For example, an invalid data format."
+    OrderEventUnauthorized:
+      content:
+        application/json:
+          examples:
+            unauthorized:
+              summary: Unauthorized
+              value:
+                code: unauthorized_client
+                message: The client is not authorized for action.
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Invalid or unauthorized client ID or secret.
+    OrderEventForbidden:
+      content:
+        application/json:
+          examples:
+            forbidden:
+              summary: Forbidden
+              value:
+                code: permission_denied
+                message: The resource owner or authorization server denied the request.
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Partner has no access to the order.
+  schemas:
+    Address:
+      description: An address.
+      example:
+        address_line1: "374 Johnson Ave, Brooklyn"
+        address_line2: Unit 1
+        city: New York
+        subdivision: US-NY
+        postcode: "11206"
+        country: US
+      properties:
+        address_line1:
+          description: The address line 1 portion of the address.
+          example: 1530 Aimco Blvd.
+          maxLength: 255
+          type: string
+        address_line2:
+          description: The address line 2 portion of the address. Can contain additional
+            address information such as unit number or house name.
+          example: Unit 1
+          maxLength: 255
+          type: string
+        city:
+          description: The city portion of the address.
+          example: Mississauga
+          maxLength: 255
+          type: string
+        subdivision:
+          description: "ISO 3166-2 subdivision code of the address. Required for AU,\
+            \ BR, CA, IN, JP, KR, MX, NZ, US."
+          example: CA-ON
+          maxLength: 6
+          type: string
+        postcode:
+          description: The postcode/zipcode portion of the address.
+          example: L4W 5K1
+          maxLength: 12
+          type: string
+        country:
+          description: ISO 3166-1 alpha-2 country code of the address. Includes the
+            exceptionally reserved code IC for the autonomous Spanish region Canary
+            Islands.
+          example: CA
+          maxLength: 2
+          type: string
+      required:
+      - address_line1
+      - city
+      - country
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ErrorCode:
+      description: |
+        A short string indicating what failed. This field can be used to handle errors programmatically.
+      enum:
+      - invalid_field
+      - invalid_header_value
+      - invalid_request
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - invalid_client
+      - unauthorized_client
+      - invalid_basic_header
+      type: string
+    GetPrintKeysResponse:
+      properties:
+        keys:
+          description: A JSON Web Key Set (JWKS) with public keys used for signing
+            requests. You can use this JWKS to verify that a request was sent from
+            Canva.
+          example:
+          - kid: a418dc7d-ecc5-5c4b-85ce-e1104a8addbe
+            kty: OKP
+            crv: Ed25519
+            x: aIQtqd0nDfB-ug0DrzZbwTum-1ITdXvKxGFak_1VB2j
+          - kid: c8de5bec1-1b88-4ddaae04acc-ce415-5d7
+            kty: OKP
+            crv: Ed25519
+            x: m2d1FT-gfBXxIzKwdQVTra0D-aBq_ubZ1jI0GuvkDtn
+          items:
+            $ref: '#/components/schemas/EdDsaJwk'
+          type: array
+      required:
+      - keys
+      type: object
+    EdDsaJwk:
+      description: |-
+        A JSON Web Key Set (JWKS) using the Edwards-curve Digital Signature Algorithm (EdDSA), as
+        described in [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#appendix-A).
+      properties:
+        kid:
+          description: "The key ID, a unique identifier for the public key. When the\
+            \ keys used to sign requests are rotated, you can use this ID to select\
+            \ the correct key within a JWKS during the key rollover. This value is\
+            \ case-sensitive."
+          type: string
+        kty:
+          description: |-
+            The key type, which identifies the cryptographic algorithm family used with the key, such as `RSA` or `EC`. Only Octet Key Pairs (OKPs) are supported.
+            This value is case-sensitive. For more information, see [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).
+          type: string
+        crv:
+          description: "The curve property, which identifies the curve used for elliptical\
+            \ curve encryptions. Only `Ed25519` is supported. For more information,\
+            \ see [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#section-2)."
+          type: string
+        x:
+          description: |-
+            The public key of an elliptical curve encryption. The key
+            is encoded with `Base64urlUInt`. For more information, see [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037#section-2).
+          type: string
+      required:
+      - crv
+      - kid
+      - kty
+      - x
+      type: object
+    PickupLocation:
+      description: Details about a pickup location.
+      properties:
+        id:
+          description: The internal reference of the location on the partners system.
+          example: partnerLocation1234
+          maxLength: 255
+          type: string
+        display_name:
+          description: The display name of the location. This is what Canva customers
+            can expect the location to be called.
+          example: Partner Fake Location
+          maxLength: 255
+          type: string
+        phone:
+          description: The contact phone number of the location.
+          example: (555) 555-1234
+          maxLength: 255
+          type: string
+        timezone:
+          description: The timezone of the location in tz format.
+          example: Australia/Melbourne
+          maxLength: 255
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        geolocation:
+          $ref: '#/components/schemas/Geolocation'
+        receiving_from_locations:
+          description: A list of locations that are allowed to produce or transfer
+            items to this pickup location.
+          example:
+          - partnerLocation1234_production
+          - partnerLocation1234_transfer
+          items:
+            description: The internal reference of the location on the partners system.
+            example: Australia/Melbourne
+            maxLength: 255
+            type: string
+          minLength: 1
+          type: array
+        pickup_hours:
+          $ref: '#/components/schemas/PickupHours'
+      required:
+      - address
+      - display_name
+      - geolocation
+      - id
+      - phone
+      - pickup_hours
+      - timezone
+      type: object
+      x-ref-extensions:
+        address:
+          description: The address details of the location.
+        geolocation:
+          description: The geolocation of the location.
+    Geolocation:
+      description: Longitude and latitude of a location.
+      example:
+        latitude: -33.8853
+        longitude: 151.2088
+      properties:
+        latitude:
+          description: The latitude of the geolocation.
+          example: -33.8853
+          maximum: 90.0
+          minimum: -90.0
+          type: number
+        longitude:
+          description: The longitude of the geolocation.
+          example: 151.2088
+          maximum: 180.0
+          minimum: -180.0
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    PickupHours:
+      description: "Pickup hours for a pickup location. If hours do not exist for\
+        \ a day, the store is considered closed."
+      example:
+        monday_hours:
+          open_time_hour: 10
+          open_time_minute: 0
+          close_time_hour: 17
+          close_time_minute: 30
+        tuesday_hours:
+          open_time_hour: 10
+          open_time_minute: 0
+          close_time_hour: 17
+          close_time_minute: 30
+        wednesday_hours:
+          open_time_hour: 10
+          open_time_minute: 0
+          close_time_hour: 17
+          close_time_minute: 30
+        thursday_hours:
+          open_time_hour: 10
+          open_time_minute: 0
+          close_time_hour: 17
+          close_time_minute: 30
+        friday_hours:
+          open_time_hour: 10
+          open_time_minute: 0
+          close_time_hour: 17
+          close_time_minute: 30
+        saturday_hours:
+          open_time_hour: 9
+          open_time_minute: 0
+          close_time_hour: 17
+          close_time_minute: 30
+        sunday_hours:
+          open_time_hour: 9
+          open_time_minute: 0
+          close_time_hour: 12
+          close_time_minute: 0
+      properties:
+        monday_hours:
+          $ref: '#/components/schemas/Hours'
+        tuesday_hours:
+          $ref: '#/components/schemas/Hours'
+        wednesday_hours:
+          $ref: '#/components/schemas/Hours'
+        thursday_hours:
+          $ref: '#/components/schemas/Hours'
+        friday_hours:
+          $ref: '#/components/schemas/Hours'
+        saturday_hours:
+          $ref: '#/components/schemas/Hours'
+        sunday_hours:
+          $ref: '#/components/schemas/Hours'
+      type: object
+      x-ref-extensions:
+        monday_hours:
+          description: "The pickup hours for Monday for the location. If not provided,\
+            \ pickup will not be available for Monday."
+        tuesday_hours:
+          description: "The pickup hours for Tuesday for the location. If not provided,\
+            \ pickup will not be available for Tuesday."
+        wednesday_hours:
+          description: "The pickup hours for Wednesday for the location. If not provided,\
+            \ pickup will not be available for Wednesday."
+        thursday_hours:
+          description: "The pickup hours for Thursday for the location. If not provided,\
+            \ pickup will not be available for Thursday."
+        friday_hours:
+          description: "The pickup hours for Friday for the location. If not provided,\
+            \ pickup will not be available for Friday."
+        saturday_hours:
+          description: "The pickup hours for Saturday for the location. If not provided,\
+            \ pickup will not be available for Saturday."
+        sunday_hours:
+          description: "The pickup hours for Sunday for the location. If not provided,\
+            \ pickup will not be available for Sunday."
+    Hours:
+      description: |-
+        Details on the opening and closing time for a pickup location.
+
+        The open time must be before close time. Hours must be open for at least a minute.
+      example:
+        open_time_hour: 10
+        open_time_minute: 0
+        close_time_hour: 18
+        close_time_minute: 0
+      properties:
+        open_time_hour:
+          description: The hour part of the time the store opens in 24-hour format.
+          example: 10
+          format: int32
+          maximum: 23
+          minimum: 0
+          type: integer
+        open_time_minute:
+          description: The minute part of the time the store opens.
+          example: 0
+          format: int32
+          maximum: 59
+          minimum: 0
+          type: integer
+        close_time_hour:
+          description: The hour part of the time the store closes in 24-hour format.
+          example: 18
+          format: int32
+          maximum: 23
+          minimum: 0
+          type: integer
+        close_time_minute:
+          description: The minute part of the time the store closes.
+          example: 0
+          format: int32
+          maximum: 59
+          minimum: 0
+          type: integer
+      required:
+      - close_time_hour
+      - close_time_minute
+      - open_time_hour
+      - open_time_minute
+      type: object
+    FindLocationsResponse:
+      description: "The list of retrieved locations, and an optional continuation\
+        \ token to get the remaining locations."
+      properties:
+        locations:
+          description: List of pickup locations currently available for the partner.
+          items:
+            $ref: '#/components/schemas/PickupLocation'
+          type: array
+        continuation:
+          description: "A continuation token. If the success response contains a continuation\
+            \ token, the list contains more items you can list. You can use this token\
+            \ as a query parameter and retrieve more items from the list. This value\
+            \ should be NULL if no more results are available."
+          example: edf3
+          maxLength: 255
+          type: string
+      required:
+      - locations
+    OrderReferenceID:
+      description: "A unique, case-sensitive ID of the order in Canva's system. This\
+        \ must be the same value as the `orderReferenceId` path parameter."
+      example: FB123456789
+      maxLength: 255
+      type: string
+    OrderInvoiceUrl:
+      description: "A temporary URL for the print partner to download an order invoice.\
+        \ This can be a taxation requirement for some countries. This is only included\
+        \ for certain partners, and can be configured in the API settings."
+      example: https://s3-external-1.amazonaws.com/bucket/FB123456789/invoice
+      type: string
+    QuotedLatestFulfillmentDate:
+      description: "The latest date Canva has shown to the customer by which the order\
+        \ will be delivered or available for pickup, as a Unix timestamp (in seconds\
+        \ since the Unix Epoch)."
+      example: 1726448251
+      format: int64
+      type: integer
+    ItemReferenceID:
+      description: "A unique, case-sensitive ID for an order item that the partner\
+        \ can use when communicating with Canva."
+      example: FI123456789
+      maxLength: 255
+      type: string
+    CreateOrderRequest:
+      description: An order to create.
+      properties:
+        request_type:
+          $ref: '#/components/schemas/CreateOrderRequestType'
+        order:
+          $ref: '#/components/schemas/CreateOrder'
+      required:
+      - order
+      - request_type
+      type: object
+    UpdateOrderRequest:
+      description: Updates to be made to an order.
+      properties:
+        request_type:
+          $ref: '#/components/schemas/UpdateOrderRequestType'
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        updates:
+          $ref: '#/components/schemas/Updates'
+      required:
+      - order_reference_id
+      - request_type
+      - updates
+      type: object
+      x-ref-extensions:
+        updates:
+          description: The updates to make to the order.
+    CancelOrderRequest:
+      description: Cancels items in an order.
+      properties:
+        request_type:
+          $ref: '#/components/schemas/CancelOrderRequestType'
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        cancel_details:
+          $ref: '#/components/schemas/CancelDetails'
+      required:
+      - cancel_details
+      - order_reference_id
+      - request_type
+      type: object
+      x-ref-extensions:
+        cancel_details:
+          description: Information of the order cancellation.
+    CancelDetails:
+      description: Information of the order cancellation.
+      properties:
+        item_reference_ids:
+          description: List of item IDs to be canceled in the order.
+          example:
+          - FI123456789
+          - FI012345678
+          items:
+            description: "Unique, case-sensitive string identifying the item in Canva's\
+              \ system."
+            example: FI123456789
+            maxLength: 255
+            type: string
+          minLength: 1
+          type: array
+      required:
+      - item_reference_ids
+      type: object
+    Updates:
+      description: Updates to the order. The request must contain at least one of
+        `customer_details` or `delivery_address`.
+      example:
+        customer_details:
+          name: NotCharles Boyle
+          phone: (555) 555-0000
+          email: notcharlesboyle@email.com
+        delivery_address:
+          address_line1: "374 Johnson Ave, Brooklyn"
+          address_line2: Unit 2
+          city: New York
+          subdivision: US-NY
+          postcode: "11206"
+          country: US
+      properties:
+        customer_details:
+          $ref: '#/components/schemas/CustomerDetails'
+        delivery_address:
+          $ref: '#/components/schemas/Address'
+      type: object
+      x-ref-extensions:
+        customer_details:
+          description: "If provided, this replaces the customer details of the order."
+        delivery_address:
+          description: "If provided, this replaces the delivery address of the order.\
+            \ Only allowed for delivery orders."
+    CreateOrder:
+      description: Describes an order to create.
+      discriminator:
+        mapping:
+          pickup: '#/components/schemas/CreatePickupOrder'
+          delivery: '#/components/schemas/CreateDeliveryOrder'
+        propertyName: order_type
+      oneOf:
+      - $ref: '#/components/schemas/CreatePickupOrder'
+      - $ref: '#/components/schemas/CreateDeliveryOrder'
+      type: object
+    CreatePickupOrder:
+      description: Pickup order to create.
+      properties:
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        order_type:
+          description: The type of order.
+          enum:
+          - pickup
+          type: string
+        items:
+          description: Items to create.
+          items:
+            $ref: '#/components/schemas/CreateItem'
+          minLength: 1
+          type: array
+        customer_details:
+          $ref: '#/components/schemas/CustomerDetails'
+        pickup_tier:
+          description: The pickup tier selected by the customer. Pickup tiers are
+            Canva-defined values that describe different speeds and costs of pickup.
+            Partners are expected to interpret this according to contractual agreements.
+          type: string
+        preferred_production_location_reference:
+          description: "The reference ID for the preferred production location for\
+            \ the order. Partners can override this if the selected location is unsuitable,\
+            \ but partners must notify Canva through a production update if this occurs."
+          example: partnerLocation1234_production
+          maxLength: 255
+          type: string
+        pickup_location_reference:
+          description: "The reference ID for the pickup location of an order, as specified\
+            \ by the Canva user placing the order. Partners can't override this selection."
+          example: partnerLocation1234
+          maxLength: 255
+          type: string
+        order_invoice_url:
+          description: "A temporary URL for the print partner to download an order\
+            \ invoice. This can be a taxation requirement for some countries. This\
+            \ is only included for certain partners, and can be configured in the\
+            \ API settings."
+          example: https://s3-external-1.amazonaws.com/bucket/FB123456789/invoice
+          type: string
+      required:
+      - customer_details
+      - items
+      - order_reference_id
+      - order_type
+      - pickup_location_reference
+      - preferred_production_location_reference
+      type: object
+      x-ref-extensions:
+        customer_details:
+          description: Customer details.
+    CreateDeliveryOrder:
+      description: Delivery order to create.
+      properties:
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        order_type:
+          description: The type of order.
+          enum:
+          - delivery
+          type: string
+        items:
+          description: Items to create.
+          items:
+            $ref: '#/components/schemas/CreateItem'
+          minLength: 1
+          type: array
+        customer_details:
+          $ref: '#/components/schemas/CustomerDetails'
+        delivery_address:
+          $ref: '#/components/schemas/Address'
+        delivery_shipping_tier:
+          description: "The shipping tier selected by the customer. Shipping tiers\
+            \ are Canva-defined values that describe different speeds and costs of\
+            \ delivery. Partners are expected to interpret this according to contractual\
+            \ agreements. For example, `economy`, `standard` and `express`."
+          type: string
+        preferred_production_location_reference:
+          description: "The reference ID for the preferred production location for\
+            \ the order. Partners can override this if the selected location is unsuitable,\
+            \ but partners must notify Canva through a production update if this occurs."
+          example: partnerLocation1234_production
+          maxLength: 255
+          type: string
+        preferred_dispatch_location_reference:
+          description: "The reference ID for the preferred dispatch location for an\
+            \ order, as determined by Canva's internal routing. Partners can override\
+            \ this if the selected location is unsuitable, but partners must notify\
+            \ Canva through a production update if this occurs. Generally, this is\
+            \ the same as the preferred production location, but they are separated\
+            \ for future flexibility."
+          example: partnerLocation1234
+          maxLength: 255
+          type: string
+        order_invoice_url:
+          description: "A temporary URL for the print partner to download an order\
+            \ invoice. This can be a taxation requirement for some countries. This\
+            \ is only included for certain partners, and can be configured in the\
+            \ API settings."
+          example: https://s3-external-1.amazonaws.com/bucket/FB123456789/invoice
+          type: string
+      required:
+      - customer_details
+      - delivery_address
+      - delivery_shipping_tier
+      - items
+      - order_reference_id
+      - order_type
+      - preferred_dispatch_location_reference
+      - preferred_production_location_reference
+      type: object
+      x-ref-extensions:
+        customer_details:
+          description: Customer details.
+        delivery_address:
+          description: Delivery address.
+        delivery_shipping_tier:
+          description: Canva-defined enum of potential shipping tiers. Each tier describes
+            a different speed and cost of delivery. Partners are expected to interpret
+            this according to contractual agreements.
+    CreateItem:
+      description: The item to create.
+      example:
+        item_reference_id: FI123456789
+        sku_reference: IN00030
+        add_on_sku_reference: EN00006
+        artworks:
+        - url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+          print_area: sheets
+          orientation: portrait
+          pages: 2
+        quantity: 50
+        attributes:
+          paperFinish: matte
+          paperType: premium
+          productSize: portrait
+      properties:
+        item_reference_id:
+          description: "A unique, case-sensitive ID for an order item that the partner\
+            \ can use when communicating with Canva."
+          example: FI123456789
+          maxLength: 255
+          type: string
+        sku_reference:
+          description: Partner-facing reference for an item's SKU. Describes a specific
+            variant of a product to be produced.
+          example: BC00001
+          maxLength: 255
+          type: string
+        add_on_sku_reference:
+          description: "Partner-facing reference for an item add on SKU. Sometimes\
+            \ referred to as a stock item. For example, envelopes with postcards."
+          example: EN00001
+          maxLength: 255
+          type: string
+        artworks:
+          description: The artworks of the item.
+          items:
+            $ref: '#/components/schemas/Artwork'
+          minLength: 1
+          type: array
+        mockup_url:
+          description: "A temporary URL for the partner to download a mockup file\
+            \ displaying artwork imposed on a product for an item. This is included\
+            \ for certain products, generally apparel. This is controlled by Canva's\
+            \ internal product definition and not an API configuration."
+          example: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256
+          type: string
+        quantity:
+          description: The number of copies of an item to produce.
+          example: 50
+          format: int32
+          type: integer
+        attributes:
+          additionalProperties:
+            description: "A key-value pair of attributes describing an item. These\
+              \ pairs complement the SKU by enumerating the unique attributes it describes.\
+              \ If used by the print partner, the expected values must be confirmed\
+              \ with Canva."
+            type: string
+          description: "A key-value pair of attributes describing an item. These pairs\
+            \ complement the SKU by enumerating the unique attributes it describes.\
+            \ If used by the print partner, the expected values must be confirmed\
+            \ with Canva."
+          example:
+            paperFinish: matte
+            paperType: premium
+            productSize: portrait
+          type: object
+        quoted_latest_fulfillment_date:
+          description: "The latest date Canva has shown to the customer by which the\
+            \ order will be delivered or available for pickup, as a Unix timestamp\
+            \ (in seconds since the Unix Epoch)."
+          example: 1726448251
+          format: int64
+          type: integer
+      required:
+      - artworks
+      - attributes
+      - item_reference_id
+      - quantity
+      - sku_reference
+      type: object
+    Artwork:
+      description: The production-quality print files for an item.
+      example:
+        url: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+        print_area: sheets
+        orientation: portrait
+        pages: 1
+      properties:
+        url:
+          description: A temporary URL for the partner to download a production-quality
+            print file for an item.
+          example: https://print-prepress-file.canva.com/F6YuSy55hyT_/d48bba05dbe016e9b4c0b2b7555552a0155555a5ac453c2e55555gb7237226d3.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256
+          type: string
+        print_area:
+          description: |
+            Where on a product an artwork file is expected to appear.
+
+            - `cover`
+            - `front`
+            - `back`
+            - `sheets`
+            - `none`
+          example: sheets
+          maxLength: 255
+          type: string
+        orientation:
+          $ref: '#/components/schemas/ArtworkOrientation'
+        pages:
+          description: The number of the pages in the file. Only provided for PDF.
+          example: 10
+          type: integer
+      required:
+      - orientation
+      - print_area
+      - url
+      type: object
+    ArtworkOrientation:
+      description: The physical orientation of the file.
+      enum:
+      - portrait
+      - landscape
+      - square
+      example: portrait
+      maxLength: 255
+      type: string
+    Order:
+      description: An order.
+      discriminator:
+        mapping:
+          pickup: '#/components/schemas/PickupOrder'
+          delivery: '#/components/schemas/DeliveryOrder'
+        propertyName: order_type
+      oneOf:
+      - $ref: '#/components/schemas/PickupOrder'
+      - $ref: '#/components/schemas/DeliveryOrder'
+      type: object
+    PickupOrder:
+      description: An order that will be picked up from a location by the customer.
+      example:
+        $ref: '#/components/examples/PickupOrderObject/value'
+      properties:
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        order_type:
+          description: The type of order.
+          enum:
+          - pickup
+          type: string
+        items:
+          description: The items in the order.
+          items:
+            $ref: '#/components/schemas/Item'
+          minLength: 1
+          type: array
+        customer_details:
+          $ref: '#/components/schemas/CustomerDetails'
+        pickup_tier:
+          description: The pickup tier selected by the customer. Pickup tiers are
+            Canva-defined values that describe different speeds and costs of pickup.
+            Partners are expected to interpret this according to contractual agreements.
+          type: string
+        production_location_reference:
+          description: The reference ID for the production location of the order.
+          example: partnerLocation1234_production
+          maxLength: 255
+          type: string
+        pickup_location_reference:
+          description: "The reference ID for the pickup location of an order, as specified\
+            \ by the Canva user placing the order."
+          example: partnerLocation1234
+          maxLength: 255
+          type: string
+        order_invoice_url:
+          description: "A temporary URL for the print partner to download an order\
+            \ invoice. This can be a taxation requirement for some countries. This\
+            \ is only included for certain partners, and can be configured in the\
+            \ API settings."
+          example: https://s3-external-1.amazonaws.com/bucket/FB123456789/invoice
+          type: string
+        created_at:
+          description: "When the order was created, as a Unix timestamp (in seconds\
+            \ since the Unix Epoch)."
+          example: 1726448251
+          format: int64
+          type: integer
+        updated_at:
+          description: "When the order was last updated, as a Unix timestamp (in seconds\
+            \ since the Unix Epoch)."
+          example: 1726448251
+          format: int64
+          type: integer
+      required:
+      - created_at
+      - customer_details
+      - items
+      - order_reference_id
+      - order_type
+      - pickup_location_reference
+      - production_location_reference
+      - updated_at
+      type: object
+      x-ref-extensions:
+        customer_details:
+          description: The customer.
+    DeliveryOrder:
+      description: An order that will be delivered to the customer.
+      example:
+        $ref: '#/components/examples/DeliveryOrderWithShipmentObject/value'
+      properties:
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        order_type:
+          description: The type of order.
+          enum:
+          - delivery
+          type: string
+        items:
+          description: The Items in the order.
+          items:
+            $ref: '#/components/schemas/Item'
+          minLength: 1
+          type: array
+        customer_details:
+          $ref: '#/components/schemas/CustomerDetails'
+        delivery_address:
+          $ref: '#/components/schemas/Address'
+        delivery_shipping_tier:
+          description: "The shipping tier selected by the customer. Shipping tiers\
+            \ are Canva-defined values that describe different speeds and costs of\
+            \ delivery. Partners are expected to interpret this according to contractual\
+            \ agreements. For example, `economy`, `standard` and `express`."
+          type: string
+        shipments:
+          description: A list of shipments for the order.
+          items:
+            $ref: '#/components/schemas/Shipment'
+          type: array
+        production_location_reference:
+          description: The reference ID for the production location of the order.
+          example: partnerLocation1234_production
+          maxLength: 255
+          type: string
+        dispatch_location_reference:
+          description: The reference ID for the dispatch location for the order.
+          example: partnerLocation1234_production
+          maxLength: 255
+          type: string
+        order_invoice_url:
+          description: "A temporary URL for the print partner to download an order\
+            \ invoice. This can be a taxation requirement for some countries. This\
+            \ is only included for certain partners, and can be configured in the\
+            \ API settings."
+          example: https://s3-external-1.amazonaws.com/bucket/FB123456789/invoice
+          type: string
+        created_at:
+          description: "When the order was created, as a Unix timestamp (in seconds\
+            \ since the Unix Epoch)."
+          example: 1726448251
+          format: int64
+          type: integer
+        updated_at:
+          description: "When the order was last updated, as a Unix timestamp (in seconds\
+            \ since the Unix Epoch)."
+          example: 1726448251
+          format: int64
+          type: integer
+      required:
+      - created_at
+      - customer_details
+      - delivery_address
+      - delivery_shipping_tier
+      - dispatch_location_reference
+      - items
+      - order_reference_id
+      - order_type
+      - production_location_reference
+      - updated_at
+      type: object
+      x-ref-extensions:
+        customer_details:
+          description: The customer.
+        delivery_address:
+          description: "If provided, replaces the delivery address of with the order.\
+            \ This is only allowed for delivery orders."
+        delivery_shipping_tier:
+          description: Canva-defined enum of potential shipping tiers. Each tier describes
+            a different speed and cost of delivery. Partners are expected to interpret
+            this according to contractual agreements.
+        shipments:
+          description: A list of shipments for the order.
+    CustomerDetails:
+      description: The customer.
+      example:
+        name: Charles Boyle
+        phone: (555) 555-0000
+        email: charlesboyle@email.com
+      properties:
+        name:
+          description: The full name of the customer.
+          example: Charles Boyle
+          maxLength: 255
+          type: string
+        phone:
+          description: The phone number of the customer.
+          example: "+61400000000"
+          maxLength: 255
+          type: string
+        email:
+          description: The email address of the customer.
+          example: charlesboyle@canva.com
+          maxLength: 255
+          type: string
+        tax_details:
+          $ref: '#/components/schemas/TaxDetails'
+      required:
+      - email
+      - name
+      - phone
+      type: object
+    TaxDetails:
+      description: The customer's tax identification details.
+      properties:
+        tax_id:
+          description: The customer's tax identification number.
+          example: 853.513.468-93
+          type: string
+        type:
+          $ref: '#/components/schemas/TaxIdType'
+      required:
+      - tax_id
+      - type
+      type: object
+    TaxIdType:
+      description: Whether the tax identification number belongs to an individual
+        or a business.
+      enum:
+      - individual
+      - business
+      type: string
+    DeliveryShippingTier:
+      description: "The shipping tier selected by the customer. Shipping tiers are\
+        \ Canva-defined values that describe different speeds and costs of delivery.\
+        \ Partners are expected to interpret this according to contractual agreements.\
+        \ For example, `economy`, `standard` and `express`."
+      type: string
+    PickupTier:
+      description: The pickup tier selected by the customer. Pickup tiers are Canva-defined
+        values that describe different speeds and costs of pickup. Partners are expected
+        to interpret this according to contractual agreements.
+      type: string
+    Item:
+      description: An item in the order.
+      example:
+        item_reference_id: FI123456789
+        status: received
+        sku_reference: IN00030
+        add_on_sku_reference: EN00006
+        quantity: 50
+      properties:
+        item_reference_id:
+          description: "A unique, case-sensitive ID for an order item that the partner\
+            \ can use when communicating with Canva."
+          example: FI123456789
+          maxLength: 255
+          type: string
+        status:
+          $ref: '#/components/schemas/ItemStatus'
+        sku_reference:
+          description: Partner-facing reference for an item's SKU. Describes a specific
+            variant of a product to be produced.
+          example: BC00001
+          maxLength: 255
+          type: string
+        add_on_sku_reference:
+          description: "Partner-facing reference for an item add on SKU. Sometimes\
+            \ referred to as a stock item. For example, envelopes with postcards."
+          example: EN00001
+          maxLength: 255
+          type: string
+        quantity:
+          description: The number of copies of an item to produce.
+          example: 50
+          format: int32
+          type: integer
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      required:
+      - item_reference_id
+      - quantity
+      - sku_reference
+      - status
+      type: object
+      x-ref-extensions:
+        error_details:
+          description: The error details of the item. Error details should be cleared
+            from an item after it has been resolved.
+    ItemStatus:
+      description: The updated production status of the item.
+      enum:
+      - received
+      - producing
+      - produced
+      - packaging
+      - ready_for_pickup
+      - picked_up
+      - shipped
+      - canceled
+      example: received
+      type: string
+      x-enum-descriptions:
+      - The order item was received and is pending further processing.
+      - The order item production has started.
+      - The order item production has completed.
+      - The order item packaging has started.
+      - The order item was shipped to the receiver.
+      - The order item is ready for pickup in store.
+      - The order item was picked up from the store.
+      - The order item was canceled.
+    Shipment:
+      description: The shipment details for an item in the order.
+      example:
+        tracking_number: "123456789"
+        carrier: fedex
+        items:
+        - item_reference_id: FI123456789
+          quantity: 50
+        dispatched_at: 1726448251
+        dispatch_location_reference: partnerLocation1234
+      properties:
+        tracking_number:
+          description: The tracking number provided by the carrier.
+          example: "123456789"
+          maxLength: 255
+          minLength: 1
+          type: string
+        carrier:
+          description: |
+            The Canva-supported carrier delivering the shipment. Valid carrier values include:
+            `allied_express`, `allwayex`, `amazon`, `ams`, `asendia`, `aus_post`, `b2c`, `blue_dart`, `bpost`, `bring`,
+            `bring_no`, `brt`, `canada_post`, `carriers`, `chitchats`, `chronopost`, `colissimo`, `correios`, `correos`,
+            `correos_express`, `couriers_please`, `deutsche_post`, `dhl`, `dpd`, `dpd_uk`, `estafeta`, `evri`, `fastway`,
+            `fedex`, `fleet_optics`, `france_express`, `gls`, `hunter_express`, `ics`, `icumulus`, `india_post`, `jadlog`,
+            `japan_post`, `landmark_global`, `laposte`, `loomis_express`, `lotte`, `nacex`, `new_zealand_post`,
+            `newzealand_couriers`, `norsk_global`, `ontime`, `pakman`, `paquetexpress`, `parcel_force`, `pitney_bowes`,
+            `planzer`, `post_nl`, `post_nord`, `purolator`, `quality`, `qxpress`, `royal_mail`, `sagawa`, `sda`, `seur`,
+            `shiprocket`, `spring_gds`, `star_track`, `swiss_post`, `tnt`, `toll`, `uniuni`, `ups`, `usps`, `yamato`.
+          minLength: 1
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ShipmentItem'
+          minLength: 1
+          type: array
+        dispatched_at:
+          description: "When the shipment was dispatched, as a Unix timestamp (in\
+            \ seconds since the Unix Epoch)."
+          example: 1726448251
+          format: int64
+          type: integer
+        dispatch_location_reference:
+          description: The location ID of where the shipment was dispatched.
+          example: partnerLocation1234
+          maxLength: 255
+          type: string
+      required:
+      - items
+      type: object
+      x-ref-extensions:
+        carrier:
+          description: The Canva-supported carrier delivering the shipment.
+        items:
+          description: The items included in the shipment.
+    ShipmentItem:
+      description: The items included in the shipment.
+      example:
+        item_reference_id: FI123456789
+        quantity: 50
+      properties:
+        item_reference_id:
+          description: "A unique, case-sensitive ID for an order item that the partner\
+            \ can use when communicating with Canva."
+          example: FI123456789
+          maxLength: 255
+          type: string
+        quantity:
+          description: The number of copies of an item that were shipped.
+          example: 50
+          format: int32
+          type: integer
+      required:
+      - item_reference_id
+      - quantity
+      type: object
+    Carrier:
+      description: |
+        The Canva-supported carrier delivering the shipment. Valid carrier values include:
+        `allied_express`, `allwayex`, `amazon`, `ams`, `asendia`, `aus_post`, `b2c`, `blue_dart`, `bpost`, `bring`,
+        `bring_no`, `brt`, `canada_post`, `carriers`, `chitchats`, `chronopost`, `colissimo`, `correios`, `correos`,
+        `correos_express`, `couriers_please`, `deutsche_post`, `dhl`, `dpd`, `dpd_uk`, `estafeta`, `evri`, `fastway`,
+        `fedex`, `fleet_optics`, `france_express`, `gls`, `hunter_express`, `ics`, `icumulus`, `india_post`, `jadlog`,
+        `japan_post`, `landmark_global`, `laposte`, `loomis_express`, `lotte`, `nacex`, `new_zealand_post`,
+        `newzealand_couriers`, `norsk_global`, `ontime`, `pakman`, `paquetexpress`, `parcel_force`, `pitney_bowes`,
+        `planzer`, `post_nl`, `post_nord`, `purolator`, `quality`, `qxpress`, `royal_mail`, `sagawa`, `sda`, `seur`,
+        `shiprocket`, `spring_gds`, `star_track`, `swiss_post`, `tnt`, `toll`, `uniuni`, `ups`, `usps`, `yamato`.
+      minLength: 1
+      type: string
+    ErrorDetails:
+      description: The error details of the item. Errors details should be cleared
+        from an item after it has been resolved.
+      example:
+        issue_origin: user_address
+        description: Address cannot be found. Please specify a valid delivery address.
+      properties:
+        issue_origin:
+          $ref: '#/components/schemas/IssueOrigin'
+        description:
+          description: A human readable message that describes the cause of the error.
+          example: Address cannot be found. Please specify a valid delivery address.
+          maxLength: 255
+          type: string
+      required:
+      - description
+      - issue_origin
+      type: object
+    IssueOrigin:
+      description: The origin of the issue.
+      enum:
+      - production
+      - order_url
+      - user_details
+      - user_address
+      - delivery
+      - unknown
+      example: user_address
+      type: string
+    OrderResponse:
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+      required:
+      - order
+      type: object
+      x-ref-extensions:
+        order:
+          description: The current state of the order.
+        examples:
+          deliveryOrder:
+            $ref: '#/components/examples/DeliveryOrder'
+          addonsDeliveryOrder:
+            $ref: '#/components/examples/AddonsDeliveryOrder'
+          deliveryOrderWithShipment:
+            $ref: '#/components/examples/DeliveryOrderWithShipment'
+          deliveryOrderWithError:
+            $ref: '#/components/examples/DeliveryOrderWithError'
+          multiItemAddonsDeliveryOrder:
+            $ref: '#/components/examples/MultiItemAddonsDeliveryOrder'
+          multiItemAddonsDeliveryOrderWithShipments:
+            $ref: '#/components/examples/MultiItemAddonsDeliveryOrderWithShipments'
+          pickUpOrder:
+            $ref: '#/components/examples/PickupOrder'
+          addonsPickUpOrder:
+            $ref: '#/components/examples/AddonsPickupOrder'
+          pickupOrderWithError:
+            $ref: '#/components/examples/PickupOrderWithError'
+          multiItemAddonsPickupOrder:
+            $ref: '#/components/examples/MultiItemAddonsPickupOrder'
+          multiItemAddonsPickupOrderWithError:
+            $ref: '#/components/examples/MultiItemAddonsPickupOrderWithError'
+          updatedDeliveryOrder:
+            $ref: '#/components/examples/UpdatedDeliveryOrder'
+          updatedPickOrder:
+            $ref: '#/components/examples/UpdatedPickupOrder'
+          canceledOrder:
+            $ref: '#/components/examples/CanceledOrder'
+          partiallyCanceledOrder:
+            $ref: '#/components/examples/PartiallyCanceledMultiItemOrder'
+    CreateOrderRequestType:
+      description: The type of request being made.
+      enum:
+      - create_order
+      example: create_order
+      type: string
+    UpdateOrderRequestType:
+      description: The type of request being made.
+      enum:
+      - update_order
+      example: update_order
+      type: string
+    CancelOrderRequestType:
+      description: The type of request being made.
+      enum:
+      - cancel_order
+      example: cancel_order
+      type: string
+    OrderEventRequestType:
+      description: The type of request.
+      enum:
+      - cost_summary_event
+      type: string
+    OrderCostSummaryEvent:
+      description: An event about the break down of costs and taxes associated for
+        an order in the partner's system.
+      properties:
+        request_type:
+          $ref: '#/components/schemas/OrderEventRequestType'
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        handling_major_units:
+          description: |
+            The total cost (excluding tax) of the handling component of the cost item. This is value must be:
+
+            - In major units.
+            - In the currency provided.
+            - A numerical value. The currency symbol must be omitted.
+          example: "0.35"
+          maxLength: 255
+          type: string
+        pre_tax_total_major_units:
+          description: |
+            Total cost (excluding tax) of the order. This is value must be:
+
+            - In major units.
+            - In the currency provided.
+            - A numerical value. The currency symbol must be omitted.
+          example: "25.54"
+          maxLength: 255
+          type: string
+        tax_major_units:
+          description: |
+            Total tax of the order. This is value must be:
+
+            - In major units.
+            - In the currency provided.
+            - A numerical value. The currency symbol must be omitted.
+          example: "2.55"
+          maxLength: 255
+          type: string
+        post_tax_total_major_units:
+          description: |
+            Total cost (including tax) of the order. This is value must be:
+
+            - In major units.
+            - In the currency provided.
+            - A numerical value. The currency symbol must be omitted.
+          example: "28.09"
+          maxLength: 255
+          type: string
+        currency:
+          description: ISO 4217 currency code for the values provided in the cost
+            summary.
+          example: USD
+          maxLength: 3
+          type: string
+        order_cost_items:
+          description: A break down of the cost components included in the cost summary.
+          items:
+            $ref: '#/components/schemas/OrderCostItem'
+          minItems: 1
+          type: array
+      required:
+      - currency
+      - order_cost_items
+      - order_reference_id
+      - post_tax_total_major_units
+      - pre_tax_total_major_units
+      - request_type
+      - tax_major_units
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `cost_summary_event`.
+          example: cost_summary_event
+        order_cost_items:
+          description: A break down of the cost components included in the cost summary.
+    OrderCostItem:
+      description: A cost component of an item or shipment for an order.
+      example:
+        type: product
+        item_reference_id: oi-AY1YVzGXy3OI
+        cost_major_units: "3.60"
+        tax_major_units: "0.40"
+        total_major_units: "4.00"
+        currency: USD
+      properties:
+        type:
+          $ref: '#/components/schemas/OrderCostItemType'
+        item_reference_id:
+          description: "A unique, case-sensitive ID for an order item that the print\
+            \ partner can use when communicating with Canva. This is only provided\
+            \ when the `OrderCostItem` is a `product`, `add_on`, or `packaging`."
+          example: FI123456789
+          maxLength: 255
+          type: string
+        tracking_number:
+          description: The tracking number provided by the carrier. This is only provided
+            when the `OrderCostItem` is a `shipment`.
+          example: "123456789"
+          maxLength: 255
+          type: string
+        cost_major_units:
+          description: |
+            Total cost (excluding tax) of the cost item. This is value must be:
+
+            - In major units.
+            - In the currency provided.
+            - A numerical value. The currency symbol must be omitted.
+          example: "3.60"
+          maxLength: 255
+          type: string
+        tax_major_units:
+          description: |
+            Total tax of the cost item. This is value must be:
+
+            - In major units.
+            - In the currency provided.
+            - A numerical value. The currency symbol must be omitted.
+          example: "0.40"
+          maxLength: 255
+          type: string
+        total_major_units:
+          description: |
+            Total cost (including tax) of the cost item. This is value must be:
+
+            - In major units.
+            - In the currency provided.
+            - A numerical value. The currency symbol must be omitted.
+          example: "4.00"
+          maxLength: 255
+          type: string
+        currency:
+          description: ISO 4217 currency code for the values provided in the cost
+            summary.
+          example: USD
+          maxLength: 3
+          type: string
+      required:
+      - cost_major_units
+      - currency
+      - tax_major_units
+      - total_major_units
+      - type
+      type: object
+      x-ref-extensions:
+        type:
+          description: |
+            The type of the cost item.
+          example: product
+    OrderCostItemType:
+      description: |
+        The type of the cost item.
+      enum:
+      - product
+      - add_on
+      - packaging
+      - shipment
+      type: string
+    OrderProductionEvent:
+      description: Event describing a change in the production status or location
+        of items in an order.
+      properties:
+        request_type:
+          enum:
+          - production_event
+          example: production_event
+          type: string
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        items:
+          description: A list of updates to items in the order.
+          items:
+            $ref: '#/components/schemas/ItemUpdateEvent'
+          minItems: 1
+          type: array
+      required:
+      - items
+      - order_reference_id
+      - request_type
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `production_event`.
+    ItemUpdateEvent:
+      description: Updates for an item in the order.
+      properties:
+        item_reference_id:
+          description: "A unique, case-sensitive ID for an order item that the print\
+            \ partner can use when communicating with Canva."
+          example: FI123456789
+          maxLength: 11
+          type: string
+        status:
+          $ref: '#/components/schemas/ItemUpdateStatusEnum'
+        production_location_reference:
+          description: The reference ID for the production location for the order.
+          example: partnerLocation1234_production
+          maxLength: 255
+          type: string
+      required:
+      - item_reference_id
+      - production_location_reference
+      - status
+      type: object
+    ItemUpdateStatusEnum:
+      description: |
+        The updated production status of the item. The values `ready_for_pickup` and `picked_up` are only valid when updating the status of a `PickupOrder`.
+      enum:
+      - received
+      - producing
+      - produced
+      - packaging
+      - ready_for_pickup
+      - picked_up
+      example: received
+      type: string
+    OrderErrorEvent:
+      description: Event describing an error for one or more order items.
+      properties:
+        request_type:
+          enum:
+          - error_event
+          example: error_event
+          type: string
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        items:
+          description: A list of updates to items in the order.
+          items:
+            $ref: '#/components/schemas/ItemErrorEvent'
+          minItems: 1
+          type: array
+      required:
+      - items
+      - order_reference_id
+      - request_type
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `error_event`.
+          example: error_event
+        items:
+          description: Describes the errors on the items.
+    ItemErrorEvent:
+      description: The updates to be made to an item in the order.
+      example:
+        item_reference_id: FI123456789
+        error_details:
+          issue_origin: user_address
+          description: Address cannot be found. Please specify a valid delivery address.
+      properties:
+        item_reference_id:
+          description: "A unique, case-sensitive ID for an order item that the print\
+            \ partner can use when communicating with Canva."
+          example: FI123456789
+          maxLength: 255
+          type: string
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      required:
+      - error_details
+      - item_reference_id
+      type: object
+      x-ref-extensions:
+        error_details:
+          description: The error details of the item.
+    OrderShipmentEvent:
+      description: Event describing an error affecting one or more order items.
+      properties:
+        request_type:
+          enum:
+          - shipment_event
+          example: shipment_event
+          type: string
+        order_reference_id:
+          description: "A unique, case-sensitive ID of the order in Canva's system.\
+            \ This must be the same value as the `orderReferenceId` path parameter."
+          example: FB123456789
+          maxLength: 255
+          type: string
+        shipments:
+          description: A list of shipments for the order.
+          items:
+            $ref: '#/components/schemas/ShipmentEvent'
+          minItems: 1
+          type: array
+      required:
+      - order_reference_id
+      - request_type
+      - shipments
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `shipment_event`.
+          example: shipment_event
+        shipments:
+          description: A list of shipments for the order.
+    ShipmentEvent:
+      description: The shipment details for an item in the order.
+      example:
+        tracking_number: "123456789"
+        carrier: fedex
+        items:
+        - item_reference_id: FI123456789
+          quantity: 50
+        - item_reference_id: FI987654321
+          quantity: 10
+        dispatched_at: 1726448251
+        dispatch_location_reference: partnerLocation1234
+      properties:
+        tracking_number:
+          description: The tracking number provided by the carrier.
+          example: "123456789"
+          maxLength: 255
+          minLength: 1
+          type: string
+        carrier:
+          description: |
+            The Canva-supported carrier delivering the shipment. Valid carrier values include:
+            `allied_express`, `allwayex`, `amazon`, `ams`, `asendia`, `aus_post`, `b2c`, `blue_dart`, `bpost`, `bring`,
+            `bring_no`, `brt`, `canada_post`, `carriers`, `chitchats`, `chronopost`, `colissimo`, `correios`, `correos`,
+            `correos_express`, `couriers_please`, `deutsche_post`, `dhl`, `dpd`, `dpd_uk`, `estafeta`, `evri`, `fastway`,
+            `fedex`, `fleet_optics`, `france_express`, `gls`, `hunter_express`, `ics`, `icumulus`, `india_post`, `jadlog`,
+            `japan_post`, `landmark_global`, `laposte`, `loomis_express`, `lotte`, `nacex`, `new_zealand_post`,
+            `newzealand_couriers`, `norsk_global`, `ontime`, `pakman`, `paquetexpress`, `parcel_force`, `pitney_bowes`,
+            `planzer`, `post_nl`, `post_nord`, `purolator`, `quality`, `qxpress`, `royal_mail`, `sagawa`, `sda`, `seur`,
+            `shiprocket`, `spring_gds`, `star_track`, `swiss_post`, `tnt`, `toll`, `uniuni`, `ups`, `usps`, `yamato`.
+          minLength: 1
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ShipmentItem'
+          minItems: 1
+          type: array
+        dispatch_location_reference:
+          description: The location reference ID of where the shipment was dispatched.
+          example: partnerLocation1234
+          maxLength: 255
+          type: string
+        dispatched_at:
+          description: "When the shipment was dispatched, as a Unix timestamp (in\
+            \ seconds since the Unix Epoch)."
+          example: 1726448251
+          format: int64
+          type: integer
+      required:
+      - carrier
+      - dispatch_location_reference
+      - dispatched_at
+      - items
+      - tracking_number
+      type: object
+      x-ref-extensions:
+        carrier:
+          description: The Canva-supported carrier delivering the shipment.
+        items:
+          description: The items included in the shipment.
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2
+x-print-outgoing-paths:
+  /locations:
+    get:
+      operationId: findLocations
+      description: |
+        Gets up-to-date information on the print partner's locations that support in-store pickup.
+
+        Canva is interested in:
+
+        - The address of each pickup location.
+        - Production and transfer locations that supply to each pickup location.
+        - The opening hours of each pickup location.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/FindLocationsCountryQuery'
+      - $ref: '#/components/parameters/FindLocationsContinuationQuery'
+      - $ref: '#/components/parameters/FindLocationsLimitQuery'
+      responses:
+        "200":
+          $ref: '#/components/responses/FindLocationsSuccessResponse'
+        "400":
+          $ref: '#/components/responses/400'
+        "401":
+          $ref: '#/components/responses/401'
+  /v1/orders:
+    post:
+      operationId: createOrder
+      description: |
+        Creates an order on the print partner's system. This operation lets Canva request a partner to commence production on an order.
+
+        As part of the request, Canva sends an `orderReferenceId` and a list of `items` to print.
+
+        Requests to this endpoint should be idempotent. If a provided `orderReferenceId` already exists in the partner system, and:
+
+        - The item `item_reference_id`s match and are not canceled: A success response should be returned.
+        - The item `item_reference_id`s match but items requested in the request are canceled: An error response should be returned.
+        - The item `item_reference_id`s don't match: An error response should be returned.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrderRequest'
+      responses:
+        "201":
+          $ref: '#/components/responses/CreateOrderSuccessResponse'
+        "400":
+          $ref: '#/components/responses/400'
+        "401":
+          $ref: '#/components/responses/401'
+  /v1/orders/{orderReferenceId}:
+    parameters:
+    - $ref: '#/components/parameters/ApiVersionHeader'
+    - $ref: '#/components/parameters/ApiSignatureHeader'
+    - $ref: '#/components/parameters/OrderReferenceIdPath'
+    get:
+      operationId: getOrder
+      description: Gets an order from the print partner's system.
+      responses:
+        "200":
+          $ref: '#/components/responses/GetOrderSuccessResponse'
+        "400":
+          $ref: '#/components/responses/400'
+        "401":
+          $ref: '#/components/responses/401'
+        "403":
+          $ref: '#/components/responses/403'
+    patch:
+      operationId: updateOrder
+      description: |
+        Updates an order in the print partner's system.
+
+        - Changes to an order are restricted only to the delivery address and customer details of the order.
+        - Updates to an order aren't allowed if every item of the order has been canceled.
+        - The order update request can be denied if the update isn't possible. For example, if the order contains items that have already shipped.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrderRequest'
+      responses:
+        "200":
+          $ref: '#/components/responses/UpdateOrderSuccessResponse'
+        "400":
+          $ref: '#/components/responses/400'
+        "401":
+          $ref: '#/components/responses/401'
+        "403":
+          $ref: '#/components/responses/403'
+        "405":
+          $ref: '#/components/responses/405'
+  /v1/orders/{orderReferenceId}/cancel:
+    post:
+      operationId: cancelOrder
+      description: |
+        Cancels items in an order in the print partner's system.
+
+        For cancel requests, Canva sends the `item_reference_ids` to cancel. For cancelling an entire order, Canva sends the `item_reference_ids` for all items in the order.
+
+        The request can be denied if the cancellation is not possible. For example, if production on the order's item has already started.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/OrderReferenceIdPath'
+      requestBody:
+        $ref: '#/components/requestBodies/CancelOrderRequest'
+      responses:
+        "200":
+          $ref: '#/components/responses/CancelOrderSuccessResponse'
+        "400":
+          $ref: '#/components/responses/400'
+        "401":
+          $ref: '#/components/responses/401'
+        "403":
+          $ref: '#/components/responses/403'
+        "405":
+          $ref: '#/components/responses/405'

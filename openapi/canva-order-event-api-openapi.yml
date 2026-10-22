@@ -1,0 +1,789 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations to manage Canva Print orders with suppliers
+  license:
+    name: ©2024 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Print Order Event API
+  version: 2025-04-14
+servers:
+- description: Canva Print API
+  url: https://api.canva.com/print
+tags:
+- name: order_event
+paths:
+  /v1/events/order-production:
+    post:
+      description: Creates an event to notify Canva about a production update for an order in the print partner's system.
+      operationId: orderProductionEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              single_item_production:
+                $ref: '#/components/examples/SingleItemProduction'
+              multi_item_production:
+                $ref: '#/components/examples/MultiItemProduction'
+            schema:
+              $ref: '#/components/schemas/OrderProductionEvent'
+      responses:
+        '204':
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        '400':
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request. For example, an invalid data format.
+        '401':
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        '403':
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_event
+      summary: Order production event
+      x-summary-source: derived
+  /v1/events/order-error:
+    post:
+      description: Creates an event to notify Canva about errors and issues for an order in the print partner's system.
+      operationId: orderErrorEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              single_item_error:
+                $ref: '#/components/examples/SingleItemError'
+              multi_item_error:
+                $ref: '#/components/examples/MultiItemError'
+            schema:
+              $ref: '#/components/schemas/OrderErrorEvent'
+      responses:
+        '204':
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        '400':
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request. For example, an invalid data format.
+        '401':
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        '403':
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_event
+      summary: Order error event
+      x-summary-source: derived
+  /v1/events/order-shipment:
+    post:
+      description: Creates an event to notify Canva about a shipment for an order in the print partner's system.
+      operationId: orderShipmentEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              single_item_shipment:
+                $ref: '#/components/examples/SingleItemShipment'
+              multi_item_shipment:
+                $ref: '#/components/examples/MultiItemShipment'
+              multi_shipment_item:
+                $ref: '#/components/examples/MultiShipmentItem'
+            schema:
+              $ref: '#/components/schemas/OrderShipmentEvent'
+      responses:
+        '204':
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        '400':
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request. For example, an invalid data format.
+        '401':
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        '403':
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_event
+      summary: Order shipment event
+      x-summary-source: derived
+components:
+  examples:
+    MultiItemError:
+      summary: Multi item, multi error
+      value:
+        request_type: error_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          error_details:
+            issue_origin: user_address
+            description: Address cannot be found. Please specify a valid delivery address.
+        - item_reference_id: F987654321
+          error_details:
+            issue_origin: user_address
+            description: Address cannot be found. Please specify a valid delivery address.
+    SingleItemProduction:
+      summary: Single item
+      value:
+        request_type: production_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          status: producing
+          production_location_reference: partnerLocation1234
+    MultiItemShipment:
+      summary: Multiple items, single shipment
+      value:
+        request_type: shipment_event
+        order_reference_id: FO123456789
+        shipments:
+        - tracking_number: '123456789'
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 50
+          - item_reference_id: FI987654321
+            quantity: 10
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+    MultiShipmentItem:
+      summary: Single item, multi shipment
+      value:
+        request_type: shipment_event
+        order_reference_id: FO123456789
+        shipments:
+        - tracking_number: '123456789'
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 25
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+        - tracking_number: '987654321'
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 25
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+    SingleItemShipment:
+      summary: Single item, single shipment
+      value:
+        request_type: shipment_event
+        order_reference_id: FO123456789
+        shipments:
+        - tracking_number: '123456789'
+          carrier: fedex
+          items:
+          - item_reference_id: FI123456789
+            quantity: 50
+          dispatched_at: 1726448251
+          dispatch_location_reference: partnerLocation1234
+    MultiItemProduction:
+      summary: Multi item
+      value:
+        request_type: production_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          status: producing
+          production_location_reference: partnerLocation1234
+        - item_reference_id: FI987654321
+          status: producing
+          production_location_reference: partnerLocation1234
+    SingleItemError:
+      summary: Single item, single error
+      value:
+        request_type: error_event
+        order_reference_id: FO123456789
+        items:
+        - item_reference_id: FI123456789
+          error_details:
+            issue_origin: user_address
+            description: Address cannot be found. Please specify a valid delivery address.
+  schemas:
+    ErrorDetails:
+      description: The error details of the item. Errors details should be cleared from an item after it has been resolved.
+      example:
+        issue_origin: user_address
+        description: Address cannot be found. Please specify a valid delivery address.
+      properties:
+        issue_origin:
+          $ref: '#/components/schemas/IssueOrigin'
+        description:
+          description: A human readable message that describes the cause of the error.
+          example: Address cannot be found. Please specify a valid delivery address.
+          maxLength: 255
+          type: string
+      required:
+      - description
+      - issue_origin
+      type: object
+    ItemUpdateEvent:
+      description: Updates for an item in the order.
+      properties:
+        item_reference_id:
+          description: A unique, case-sensitive ID for an order item that the print partner can use when communicating with Canva.
+          example: FI123456789
+          maxLength: 11
+          type: string
+        status:
+          $ref: '#/components/schemas/ItemUpdateStatusEnum'
+        production_location_reference:
+          description: The reference ID for the production location for the order.
+          example: partnerLocation1234_production
+          maxLength: 255
+          type: string
+      required:
+      - item_reference_id
+      - production_location_reference
+      - status
+      type: object
+    OrderShipmentEvent:
+      description: Event describing an error affecting one or more order items.
+      properties:
+        request_type:
+          enum:
+          - shipment_event
+          example: shipment_event
+          type: string
+        order_reference_id:
+          description: A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.
+          example: FB123456789
+          maxLength: 255
+          type: string
+        shipments:
+          description: A list of shipments for the order.
+          items:
+            $ref: '#/components/schemas/ShipmentEvent'
+          minItems: 1
+          type: array
+      required:
+      - order_reference_id
+      - request_type
+      - shipments
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `shipment_event`.
+          example: shipment_event
+        shipments:
+          description: A list of shipments for the order.
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - invalid_field
+      - invalid_header_value
+      - invalid_request
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - invalid_client
+      - unauthorized_client
+      - invalid_basic_header
+      type: string
+    OrderErrorEvent:
+      description: Event describing an error for one or more order items.
+      properties:
+        request_type:
+          enum:
+          - error_event
+          example: error_event
+          type: string
+        order_reference_id:
+          description: A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.
+          example: FB123456789
+          maxLength: 255
+          type: string
+        items:
+          description: A list of updates to items in the order.
+          items:
+            $ref: '#/components/schemas/ItemErrorEvent'
+          minItems: 1
+          type: array
+      required:
+      - items
+      - order_reference_id
+      - request_type
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `error_event`.
+          example: error_event
+        items:
+          description: Describes the errors on the items.
+    ItemErrorEvent:
+      description: The updates to be made to an item in the order.
+      example:
+        item_reference_id: FI123456789
+        error_details:
+          issue_origin: user_address
+          description: Address cannot be found. Please specify a valid delivery address.
+      properties:
+        item_reference_id:
+          description: A unique, case-sensitive ID for an order item that the print partner can use when communicating with Canva.
+          example: FI123456789
+          maxLength: 255
+          type: string
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      required:
+      - error_details
+      - item_reference_id
+      type: object
+      x-ref-extensions:
+        error_details:
+          description: The error details of the item.
+    OrderProductionEvent:
+      description: Event describing a change in the production status or location of items in an order.
+      properties:
+        request_type:
+          enum:
+          - production_event
+          example: production_event
+          type: string
+        order_reference_id:
+          description: A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.
+          example: FB123456789
+          maxLength: 255
+          type: string
+        items:
+          description: A list of updates to items in the order.
+          items:
+            $ref: '#/components/schemas/ItemUpdateEvent'
+          minItems: 1
+          type: array
+      required:
+      - items
+      - order_reference_id
+      - request_type
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `production_event`.
+    ShipmentEvent:
+      description: The shipment details for an item in the order.
+      example:
+        tracking_number: '123456789'
+        carrier: fedex
+        items:
+        - item_reference_id: FI123456789
+          quantity: 50
+        - item_reference_id: FI987654321
+          quantity: 10
+        dispatched_at: 1726448251
+        dispatch_location_reference: partnerLocation1234
+      properties:
+        tracking_number:
+          description: The tracking number provided by the carrier.
+          example: '123456789'
+          maxLength: 255
+          minLength: 1
+          type: string
+        carrier:
+          description: 'The Canva-supported carrier delivering the shipment. Valid carrier values include:
+
+            `allied_express`, `allwayex`, `amazon`, `ams`, `asendia`, `aus_post`, `b2c`, `blue_dart`, `bpost`, `bring`,
+
+            `bring_no`, `brt`, `canada_post`, `carriers`, `chitchats`, `chronopost`, `colissimo`, `correios`, `correos`,
+
+            `correos_express`, `couriers_please`, `deutsche_post`, `dhl`, `dpd`, `dpd_uk`, `estafeta`, `evri`, `fastway`,
+
+            `fedex`, `fleet_optics`, `france_express`, `gls`, `hunter_express`, `ics`, `icumulus`, `india_post`, `jadlog`,
+
+            `japan_post`, `landmark_global`, `laposte`, `loomis_express`, `lotte`, `nacex`, `new_zealand_post`,
+
+            `newzealand_couriers`, `norsk_global`, `ontime`, `pakman`, `paquetexpress`, `parcel_force`, `pitney_bowes`,
+
+            `planzer`, `post_nl`, `post_nord`, `purolator`, `quality`, `qxpress`, `royal_mail`, `sagawa`, `sda`, `seur`,
+
+            `shiprocket`, `spring_gds`, `star_track`, `swiss_post`, `tnt`, `toll`, `uniuni`, `ups`, `usps`, `yamato`.
+
+            '
+          minLength: 1
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ShipmentItem'
+          minItems: 1
+          type: array
+        dispatch_location_reference:
+          description: The location reference ID of where the shipment was dispatched.
+          example: partnerLocation1234
+          maxLength: 255
+          type: string
+        dispatched_at:
+          description: When the shipment was dispatched, as a Unix timestamp (in seconds since the Unix Epoch).
+          example: 1726448251
+          format: int64
+          type: integer
+      required:
+      - carrier
+      - dispatch_location_reference
+      - dispatched_at
+      - items
+      - tracking_number
+      type: object
+      x-ref-extensions:
+        carrier:
+          description: The Canva-supported carrier delivering the shipment.
+        items:
+          description: The items included in the shipment.
+    ItemUpdateStatusEnum:
+      description: 'The updated production status of the item. The values `ready_for_pickup` and `picked_up` are only valid when updating the status of a `PickupOrder`.
+
+        '
+      enum:
+      - received
+      - producing
+      - produced
+      - packaging
+      - ready_for_pickup
+      - picked_up
+      example: received
+      type: string
+    IssueOrigin:
+      description: The origin of the issue.
+      enum:
+      - production
+      - order_url
+      - user_details
+      - user_address
+      - delivery
+      - unknown
+      example: user_address
+      type: string
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ShipmentItem:
+      description: The items included in the shipment.
+      example:
+        item_reference_id: FI123456789
+        quantity: 50
+      properties:
+        item_reference_id:
+          description: A unique, case-sensitive ID for an order item that the partner can use when communicating with Canva.
+          example: FI123456789
+          maxLength: 255
+          type: string
+        quantity:
+          description: The number of copies of an item that were shipped.
+          example: 50
+          format: int32
+          type: integer
+      required:
+      - item_reference_id
+      - quantity
+      type: object
+  headers:
+    X-Canva-Public-Api-Version:
+      description: The version of the Canva Print Standard API used in the request.
+      explode: false
+      schema:
+        example: 2025-08-10
+        format: date
+        type: string
+      style: simple
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2
+x-print-outgoing-paths:
+  /locations:
+    get:
+      operationId: findLocations
+      description: 'Gets up-to-date information on the print partner''s locations that support in-store pickup.
+
+
+        Canva is interested in:
+
+
+        - The address of each pickup location.
+
+        - Production and transfer locations that supply to each pickup location.
+
+        - The opening hours of each pickup location.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/FindLocationsCountryQuery'
+      - $ref: '#/components/parameters/FindLocationsContinuationQuery'
+      - $ref: '#/components/parameters/FindLocationsLimitQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/FindLocationsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+  /v1/orders:
+    post:
+      operationId: createOrder
+      description: 'Creates an order on the print partner''s system. This operation lets Canva request a partner to commence production on an order.
+
+
+        As part of the request, Canva sends an `orderReferenceId` and a list of `items` to print.
+
+
+        Requests to this endpoint should be idempotent. If a provided `orderReferenceId` already exists in the partner system, and:
+
+
+        - The item `item_reference_id`s match and are not canceled: A success response should be returned.
+
+        - The item `item_reference_id`s match but items requested in the request are canceled: An error response should be returned.
+
+        - The item `item_reference_id`s don''t match: An error response should be returned.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+  /v1/orders/{orderReferenceId}:
+    parameters:
+    - $ref: '#/components/parameters/ApiVersionHeader'
+    - $ref: '#/components/parameters/ApiSignatureHeader'
+    - $ref: '#/components/parameters/OrderReferenceIdPath'
+    get:
+      operationId: getOrder
+      description: Gets an order from the print partner's system.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+    patch:
+      operationId: updateOrder
+      description: 'Updates an order in the print partner''s system.
+
+
+        - Changes to an order are restricted only to the delivery address and customer details of the order.
+
+        - Updates to an order aren''t allowed if every item of the order has been canceled.
+
+        - The order update request can be denied if the update isn''t possible. For example, if the order contains items that have already shipped.
+
+        '
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '405':
+          $ref: '#/components/responses/405'
+  /v1/orders/{orderReferenceId}/cancel:
+    post:
+      operationId: cancelOrder
+      description: 'Cancels items in an order in the print partner''s system.
+
+
+        For cancel requests, Canva sends the `item_reference_ids` to cancel. For cancelling an entire order, Canva sends the `item_reference_ids` for all items in the order.
+
+
+        The request can be denied if the cancellation is not possible. For example, if production on the order''s item has already started.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/OrderReferenceIdPath'
+      requestBody:
+        $ref: '#/components/requestBodies/CancelOrderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CancelOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '405':
+          $ref: '#/components/responses/405'

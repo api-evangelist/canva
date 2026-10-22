@@ -1,0 +1,600 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations to manage Canva Print orders with suppliers
+  license:
+    name: ©2024 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Print Order Cost API
+  version: 2025-04-14
+servers:
+- description: Canva Print API
+  url: https://api.canva.com/print
+tags:
+- name: order_cost
+paths:
+  /v1/events/order-cost-summary:
+    post:
+      description: 'Creates an event to notify Canva about the break down of costs and taxes for an order in the print partner''s system.
+
+
+        It''s expected that partners will send a cost summary after the order is completely shipped or is ready for pickup. Partners can omit shipment cost information for shipments that use Canva-provided shipping accounts.
+
+
+        WARNING: This endpoint isn''t a replacement for the established invoicing flow. This endpoint is for tracking purposes only, and isn''t associated with any payable account.'
+      operationId: orderCostSummaryEvent
+      parameters:
+      - description: Unique ID of the print partner making the request.
+        example: Ym9zY236Ym9zY28=
+        explode: false
+        in: header
+        name: X-Canva-Print-Client-Id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            examples:
+              multi_item_delivery_order:
+                $ref: '#/components/examples/MultiItemDeliveryOrderCostSummary'
+              addon_delivery_order:
+                $ref: '#/components/examples/AddonDeliveryOrderCostSummary'
+              pickup_order:
+                $ref: '#/components/examples/PickupOrderCostSummary'
+            schema:
+              $ref: '#/components/schemas/OrderCostSummaryEvent'
+      responses:
+        '204':
+          description: Order event received.
+          headers:
+            X-Canva-Public-Api-Version:
+              $ref: '#/components/headers/X-Canva-Public-Api-Version'
+        '400':
+          content:
+            application/json:
+              examples:
+                badRequest:
+                  summary: Bad request
+                  value:
+                    code: invalid_request
+                    message: The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request. For example, an invalid data format.
+        '401':
+          content:
+            application/json:
+              examples:
+                unauthorized:
+                  summary: Unauthorized
+                  value:
+                    code: unauthorized_client
+                    message: The client is not authorized for action.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid or unauthorized client ID or secret.
+        '403':
+          content:
+            application/json:
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    code: permission_denied
+                    message: The resource owner or authorization server denied the request.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Partner has no access to the order.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials: []
+      tags:
+      - order_cost
+      summary: Order cost summary event
+      x-summary-source: derived
+components:
+  schemas:
+    OrderCostItem:
+      description: A cost component of an item or shipment for an order.
+      example:
+        type: product
+        item_reference_id: oi-AY1YVzGXy3OI
+        cost_major_units: '3.60'
+        tax_major_units: '0.40'
+        total_major_units: '4.00'
+        currency: USD
+      properties:
+        type:
+          $ref: '#/components/schemas/OrderCostItemType'
+        item_reference_id:
+          description: A unique, case-sensitive ID for an order item that the print partner can use when communicating with Canva. This is only provided when the `OrderCostItem` is a `product`, `add_on`, or `packaging`.
+          example: FI123456789
+          maxLength: 255
+          type: string
+        tracking_number:
+          description: The tracking number provided by the carrier. This is only provided when the `OrderCostItem` is a `shipment`.
+          example: '123456789'
+          maxLength: 255
+          type: string
+        cost_major_units:
+          description: 'Total cost (excluding tax) of the cost item. This is value must be:
+
+
+            - In major units.
+
+            - In the currency provided.
+
+            - A numerical value. The currency symbol must be omitted.
+
+            '
+          example: '3.60'
+          maxLength: 255
+          type: string
+        tax_major_units:
+          description: 'Total tax of the cost item. This is value must be:
+
+
+            - In major units.
+
+            - In the currency provided.
+
+            - A numerical value. The currency symbol must be omitted.
+
+            '
+          example: '0.40'
+          maxLength: 255
+          type: string
+        total_major_units:
+          description: 'Total cost (including tax) of the cost item. This is value must be:
+
+
+            - In major units.
+
+            - In the currency provided.
+
+            - A numerical value. The currency symbol must be omitted.
+
+            '
+          example: '4.00'
+          maxLength: 255
+          type: string
+        currency:
+          description: ISO 4217 currency code for the values provided in the cost summary.
+          example: USD
+          maxLength: 3
+          type: string
+      required:
+      - cost_major_units
+      - currency
+      - tax_major_units
+      - total_major_units
+      - type
+      type: object
+      x-ref-extensions:
+        type:
+          description: 'The type of the cost item.
+
+            '
+          example: product
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    OrderCostSummaryEvent:
+      description: An event about the break down of costs and taxes associated for an order in the partner's system.
+      properties:
+        request_type:
+          $ref: '#/components/schemas/OrderEventRequestType'
+        order_reference_id:
+          description: A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.
+          example: FB123456789
+          maxLength: 255
+          type: string
+        handling_major_units:
+          description: 'The total cost (excluding tax) of the handling component of the cost item. This is value must be:
+
+
+            - In major units.
+
+            - In the currency provided.
+
+            - A numerical value. The currency symbol must be omitted.
+
+            '
+          example: '0.35'
+          maxLength: 255
+          type: string
+        pre_tax_total_major_units:
+          description: 'Total cost (excluding tax) of the order. This is value must be:
+
+
+            - In major units.
+
+            - In the currency provided.
+
+            - A numerical value. The currency symbol must be omitted.
+
+            '
+          example: '25.54'
+          maxLength: 255
+          type: string
+        tax_major_units:
+          description: 'Total tax of the order. This is value must be:
+
+
+            - In major units.
+
+            - In the currency provided.
+
+            - A numerical value. The currency symbol must be omitted.
+
+            '
+          example: '2.55'
+          maxLength: 255
+          type: string
+        post_tax_total_major_units:
+          description: 'Total cost (including tax) of the order. This is value must be:
+
+
+            - In major units.
+
+            - In the currency provided.
+
+            - A numerical value. The currency symbol must be omitted.
+
+            '
+          example: '28.09'
+          maxLength: 255
+          type: string
+        currency:
+          description: ISO 4217 currency code for the values provided in the cost summary.
+          example: USD
+          maxLength: 3
+          type: string
+        order_cost_items:
+          description: A break down of the cost components included in the cost summary.
+          items:
+            $ref: '#/components/schemas/OrderCostItem'
+          minItems: 1
+          type: array
+      required:
+      - currency
+      - order_cost_items
+      - order_reference_id
+      - post_tax_total_major_units
+      - pre_tax_total_major_units
+      - request_type
+      - tax_major_units
+      type: object
+      x-ref-extensions:
+        request_type:
+          description: The type of request. Must be `cost_summary_event`.
+          example: cost_summary_event
+        order_cost_items:
+          description: A break down of the cost components included in the cost summary.
+    OrderCostItemType:
+      description: 'The type of the cost item.
+
+        '
+      enum:
+      - product
+      - add_on
+      - packaging
+      - shipment
+      type: string
+    OrderEventRequestType:
+      description: The type of request.
+      enum:
+      - cost_summary_event
+      type: string
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - invalid_field
+      - invalid_header_value
+      - invalid_request
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - invalid_client
+      - unauthorized_client
+      - invalid_basic_header
+      type: string
+  examples:
+    MultiItemDeliveryOrderCostSummary:
+      summary: 'Delivery order: multiple items, multiple shipments'
+      value:
+        request_type: cost_summary_event
+        order_reference_id: FB123456789
+        handling_major_units: '0.35'
+        pre_tax_total_major_units: '16.02'
+        tax_major_units: '1.75'
+        post_tax_total_major_units: '17.77'
+        currency: USD
+        order_cost_items:
+        - type: product
+          item_reference_id: FI123456789
+          cost_major_units: '3.60'
+          tax_major_units: '0.40'
+          total_major_units: '4.00'
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: '0.40'
+          tax_major_units: '0.04'
+          total_major_units: '0.44'
+          currency: USD
+        - type: product
+          item_reference_id: FI123456788
+          cost_major_units: '3.60'
+          tax_major_units: '0.40'
+          total_major_units: '4.00'
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456788
+          cost_major_units: '0.40'
+          tax_major_units: '0.04'
+          total_major_units: '0.44'
+          currency: USD
+        - type: shipment
+          tracking_number: TR12345671
+          cost_major_units: '4.55'
+          tax_major_units: '0.45'
+          total_major_units: '5.00'
+          currency: USD
+        - type: shipment
+          tracking_number: TR12345672
+          cost_major_units: '3.12'
+          tax_major_units: '0.42'
+          total_major_units: '3.54'
+          currency: USD
+    AddonDeliveryOrderCostSummary:
+      summary: Delivery order with add on
+      value:
+        request_type: cost_summary_event
+        order_reference_id: FB123456789
+        handling_major_units: '0.35'
+        pre_tax_total_major_units: '16.02'
+        tax_major_units: '1.75'
+        post_tax_total_major_units: '17.77'
+        currency: USD
+        order_cost_items:
+        - type: product
+          item_reference_id: FI123456789
+          cost_major_units: '3.60'
+          tax_major_units: '0.40'
+          total_major_units: '4.00'
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: '0.40'
+          tax_major_units: '0.04'
+          total_major_units: '0.44'
+          currency: USD
+        - type: add_on
+          item_reference_id: FI123456789
+          cost_major_units: '3.60'
+          tax_major_units: '0.40'
+          total_major_units: '4.00'
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: '0.40'
+          tax_major_units: '0.04'
+          total_major_units: '0.44'
+          currency: USD
+        - type: shipment
+          tracking_number: TR12345671
+          cost_major_units: '4.55'
+          tax_major_units: '0.45'
+          total_major_units: '5.00'
+          currency: USD
+    PickupOrderCostSummary:
+      summary: Pickup order
+      value:
+        request_type: cost_summary_event
+        order_reference_id: FB123456789
+        handling_major_units: '0.35'
+        pre_tax_total_major_units: '16.02'
+        tax_major_units: '1.75'
+        post_tax_total_major_units: '17.77'
+        currency: USD
+        order_cost_items:
+        - type: product
+          item_reference_id: FI123456789
+          cost_major_units: '3.60'
+          tax_major_units: '0.40'
+          total_major_units: '4.00'
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: '0.40'
+          tax_major_units: '0.04'
+          total_major_units: '0.44'
+          currency: USD
+        - type: add_on
+          item_reference_id: FI123456789
+          cost_major_units: '3.60'
+          tax_major_units: '0.40'
+          total_major_units: '4.00'
+          currency: USD
+        - type: packaging
+          item_reference_id: FI123456789
+          cost_major_units: '0.40'
+          tax_major_units: '0.04'
+          total_major_units: '0.44'
+          currency: USD
+  headers:
+    X-Canva-Public-Api-Version:
+      description: The version of the Canva Print Standard API used in the request.
+      explode: false
+      schema:
+        example: 2025-08-10
+        format: date
+        type: string
+      style: simple
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2
+x-print-outgoing-paths:
+  /locations:
+    get:
+      operationId: findLocations
+      description: 'Gets up-to-date information on the print partner''s locations that support in-store pickup.
+
+
+        Canva is interested in:
+
+
+        - The address of each pickup location.
+
+        - Production and transfer locations that supply to each pickup location.
+
+        - The opening hours of each pickup location.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/FindLocationsCountryQuery'
+      - $ref: '#/components/parameters/FindLocationsContinuationQuery'
+      - $ref: '#/components/parameters/FindLocationsLimitQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/FindLocationsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+  /v1/orders:
+    post:
+      operationId: createOrder
+      description: 'Creates an order on the print partner''s system. This operation lets Canva request a partner to commence production on an order.
+
+
+        As part of the request, Canva sends an `orderReferenceId` and a list of `items` to print.
+
+
+        Requests to this endpoint should be idempotent. If a provided `orderReferenceId` already exists in the partner system, and:
+
+
+        - The item `item_reference_id`s match and are not canceled: A success response should be returned.
+
+        - The item `item_reference_id`s match but items requested in the request are canceled: An error response should be returned.
+
+        - The item `item_reference_id`s don''t match: An error response should be returned.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+  /v1/orders/{orderReferenceId}:
+    parameters:
+    - $ref: '#/components/parameters/ApiVersionHeader'
+    - $ref: '#/components/parameters/ApiSignatureHeader'
+    - $ref: '#/components/parameters/OrderReferenceIdPath'
+    get:
+      operationId: getOrder
+      description: Gets an order from the print partner's system.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+    patch:
+      operationId: updateOrder
+      description: 'Updates an order in the print partner''s system.
+
+
+        - Changes to an order are restricted only to the delivery address and customer details of the order.
+
+        - Updates to an order aren''t allowed if every item of the order has been canceled.
+
+        - The order update request can be denied if the update isn''t possible. For example, if the order contains items that have already shipped.
+
+        '
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '405':
+          $ref: '#/components/responses/405'
+  /v1/orders/{orderReferenceId}/cancel:
+    post:
+      operationId: cancelOrder
+      description: 'Cancels items in an order in the print partner''s system.
+
+
+        For cancel requests, Canva sends the `item_reference_ids` to cancel. For cancelling an entire order, Canva sends the `item_reference_ids` for all items in the order.
+
+
+        The request can be denied if the cancellation is not possible. For example, if production on the order''s item has already started.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/OrderReferenceIdPath'
+      requestBody:
+        $ref: '#/components/requestBodies/CancelOrderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CancelOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '405':
+          $ref: '#/components/responses/405'

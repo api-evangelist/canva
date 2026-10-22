@@ -1,188 +1,484 @@
-generated: '2026-08-13'
+generated: '2026-10-20'
 method: derived
-source: >-
-  well-known/canva-mcp-oauth-protected-resource.json (scopes the hosted MCP server declares)
-  x openapi/canva-connect-api-openapi.yml (security requirements per operation)
-description: >-
-  Binding between Canva's hosted MCP server (https://mcp.canva.com/mcp) and the Connect API
-  OpenAPI operations behind it.
-  IMPORTANT — READ THE SHAPE BEFORE READING THE ROWS. Canva's MCP `tools/list` is OAuth-gated
-  (HTTP 401 anonymously), so the tool NAMES and inputSchemas could not be enumerated and NONE
-  ARE INVENTED HERE. What the server does publish anonymously, via RFC 9728 Protected Resource
-  Metadata, is its full scope list. Every row below is therefore keyed on a DECLARED MCP SCOPE
-  rather than a tool name, and binds that scope to the exact OpenAPI operationIds that require
-  it. This is a real, checkable derivation from two real artifacts; upgrade it to tool-keyed
-  rows once an authenticated introspection of tools/list is possible.
+source: https://www.canva.dev/docs/apps/mcp/tools/ (tool table, fetched as https://www.canva.dev/docs/apps/mcp/tools.md,
+  HTTP 200) x openapi/canva-*-api-openapi.yml operationIds
+description: Binding between the tools Canva DOCUMENTS for its hosted MCP server (https://mcp.canva.com/mcp) and
+  the Canva REST (formerly Connect) API operationIds behind them. Tool names come from Canva's published "MCP tools
+  and rate limits" table; tools/list itself is OAuth-gated (HTTP 401 anonymously) and was never called, so live
+  inputSchemas were not seen and every binding is by name and documented semantics. Where a tool binds to a REST
+  operation, that operation's parameters and requestBody are the closest public schema for the tool's inputs.
 surfaces:
   openapi:
-    file: openapi/canva-connect-api-openapi.yml
+    files:
+    - openapi/canva-analytics-api-openapi.yml
+    - openapi/canva-app-api-openapi.yml
+    - openapi/canva-asset-api-openapi.yml
+    - openapi/canva-autofill-api-openapi.yml
+    - openapi/canva-brand-template-api-openapi.yml
+    - openapi/canva-comment-api-openapi.yml
+    - openapi/canva-connect-api-openapi.yml
+    - openapi/canva-design-api-openapi.yml
+    - openapi/canva-design-generation-api-openapi.yml
+    - openapi/canva-design-import-api-openapi.yml
+    - openapi/canva-export-api-openapi.yml
+    - openapi/canva-folder-api-openapi.yml
+    - openapi/canva-image-generation-api-openapi.yml
+    - openapi/canva-image-transformation-api-openapi.yml
+    - openapi/canva-merge-api-openapi.yml
+    - openapi/canva-oauth-api-openapi.yml
+    - openapi/canva-oidc-api-openapi.yml
+    - openapi/canva-resize-api-openapi.yml
+    - openapi/canva-user-api-openapi.yml
+    original: openapi/_original/canva-openapi.yml
     published: https://www.canva.dev/sources/connect/api/latest/api.yml
     server: https://api.canva.com/rest
-    operations: 59
+    operations: 67
     gated: false
   mcp:
     url: https://mcp.canva.com/mcp
     transport: streamable-http
     gated: true
-    gate: OAuth 2.1 bearer; tools/list returns 401 invalid_token
+    gate: OAuth 2.1 bearer; anonymous request returns 401 invalid_token
+    tool_list: documented
+    tool_list_source: https://www.canva.dev/docs/apps/mcp/tools/
+    tools_documented: 46
   graphql:
     present: false
-scope_bindings:
-  - scope: design:meta:read
-    rest:
-      - listDesigns
-      - getDesign
-      - getDesignAutofillJob
-      - getDesignMergeJob
-      - getPrintPartnerDesign
-      - createDesignMergeJob
-    binding: scope-to-operation
-    confidence: high
-  - scope: design:content:read
-    rest:
-      - getDesignPages
-      - getDesignDataset
-      - getDesignExportFormats
-      - createDesignExportJob
-      - getDesignExportJob
-      - createPrintPartnerDesignExportJob
-      - createDesignResizeJob
-      - getDesignResizeJob
-      - getDesignAnalytics
-      - getDesignAnalyticsViewers
-      - getDesignAnalyticsViewsOverTime
-      - getDesignAnalyticsPageViews
-      - getDesignAnalyticsLinks
-    binding: scope-to-operation
-    confidence: high
-  - scope: design:content:write
-    rest:
-      - createDesign
-      - createDesignAutofillJob
-      - createDesignImportJob
-      - createUrlImportJob
-      - getDesignImportJob
-      - getUrlImportJob
-      - createDesignMergeJob
-      - createDesignResizeJob
-      - getDesignResizeJob
-      - createPrintPartnerDesign
-    binding: scope-to-operation
-    confidence: high
-  - scope: asset:read
-    rest:
-      - getAsset
-      - GetAssetUploadJob
-      - getUrlAssetUploadJob
-    binding: scope-to-operation
-    confidence: high
-  - scope: asset:write
-    rest:
-      - CreateAssetUploadJob
-      - createUrlAssetUploadJob
-      - updateAsset
-      - deleteAsset
-    binding: scope-to-operation
-    confidence: high
-  - scope: folder:read
-    rest:
-      - getFolder
-      - listFolderItems
-    binding: scope-to-operation
-    confidence: high
-  - scope: folder:write
-    rest:
-      - createFolder
-      - updateFolder
-      - deleteFolder
-      - moveFolderItem
-    binding: scope-to-operation
-    confidence: high
-  - scope: brandtemplate:meta:read
-    rest:
-      - listBrandTemplates
-      - getBrandTemplate
-    binding: scope-to-operation
-    confidence: high
-  - scope: brandtemplate:content:read
-    rest:
-      - getBrandTemplateDataset
-    binding: scope-to-operation
-    confidence: high
-  - scope: brandtemplate:content:write
-    rest:
-      - publishBrandTemplate
-    binding: scope-to-operation
-    confidence: high
-  - scope: comment:read
-    rest:
-      - getThread
-      - getReply
-      - listReplies
-    binding: scope-to-operation
-    confidence: high
-  - scope: comment:write
-    rest:
-      - createThread
-      - createReply
-      - createComment
-    binding: scope-to-operation
-    confidence: high
-    note: createComment is marked deprecated in the OpenAPI; createThread supersedes it.
-  - scope: profile:read
-    rest:
-      - getUserProfile
-      - getUserCapabilities
-    binding: scope-to-operation
-    confidence: high
+crosswalk:
+- tool: upload-asset-from-url
+  category: Assets
+  rest:
+  - createUrlAssetUploadJob
+  - getUrlAssetUploadJob
+  spec:
+  - openapi/canva-asset-api-openapi.yml
+  binding: async-job
+  confidence: high
+- tool: get-assets
+  category: Assets
+  rest:
+  - getAsset
+  spec:
+  - openapi/canva-asset-api-openapi.yml
+  binding: direct
+  confidence: medium
+  note: tool name is plural; REST reads one asset by id
+- tool: create-upload-url
+  category: Assets
+  rest:
+  - CreateAssetUploadJob
+  spec:
+  - openapi/canva-asset-api-openapi.yml
+  binding: semantic
+  confidence: low
+  note: REST uploads a binary body directly; no REST operation returns an upload URL
+- tool: autofill-design
+  category: Autofill
+  rest:
+  - createDesignAutofillJob
+  - getDesignAutofillJob
+  spec:
+  - openapi/canva-autofill-api-openapi.yml
+  binding: async-job
+  confidence: high
+- tool: get-brand-template-dataset
+  category: Autofill
+  rest:
+  - getBrandTemplateDataset
+  spec:
+  - openapi/canva-brand-template-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: get-design-dataset
+  category: Autofill
+  rest:
+  - getDesignDataset
+  spec:
+  - openapi/canva-design-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: search-brand-templates
+  category: Brand templates
+  rest:
+  - listBrandTemplates
+  spec:
+  - openapi/canva-brand-template-api-openapi.yml
+  binding: direct
+  confidence: high
+  note: REST list takes a `query` parameter
+- tool: create-design-from-brand-template
+  category: Brand templates
+  rest:
+  - createDesignAutofillJob
+  - getDesignAutofillJob
+  spec:
+  - openapi/canva-autofill-api-openapi.yml
+  binding: semantic
+  confidence: low
+  note: REST creates a design from a brand template only through autofill
+- tool: publish-brand-template
+  category: Brand templates
+  rest:
+  - publishBrandTemplate
+  spec:
+  - openapi/canva-brand-template-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: comment-on-design
+  category: Comments
+  rest:
+  - createThread
+  spec:
+  - openapi/canva-comment-api-openapi.yml
+  binding: direct
+  confidence: high
+  note: createComment (POST /v1/comments) is deprecated in favour of createThread
+- tool: reply-to-comment
+  category: Comments
+  rest:
+  - createReply
+  spec:
+  - openapi/canva-comment-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: list-replies
+  category: Comments
+  rest:
+  - listReplies
+  spec:
+  - openapi/canva-comment-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: search-designs
+  category: Designs
+  rest:
+  - listDesigns
+  spec:
+  - openapi/canva-design-api-openapi.yml
+  binding: direct
+  confidence: high
+  note: REST list takes a `query` parameter
+- tool: get-design
+  category: Designs
+  rest:
+  - getDesign
+  spec:
+  - openapi/canva-design-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: get-design-pages
+  category: Designs
+  rest:
+  - getDesignPages
+  spec:
+  - openapi/canva-design-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: get-export-formats
+  category: Designs
+  rest:
+  - getDesignExportFormats
+  spec:
+  - openapi/canva-design-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: generate-design
+  category: Designs
+  rest:
+  - createDesignGenerationJobV2
+  - getDesignGenerationJobV2
+  spec:
+  - openapi/canva-design-generation-api-openapi.yml
+  binding: async-job
+  confidence: medium
+  note: MCP returns candidates that are then materialised by create-design-from-candidate; REST job semantics may
+    differ
+- tool: create-design
+  category: Designs
+  rest:
+  - createDesign
+  spec:
+  - openapi/canva-design-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: merge-designs
+  category: Designs
+  rest:
+  - createDesignMergeJob
+  - getDesignMergeJob
+  spec:
+  - openapi/canva-merge-api-openapi.yml
+  binding: async-job
+  confidence: high
+- tool: import-design-from-url
+  category: Design imports
+  rest:
+  - createUrlImportJob
+  - getUrlImportJob
+  spec:
+  - openapi/canva-design-import-api-openapi.yml
+  binding: async-job
+  confidence: high
+- tool: export-design
+  category: Exports
+  rest:
+  - createDesignExportJob
+  - getDesignExportJob
+  spec:
+  - openapi/canva-export-api-openapi.yml
+  binding: async-job
+  confidence: high
+- tool: generate-image
+  category: Images
+  rest:
+  - createImageGenerationJob
+  spec:
+  - openapi/canva-image-generation-api-openapi.yml
+  binding: async-job
+  confidence: high
+- tool: get-generate-image-job
+  category: Images
+  rest:
+  - getImageGenerationJob
+  spec:
+  - openapi/canva-image-generation-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: remove-background
+  category: Images
+  rest:
+  - createImageTransformationJob
+  - getImageTransformationJob
+  spec:
+  - openapi/canva-image-transformation-api-openapi.yml
+  binding: async-job
+  confidence: medium
+  note: REST transformation type `background_removal`
+- tool: create-folder
+  category: Folders
+  rest:
+  - createFolder
+  spec:
+  - openapi/canva-folder-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: list-folder-items
+  category: Folders
+  rest:
+  - listFolderItems
+  spec:
+  - openapi/canva-folder-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: move-item-to-folder
+  category: Folders
+  rest:
+  - moveFolderItem
+  spec:
+  - openapi/canva-folder-api-openapi.yml
+  binding: direct
+  confidence: high
+- tool: resize-design
+  category: Resizes
+  rest:
+  - createDesignResizeJob
+  - getDesignResizeJob
+  spec:
+  - openapi/canva-resize-api-openapi.yml
+  binding: async-job
+  confidence: high
+- tool: get-design-thumbnail
+  category: Editing transactions
+  rest:
+  - getDesign
+  spec:
+  - openapi/canva-design-api-openapi.yml
+  binding: semantic
+  confidence: low
+  note: getDesign returns thumbnail metadata; no dedicated REST thumbnail operation
 mcp_only:
-  - scope: brandkit:read
-    reason: >-
-      Declared by the hosted MCP server but absent from the Connect API OAuth scope table
-      (https://www.canva.dev/docs/connect/appendix/scopes/) and from every securityScheme in
-      the published OpenAPI. No public REST operation corresponds to it — the MCP server
-      reaches a Brand Kit capability the public REST API does not expose.
-  - scope: help:answers:read
-    reason: >-
-      Declared by the hosted MCP server only. No public REST operation. Almost certainly backs
-      Canva Help Center answering inside the AI Connector; not part of the Connect APIs.
-  - scope: help:answers:write
-    reason: Declared by the hosted MCP server only. No public REST operation.
+- tool: list-brand-kits
+  reason: brand kits are not exposed by the public REST API (the MCP server declares scope brandkit:read, which
+    is not a Connect REST scope)
+- tool: create-brand-template-draft
+  reason: no REST operation creates a brand-template draft
+- tool: list-comments
+  reason: REST reads a single thread (getThread) but has no list-threads operation
+- tool: get-design-content
+  reason: no public REST operation reads design content
+- tool: get-presenter-notes
+  reason: no public REST operation reads presenter notes
+- tool: create-design-from-candidate
+  reason: operates on MCP generate-design candidates; no REST equivalent
+- tool: get-create-design-async-job
+  reason: no REST operation matches this job type by name
+- tool: copy-design
+  reason: no public REST copy-design operation
+- tool: resolve-shortlink
+  reason: no public REST shortlink operation
+- tool: separate-image-layers
+  reason: REST image transformations enumerate only background_removal
+- tool: get-separate-image-layers-job
+  reason: REST image transformations enumerate only background_removal
+- tool: search-folders
+  reason: REST has getFolder and listFolderItems but no folder search
+- tool: start-editing-transaction
+  reason: design editing transactions are not exposed by the public REST API
+- tool: perform-editing-operations
+  reason: design editing transactions are not exposed by the public REST API
+- tool: commit-editing-transaction
+  reason: design editing transactions are not exposed by the public REST API
+- tool: cancel-editing-transaction
+  reason: design editing transactions are not exposed by the public REST API
+- tool: help
+  reason: help:answers scopes have no REST equivalent
 rest_only:
-  - operations:
-      - exchangeAccessToken
-      - introspectToken
-      - revokeTokens
-    reason: OAuth token lifecycle. Handled by the MCP client's own OAuth flow, never a tool.
-  - operations:
-      - getOidcJwks
-      - userInfo
-      - getAppJwks
-      - getSigningPublicKeys
-    reason: Key material and OIDC/webhook-signature endpoints; infrastructure, not agent actions.
-  - operations:
-      - usersMe
-    reason: >-
-      Requires only a valid token (no scope). Not reachable via any declared MCP scope binding.
-  - operations:
-      - createDesignImportJob
-      - createUrlImportJob
-      - getDesignImportJob
-      - getUrlImportJob
-      - createDesignMergeJob
-      - getDesignMergeJob
-      - createPrintPartnerDesign
-      - getPrintPartnerDesign
-      - createPrintPartnerDesignExportJob
-    reason: >-
-      Covered by declared scopes but represent import/merge/print-partner flows with no
-      confirmable MCP tool; listed for completeness pending an authenticated tools/list.
+- GetAssetUploadJob
+- createComment
+- createDesignImportJob
+- createImageToDesignImportJob
+- createPrintPartnerDesign
+- createPrintPartnerDesignExportJob
+- deleteAsset
+- deleteFolder
+- exchangeAccessToken
+- getAppJwks
+- getBrandTemplate
+- getDesignAnalytics
+- getDesignAnalyticsLinks
+- getDesignAnalyticsPageViews
+- getDesignAnalyticsViewers
+- getDesignAnalyticsViewsOverTime
+- getDesignImportJob
+- getFolder
+- getImageToDesignImportJob
+- getOidcJwks
+- getPrintPartnerDesign
+- getReply
+- getSigningPublicKeys
+- getThread
+- getUserCapabilities
+- getUserProfile
+- introspectToken
+- revokeTokens
+- updateAsset
+- updateFolder
+- userInfo
+- usersMe
+scope_bindings:
+- scope: design:meta:read
+  rest:
+  - listDesigns
+  - getDesign
+  - getDesignAutofillJob
+  - getDesignMergeJob
+  - getPrintPartnerDesign
+  - createDesignMergeJob
+  binding: scope-to-operation
+  confidence: high
+- scope: design:content:read
+  rest:
+  - getDesignPages
+  - getDesignDataset
+  - getDesignExportFormats
+  - createDesignExportJob
+  - getDesignExportJob
+  - createPrintPartnerDesignExportJob
+  - createDesignResizeJob
+  - getDesignResizeJob
+  - getDesignAnalytics
+  - getDesignAnalyticsViewers
+  - getDesignAnalyticsViewsOverTime
+  - getDesignAnalyticsPageViews
+  - getDesignAnalyticsLinks
+  binding: scope-to-operation
+  confidence: high
+- scope: design:content:write
+  rest:
+  - createDesign
+  - createDesignAutofillJob
+  - createDesignImportJob
+  - createUrlImportJob
+  - getDesignImportJob
+  - getUrlImportJob
+  - createDesignMergeJob
+  - createDesignResizeJob
+  - getDesignResizeJob
+  - createPrintPartnerDesign
+  binding: scope-to-operation
+  confidence: high
+- scope: asset:read
+  rest:
+  - getAsset
+  - GetAssetUploadJob
+  - getUrlAssetUploadJob
+  binding: scope-to-operation
+  confidence: high
+- scope: asset:write
+  rest:
+  - CreateAssetUploadJob
+  - createUrlAssetUploadJob
+  - updateAsset
+  - deleteAsset
+  binding: scope-to-operation
+  confidence: high
+- scope: folder:read
+  rest:
+  - getFolder
+  - listFolderItems
+  binding: scope-to-operation
+  confidence: high
+- scope: folder:write
+  rest:
+  - createFolder
+  - updateFolder
+  - deleteFolder
+  - moveFolderItem
+  binding: scope-to-operation
+  confidence: high
+- scope: brandtemplate:meta:read
+  rest:
+  - listBrandTemplates
+  - getBrandTemplate
+  binding: scope-to-operation
+  confidence: high
+- scope: brandtemplate:content:read
+  rest:
+  - getBrandTemplateDataset
+  binding: scope-to-operation
+  confidence: high
+- scope: brandtemplate:content:write
+  rest:
+  - publishBrandTemplate
+  binding: scope-to-operation
+  confidence: high
+- scope: comment:read
+  rest:
+  - getThread
+  - getReply
+  - listReplies
+  binding: scope-to-operation
+  confidence: high
+- scope: comment:write
+  rest:
+  - createThread
+  - createReply
+  - createComment
+  binding: scope-to-operation
+  confidence: high
+  note: createComment is marked deprecated in the OpenAPI; createThread supersedes it.
+- scope: profile:read
+  rest:
+  - getUserProfile
+  - getUserCapabilities
+  binding: scope-to-operation
+  confidence: high
 coverage:
-  openapi_operations: 59
-  mcp_scopes_declared: 16
-  mcp_scopes_bound_to_rest: 13
-  mcp_scopes_with_no_rest_equivalent: 3
-  rest_operations_reachable_by_a_declared_scope: 45
-  rest_operations_with_no_scope_binding: 7
-  tools_enumerated: 0
-  tools_enumerable: false
+  tools_documented: 46
+  tools_bound_to_rest: 29
+  tools_bound_high: 23
+  tools_mcp_only: 17
+  rest_operations: 67
+  rest_operations_bound: 35
+  rest_operations_without_tool: 32
+  tools_enumerated_live: 0

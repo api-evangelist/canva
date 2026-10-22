@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-brand-template-response-schema.json",
+  "title": "GetBrandTemplateResponse",
+  "description": "Successful response from a `getBrandTemplate` request.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-brand-template-api-openapi.yml#/components/schemas/GetBrandTemplateResponse",
+  "properties": {
+    "brand_template": {
+      "$ref": "#/$defs/BrandTemplate"
+    }
+  },
+  "required": [
+    "brand_template"
+  ],
+  "type": "object",
+  "$defs": {
+    "BrandTemplate": {
+      "description": "An object representing a brand template with associated metadata.",
+      "properties": {
+        "id": {
+          "description": "The brand template ID.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "title": {
+          "description": "The brand template title, as shown in the Canva UI.",
+          "type": "string"
+        },
+        "view_url": {
+          "description": "A URL Canva users can visit to view the brand template.",
+          "type": "string"
+        },
+        "create_url": {
+          "description": "A URL Canva users can visit to create a new design from the template.",
+          "type": "string"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "created_at": {
+          "description": "When the brand template was created, as a Unix timestamp\n(in seconds since the Unix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "updated_at": {
+          "description": "When the brand template was last updated, as a Unix timestamp\n(in seconds since the Unix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "create_url",
+        "created_at",
+        "id",
+        "title",
+        "updated_at",
+        "view_url"
+      ],
+      "type": "object"
+    },
+    "Thumbnail": {
+      "description": "A thumbnail image representing the object.",
+      "properties": {
+        "width": {
+          "description": "The width of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "url": {
+          "description": "A URL for retrieving the thumbnail image.\nThis URL expires after 15 minutes. This URL includes a query string\nthat's required for retrieving the thumbnail.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "height",
+        "url",
+        "width"
+      ],
+      "type": "object"
+    }
+  }
+}

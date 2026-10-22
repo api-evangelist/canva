@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-list-design-response-schema.json",
+  "title": "GetListDesignResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-api-openapi.yml#/components/schemas/GetListDesignResponse",
+  "properties": {
+    "continuation": {
+      "description": "A continuation token.\nIf the success response contains a continuation token, the list contains more designs\nyou can list. You can use this token as a query parameter and retrieve more\ndesigns from the list, for example\n`/v1/designs?continuation={continuation}`.\n\nTo retrieve all of a user's designs, you might need to make multiple requests.",
+      "type": "string"
+    },
+    "items": {
+      "description": "The list of designs.",
+      "items": {
+        "$ref": "#/$defs/Design"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "type": "object",
+  "$defs": {
+    "Design": {
+      "description": "The design object, which contains metadata about the design.",
+      "properties": {
+        "id": {
+          "description": "The design ID.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The design title.",
+          "type": "string"
+        },
+        "owner": {
+          "$ref": "#/$defs/TeamUserSummary"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "urls": {
+          "$ref": "#/$defs/DesignLinks"
+        },
+        "created_at": {
+          "description": "When the design was created in Canva, as a Unix timestamp (in seconds since the Unix\nEpoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "updated_at": {
+          "description": "When the design was last updated in Canva, as a Unix timestamp (in seconds since the\nUnix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "page_count": {
+          "description": "The total number of pages in the design. Some design types don't have pages (for example, Canva docs).",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "design_types": {
+          "description": "The type of content a design or page contains. The list of design types may grow over time. The `unknown` value represents design types that haven't been added to the list.",
+          "items": {
+            "$ref": "#/$defs/DesignTypeOutputName"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "created_at",
+        "design_types",
+        "id",
+        "owner",
+        "updated_at",
+        "urls"
+      ],
+      "type": "object"
+    },
+    "DesignLinks": {
+      "description": "A temporary set of URLs for viewing or editing the design.",
+      "properties": {
+        "edit_url": {
+          "description": "A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.\n\nNOTE: This is not a permanent URL, it is only valid for 30 days.",
+          "type": "string"
+        },
+        "view_url": {
+          "description": "A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.\n\nNOTE: This is not a permanent URL, it is only valid for 30 days.\n",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edit_url",
+        "view_url"
+      ],
+      "type": "object"
+    },
+    "DesignTypeOutputName": {
+      "description": "The type of content a design or page contains. The list of design types may grow over time. The `unknown` value represents design types that haven't been added to the list.",
+      "enum": [
+        "doc",
+        "email",
+        "presentation",
+        "sheet",
+        "whiteboard",
+        "custom",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "TeamUserSummary": {
+      "description": "Metadata for the user, consisting of the User ID and Team ID.",
+      "properties": {
+        "user_id": {
+          "description": "The ID of the user.",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "The ID of the user's Canva Team.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "team_id",
+        "user_id"
+      ],
+      "type": "object"
+    },
+    "Thumbnail": {
+      "description": "A thumbnail image representing the object.",
+      "properties": {
+        "width": {
+          "description": "The width of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "url": {
+          "description": "A URL for retrieving the thumbnail image.\nThis URL expires after 15 minutes. This URL includes a query string\nthat's required for retrieving the thumbnail.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "height",
+        "url",
+        "width"
+      ],
+      "type": "object"
+    }
+  }
+}

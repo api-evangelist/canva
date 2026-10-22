@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-folder-request-schema.json",
+  "title": "CreateFolderRequest",
+  "description": "Body parameters for creating a new folder.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-folder-api-openapi.yml#/components/schemas/CreateFolderRequest",
+  "properties": {
+    "name": {
+      "description": "The name of the folder.",
+      "maxLength": 255,
+      "minLength": 1,
+      "type": "string"
+    },
+    "parent_folder_id": {
+      "description": "The folder ID of the parent folder. To create a new folder at the top level of a user's\n[projects](https://www.canva.com/help/find-designs-and-folders/), use the ID `root`.\nTo create it in their Uploads folder, use `uploads`.",
+      "maxLength": 50,
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "parent_folder_id"
+  ],
+  "type": "object"
+}

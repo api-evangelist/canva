@@ -1,0 +1,20 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Canva Admin API
+  version: 1.0.0
+  x-generated: '2026-10-20'
+  x-method: generated
+  x-description: Provenance of this split file and, per operation, the documented Canva MCP tools that bind to it
+    (from mcp/canva-tool-crosswalk.yml). The original spec is never mutated.
+extends: openapi/canva-admin-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-provenance:
+      harvested-from: https://www.canva.dev/sources/admin/api/latest/api.yml
+      harvested-on: '2026-10-20'
+      http-status: 200
+      sha256-of-original: c55a0ee210bf21d3080464f3d060b4a95be5747615813f21707022a8e7c7ba1a
+      original: openapi/_original/canva-admin-openapi.yml
+      split-file: openapi/canva-admin-api-openapi.yml
+      publisher: Canva

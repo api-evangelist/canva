@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-json-web-key-set-schema.json",
+  "title": "JsonWebKeySet",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-oidc-api-openapi.yml#/components/schemas/JsonWebKeySet",
+  "properties": {
+    "keys": {
+      "description": "An array of JSON Web Key values. The order of keys has no meaning.",
+      "items": {
+        "$ref": "#/$defs/JsonWebKey"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "keys"
+  ],
+  "type": "object",
+  "$defs": {
+    "JsonWebKey": {
+      "description": "Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and\nhttps://www.rfc-editor.org/rfc/rfc7518.html.",
+      "properties": {
+        "alg": {
+          "description": "The \"alg\" (algorithm) parameter identifies the algorithm intended for\nuse with the key.\nSee https://www.rfc-editor.org/rfc/rfc7517#section-4",
+          "type": "string"
+        },
+        "kid": {
+          "description": "The \"kid\" (key ID) parameter is used to match a specific key.  This\nis used, for instance, to choose among a set of keys within a JWK Set\nduring key rollover. When \"kid\" values are used within a JWK Set,\ndifferent keys within the JWK Set SHOULD use distinct \"kid\" values.\nThe \"kid\" value is a case-sensitive string.\nSee https://www.rfc-editor.org/rfc/rfc7517#section-4",
+          "type": "string"
+        },
+        "kty": {
+          "description": "The \"kty\" (key type) parameter identifies the cryptographic algorithm\nfamily used with the key, such as \"RSA\" or \"EC\". The \"kty\" value is a\ncase-sensitive string. At the moment, only \"RSA\" is supported.\nSee https://www.rfc-editor.org/rfc/rfc7517#section-4",
+          "type": "string"
+        },
+        "n": {
+          "description": "The \"n\" (modulus) parameter contains the modulus value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3",
+          "type": "string"
+        },
+        "e": {
+          "description": "The \"e\" (exponent) parameter contains the exponent value for the RSA\n   public key.  It is represented as a Base64urlUInt-encoded value.\nSee https://www.rfc-editor.org/rfc/rfc7518.html#section-6.3",
+          "type": "string"
+        },
+        "use": {
+          "description": "The \"use\" (public key use) parameter identifies the intended use of\nthe public key. The \"use\" parameter is employed to indicate whether\na public key is used for encrypting data or verifying the signature\non data. Values are commonly \"sig\" (signature) or \"enc\" (encryption).\nSee https://www.rfc-editor.org/rfc/rfc7517#section-4",
+          "type": "string"
+        }
+      },
+      "required": [
+        "e",
+        "kid",
+        "kty",
+        "n"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+ "url": "https://www.canva.dev/sources/admin/api/latest/api.yml",
+ "final": "https://www.canva.dev/sources/admin/api/latest/api.yml",
+ "status": 200,
+ "content_type": "binary/octet-stream",
+ "bytes": 108957,
+ "sha256": "c55a0ee210bf21d3080464f3d060b4a95be5747615813f21707022a8e7c7ba1a",
+ "fetched_at": "2026-10-20",
+ "match": "verbatim",
+ "note": "linked from the provider's own llms.txt (www.canva.dev/docs/admin/llms.txt); info.title, servers[] api.canva.com, contact community.canva.dev and terms canva.com/trust/legal all name Canva"
+}

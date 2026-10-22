@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-url-asset-upload-job-response-schema.json",
+  "title": "CreateUrlAssetUploadJobResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-asset-api-openapi.yml#/components/schemas/CreateUrlAssetUploadJobResponse",
+  "properties": {
+    "job": {
+      "$ref": "#/$defs/AssetUploadJob"
+    }
+  },
+  "required": [
+    "job"
+  ],
+  "type": "object",
+  "$defs": {
+    "Asset": {
+      "description": "The asset object, which contains metadata about the asset.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/AssetType"
+        },
+        "id": {
+          "description": "The ID of the asset.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the asset.",
+          "type": "string"
+        },
+        "tags": {
+          "description": "The user-facing tags attached to the asset.\nUsers can add these tags to their uploaded assets, and they can search their uploaded\nassets in the Canva UI by searching for these tags. For information on how users use\ntags, see the\n[Canva Help Center page on asset tags](https://www.canva.com/help/add-edit-tags/).",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "import_status": {
+          "$ref": "#/$defs/ImportStatus"
+        },
+        "created_at": {
+          "description": "When the asset was added to Canva, as a Unix timestamp (in seconds since the Unix\nEpoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "updated_at": {
+          "description": "When the asset was last updated in Canva, as a Unix timestamp (in seconds since the\nUnix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "owner": {
+          "$ref": "#/$defs/TeamUserSummary"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "metadata": {
+          "$ref": "#/$defs/AssetMetadata"
+        }
+      },
+      "required": [
+        "created_at",
+        "id",
+        "name",
+        "owner",
+        "tags",
+        "type",
+        "updated_at"
+      ],
+      "type": "object"
+    },
+    "AssetMetadata": {
+      "description": "Type-specific metadata for the asset.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ImageMetadata"
+        },
+        {
+          "$ref": "#/$defs/VideoMetadata"
+        }
+      ],
+      "type": "object"
+    },
+    "AssetType": {
+      "description": "Type of an asset.",
+      "enum": [
+        "image",
+        "video"
+      ],
+      "type": "string"
+    },
+    "AssetUploadError": {
+      "description": "If the upload fails, this object provides details about the error.",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/AssetUploadErrorCode"
+        },
+        "message": {
+          "description": "A human-readable description of what went wrong.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "AssetUploadErrorCode": {
+      "description": "A short string indicating why the upload failed. This field can be used to handle errors\nprogrammatically.",
+      "enum": [
+        "file_too_big",
+        "import_failed",
+        "fetch_failed"
+      ],
+      "type": "string"
+    },
+    "AssetUploadJob": {
+      "description": "The status of the asset upload job.",
+      "properties": {
+        "id": {
+          "description": "The ID of the asset upload job.",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/AssetUploadStatus"
+        },
+        "error": {
+          "$ref": "#/$defs/AssetUploadError"
+        },
+        "asset": {
+          "$ref": "#/$defs/Asset"
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "type": "object"
+    },
+    "AssetUploadStatus": {
+      "description": "Status of the asset upload job.",
+      "enum": [
+        "failed",
+        "in_progress",
+        "success"
+      ],
+      "type": "string"
+    },
+    "ImageMetadata": {
+      "properties": {
+        "type": {
+          "enum": [
+            "image"
+          ],
+          "type": "string"
+        },
+        "width": {
+          "description": "The width of the image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "smart_tags": {
+          "description": "AI-generated tags for the image.",
+          "items": {
+            "maxLength": 50,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ImportError": {
+      "deprecated": true,
+      "description": "If the import fails, this object provides details about the error.",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ImportErrorCode"
+        },
+        "message": {
+          "description": "A human-readable description of what went wrong.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "ImportErrorCode": {
+      "deprecated": true,
+      "description": "A short string indicating why the upload failed. This field can be used to handle errors programmatically.\n",
+      "enum": [
+        "file_too_big",
+        "import_failed"
+      ],
+      "type": "string"
+    },
+    "ImportStatus": {
+      "deprecated": true,
+      "description": "The import status of the asset.",
+      "properties": {
+        "state": {
+          "$ref": "#/$defs/ImportStatusState"
+        },
+        "error": {
+          "$ref": "#/$defs/ImportError"
+        }
+      },
+      "required": [
+        "state"
+      ],
+      "type": "object"
+    },
+    "ImportStatusState": {
+      "deprecated": true,
+      "description": "State of the import job for an uploaded asset.",
+      "enum": [
+        "failed",
+        "in_progress",
+        "success"
+      ],
+      "type": "string"
+    },
+    "TeamUserSummary": {
+      "description": "Metadata for the user, consisting of the User ID and Team ID.",
+      "properties": {
+        "user_id": {
+          "description": "The ID of the user.",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "The ID of the user's Canva Team.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "team_id",
+        "user_id"
+      ],
+      "type": "object"
+    },
+    "Thumbnail": {
+      "description": "A thumbnail image representing the object.",
+      "properties": {
+        "width": {
+          "description": "The width of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "url": {
+          "description": "A URL for retrieving the thumbnail image.\nThis URL expires after 15 minutes. This URL includes a query string\nthat's required for retrieving the thumbnail.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "height",
+        "url",
+        "width"
+      ],
+      "type": "object"
+    },
+    "VideoMetadata": {
+      "properties": {
+        "type": {
+          "enum": [
+            "video"
+          ],
+          "type": "string"
+        },
+        "width": {
+          "description": "The width of the video in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the video in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "duration": {
+          "description": "The duration of the video in seconds.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "height",
+        "type",
+        "width"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -282,76 +282,111 @@ paths:
       x-summary-source: derived
 components:
   examples:
-    ExpectedLongQueryParam:
-      summary: Expected long for query parameter
-      value:
-        code: bad_query_params
-        message: Expected long for query parameter `{key}` but found {value}
-    MissingClientCredentialsError:
-      summary: Client credentials are missing from the request
-      value:
-        code: invalid_request
-        message: Client credentials are missing from the request.
-    InvalidAccessToken:
-      summary: Access token could not be decoded or signature could not be verified.
-      value:
-        code: invalid_access_token
-        message: Access token is invalid
-    ExpectedIntegerQueryParam:
-      summary: Expected integer for query parameter
-      value:
-        code: bad_query_params
-        message: Expected integer for query parameter `{key}` but found {value}
-    MissingRequiredHeaderError:
-      summary: A required header is missing
-      value:
-        code: invalid_request
-        message: missing required header {headerName}
-    IntegrationAccessDeniedError:
-      summary: Not allowed to access the integration
-      value:
-        code: permission_denied
-        message: Not allowed to access integration with client id {clientId}
-    MissingClientCredentialsOrBodyAuthError:
-      summary: Client credentials or body auth are missing from the request
-      value:
-        code: invalid_client
-        message: Client credentials or body auth are missing from the request.
-    InvalidClientCredentialsBase64Encoding:
-      summary: Could not decode the base64 value for client credentials
-      value:
-        code: invalid_request
-        message: Credentials could not be decoded from base64
-    ConfidentialClientCorsError:
-      summary: Confidential clients must not authenticate via CORS requests
-      value:
-        code: unauthorized_client
-        message: Confidential clients must not authenticate via CORS requests
-    MissingRequiredQueryParam:
-      summary: Missing required query parameter
-      value:
-        code: bad_query_params
-        message: 'Missing required query parameter: {key}'
     ContentTypeHeaderValueMissing:
       summary: Content-Type header is missing
       value:
         code: invalid_header_value
         message: Content-Type header is missing for {path}
-    MalformedAuthorizationHeaderMode:
-      summary: Authorization header has invalid mode
+    TooManyRequestsError:
+      summary: Rate limit exceeded
       value:
-        code: invalid_access_token
-        message: 'Malformed Authorization header: invalid mode'
-    ClientSecretInvalidError:
-      summary: Client secret is invalid
-      value:
-        code: invalid_client
-        message: Client secret is invalid for {clientAppId}
+        code: too_many_requests
+        message: Too many requests to {operation}
     InvalidClientCredentialsValue:
       summary: Number of column-separated components in the base64 value is not 2
       value:
         code: invalid_request
         message: Malformed encoded client ID and secret
+    ConfidentialClientCorsError:
+      summary: Confidential clients must not authenticate via CORS requests
+      value:
+        code: unauthorized_client
+        message: Confidential clients must not authenticate via CORS requests
+    BadRequestFieldError:
+      summary: The request field does not match expected format
+      value:
+        code: invalid_request
+        message: '{fieldValue} does not match expected format for {fieldName}'
+    MissingAuthorizationHeader:
+      summary: Missing Authorization header
+      value:
+        code: invalid_access_token
+        message: Missing Authorization header
+    ContentTypeHeaderValueInvalid:
+      summary: Content-Type header is invalid
+      value:
+        code: invalid_header_value
+        message: Content-Type {contentType} is invalid for {path}
+    UserRoleRequiredError:
+      summary: Request must be made on behalf of a user
+      value:
+        code: user_role_required
+        message: This request must be made on behalf of a user.
+    MissingScopeError:
+      summary: The required OAuth scope is missing
+      value:
+        code: missing_scope
+        message: 'Missing scopes: {scopes}'
+    InvalidAccessToken:
+      summary: Access token could not be decoded or signature could not be verified.
+      value:
+        code: invalid_access_token
+        message: Access token is invalid
+    MissingClientCredentialsError:
+      summary: Client credentials are missing from the request
+      value:
+        code: invalid_request
+        message: Client credentials are missing from the request.
+    IntegrationAccessDeniedError:
+      summary: Not allowed to access the integration
+      value:
+        code: permission_denied
+        message: Not allowed to access integration with client id {clientId}
+    MalformedAuthorizationHeader:
+      summary: Malformed Authorization header
+      value:
+        code: invalid_access_token
+        message: Malformed Authorization header
+    ExpectedLongQueryParam:
+      summary: Expected long for query parameter
+      value:
+        code: bad_query_params
+        message: Expected long for query parameter `{key}` but found {value}
+    MalformedAuthorizationHeaderComponents:
+      summary: Authorization header has wrong number of components
+      value:
+        code: invalid_access_token
+        message: 'Malformed Authorization header: wrong number of components'
+    InvalidOriginError:
+      summary: The Origin header could not be parsed
+      value:
+        code: bad_request_params
+        message: 'Invalid Origin: {origin}'
+    TooManyQueryParamValues:
+      summary: Expected 1 query parameter but found multiple
+      value:
+        code: bad_query_params
+        message: Expected 1 query parameter {key} but found {count}
+    ValidatingClientFailedWithCode:
+      summary: Validating client failed with error code
+      value:
+        code: unauthorized_client
+        message: 'Validating client failed for {clientAppId}: {errorCode}'
+    MissingClientCredentialsOrBodyAuthError:
+      summary: Client credentials or body auth are missing from the request
+      value:
+        code: invalid_client
+        message: Client credentials or body auth are missing from the request.
+    ValidatingClientFailed:
+      summary: Validating client failed
+      value:
+        code: unauthorized_client
+        message: Validating client failed for {clientAppId}
+    InvalidIdsError:
+      summary: One or more IDs could not be deobfuscated
+      value:
+        code: invalid_field
+        message: 'Invalid Ids: {ids}'
     CreditQuotaExceededError:
       summary: User has reached their credit quota limit
       value:
@@ -364,111 +399,66 @@ components:
           upgrade_url: https://www.canva.com/upgrade
           is_admin: false
           generation_pending: false
-    ContentTypeHeaderValueInvalid:
-      summary: Content-Type header is invalid
-      value:
-        code: invalid_header_value
-        message: Content-Type {contentType} is invalid for {path}
-    BadRequestFieldError:
-      summary: The request field does not match expected format
-      value:
-        code: invalid_request
-        message: '{fieldValue} does not match expected format for {fieldName}'
-    InvalidUriError:
-      summary: The request URI could not be parsed
-      value:
-        code: bad_request_params
-        message: 'Invalid URI: {uri}'
-    InvalidClientError:
-      summary: The OAuth client credentials are invalid
-      value:
-        code: invalid_client
-        message: Client {clientId} not available
-    MissingScopeError:
-      summary: The required OAuth scope is missing
-      value:
-        code: missing_scope
-        message: 'Missing scopes: {scopes}'
-    ExpectedLongListQueryParam:
-      summary: Expected long list for query parameter
-      value:
-        code: bad_query_params
-        message: Expected long list for query parameter `{key}` but found {value}
-    ValidatingClientFailed:
-      summary: Validating client failed
-      value:
-        code: unauthorized_client
-        message: Validating client failed for {clientAppId}
-    MalformedAuthorizationHeaderComponents:
-      summary: Authorization header has wrong number of components
-      value:
-        code: invalid_access_token
-        message: 'Malformed Authorization header: wrong number of components'
-    MissingAccessTokenError:
-      summary: Access token is missing from the request
-      value:
-        code: invalid_request
-        message: Access token is missing from the request.
-    ImageGenerationJobNotFoundError:
-      summary: The image generation job was not found
-      value:
-        code: not_found
-        message: 'Image generation job not found: {jobId}'
-    MissingAuthorizationHeader:
-      summary: Missing Authorization header
-      value:
-        code: invalid_access_token
-        message: Missing Authorization header
-    TooManyRequestsError:
-      summary: Rate limit exceeded
-      value:
-        code: too_many_requests
-        message: Too many requests to {operation}
-    ThrottledTooManyRequests:
-      summary: Throttled because too many requests
-      value:
-        code: too_many_requests
-        message: Throttled because too many requests
-    InvalidOriginError:
-      summary: The Origin header could not be parsed
-      value:
-        code: bad_request_params
-        message: 'Invalid Origin: {origin}'
     FailedToReadRequestBody:
       summary: Failed to read request body
       value:
         code: bad_request_body
         message: Failed to read request body
-    InvalidIdsError:
-      summary: One or more IDs could not be deobfuscated
+    ImageGenerationNotEnabledError:
+      summary: Image generation is not enabled for this client
       value:
-        code: invalid_field
-        message: 'Invalid Ids: {ids}'
+        code: permission_denied
+        message: Image generation is not enabled
+    MissingRequiredHeaderError:
+      summary: A required header is missing
+      value:
+        code: invalid_request
+        message: missing required header {headerName}
+    ClientSecretInvalidError:
+      summary: Client secret is invalid
+      value:
+        code: invalid_client
+        message: Client secret is invalid for {clientAppId}
+    ExpectedIntegerQueryParam:
+      summary: Expected integer for query parameter
+      value:
+        code: bad_query_params
+        message: Expected integer for query parameter `{key}` but found {value}
+    ExpectedLongListQueryParam:
+      summary: Expected long list for query parameter
+      value:
+        code: bad_query_params
+        message: Expected long list for query parameter `{key}` but found {value}
+    InvalidUriError:
+      summary: The request URI could not be parsed
+      value:
+        code: bad_request_params
+        message: 'Invalid URI: {uri}'
+    MalformedAuthorizationHeaderMode:
+      summary: Authorization header has invalid mode
+      value:
+        code: invalid_access_token
+        message: 'Malformed Authorization header: invalid mode'
     RevokedAccessToken:
       summary: Access token is revoked
       value:
         code: revoked_access_token
         message: Access token is revoked
-    UserRoleRequiredError:
-      summary: Request must be made on behalf of a user
+    ThrottledTooManyRequests:
+      summary: Throttled because too many requests
       value:
-        code: user_role_required
-        message: This request must be made on behalf of a user.
-    TooManyQueryParamValues:
-      summary: Expected 1 query parameter but found multiple
+        code: too_many_requests
+        message: Throttled because too many requests
+    InvalidClientCredentialsBase64Encoding:
+      summary: Could not decode the base64 value for client credentials
       value:
-        code: bad_query_params
-        message: Expected 1 query parameter {key} but found {count}
-    MalformedAuthorizationHeader:
-      summary: Malformed Authorization header
+        code: invalid_request
+        message: Credentials could not be decoded from base64
+    InvalidClientError:
+      summary: The OAuth client credentials are invalid
       value:
-        code: invalid_access_token
-        message: Malformed Authorization header
-    TokenIntrospectionFailed:
-      summary: Token couldn't be introspected
-      value:
-        code: invalid_access_token
-        message: Token couldn't be introspected
+        code: invalid_client
+        message: Client {clientId} not available
     CreditQuotaCooldownError:
       summary: User is in a cooldown period after heavy credit usage
       value:
@@ -482,16 +472,26 @@ components:
           cooldown_ends_at: 1767182400
           is_admin: false
           generation_pending: true
-    ImageGenerationNotEnabledError:
-      summary: Image generation is not enabled for this client
+    ImageGenerationJobNotFoundError:
+      summary: The image generation job was not found
       value:
-        code: permission_denied
-        message: Image generation is not enabled
-    ValidatingClientFailedWithCode:
-      summary: Validating client failed with error code
+        code: not_found
+        message: 'Image generation job not found: {jobId}'
+    TokenIntrospectionFailed:
+      summary: Token couldn't be introspected
       value:
-        code: unauthorized_client
-        message: 'Validating client failed for {clientAppId}: {errorCode}'
+        code: invalid_access_token
+        message: Token couldn't be introspected
+    MissingAccessTokenError:
+      summary: Access token is missing from the request
+      value:
+        code: invalid_request
+        message: Access token is missing from the request.
+    MissingRequiredQueryParam:
+      summary: Missing required query parameter
+      value:
+        code: bad_query_params
+        message: 'Missing required query parameter: {key}'
   schemas:
     CreditQuotaUsageSummary:
       description: A summary of the caller's credit quota usage at the time of the request.
@@ -516,128 +516,6 @@ components:
             plan allocation).'
           type: boolean
       type: object
-    ImageGenerationAssetUpload:
-      description: 'Whether to save the generated image as an image asset in the user''s Canva account.
-
-        Omitting `asset_upload` (or using `type: none`) returns only a download URL.
-
-
-        Saving the asset (`type: upload`) requires a user access token.'
-      discriminator:
-        mapping:
-          none: '#/components/schemas/NoneImageGenerationAssetUpload'
-          upload: '#/components/schemas/UploadImageGenerationAssetUpload'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/NoneImageGenerationAssetUpload'
-      - $ref: '#/components/schemas/UploadImageGenerationAssetUpload'
-    CreditQuotaSuccessInfo:
-      allOf:
-      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
-      - properties:
-          usage_review_link:
-            description: 'A URL to the Canva credit usage dashboard where the caller can review their
-
-              current credit consumption. Not present if unavailable.'
-            type: string
-        type: object
-      description: Credit quota usage information returned on a successful generation request.
-    NoneImageGenerationAssetUpload:
-      description: Don't save the generated image. The result contains only its download URL.
-      properties:
-        type:
-          enum:
-          - none
-          type: string
-      required:
-      - type
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    GetImageGenerationJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/ImageGenerationJob'
-      required:
-      - job
-      type: object
-    ImageGenerationJob:
-      description: 'Details about the image generation job. If the job status is `success`, the job''s
-
-        `result` is present.'
-      properties:
-        id:
-          description: The image generation job ID.
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
-          type: string
-        status:
-          $ref: '#/components/schemas/ImageGenerationJobStatus'
-        result:
-          $ref: '#/components/schemas/ImageGenerationJobResult'
-        error:
-          $ref: '#/components/schemas/ImageGenerationError'
-      required:
-      - id
-      - status
-      type: object
-    ImageGenerationErrorCode:
-      description: Error code indicating what went wrong with the image generation.
-      enum:
-      - unsafe_input
-      - timeout
-      - model_not_available
-      - model_retired
-      - internal_error
-      type: string
-      x-enum-descriptions:
-      - Content safety checks rejected the prompt.
-      - The generation did not complete in time.
-      - 'The requested model can''t currently serve this request, and Canva doesn''t retry the job
-
-        with another model. This is usually temporary. Retry later, retry without the `model`
-
-        parameter to use automatic model selection, or retry with a different model.'
-      - 'The requested model has been permanently retired from this version of the API, and you
-
-        can''t use it again in this version. Use a different model. The API documentation lists
-
-        retired models, which keep their enum value for the lifetime of this API version.'
-      - An unexpected error occurred during generation.
-    CreateImageGenerationJobRequest:
-      properties:
-        prompt:
-          description: A plain-text description of the image to generate.
-          maxLength: 5000
-          minLength: 1
-          type: string
-        aspect_ratio:
-          $ref: '#/components/schemas/ImageGenerationAspectRatio'
-        model:
-          $ref: '#/components/schemas/ImageGenerationModel'
-        idempotency_key:
-          description: 'A key to make create requests idempotent. Retrying with the same key returns the
-
-            original job without creating a duplicate, even if the other request parameters
-
-            differ. Keys are held for 24 hours from job creation.'
-          example: 550e8400-e29b-41d4-a716-446655440000
-          format: uuid
-          type: string
-        asset_upload:
-          $ref: '#/components/schemas/ImageGenerationAssetUpload'
-      required:
-      - idempotency_key
-      - prompt
-      type: object
     UploadImageGenerationAssetUpload:
       description: 'Save the generated image as an image asset in the user''s Canva account. The asset appears
 
@@ -660,6 +538,69 @@ components:
       required:
       - type
       type: object
+    CreateImageGenerationJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/ImageGenerationJob'
+        quota_usage:
+          allOf:
+          - $ref: '#/components/schemas/CreditQuotaSuccessInfo'
+          description: Credit quota usage after reserving credits for this job. Not present if quota data is unavailable.
+      required:
+      - job
+      type: object
+    NoneImageGenerationAssetUpload:
+      description: Don't save the generated image. The result contains only its download URL.
+      properties:
+        type:
+          enum:
+          - none
+          type: string
+      required:
+      - type
+      type: object
+    AssetType:
+      description: Type of an asset.
+      enum:
+      - image
+      - video
+      example: image
+      type: string
+    CreditQuotaErrorInfo:
+      allOf:
+      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
+      - properties:
+          upgrade_url:
+            description: 'URL built from the user''s current plan and eligibility for an AI pass. Not present
+
+              if no upgrade path is available (e.g. already on highest plan or ineligible for AI pass).'
+            type: string
+          cooldown_ends_at:
+            description: 'Unix timestamp (seconds from the Unix epoch) of when the cooldown period ends. Only
+
+              set when `code` is `credit_quota_cooldown`. Not present for `credit_quota_exceeded`
+
+              errors.'
+            format: int64
+            type: integer
+          is_admin:
+            description: 'Whether the caller is a team admin. Allows clients to tailor error messaging
+
+              (e.g. "contact your admin" vs "upgrade your plan").'
+            type: boolean
+          generation_pending:
+            description: 'True if another generation is currently in flight and consuming quota. Only
+
+              meaningful for paid users with cooldown enabled. Not present for free users where this
+
+              cannot be determined.'
+            type: boolean
+        required:
+        - is_admin
+        type: object
+      description: 'Credit quota information returned when a request is rejected due to quota exhaustion
+
+        or a cooldown period.'
     Thumbnail:
       description: A thumbnail image representing the object.
       properties:
@@ -698,59 +639,104 @@ components:
       description: 'Returned when a request is rejected because the caller has exceeded their credit quota
 
         or is in a cooldown period after heavy usage.'
-    AssetSummary:
-      description: An object representing an asset with associated metadata.
+    ImageGenerationModel:
+      description: 'The model to use for image generation. We recommend omitting this parameter: Canva
+
+        then selects the best available model for the request and falls back to another
+
+        model if one is temporarily unavailable. Set it only if you need a specific model''s
+
+        output. If the requested model can''t serve the request, the job fails. Canva never
+
+        uses a different model to serve the request.
+
+
+        The model strengths below are based on Canva''s evaluations. Results vary by
+
+        prompt, so test with your own prompts before pinning a model.'
+      enum:
+      - lucid_origin
+      - z_image_turbo
+      type: string
+      x-enum-descriptions:
+      - 'Lucid Origin. Pick this for architecture, logos, posters, or sci-fi and fantasy
+
+        scenes.'
+      - 'Z Image Turbo. Pick this if the image includes text, or for food, drink, and
+
+        general-purpose imagery.'
+    GeneratedImage:
+      description: A generated image.
       properties:
-        type:
-          $ref: '#/components/schemas/AssetType'
-        id:
-          description: The ID of the asset.
-          example: Msd59349ff
+        url:
+          description: 'A download URL for the generated image. The download URL is only valid for 24
+
+            hours.'
           type: string
-        name:
-          description: The name of the asset.
-          example: My Awesome Upload
-          type: string
-        tags:
-          description: 'The user-facing tags attached to the asset.
+        asset:
+          allOf:
+          - $ref: '#/components/schemas/AssetSummary'
+          description: 'The image asset the generated image was saved as. Only present if the job was created
 
-            Users can add these tags to their uploaded assets, and they can search their uploaded
+            with `asset_upload` set to `type: upload` and the asset still exists (for example, it''s
 
-            assets in the Canva UI by searching for these tags. For information on how users use
-
-            tags, see the
-
-            [Canva Help Center page on asset tags](https://www.canva.com/help/add-edit-tags/).'
-          example:
-          - image
-          - holiday
-          - best day ever
-          items:
-            type: string
-          type: array
-        created_at:
-          description: 'When the asset was added to Canva, as a Unix timestamp (in seconds since the Unix
-
-            Epoch).'
-          example: 1377396000
-          format: int64
+            absent if the user has since deleted the asset).'
+        width:
+          description: The width of the generated image in pixels.
+          example: 1024
+          format: int32
           type: integer
-        updated_at:
-          description: 'When the asset was last updated in Canva, as a Unix timestamp (in seconds since the
-
-            Unix Epoch).'
-          example: 1692928800
-          format: int64
+        height:
+          description: The height of the generated image in pixels.
+          example: 1024
+          format: int32
           type: integer
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
       required:
-      - created_at
+      - height
+      - url
+      - width
+      type: object
+    ImageGenerationJobStatus:
+      description: 'The status of the image generation job. A newly created job will be `in_progress` and
+
+        will eventually become `success` or `failed`. If the status is `success`, the job''s
+
+        `result` is present.'
+      enum:
+      - failed
+      - in_progress
+      - success
+      type: string
+    ImageGenerationError:
+      description: If the image generation job fails, this object provides details about the error. Only present if status is `failed`.
+      properties:
+        code:
+          $ref: '#/components/schemas/ImageGenerationErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ImageGenerationJob:
+      description: 'Details about the image generation job. If the job status is `success`, the job''s
+
+        `result` is present.'
+      properties:
+        id:
+          description: The image generation job ID.
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        status:
+          $ref: '#/components/schemas/ImageGenerationJobStatus'
+        result:
+          $ref: '#/components/schemas/ImageGenerationJobResult'
+        error:
+          $ref: '#/components/schemas/ImageGenerationError'
+      required:
       - id
-      - name
-      - tags
-      - type
-      - updated_at
+      - status
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -841,11 +827,77 @@ components:
       - domain_restricted
       - user_already_member
       type: string
-    ImageGenerationError:
-      description: If the image generation job fails, this object provides details about the error. Only present if status is `failed`.
+    CreateImageGenerationJobRequest:
+      properties:
+        prompt:
+          description: A plain-text description of the image to generate.
+          maxLength: 5000
+          minLength: 1
+          type: string
+        aspect_ratio:
+          $ref: '#/components/schemas/ImageGenerationAspectRatio'
+        model:
+          $ref: '#/components/schemas/ImageGenerationModel'
+        idempotency_key:
+          description: 'A key to make create requests idempotent. Retrying with the same key returns the
+
+            original job without creating a duplicate, even if the other request parameters
+
+            differ. Keys are held for 24 hours from job creation.'
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        asset_upload:
+          $ref: '#/components/schemas/ImageGenerationAssetUpload'
+      required:
+      - idempotency_key
+      - prompt
+      type: object
+    CreditQuotaSuccessInfo:
+      allOf:
+      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
+      - properties:
+          usage_review_link:
+            description: 'A URL to the Canva credit usage dashboard where the caller can review their
+
+              current credit consumption. Not present if unavailable.'
+            type: string
+        type: object
+      description: Credit quota usage information returned on a successful generation request.
+    GetImageGenerationJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/ImageGenerationJob'
+      required:
+      - job
+      type: object
+    ImageGenerationErrorCode:
+      description: Error code indicating what went wrong with the image generation.
+      enum:
+      - unsafe_input
+      - timeout
+      - model_not_available
+      - model_retired
+      - internal_error
+      type: string
+      x-enum-descriptions:
+      - Content safety checks rejected the prompt.
+      - The generation did not complete in time.
+      - 'The requested model can''t currently serve this request, and Canva doesn''t retry the job
+
+        with another model. This is usually temporary. Retry later, retry without the `model`
+
+        parameter to use automatic model selection, or retry with a different model.'
+      - 'The requested model has been permanently retired from this version of the API, and you
+
+        can''t use it again in this version. Use a different model. The API documentation lists
+
+        retired models, which keep their enum value for the lifetime of this API version.'
+      - An unexpected error occurred during generation.
+    Error:
       properties:
         code:
-          $ref: '#/components/schemas/ImageGenerationErrorCode'
+          $ref: '#/components/schemas/ErrorCode'
         message:
           description: A human-readable description of what went wrong.
           type: string
@@ -853,41 +905,83 @@ components:
       - code
       - message
       type: object
-    CreditQuotaErrorInfo:
-      allOf:
-      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
-      - properties:
-          upgrade_url:
-            description: 'URL built from the user''s current plan and eligibility for an AI pass. Not present
+    ImageGenerationAssetUpload:
+      description: 'Whether to save the generated image as an image asset in the user''s Canva account.
 
-              if no upgrade path is available (e.g. already on highest plan or ineligible for AI pass).'
+        Omitting `asset_upload` (or using `type: none`) returns only a download URL.
+
+
+        Saving the asset (`type: upload`) requires a user access token.'
+      discriminator:
+        mapping:
+          none: '#/components/schemas/NoneImageGenerationAssetUpload'
+          upload: '#/components/schemas/UploadImageGenerationAssetUpload'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/NoneImageGenerationAssetUpload'
+      - $ref: '#/components/schemas/UploadImageGenerationAssetUpload'
+    ImageGenerationJobResult:
+      description: Result of the image generation job. Only present if job status is `success`.
+      properties:
+        image:
+          $ref: '#/components/schemas/GeneratedImage'
+      required:
+      - image
+      type: object
+    AssetSummary:
+      description: An object representing an asset with associated metadata.
+      properties:
+        type:
+          $ref: '#/components/schemas/AssetType'
+        id:
+          description: The ID of the asset.
+          example: Msd59349ff
+          type: string
+        name:
+          description: The name of the asset.
+          example: My Awesome Upload
+          type: string
+        tags:
+          description: 'The user-facing tags attached to the asset.
+
+            Users can add these tags to their uploaded assets, and they can search their uploaded
+
+            assets in the Canva UI by searching for these tags. For information on how users use
+
+            tags, see the
+
+            [Canva Help Center page on asset tags](https://www.canva.com/help/add-edit-tags/).'
+          example:
+          - image
+          - holiday
+          - best day ever
+          items:
             type: string
-          cooldown_ends_at:
-            description: 'Unix timestamp (seconds from the Unix epoch) of when the cooldown period ends. Only
+          type: array
+        created_at:
+          description: 'When the asset was added to Canva, as a Unix timestamp (in seconds since the Unix
 
-              set when `code` is `credit_quota_cooldown`. Not present for `credit_quota_exceeded`
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the asset was last updated in Canva, as a Unix timestamp (in seconds since the
 
-              errors.'
-            format: int64
-            type: integer
-          is_admin:
-            description: 'Whether the caller is a team admin. Allows clients to tailor error messaging
-
-              (e.g. "contact your admin" vs "upgrade your plan").'
-            type: boolean
-          generation_pending:
-            description: 'True if another generation is currently in flight and consuming quota. Only
-
-              meaningful for paid users with cooldown enabled. Not present for free users where this
-
-              cannot be determined.'
-            type: boolean
-        required:
-        - is_admin
-        type: object
-      description: 'Credit quota information returned when a request is rejected due to quota exhaustion
-
-        or a cooldown period.'
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+      required:
+      - created_at
+      - id
+      - name
+      - tags
+      - type
+      - updated_at
+      type: object
     ImageGenerationAspectRatio:
       default: square
       description: 'The aspect ratio of the generated image. Every aspect ratio is supported by every model
@@ -912,100 +1006,6 @@ components:
       - A wide (3:2) image, suitable for photos and print.
       - A tall (2:3) image, suitable for posters and portrait photos.
       - A tall (4:5) image, suitable for social media feed posts.
-    ImageGenerationJobStatus:
-      description: 'The status of the image generation job. A newly created job will be `in_progress` and
-
-        will eventually become `success` or `failed`. If the status is `success`, the job''s
-
-        `result` is present.'
-      enum:
-      - failed
-      - in_progress
-      - success
-      type: string
-    CreateImageGenerationJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/ImageGenerationJob'
-        quota_usage:
-          allOf:
-          - $ref: '#/components/schemas/CreditQuotaSuccessInfo'
-          description: Credit quota usage after reserving credits for this job. Not present if quota data is unavailable.
-      required:
-      - job
-      type: object
-    GeneratedImage:
-      description: A generated image.
-      properties:
-        url:
-          description: 'A download URL for the generated image. The download URL is only valid for 24
-
-            hours.'
-          type: string
-        asset:
-          allOf:
-          - $ref: '#/components/schemas/AssetSummary'
-          description: 'The image asset the generated image was saved as. Only present if the job was created
-
-            with `asset_upload` set to `type: upload` and the asset still exists (for example, it''s
-
-            absent if the user has since deleted the asset).'
-        width:
-          description: The width of the generated image in pixels.
-          example: 1024
-          format: int32
-          type: integer
-        height:
-          description: The height of the generated image in pixels.
-          example: 1024
-          format: int32
-          type: integer
-      required:
-      - height
-      - url
-      - width
-      type: object
-    ImageGenerationJobResult:
-      description: Result of the image generation job. Only present if job status is `success`.
-      properties:
-        image:
-          $ref: '#/components/schemas/GeneratedImage'
-      required:
-      - image
-      type: object
-    ImageGenerationModel:
-      description: 'The model to use for image generation. We recommend omitting this parameter: Canva
-
-        then selects the best available model for the request and falls back to another
-
-        model if one is temporarily unavailable. Set it only if you need a specific model''s
-
-        output. If the requested model can''t serve the request, the job fails. Canva never
-
-        uses a different model to serve the request.
-
-
-        The model strengths below are based on Canva''s evaluations. Results vary by
-
-        prompt, so test with your own prompts before pinning a model.'
-      enum:
-      - lucid_origin
-      - z_image_turbo
-      type: string
-      x-enum-descriptions:
-      - 'Lucid Origin. Pick this for architecture, logos, posters, or sci-fi and fantasy
-
-        scenes.'
-      - 'Z Image Turbo. Pick this if the image includes text, or for food, drink, and
-
-        general-purpose imagery.'
-    AssetType:
-      description: Type of an asset.
-      enum:
-      - image
-      - video
-      example: image
-      type: string
   securitySchemes:
     basicAuth:
       scheme: basic

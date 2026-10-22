@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-order-shipment-event-schema.json",
+  "title": "OrderShipmentEvent",
+  "description": "Event describing an error affecting one or more order items.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-print-api-openapi.yml#/components/schemas/OrderShipmentEvent",
+  "properties": {
+    "request_type": {
+      "enum": [
+        "shipment_event"
+      ],
+      "type": "string"
+    },
+    "order_reference_id": {
+      "description": "A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "shipments": {
+      "description": "A list of shipments for the order.",
+      "items": {
+        "$ref": "#/$defs/ShipmentEvent"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "order_reference_id",
+    "request_type",
+    "shipments"
+  ],
+  "type": "object",
+  "x-ref-extensions": {
+    "request_type": {
+      "description": "The type of request. Must be `shipment_event`."
+    },
+    "shipments": {
+      "description": "A list of shipments for the order."
+    }
+  },
+  "$defs": {
+    "ShipmentEvent": {
+      "description": "The shipment details for an item in the order.",
+      "properties": {
+        "tracking_number": {
+          "description": "The tracking number provided by the carrier.",
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        },
+        "carrier": {
+          "description": "The Canva-supported carrier delivering the shipment. Valid carrier values include:\n`allied_express`, `allwayex`, `amazon`, `ams`, `asendia`, `aus_post`, `b2c`, `blue_dart`, `bpost`, `bring`,\n`bring_no`, `brt`, `canada_post`, `carriers`, `chitchats`, `chronopost`, `colissimo`, `correios`, `correos`,\n`correos_express`, `couriers_please`, `deutsche_post`, `dhl`, `dpd`, `dpd_uk`, `estafeta`, `evri`, `fastway`,\n`fedex`, `fleet_optics`, `france_express`, `gls`, `hunter_express`, `ics`, `icumulus`, `india_post`, `jadlog`,\n`japan_post`, `landmark_global`, `laposte`, `loomis_express`, `lotte`, `nacex`, `new_zealand_post`,\n`newzealand_couriers`, `norsk_global`, `ontime`, `pakman`, `paquetexpress`, `parcel_force`, `pitney_bowes`,\n`planzer`, `post_nl`, `post_nord`, `purolator`, `quality`, `qxpress`, `royal_mail`, `sagawa`, `sda`, `seur`,\n`shiprocket`, `spring_gds`, `star_track`, `swiss_post`, `tnt`, `toll`, `uniuni`, `ups`, `usps`, `yamato`.\n",
+          "minLength": 1,
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/ShipmentItem"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "dispatch_location_reference": {
+          "description": "The location reference ID of where the shipment was dispatched.",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "dispatched_at": {
+          "description": "When the shipment was dispatched, as a Unix timestamp (in seconds since the Unix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "carrier",
+        "dispatch_location_reference",
+        "dispatched_at",
+        "items",
+        "tracking_number"
+      ],
+      "type": "object",
+      "x-ref-extensions": {
+        "carrier": {
+          "description": "The Canva-supported carrier delivering the shipment."
+        },
+        "items": {
+          "description": "The items included in the shipment."
+        }
+      }
+    },
+    "ShipmentItem": {
+      "description": "The items included in the shipment.",
+      "properties": {
+        "item_reference_id": {
+          "description": "A unique, case-sensitive ID for an order item that the partner can use when communicating with Canva.",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "quantity": {
+          "description": "The number of copies of an item that were shipped.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "item_reference_id",
+        "quantity"
+      ],
+      "type": "object"
+    }
+  }
+}

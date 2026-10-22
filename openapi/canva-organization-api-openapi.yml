@@ -1,0 +1,121 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: REST API for building admin integrations with Canva
+  license:
+    name: ©2025 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Admin Organization API
+  version: 2026-08-18
+servers:
+- description: Admin API
+  url: https://api.canva.com/admin
+tags:
+- name: Organization
+paths:
+  /v1/organizations/self:
+    get:
+      description: Gets metadata for an organization.
+      operationId: getOrganization
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:organization:read
+      tags:
+      - Organization
+      summary: Get organization
+      x-summary-source: derived
+components:
+  schemas:
+    Organization:
+      description: An organization.
+      example:
+        name: ACME Corporation
+      properties:
+        name:
+          description: The name of the organization.
+          type: string
+      required:
+      - name
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - permission_denied
+      - too_many_requests
+      - max_limit_reached
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - invalid_access_token
+      - missing_scope
+      - invalid_field
+      - input_unsafe
+      - display_name_unavailable
+      - team_not_found
+      - group_not_found
+      - team_is_default
+      - user_not_found
+      - saml_team_id_conflict
+      - user_not_managed
+      - saml_name_id_not_available
+      - user_linked_to_another_idp
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      - domain_restricted
+      - user_already_member
+      type: string
+    GetOrganizationResponse:
+      description: Successful response from a `getOrganization` request
+      properties:
+        organization:
+          $ref: '#/components/schemas/Organization'
+      required:
+      - organization
+      type: object
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes:
+            admin:user:read: Read information about a Canva user.
+            admin:user:write: Create a managed user in the organization.
+            admin:team:read: Read information about a Canva team and its users.
+            admin:team:write: Create or modify a Canva team, and add or remove its users.
+            admin:group:read: Read information about a Canva group.
+            admin:group:write: Create or modify a Canva group, and add or remove its users.
+            admin:organization:read: Read information about the Canva organization.
+            admin:auditevent:read: List audit events for the Canva organization.
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2

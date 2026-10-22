@@ -1,14 +1,15 @@
-generated: '2026-08-13'
+generated: '2026-10-20'
 method: probed
 source: https://mcp.canva.com/mcp (HTTP 401 + WWW-Authenticate challenge), https://mcp.canva.com/.well-known/oauth-protected-resource
   (HTTP 200), https://mcp.canva.com/.well-known/oauth-authorization-server (HTTP 200), https://www.canva.dev/docs/connect/mcp-server.md
+  (HTTP 200), https://www.canva.dev/docs/apps/mcp/tools/ (HTTP 200, documented tool table), https://www.canva.dev/docs/apps/dev-mcp-server.md
   (HTTP 200)
-description: Canva ships TWO distinct MCP surfaces and they are not interchangeable. (1) A hosted, remote
-  MCP server at https://mcp.canva.com/mcp — the "Canva AI Connector" — which an MCP client POSTs to directly
-  after an OAuth 2.1 authorization-code flow; it advertises OAuth Protected Resource Metadata (RFC 9728)
-  and Authorization Server Metadata (RFC 8414), including Dynamic Client Registration. (2) A local stdio
-  "Canva Dev MCP server" launched with `npx -y @canva/cli@latest mcp`, aimed at AI-assisted development
-  of Canva apps and integrations (documentation and tooling assistance), not at operating a user's designs.
+description: Canva ships TWO distinct MCP surfaces and they are not interchangeable. (1) A hosted, remote MCP server
+  at https://mcp.canva.com/mcp — the "Canva AI Connector" — which an MCP client POSTs to directly after an OAuth
+  2.1 authorization-code flow; it advertises OAuth Protected Resource Metadata (RFC 9728) and Authorization Server
+  Metadata (RFC 8414), including Dynamic Client Registration. (2) A local stdio "Canva Dev MCP server" launched
+  with `npx -y @canva/cli@latest mcp`, aimed at AI-assisted development of Canva apps and integrations (documentation
+  and tooling assistance), not at operating a user's designs.
 deployment:
   mode: both
   endpoint: https://mcp.canva.com/mcp
@@ -78,34 +79,233 @@ servers:
   - help:answers:read
   - help:answers:write
   tools:
-    status: gated
-    note: tools/list returns 401 without a bearer token, so the live tool list and inputSchemas could
-      not be enumerated anonymously. NOTHING is asserted here about tool names. The scopes_supported list
-      above is the authoritative anonymous evidence of what the server can reach, and it is the basis
-      of mcp/canva-tool-crosswalk.yml. Two scopes — brandkit:read, help:answers:read/write — are NOT in
-      the Connect API OAuth scope table, so the hosted MCP server reaches at least two capabilities the
-      public REST API does not expose.
+    status: documented
+    l3: table
+    source: https://www.canva.dev/docs/apps/mcp/tools/
+    checked: '2026-10-20'
+    note: Tool names, per-tool rate limits and plan availability are copied from Canva's published "MCP tools and
+      rate limits" table. They are names the provider PUBLISHES; tools/list was not called (OAuth-gated, 401 anonymously),
+      so no live tool list or inputSchema was observed. Tools with rate limit "Default" fall under the server-wide
+      cap of 300 requests per minute per user, counted across all of that user's MCP clients.
+    default_rate_limit: 300 requests per minute per user
+    count: 46
+    list:
+    - name: upload-asset-from-url
+      category: Assets
+      rate_limit: 30 req/min
+      plan_availability: All plans
+    - name: get-assets
+      category: Assets
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: create-upload-url
+      category: Assets
+      rate_limit: Default
+      plan_availability: All plans
+    - name: autofill-design
+      category: Autofill
+      rate_limit: 60 req/min
+      plan_availability: Pro and above
+    - name: get-brand-template-dataset
+      category: Autofill
+      rate_limit: 100 req/min
+      plan_availability: Pro and above
+    - name: get-design-dataset
+      category: Autofill
+      rate_limit: Default
+      plan_availability: Pro and above
+    - name: search-brand-templates
+      category: Brand templates
+      rate_limit: 100 req/min
+      plan_availability: Pro and above
+    - name: list-brand-kits
+      category: Brand templates
+      rate_limit: 100 req/min
+      plan_availability: Pro and above
+    - name: create-design-from-brand-template
+      category: Brand templates
+      rate_limit: 20 req/min
+      plan_availability: Pro and above
+    - name: create-brand-template-draft
+      category: Brand templates
+      rate_limit: Default
+      plan_availability: Pro and above
+    - name: publish-brand-template
+      category: Brand templates
+      rate_limit: Default
+      plan_availability: Pro and above
+    - name: comment-on-design
+      category: Comments
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: reply-to-comment
+      category: Comments
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: list-comments
+      category: Comments
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: list-replies
+      category: Comments
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: search-designs
+      category: Designs
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: get-design
+      category: Designs
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: get-design-pages
+      category: Designs
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: get-design-content
+      category: Designs
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: get-presenter-notes
+      category: Designs
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: get-export-formats
+      category: Designs
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: generate-design
+      category: Designs
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: create-design-from-candidate
+      category: Designs
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: create-design
+      category: Designs
+      rate_limit: Default
+      plan_availability: All plans
+    - name: get-create-design-async-job
+      category: Designs
+      rate_limit: Default
+      plan_availability: All plans
+    - name: copy-design
+      category: Designs
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: merge-designs
+      category: Designs
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: import-design-from-url
+      category: Design imports
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: resolve-shortlink
+      category: Shortlinks
+      rate_limit: No limit
+      plan_availability: All plans
+    - name: export-design
+      category: Exports
+      rate_limit: 20 req/min
+      plan_availability: All plans*
+    - name: generate-image
+      category: Images
+      rate_limit: 10 req/min
+      plan_availability: All plans
+    - name: get-generate-image-job
+      category: Images
+      rate_limit: Default
+      plan_availability: All plans
+    - name: remove-background
+      category: Images
+      rate_limit: Default
+      plan_availability: All plans
+    - name: separate-image-layers
+      category: Images
+      rate_limit: Default
+      plan_availability: All plans
+    - name: get-separate-image-layers-job
+      category: Images
+      rate_limit: Default
+      plan_availability: All plans
+    - name: create-folder
+      category: Folders
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: list-folder-items
+      category: Folders
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: search-folders
+      category: Folders
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: move-item-to-folder
+      category: Folders
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: resize-design
+      category: Resizes
+      rate_limit: 20 req/min
+      plan_availability: Pro and above
+    - name: start-editing-transaction
+      category: Editing transactions
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: perform-editing-operations
+      category: Editing transactions
+      rate_limit: 50 req/min
+      plan_availability: All plans
+    - name: commit-editing-transaction
+      category: Editing transactions
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: cancel-editing-transaction
+      category: Editing transactions
+      rate_limit: 20 req/min
+      plan_availability: All plans
+    - name: get-design-thumbnail
+      category: Editing transactions
+      rate_limit: 100 req/min
+      plan_availability: All plans
+    - name: help
+      category: Help
+      rate_limit: Default
+      plan_availability: All plans
+  docs: https://www.canva.dev/docs/apps/mcp/
 - name: Canva Dev MCP server
   mode: local-stdio
   install: npx -y @canva/cli@latest mcp
   package: https://www.npmjs.com/package/@canva/cli
   auth: none
   status: live
-  purpose: AI-assisted DEVELOPMENT of Canva apps and integrations — documentation lookup and development
-    tooling for MCP clients such as Cursor, Claude Desktop and Claude Code. It does not operate an end
-    user's Canva designs.
-  docs: https://www.canva.dev/docs/connect/mcp-server/
+  purpose: AI-assisted DEVELOPMENT of Canva apps and integrations — documentation lookup and development tooling
+    for MCP clients such as Cursor, Claude Desktop and Claude Code. It does not operate an end user's Canva designs.
+  docs: https://www.canva.dev/docs/apps/dev-mcp-server/
   prerequisites:
   - git
   - Node.js v24 or later
   - npm
   evidence:
-  - url: https://www.canva.dev/docs/connect/mcp-server.md
+  - url: https://www.canva.dev/docs/apps/dev-mcp-server.md
     http_status: 200
+    checked: '2026-10-20'
+  - url: https://www.canva.dev/docs/connect/mcp-server.md
+    http_status: 404
+    checked: '2026-10-20'
+    note: former location, moved
+  claude_code_install: claude mcp add canva-dev -- npx -y @canva/cli@latest mcp
 related:
   agent_skills: https://github.com/canva-sdks/canva-skills
-  connect_openapi: openapi/canva-connect-api-openapi.yml
+  connect_openapi: openapi/_original/canva-openapi.yml
   crosswalk: mcp/canva-tool-crosswalk.yml
+  plugin_mcp_config:
+    url: https://github.com/canva-sdks/canva-skills/blob/main/plugins/canva/.mcp.json
+    declares:
+      type: http
+      url: https://mcp.canva.com/mcp
 rfc9728:
   endpoint: https://mcp.canva.com/mcp
   metadata_url: https://mcp.canva.com/.well-known/oauth-protected-resource/mcp

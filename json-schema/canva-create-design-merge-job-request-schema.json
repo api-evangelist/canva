@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-design-merge-job-request-schema.json",
+  "title": "CreateDesignMergeJobRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-merge-api-openapi.yml#/components/schemas/CreateDesignMergeJobRequest",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/NewDesignCreateDesignMergeJobRequest"
+    },
+    {
+      "$ref": "#/$defs/ModifyDesignCreateDesignMergeJobRequest"
+    }
+  ],
+  "$defs": {
+    "DeletePagesDesignMergeOperation": {
+      "description": "Deletes pages from the target design.",
+      "properties": {
+        "type": {
+          "description": "The type of merge operation.",
+          "enum": [
+            "delete_pages"
+          ],
+          "type": "string"
+        },
+        "page_numbers": {
+          "description": "One-based numbers of the pages to delete (evaluated at the time this operation runs). Pages are deleted in reverse order to maintain page numbers.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "page_numbers",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DesignMergeOperation": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/InsertPagesDesignMergeOperation"
+        },
+        {
+          "$ref": "#/$defs/MovePagesDesignMergeOperation"
+        },
+        {
+          "$ref": "#/$defs/DeletePagesDesignMergeOperation"
+        }
+      ]
+    },
+    "DesignMergeSourceForInsertPagesOperation": {
+      "description": "A design source from which pages are inserted.",
+      "properties": {
+        "type": {
+          "description": "The type of source to insert pages from.",
+          "enum": [
+            "design"
+          ],
+          "type": "string"
+        },
+        "design_id": {
+          "description": "The ID of the source design.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "page_numbers": {
+          "description": "One-based page numbers to insert from the source design. If omitted, all pages from the design are inserted.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "design_id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "InsertPagesDesignMergeOperation": {
+      "description": "Inserts pages from a source design into the target design.",
+      "properties": {
+        "type": {
+          "description": "The type of merge operation.",
+          "enum": [
+            "insert_pages"
+          ],
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/MergeSourceForInsertPagesOperation"
+        },
+        "after_page_number": {
+          "description": "Insert after this one-based page number in the evolving target layout. Use 0 to insert at the beginning, and the default is inserting at the end (append).\n",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source",
+        "type"
+      ],
+      "type": "object"
+    },
+    "MergeSourceForInsertPagesOperation": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DesignMergeSourceForInsertPagesOperation"
+        }
+      ]
+    },
+    "ModifyDesignCreateDesignMergeJobRequest": {
+      "description": "Modifies an existing design by inserting, moving, or deleting pages.",
+      "properties": {
+        "type": {
+          "description": "The type of merge job to create.",
+          "enum": [
+            "modify_existing_design"
+          ],
+          "type": "string"
+        },
+        "design_id": {
+          "description": "The ID of the design to modify.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "operations": {
+          "description": "Supports insert, move, and delete operations.",
+          "items": {
+            "$ref": "#/$defs/DesignMergeOperation"
+          },
+          "maxItems": 500,
+          "minItems": 1,
+          "type": "array"
+        },
+        "title": {
+          "description": "Optional new title for the design.",
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "design_id",
+        "operations",
+        "type"
+      ],
+      "type": "object"
+    },
+    "MovePagesDesignMergeOperation": {
+      "description": "Moves pages within the target design to a new position.",
+      "properties": {
+        "type": {
+          "description": "The type of merge operation.",
+          "enum": [
+            "move_pages"
+          ],
+          "type": "string"
+        },
+        "from_page_numbers": {
+          "description": "One-based number of the pages to move (evaluated at the time this operation runs). Pages are moved in order.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "to_after_page_number": {
+          "description": "Destination position: insert the moved pages after this one-based page number. Use 0 to move to the beginning.\n",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "from_page_numbers",
+        "to_after_page_number",
+        "type"
+      ],
+      "type": "object"
+    },
+    "NewDesignCreateDesignMergeJobRequest": {
+      "description": "Creates a new design by inserting pages from other designs.",
+      "properties": {
+        "type": {
+          "description": "The type of merge job to create.",
+          "enum": [
+            "create_new_design"
+          ],
+          "type": "string"
+        },
+        "operations": {
+          "description": "For this job type, only insert operations are supported.",
+          "items": {
+            "$ref": "#/$defs/DesignMergeOperation"
+          },
+          "maxItems": 500,
+          "minItems": 1,
+          "type": "array"
+        },
+        "title": {
+          "description": "Title for the new design.",
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "operations",
+        "title",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

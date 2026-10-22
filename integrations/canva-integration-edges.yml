@@ -1,4 +1,90 @@
-generated: '2026-10-15'
+generated: '2026-10-20'
+method: searched
+source:
+- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://n8n.io/integrations/canva/
+- https://composio.dev/toolkits/canva
+checked:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+- https://api.github.com
+- https://claude-plugins.dev/sitemap.xml
+- https://github.com/VoltAgent/awesome-agent-skills
+- https://officialskills.sh/sitemap.xml
+- https://skillsmp.com/sitemap.xml
+- https://www.skills.sh/sitemap.xml
+- https://composio.dev/toolkits/canva
+- https://monid.ai/tools/canva
+- https://n8n.io/integrations/canva/
+- https://zapier.com/apps/canva/integrations
+summary: null
+marketplace_apps:
+- marketplace: n8n
+  channel: open-source-node
+  app: canva
+  url: https://n8n.io/integrations/canva/
+  identity: title
+  pair_pages: 0
+  pairs: []
+- marketplace: composio
+  channel: agent-gateway
+  app: canva
+  url: https://composio.dev/toolkits/canva
+  identity: action-prefix
+  actions:
+  - key: CANVA_ACCESS_USER_SPECIFIC_BRAND_TEMPLATES_LIST
+  - key: CANVA_CREATE_ASSET_UPLOAD_JOB
+  - key: CANVA_CREATE_CANVA_DESIGN_EXPORT_JOB
+  - key: CANVA_CREATE_DESIGN_IMPORT_JOB
+  - key: CANVA_CREATE_DESIGN_RESIZE_JOB
+  - key: CANVA_CREATE_URL_ASSET_UPLOAD_JOB
+  - key: CANVA_DELETE_ASSET_BY_ID
+  - key: CANVA_EXCHANGE_OAUTH20_ACCESS_OR_REFRESH_TOKEN
+  - key: CANVA_FETCH_ASSET_UPLOAD_JOB_STATUS
+  - key: CANVA_FETCH_CANVA_CONNECT_SIGNING_PUBLIC_KEYS
+  - key: CANVA_FETCH_CURRENT_USER_DETAILS
+  - key: CANVA_FETCH_DESIGN_METADATA_AND_ACCESS_INFORMATION
+  - key: CANVA_GET_DESIGNS_DESIGNID_COMMENTS_THREADID
+  - key: CANVA_GET_DESIGNS_DESIGNID_EXPORT_FORMATS
+  - key: CANVA_GET_DESIGN_COMMENT_REPLIES
+  - key: CANVA_GET_DESIGN_COMMENT_REPLY
+  - key: CANVA_GET_DESIGN_EXPORT_JOB_RESULT
+  - key: CANVA_GET_URL_ASSET_UPLOADS_JOBID
+  - key: CANVA_GET_URL_IMPORTS_JOBID
+  - key: CANVA_GET_USERS_ME_CAPABILITIES
+  - key: CANVA_INITIATE_CANVA_DESIGN_AUTOFILL_JOB
+  - key: CANVA_LIST_DESIGN_PAGES_WITH_PAGINATION
+  - key: CANVA_LIST_FOLDER_ITEMS_BY_TYPE_WITH_SORTING
+  - key: CANVA_LIST_USER_DESIGNS
+  - key: CANVA_MOVE_ITEM_TO_SPECIFIED_FOLDER
+  - key: CANVA_POST_DESIGNS
+  - key: CANVA_POST_DESIGNS_DESIGNID_COMMENTS
+  - key: CANVA_POST_DESIGNS_DESIGNID_COMMENTS_THREADID_REPLIES
+  - key: CANVA_POST_EXPORTS
+  - key: CANVA_POST_FOLDERS
+  - key: CANVA_POST_URL_IMPORTS
+  - key: CANVA_REMOVE_FOLDER_AND_MOVE_CONTENTS_TO_TRASH
+  - key: CANVA_RETRIEVE_APP_PUBLIC_KEY_SET
+  - key: CANVA_RETRIEVE_ASSET_METADATA_BY_ID
+  - key: CANVA_RETRIEVE_BRAND_TEMPLATE_DATASET_DEFINITION
+  - key: CANVA_RETRIEVE_CANVA_ENTERPRISE_BRAND_TEMPLATE_METADATA
+  - key: CANVA_RETRIEVE_DESIGN_AUTOFILL_JOB_STATUS
+  - key: CANVA_RETRIEVE_DESIGN_IMPORT_JOB_STATUS
+  - key: CANVA_RETRIEVE_DESIGN_RESIZE_JOB_STATUS
+  - key: CANVA_RETRIEVE_FOLDER_DETAILS_BY_ID
+  - key: CANVA_RETRIEVE_USER_PROFILE_DATA
+  - key: CANVA_REVOKE_OAUTH_TOKENS
+  - key: CANVA_UPDATE_ASSET_S_NAME_AND_TAGS_BY_ID
+  - key: CANVA_UPDATE_FOLDER_DETAILS_BY_ID
+  - key: CANVA_VALIDATE_OAUTH_TOKEN_PROPERTIES
+  - key: CANVA_WHO_AM_I
 edges:
 - partner_name: npm registry
   partner: npm
@@ -92,22 +178,4 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-agent-skills.py
   first_seen: '2026-10-20'
-method: searched
-checked:
-- https://api.nuget.org/v3
-- https://crates.io/api/v1
-- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
-- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
-- https://proxy.golang.org
-- https://pypi.org/pypi
-- https://registry.npmjs.org
-- https://repo1.maven.org/maven2
-- https://rubygems.org/api/v1
-- https://api.github.com
-- https://claude-plugins.dev/sitemap.xml
-- https://github.com/VoltAgent/awesome-agent-skills
-- https://officialskills.sh/sitemap.xml
-- https://skillsmp.com/sitemap.xml
-- https://www.skills.sh/sitemap.xml
-source:
-- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+templates: []

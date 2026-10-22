@@ -1,0 +1,225 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: API for building integrations to manage Canva Print orders with suppliers
+  license:
+    name: ©2024 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Print API Specification API
+  version: 2025-04-14
+servers:
+- description: Canva Print API
+  url: https://api.canva.com/print
+tags:
+- name: api_specification
+paths:
+  /v1/api-specifications/{version}:
+    get:
+      description: Returns the OpenAPI specification for the requested API version as a YAML document. Use this to download the machine-readable contract for the Canva Print API.
+      operationId: getApiSpecification
+      parameters:
+      - description: The API version to return the specification for, for example `latest`.
+        explode: false
+        in: path
+        name: version
+        required: true
+        schema:
+          example: latest
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/yaml:
+              schema:
+                format: binary
+                type: string
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      tags:
+      - api_specification
+      summary: Get api specification
+      x-summary-source: derived
+components:
+  schemas:
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - invalid_field
+      - invalid_header_value
+      - invalid_request
+      - permission_denied
+      - too_many_requests
+      - not_found
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - unsupported_version
+      - invalid_access_token
+      - revoked_access_token
+      - invalid_client
+      - unauthorized_client
+      - invalid_basic_header
+      type: string
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2
+x-print-outgoing-paths:
+  /locations:
+    get:
+      operationId: findLocations
+      description: 'Gets up-to-date information on the print partner''s locations that support in-store pickup.
+
+
+        Canva is interested in:
+
+
+        - The address of each pickup location.
+
+        - Production and transfer locations that supply to each pickup location.
+
+        - The opening hours of each pickup location.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/FindLocationsCountryQuery'
+      - $ref: '#/components/parameters/FindLocationsContinuationQuery'
+      - $ref: '#/components/parameters/FindLocationsLimitQuery'
+      responses:
+        '200':
+          $ref: '#/components/responses/FindLocationsSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+  /v1/orders:
+    post:
+      operationId: createOrder
+      description: 'Creates an order on the print partner''s system. This operation lets Canva request a partner to commence production on an order.
+
+
+        As part of the request, Canva sends an `orderReferenceId` and a list of `items` to print.
+
+
+        Requests to this endpoint should be idempotent. If a provided `orderReferenceId` already exists in the partner system, and:
+
+
+        - The item `item_reference_id`s match and are not canceled: A success response should be returned.
+
+        - The item `item_reference_id`s match but items requested in the request are canceled: An error response should be returned.
+
+        - The item `item_reference_id`s don''t match: An error response should be returned.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+  /v1/orders/{orderReferenceId}:
+    parameters:
+    - $ref: '#/components/parameters/ApiVersionHeader'
+    - $ref: '#/components/parameters/ApiSignatureHeader'
+    - $ref: '#/components/parameters/OrderReferenceIdPath'
+    get:
+      operationId: getOrder
+      description: Gets an order from the print partner's system.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+    patch:
+      operationId: updateOrder
+      description: 'Updates an order in the print partner''s system.
+
+
+        - Changes to an order are restricted only to the delivery address and customer details of the order.
+
+        - Updates to an order aren''t allowed if every item of the order has been canceled.
+
+        - The order update request can be denied if the update isn''t possible. For example, if the order contains items that have already shipped.
+
+        '
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateOrderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '405':
+          $ref: '#/components/responses/405'
+  /v1/orders/{orderReferenceId}/cancel:
+    post:
+      operationId: cancelOrder
+      description: 'Cancels items in an order in the print partner''s system.
+
+
+        For cancel requests, Canva sends the `item_reference_ids` to cancel. For cancelling an entire order, Canva sends the `item_reference_ids` for all items in the order.
+
+
+        The request can be denied if the cancellation is not possible. For example, if production on the order''s item has already started.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      - $ref: '#/components/parameters/ApiSignatureHeader'
+      - $ref: '#/components/parameters/OrderReferenceIdPath'
+      requestBody:
+        $ref: '#/components/requestBodies/CancelOrderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CancelOrderSuccessResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '405':
+          $ref: '#/components/responses/405'

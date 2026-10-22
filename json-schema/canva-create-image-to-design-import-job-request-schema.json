@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-image-to-design-import-job-request-schema.json",
+  "title": "CreateImageToDesignImportJobRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-import-api-openapi.yml#/components/schemas/CreateImageToDesignImportJobRequest",
+  "properties": {
+    "image": {
+      "$ref": "#/$defs/ImageSource"
+    },
+    "title": {
+      "description": "A title for the created design. If not provided, Canva generates a title.",
+      "maxLength": 255,
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "image"
+  ],
+  "type": "object",
+  "$defs": {
+    "ImageSource": {
+      "description": "The image to convert into a design.",
+      "properties": {
+        "asset_id": {
+          "description": "The ID of an image asset in the user's Canva account.\n\nThe asset must be one of the following image types: `png`, `jpeg`, `gif`,\n`webp`, `heic`, `heif`, `avif`, `tiff`, `jp2`, `jpx`, `jpm`, or `jxr`. Video\nassets are not supported.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id"
+      ],
+      "type": "object"
+    }
+  }
+}

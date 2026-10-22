@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-list-team-members-response-schema.json",
+  "title": "ListTeamMembersResponse",
+  "description": "Successful response from a `listTeamMembers` request",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-admin-api-openapi.yml#/components/schemas/ListTeamMembersResponse",
+  "properties": {
+    "items": {
+      "items": {
+        "$ref": "#/$defs/TeamMember"
+      },
+      "type": "array"
+    },
+    "continuation": {
+      "description": "If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.\n\nTo retrieve all items, you might need to make multiple requests.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "type": "object",
+  "$defs": {
+    "TeamMember": {
+      "description": "A user in a team.",
+      "properties": {
+        "user_id": {
+          "description": "The user ID.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "The team ID.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/TeamMemberRole"
+        }
+      },
+      "required": [
+        "role",
+        "team_id",
+        "user_id"
+      ],
+      "type": "object"
+    },
+    "TeamMemberRole": {
+      "description": "The role of the member in the team.",
+      "enum": [
+        "admin",
+        "designer",
+        "member"
+      ],
+      "type": "string"
+    }
+  }
+}

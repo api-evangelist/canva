@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-design-analytics-views-over-time-response-schema.json",
+  "title": "GetDesignAnalyticsViewsOverTimeResponse",
+  "description": "Successful response from a `getDesignAnalyticsViewsOverTime` request.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsViewsOverTimeResponse",
+  "properties": {
+    "items": {
+      "description": "The list of time buckets.",
+      "items": {
+        "$ref": "#/$defs/ViewsAtTime"
+      },
+      "type": "array"
+    },
+    "continuation": {
+      "description": "If the success response contains a continuation token, there are more time buckets you can list. You can use this token as a query parameter and retrieve more time buckets from the list, for example `/v1/designs/{designId}/analytics/views-over-time?continuation={continuation}`.\n\nTo retrieve all time buckets, you might need to make multiple requests.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "type": "object",
+  "$defs": {
+    "ViewsAtTime": {
+      "description": "A single time bucket of view counts.",
+      "properties": {
+        "count": {
+          "description": "The number of views in this bucket.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "bucket_start_at": {
+          "description": "When this time bucket starts, as a Unix timestamp (in seconds since the Unix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bucket_start_at",
+        "count"
+      ],
+      "type": "object"
+    }
+  }
+}

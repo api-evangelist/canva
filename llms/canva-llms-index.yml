@@ -1,58 +1,70 @@
-generated: '2026-08-13'
+generated: '2026-10-20'
 method: searched
 source: https://www.canva.dev/docs/llms.txt
-description: >-
-  Canva publishes llms.txt properly — a root index at the docs host plus a per-product index
-  for every developer surface, and a `.md` twin for every documentation page. Files below were
-  fetched verbatim on 2026-08-13.
+description: 'Canva publishes llms.txt at www.canva.dev/docs/llms.txt (root index) plus a per-product index, and
+  a .md twin for every docs page. Re-fetched verbatim 2026-10-20: the root index now groups everything under ''SDKs
+  and APIs'' / Canva Developers SDK, and the old Connect APIs index (docs/connect/llms.txt) is now a 291-byte deprecation
+  notice pointing at docs/apps/llms.txt, because the Connect APIs were renamed the Canva REST APIs.'
 files:
-  - path: llms/canva-llms.txt
-    url: https://www.canva.dev/docs/llms.txt
-    http_status: 200
-    bytes: 1084
-    role: root index — points at the five product-level llms.txt files
-  - path: llms/canva-connect-llms.txt
-    url: https://www.canva.dev/docs/connect/llms.txt
-    http_status: 200
-    bytes: 18198
-    role: >-
-      Connect APIs index — the complete documentation map including every API reference page,
-      every webhook notification type, scopes, capabilities, error responses and changelog.
+- path: llms/canva-llms.txt
+  url: https://www.canva.dev/docs/llms.txt
+  http_status: 200
+  bytes: 1779
+  fetched: '2026-10-20'
+  role: root index
+- path: llms/canva-apps-llms.txt
+  url: https://www.canva.dev/docs/apps/llms.txt
+  http_status: 200
+  bytes: 85342
+  fetched: '2026-10-20'
+  role: Canva Developers SDK index (Apps SDK, REST APIs formerly Connect, MCP) - the current full documentation
+    map
+- path: llms/canva-connect-llms.txt
+  url: https://www.canva.dev/docs/connect/llms.txt
+  http_status: 200
+  bytes: 18198
+  fetched: '2026-08-13'
+  role: HISTORICAL snapshot of the former Connect APIs index; the live URL now serves a deprecation notice (291
+    bytes, 2026-10-20)
 probed:
-  - url: https://www.canva.dev/docs/llms.txt
-    status: 200
-  - url: https://www.canva.dev/docs/connect/llms.txt
-    status: 200
-  - url: https://www.canva.dev/docs/apps/llms.txt
-    status: 200
-    bytes: 55339
-    saved: false
-    note: Apps SDK index; large, referenced rather than vendored.
-  - url: https://www.canva.dev/docs/scim/llms.txt
-    status: 200
-    bytes: 2678
-    saved: false
-  - url: https://www.canva.dev/docs/print/llms.txt
-    status: 200
-    bytes: 5553
-    saved: false
-  - url: https://www.canva.dev/docs/audit-logs/llms.txt
-    status: 200
-    bytes: 3570
-    saved: false
-  - url: https://www.canva.dev/llms.txt
-    status: 404
-    note: The index lives under /docs/, not at the host root.
-  - url: https://www.canva.com/llms.txt
-    status: 403
-    note: >-
-      The www.canva.com marketing host answers a Cloudflare bot challenge to unauthenticated
-      machine clients. The developer docs host (www.canva.dev) is fully open.
+- url: https://www.canva.dev/docs/llms.txt
+  status: 200
+  checked: '2026-10-20'
+  bytes: 1779
+- url: https://www.canva.dev/docs/connect/llms.txt
+  status: 200
+  bytes: 291
+  checked: '2026-10-20'
+  note: 'Now a "# Deprecated" notice: index moved to docs/apps/llms.txt'
+- url: https://www.canva.dev/docs/apps/llms.txt
+  status: 200
+  bytes: 85342
+  saved: true
+  note: Canva Developers SDK index, vendored as llms/canva-apps-llms.txt
+  checked: '2026-10-20'
+- url: https://www.canva.dev/docs/scim/llms.txt
+  status: 200
+  bytes: 2678
+  saved: false
+- url: https://www.canva.dev/docs/print/llms.txt
+  status: 200
+  bytes: 5553
+  saved: false
+- url: https://www.canva.dev/docs/audit-logs/llms.txt
+  status: 200
+  bytes: 3570
+  saved: false
+- url: https://www.canva.dev/llms.txt
+  status: 404
+  note: The index lives under /docs/, not at the host root.
+- url: https://www.canva.com/llms.txt
+  status: 403
+  note: The www.canva.com marketing host answers a Cloudflare bot challenge to unauthenticated machine clients.
+    The developer docs host (www.canva.dev) is fully open.
 markdown_twins:
   supported: true
   pattern: append `.md` to any www.canva.dev/docs/ page URL
   example: https://www.canva.dev/docs/connect/error-responses.md
-  note: >-
-    Every page carries a header instructing an agent to fetch the llms.txt index first. This
-    is a deliberately agent-shaped documentation surface, and it is why every docs-derived
-    artifact in this repo cites a .md URL rather than a scraped HTML page.
+  note: Every page carries a header instructing an agent to fetch the llms.txt index first. This is a deliberately
+    agent-shaped documentation surface, and it is why every docs-derived artifact in this repo cites a .md URL rather
+    than a scraped HTML page.

@@ -1,0 +1,105 @@
+generated: '2026-10-20'
+method: searched
+source:
+- https://www.canva.com/policies/privacy-policy/
+- https://www.canva.com/policies/canva-developer-terms/
+signals:
+  data_subject_request:
+    url: https://www.canva.com/policies/privacy-policy/
+    section: Your rights
+    evidence:
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'Individuals in certain countries, including the European Union, United Kingdom, and Brazil have the right to: Request access to their information; Request that we correct inaccuracies in their information; Request that their information be deleted or that we restrict access to it; Request a structured electronic version of their information; and Object to our use of their information.'
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: In some circumstances Canva will not be able to comply with your request regarding your personal data. If we are unable to remove any of your information, we will explain why.
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: Request that Canva correct inaccurate personal information; Opt out from the "sale" of your personal information; Opt out of the "sharing" of your personal information for cross-context behavioral advertising; Appeal decisions where we deny your rights request.
+    note: Access, correction, deletion/restriction, portability (structured electronic copy) and objection rights for EU/UK/Brazil users, plus US state-law rights including sale/share opt-out and appeal. Requests go through a contact form; no API-based DSR endpoint is described.
+  data_retention:
+    url: https://www.canva.com/policies/privacy-policy/
+    section: 8. How long we keep your information
+    evidence:
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: Following termination or deactivation of your user account, Canva will retain your profile information and User Content for a commercially reasonable time, and for as long as we have a valid purpose to do so. In particular, Canva will retain your information for the purpose of complying with its legal and audit obligations, and for backup and archival purposes.
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: If the student does not log in to their account within 3 months following the receipt of that email, we will delete that account. Upon termination of a school’s Canva Education account, we will delete all student accounts associated with that school.
+    note: General retention is purpose-bound ("commercially reasonable time") with no fixed periods; Canva Education has concrete inactivity-deletion rules, and a separate COPPA data retention schedule is referenced for US children under 13.
+  data_residency:
+    url: https://www.canva.com/policies/privacy-policy/
+    section: 5. How we transfer, store and protect your data
+    evidence:
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: Your information collected through the Service will be stored and processed in the United States, Australia, Singapore, European Union, United Kingdom, Philippines and New Zealand and any other country in which Canva or its subsidiaries, affiliates or service providers maintain facilities or employ staff or contractors.
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: Canva’s U.S. subsidiary adheres to compliance with the EU-U.S. Data Privacy Framework, the Swiss-U.S. Data Privacy Framework and the UK Extension to the EU-U.S. Data Privacy Framework.
+    note: No customer-selectable data residency is described; data may be processed across the listed countries and wherever affiliates or service providers operate, with Data Privacy Framework participation for transfers to the US.
+  subprocessors:
+    url: https://www.canva.com/policies/privacy-policy/
+    section: 9. Canva Education
+    evidence:
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: The following third party service providers will process student data for the sole purpose of delivering the Canva Education service.
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: We share your information with Canva affiliates and third-party service providers for the purpose of providing the Service to you, to facilitate Canva’s legitimate interests or if you consent.
+    note: A named provider list (Amazon Web Services, Amplitude, Atlassian, Braze, Elastic, Looker and others) is published only for Canva Education student data; for the general service the policy describes categories of service providers, not a named subprocessor list.
+  ai_transparency:
+    url: https://www.canva.com/policies/privacy-policy/
+    section: Service improvement (including analytics and machine learning)
+    evidence:
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: We may analyze your activity, content, media uploads and related data in your account to provide and customize the Service, including generating and storing that data as Memories, and to train our algorithms, models and AI products and services using machine learning to develop, improve and provide our Service.
+    - source: https://www.canva.com/policies/canva-developer-terms/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'use any content, data or information from the Canva APIs or the Canva Platform (including AI-generated content) to train, fine-tune, distil or otherwise improve any artificial intelligence or machine learning model, or to create or augment any dataset for those purposes, except: for training or personalisation that is necessary to provide your App or Integration to the relevant End-User and only where the resulting model is used solely for that End-User; or with Canva’s prior written consent or as expressly permitted under your agreement with Canva.'
+    - source: https://www.canva.com/policies/canva-developer-terms/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: If your App or Integration involves the use of artificial intelligence, your App or Integration shall not include any content that would mislead anyone that the content generated by your App or Integration is human-generated when it is not.
+    note: Canva discloses that user content may train its AI models, with a user-controllable privacy setting; the API/App developer terms forbid developers from training models on data obtained via Canva APIs and require that AI output not be passed off as human-generated.
+  incident_notification:
+    url: https://www.canva.com/policies/canva-developer-terms/
+    section: Data (developer obligations)
+    evidence:
+    - source: https://www.canva.com/policies/canva-developer-terms/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: promptly report any data breach that may impact End-Users to Canva by email to legal@canva.com, no more than 48 hours after discovery of the breach.
+    note: This is an obligation ON developers toward Canva (48-hour breach report), not a commitment by Canva to notify its customers; neither page read states Canva's own breach-notification timeline.
+  age_assurance:
+    url: https://www.canva.com/policies/privacy-policy/
+    section: 9. Canva Education
+    evidence:
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: The Service and our content are not directed at children. Children are not permitted to sign up by themselves for the Service.
+    - source: https://www.canva.com/policies/privacy-policy/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: Canva Education has been certified compliant with the Children’s Online Privacy Protection Act (COPPA) and the Family Educational Rights and Privacy Act (FERPA) by iKeepSafe
+    - source: https://www.canva.com/policies/canva-developer-terms/
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: ensure that your End-User Terms restrict use of your App or Integration by children under the age of 13 (or the minimum legal age required to provide consent for processing of personal data in the country where the child is located) or you obtain verifiable parental consent;
+    note: Under-13 users only via teacher-supervised Canva Education (COPPA/FERPA certified by iKeepSafe); developers must restrict under-13 use or obtain verifiable parental consent. No technical age-verification mechanism is described.

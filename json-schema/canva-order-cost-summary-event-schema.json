@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-order-cost-summary-event-schema.json",
+  "title": "OrderCostSummaryEvent",
+  "description": "An event about the break down of costs and taxes associated for an order in the partner's system.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-print-api-openapi.yml#/components/schemas/OrderCostSummaryEvent",
+  "properties": {
+    "request_type": {
+      "$ref": "#/$defs/OrderEventRequestType"
+    },
+    "order_reference_id": {
+      "description": "A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "handling_major_units": {
+      "description": "The total cost (excluding tax) of the handling component of the cost item. This is value must be:\n\n- In major units.\n- In the currency provided.\n- A numerical value. The currency symbol must be omitted.\n",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "pre_tax_total_major_units": {
+      "description": "Total cost (excluding tax) of the order. This is value must be:\n\n- In major units.\n- In the currency provided.\n- A numerical value. The currency symbol must be omitted.\n",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "tax_major_units": {
+      "description": "Total tax of the order. This is value must be:\n\n- In major units.\n- In the currency provided.\n- A numerical value. The currency symbol must be omitted.\n",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "post_tax_total_major_units": {
+      "description": "Total cost (including tax) of the order. This is value must be:\n\n- In major units.\n- In the currency provided.\n- A numerical value. The currency symbol must be omitted.\n",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "currency": {
+      "description": "ISO 4217 currency code for the values provided in the cost summary.",
+      "maxLength": 3,
+      "type": "string"
+    },
+    "order_cost_items": {
+      "description": "A break down of the cost components included in the cost summary.",
+      "items": {
+        "$ref": "#/$defs/OrderCostItem"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "currency",
+    "order_cost_items",
+    "order_reference_id",
+    "post_tax_total_major_units",
+    "pre_tax_total_major_units",
+    "request_type",
+    "tax_major_units"
+  ],
+  "type": "object",
+  "x-ref-extensions": {
+    "request_type": {
+      "description": "The type of request. Must be `cost_summary_event`."
+    },
+    "order_cost_items": {
+      "description": "A break down of the cost components included in the cost summary."
+    }
+  },
+  "$defs": {
+    "OrderCostItem": {
+      "description": "A cost component of an item or shipment for an order.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/OrderCostItemType"
+        },
+        "item_reference_id": {
+          "description": "A unique, case-sensitive ID for an order item that the print partner can use when communicating with Canva. This is only provided when the `OrderCostItem` is a `product`, `add_on`, or `packaging`.",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "tracking_number": {
+          "description": "The tracking number provided by the carrier. This is only provided when the `OrderCostItem` is a `shipment`.",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "cost_major_units": {
+          "description": "Total cost (excluding tax) of the cost item. This is value must be:\n\n- In major units.\n- In the currency provided.\n- A numerical value. The currency symbol must be omitted.\n",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "tax_major_units": {
+          "description": "Total tax of the cost item. This is value must be:\n\n- In major units.\n- In the currency provided.\n- A numerical value. The currency symbol must be omitted.\n",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "total_major_units": {
+          "description": "Total cost (including tax) of the cost item. This is value must be:\n\n- In major units.\n- In the currency provided.\n- A numerical value. The currency symbol must be omitted.\n",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "currency": {
+          "description": "ISO 4217 currency code for the values provided in the cost summary.",
+          "maxLength": 3,
+          "type": "string"
+        }
+      },
+      "required": [
+        "cost_major_units",
+        "currency",
+        "tax_major_units",
+        "total_major_units",
+        "type"
+      ],
+      "type": "object",
+      "x-ref-extensions": {
+        "type": {
+          "description": "The type of the cost item.\n"
+        }
+      }
+    },
+    "OrderCostItemType": {
+      "description": "The type of the cost item.\n",
+      "enum": [
+        "product",
+        "add_on",
+        "packaging",
+        "shipment"
+      ],
+      "type": "string"
+    },
+    "OrderEventRequestType": {
+      "description": "The type of request.",
+      "enum": [
+        "cost_summary_event"
+      ],
+      "type": "string"
+    }
+  }
+}

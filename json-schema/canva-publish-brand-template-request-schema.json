@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-publish-brand-template-request-schema.json",
+  "title": "PublishBrandTemplateRequest",
+  "description": "Request body for publishing a design as a brand template",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-brand-template-api-openapi.yml#/components/schemas/PublishBrandTemplateRequest",
+  "properties": {
+    "design_id": {
+      "description": "The ID of the design to publish as a brand template. If this design is a draft of an existing brand template, that template will be updated. Otherwise, a new brand template is created.",
+      "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "design_id"
+  ],
+  "type": "object"
+}

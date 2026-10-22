@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-user-profile-response-schema.json",
+  "title": "UserProfileResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-user-api-openapi.yml#/components/schemas/UserProfileResponse",
+  "properties": {
+    "profile": {
+      "$ref": "#/$defs/UserProfile"
+    }
+  },
+  "required": [
+    "profile"
+  ],
+  "type": "object",
+  "$defs": {
+    "UserProfile": {
+      "description": "Profile for the user, consisting of the display name and other attributes.",
+      "properties": {
+        "display_name": {
+          "description": "The name of the user as shown in the Canva UI.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

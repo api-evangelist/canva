@@ -2,31 +2,45 @@
 
 This file lists documentation for Canva products available on [canva.dev](https://www.canva.dev/docs/), with links to their respective llms.txt files and overview pages.
 
-## Apps SDK
+## SDKs and APIs
 
-- [Apps SDK documentation](https://www.canva.dev/docs/apps/llms.txt)
+### Canva Developers SDK
+
+- [Canva Developers SDK documentation](https://www.canva.dev/docs/apps/llms.txt)
 - [Overview](https://www.canva.dev/docs/apps.md)
+- [Prerequisites](https://www.canva.dev/docs/apps/prerequisites.md)
 - [Quickstart](https://www.canva.dev/docs/apps/quickstart.md)
+- [Build](https://www.canva.dev/docs/apps/build/llms.txt)
+- [Publish](https://www.canva.dev/docs/apps/app-listing-guidelines/llms.txt)
+- [Manage](https://www.canva.dev/docs/apps/versioning-apps/llms.txt)
+- [Reference](https://www.canva.dev/docs/apps/reference/llms.txt)
+- [Examples](https://www.canva.dev/docs/apps/examples/llms.txt)
 
-## Connect APIs
+### SCIM API
 
-- [Connect APIs documentation](https://www.canva.dev/docs/connect/llms.txt)
-- [Overview](https://www.canva.dev/docs/connect.md)
-- [Quickstart](https://www.canva.dev/docs/connect/quickstart.md)
+- [SCIM API documentation](https://www.canva.dev/docs/scim/llms.txt)
+- [Overview](https://www.canva.dev/docs/scim.md)
 
-## Audit Logs
+### Admin API
+
+- [Admin API documentation](https://www.canva.dev/docs/admin/llms.txt)
+- [Overview](https://www.canva.dev/docs/admin.md)
+- [Creating clients](https://www.canva.dev/docs/admin/creating-clients.md)
+
+### Audit Logs
 
 - [Audit Logs documentation](https://www.canva.dev/docs/audit-logs/llms.txt)
 - [Overview](https://www.canva.dev/docs/audit-logs.md)
 - [Setup](https://www.canva.dev/docs/audit-logs/setup.md)
 
-## SCIM API
-
-- [SCIM API documentation](https://www.canva.dev/docs/scim/llms.txt)
-- [Overview](https://www.canva.dev/docs/scim.md)
-
-## Print API
+### Print API
 
 - [Print API documentation](https://www.canva.dev/docs/print/llms.txt)
 - [Overview](https://www.canva.dev/docs/print.md)
 
+## Build with AI
+
+- [Agents](https://www.canva.dev/agents/)
+- [Skills](https://github.com/canva-sdks/canva-skills/)
+- [Dev MCP server](https://www.canva.dev/docs/apps/dev-mcp-server.md)
+- [Canva CLI](https://www.canva.dev/docs/apps/canva-cli.md)

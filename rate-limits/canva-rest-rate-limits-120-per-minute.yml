@@ -1,0 +1,118 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Canva
+providerId: canva
+name: Canva rate limits (120 requests per minute tier)
+generated: '2026-10-20'
+method: searched
+source: https://www.canva.dev/docs/apps/rest-apis/reference/autofills/get-design-autofill-job/
+description: Canva publishes a per-operation rate limit on every Canva REST API (formerly Connect API) reference
+  page, as the sentence 'This operation is rate limited to N requests per minute for each user of your app.' 57
+  operations carry one, in seven tiers (10, 20, 30, 60, 100, 120, 180 per minute). Because the checker verifies
+  quotes against one source page, the tiers are split across files sharing the same quote; this file holds the 120-per-minute
+  tier (9 operations). Each row's quote was verified verbatim on its own `docs` page on 2026-10-20. Exhaustion returns
+  HTTP 429 with error code `too_many_requests`; no rate-limit response headers (X-RateLimit-*, RateLimit-*, Retry-After)
+  are documented.
+limit_count: 9
+numeric_limits_published: true
+responseCodes:
+  throttled: 429
+  error_code: too_many_requests
+response_headers:
+  published: none
+  x_ratelimit: false
+  ratelimit_draft_headers: false
+  retry_after: not documented
+  note: Neither the requests/responses guide nor the error reference documents any rate-limit response header; the
+    only runtime signal is the 429 itself.
+limits:
+- name: Get design autofill job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/autofills/{jobId}
+  operationId: getDesignAutofillJob
+  spec: openapi/canva-autofill-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/autofills/get-design-autofill-job/
+- name: Get design import job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/imports/{jobId}
+  operationId: getDesignImportJob
+  spec: openapi/canva-design-import-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/get-design-import-job/
+- name: Get image-to-design import job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/image-to-design-imports/{jobId}
+  operationId: getImageToDesignImportJob
+  spec: openapi/canva-design-import-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/get-image-to-design-import-job/
+- name: Get URL import job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/url-imports/{jobId}
+  operationId: getUrlImportJob
+  spec: openapi/canva-design-import-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/get-url-import-job/
+- name: Get design export job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/exports/{exportId}
+  operationId: getDesignExportJob
+  spec: openapi/canva-export-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/exports/get-design-export-job/
+- name: Get design generation job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/generations/{jobId}
+  operationId: getDesignGenerationJobV2
+  spec: openapi/canva-design-generation-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/generations/get-design-generation-job/
+- name: Get image generation job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/image-generations/{jobId}
+  operationId: getImageGenerationJob
+  spec: openapi/canva-image-generation-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/generations/get-image-generation-job/
+- name: Get image transformation job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/image-transformations/{jobId}
+  operationId: getImageTransformationJob
+  spec: openapi/canva-image-transformation-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/get-image-transformation-job/
+- name: Get design resize job
+  limit_text: This operation is rate limited to 120 requests per minute for each user of your app.
+  max: 120
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/resizes/{jobId}
+  operationId: getDesignResizeJob
+  spec: openapi/canva-resize-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/resizes/get-design-resize-job/
+sibling_files:
+- rate-limits/canva-rate-limits.yml
+- rate-limits/canva-rest-rate-limits-20-per-minute.yml
+- rate-limits/canva-rest-rate-limits-30-per-minute.yml
+- rate-limits/canva-rest-rate-limits-10-per-minute.yml
+- rate-limits/canva-rest-rate-limits-180-per-minute.yml
+- rate-limits/canva-rest-rate-limits-60-per-minute.yml
+- rate-limits/canva-mcp-rate-limits.yml

@@ -1,0 +1,239 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: REST API for building admin integrations with Canva
+  license:
+    name: ©2025 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Admin Audit Event API
+  version: 2026-08-18
+servers:
+- description: Admin API
+  url: https://api.canva.com/admin
+tags:
+- name: audit_event
+paths:
+  /v1/audit-events:
+    get:
+      description: Lists audit events.
+      operationId: listAuditEvents
+      parameters:
+      - description: The inclusive lower limit for the time when audit events were ingested into the log (in seconds since the Unix Epoch). As this is based on the time when events were ingested, the returned list of events may contain some events that occurred before this timestamp.
+        explode: true
+        in: query
+        name: ingested_after
+        required: false
+        schema:
+          example: 1735650000
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      - description: The exclusive upper limit for the time when audit events were ingested into the log (in seconds since the Unix Epoch). As this is based on the time when events were ingested, the returned list of events may contain some events that occurred after this timestamp.
+        explode: true
+        in: query
+        name: ingested_before
+        required: false
+        schema:
+          example: 1759240800
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      - description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+          To retrieve all items, you might need to make multiple requests.'
+        explode: true
+        in: query
+        name: continuation
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of events to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAuditEventsResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid_continuation:
+                  $ref: '#/components/examples/InvalidContinuationError'
+                bad_query_params:
+                  $ref: '#/components/examples/BadQueryParamsError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                permission_denied:
+                  $ref: '#/components/examples/PermissionDeniedError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:auditevent:read
+      tags:
+      - audit_event
+      summary: List audit events
+      x-summary-source: derived
+components:
+  schemas:
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ListAuditEventsResponse:
+      description: Successful response from a `listAuditEvents` request
+      properties:
+        items:
+          example:
+          - id: 3849ef51-ca85-4028-bae3-1b8de3ee5738
+            timestamp: 1704070800123
+            actor:
+              type: USER
+              user:
+                id: UXoqDbwwSbQ
+                display_name: Jane Doe
+                email: jane.doe@example.com
+              team:
+                id: BXeFatjDhdR
+                display_name: Acme Team
+              organization:
+                id: OXtgecafZvh
+                display_name: Acme Corporation
+            target:
+              target_type: RESOURCE
+              resource_type: DESIGN
+              id: DXWEBartcNg
+              owner:
+                user:
+                  display_name: Jane Doe
+                  email: jane.doe@example.com
+                team:
+                  id: BXeFatjDhdR
+                  display_name: Acme Team
+            action:
+              type: VIEW_DESIGN
+              view_type: VIEW_IN_EDITOR
+              design_type: Presentation (16:9)
+            outcome:
+              result: PERMITTED
+            context:
+              ip_address: 192.0.2.123
+              session: 41cfef61
+              request_id: 220d18b47fcb2d23c72a2a954dff09cb
+              device_id: d2805fafb9b50fe3f3d6ebbe221fc0e0883bf06b6bc285389147f3b259c2c4c1
+          items:
+            description: A JSON object representing an audit event. For the structure of each event, see [Audit events](https://www.canva.dev/docs/audit-logs/audit-events/).
+            type: object
+          type: array
+        continuation:
+          description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+            To retrieve all items, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+      required:
+      - items
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - permission_denied
+      - too_many_requests
+      - max_limit_reached
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - invalid_access_token
+      - missing_scope
+      - invalid_field
+      - input_unsafe
+      - display_name_unavailable
+      - team_not_found
+      - group_not_found
+      - team_is_default
+      - user_not_found
+      - saml_team_id_conflict
+      - user_not_managed
+      - saml_name_id_not_available
+      - user_linked_to_another_idp
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      - domain_restricted
+      - user_already_member
+      type: string
+  examples:
+    InvalidContinuationError:
+      summary: The continuation token is invalid
+      value:
+        code: bad_query_params
+        message: The continuation token is malformed or was obtained from a different set of request parameters.
+    PermissionDeniedError:
+      summary: Client does not have permission to access audit events
+      value:
+        code: permission_denied
+        message: Client does not have permission to access audit events.
+    BadQueryParamsError:
+      summary: The request uses invalid parameters
+      value:
+        code: bad_query_params
+        message: The request uses invalid parameters.
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes:
+            admin:user:read: Read information about a Canva user.
+            admin:user:write: Create a managed user in the organization.
+            admin:team:read: Read information about a Canva team and its users.
+            admin:team:write: Create or modify a Canva team, and add or remove its users.
+            admin:group:read: Read information about a Canva group.
+            admin:group:write: Create or modify a Canva group, and add or remove its users.
+            admin:organization:read: Read information about the Canva organization.
+            admin:auditevent:read: List audit events for the Canva organization.
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2

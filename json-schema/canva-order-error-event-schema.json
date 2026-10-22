@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-order-error-event-schema.json",
+  "title": "OrderErrorEvent",
+  "description": "Event describing an error for one or more order items.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-print-api-openapi.yml#/components/schemas/OrderErrorEvent",
+  "properties": {
+    "request_type": {
+      "enum": [
+        "error_event"
+      ],
+      "type": "string"
+    },
+    "order_reference_id": {
+      "description": "A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "items": {
+      "description": "A list of updates to items in the order.",
+      "items": {
+        "$ref": "#/$defs/ItemErrorEvent"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "items",
+    "order_reference_id",
+    "request_type"
+  ],
+  "type": "object",
+  "x-ref-extensions": {
+    "request_type": {
+      "description": "The type of request. Must be `error_event`."
+    },
+    "items": {
+      "description": "Describes the errors on the items."
+    }
+  },
+  "$defs": {
+    "ErrorDetails": {
+      "description": "The error details of the item. Errors details should be cleared from an item after it has been resolved.",
+      "properties": {
+        "issue_origin": {
+          "$ref": "#/$defs/IssueOrigin"
+        },
+        "description": {
+          "description": "A human readable message that describes the cause of the error.",
+          "maxLength": 255,
+          "type": "string"
+        }
+      },
+      "required": [
+        "description",
+        "issue_origin"
+      ],
+      "type": "object"
+    },
+    "IssueOrigin": {
+      "description": "The origin of the issue.",
+      "enum": [
+        "production",
+        "order_url",
+        "user_details",
+        "user_address",
+        "delivery",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "ItemErrorEvent": {
+      "description": "The updates to be made to an item in the order.",
+      "properties": {
+        "item_reference_id": {
+          "description": "A unique, case-sensitive ID for an order item that the print partner can use when communicating with Canva.",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "error_details": {
+          "$ref": "#/$defs/ErrorDetails"
+        }
+      },
+      "required": [
+        "error_details",
+        "item_reference_id"
+      ],
+      "type": "object",
+      "x-ref-extensions": {
+        "error_details": {
+          "description": "The error details of the item."
+        }
+      }
+    }
+  }
+}

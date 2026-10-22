@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-design-analytics-page-views-response-schema.json",
+  "title": "GetDesignAnalyticsPageViewsResponse",
+  "description": "Successful response from a `getDesignAnalyticsPageViews` request.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsPageViewsResponse",
+  "properties": {
+    "items": {
+      "description": "The list of page view durations.",
+      "items": {
+        "$ref": "#/$defs/PageViewDuration"
+      },
+      "type": "array"
+    },
+    "continuation": {
+      "description": "If the success response contains a continuation token, there are more page results you can list. You can use this token in the request body and retrieve more page results from the list.\n\nTo retrieve all page results, you might need to make multiple requests.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "type": "object",
+  "$defs": {
+    "PageViewDuration": {
+      "description": "View duration metrics for a single page.",
+      "properties": {
+        "page_id": {
+          "description": "The page ID. This is omitted for design types that do not support page IDs.",
+          "type": "string"
+        },
+        "total_view_duration_seconds": {
+          "description": "The total time spent viewing this page, in seconds.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "average_duration_seconds": {
+          "description": "The average time spent viewing this page, in seconds. This is omitted for `by_viewer` filters.",
+          "format": "double",
+          "type": "number"
+        },
+        "unique_view_count": {
+          "description": "The number of unique viewers for this page. This is omitted for `by_viewer` filters.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total_view_duration_seconds"
+      ],
+      "type": "object"
+    }
+  }
+}

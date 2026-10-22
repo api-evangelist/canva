@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-thread-request-schema.json",
+  "title": "CreateThreadRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-comment-api-openapi.yml#/components/schemas/CreateThreadRequest",
+  "properties": {
+    "message_plaintext": {
+      "description": "The comment message in plaintext. This is the comment body shown in the Canva UI.\n\nYou can also mention users in your message by specifying their User ID and Team ID\nusing the format `[user_id:team_id]`. If the `assignee_id` parameter is specified, you\nmust mention the assignee in the message.",
+      "maxLength": 2048,
+      "minLength": 1,
+      "type": "string"
+    },
+    "assignee_id": {
+      "description": "Lets you assign the comment to a Canva user using their User ID. You _must_ mention the\nassigned user in the `message`.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "message_plaintext"
+  ],
+  "type": "object"
+}

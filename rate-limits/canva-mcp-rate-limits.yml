@@ -1,0 +1,410 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Canva
+providerId: canva
+name: Canva MCP rate limits
+generated: '2026-10-20'
+method: searched
+source: https://www.canva.dev/docs/apps/mcp/tools/
+description: Per-tool rate limits for the Canva MCP server (mcp.canva.com), published in requests per minute with
+  plan availability. Tools marked Default fall under the server-wide cap of 300 requests per minute per user.
+limit_count: 47
+numeric_limits_published: true
+limits:
+- name: Canva MCP server default cap
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  scope: per user, across all of that user's MCP clients
+  kind: default
+- name: upload-asset-from-url
+  tool: upload-asset-from-url
+  group: Assets
+  plan: All plans
+  scope: per user
+  limit_text: upload-asset-from-url 30 req/min
+  max: 30
+  window: 1 minute
+- name: get-assets
+  tool: get-assets
+  group: Assets
+  plan: All plans
+  scope: per user
+  limit_text: get-assets 100 req/min
+  max: 100
+  window: 1 minute
+- name: create-upload-url
+  tool: create-upload-url
+  group: Assets
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: autofill-design
+  tool: autofill-design
+  group: Autofill
+  plan: Pro and above
+  scope: per user
+  limit_text: autofill-design 60 req/min
+  max: 60
+  window: 1 minute
+- name: get-brand-template-dataset
+  tool: get-brand-template-dataset
+  group: Autofill
+  plan: Pro and above
+  scope: per user
+  limit_text: get-brand-template-dataset 100 req/min
+  max: 100
+  window: 1 minute
+- name: get-design-dataset
+  tool: get-design-dataset
+  group: Autofill
+  plan: Pro and above
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: search-brand-templates
+  tool: search-brand-templates
+  group: Brand templates
+  plan: Pro and above
+  scope: per user
+  limit_text: search-brand-templates 100 req/min
+  max: 100
+  window: 1 minute
+- name: list-brand-kits
+  tool: list-brand-kits
+  group: Brand templates
+  plan: Pro and above
+  scope: per user
+  limit_text: list-brand-kits 100 req/min
+  max: 100
+  window: 1 minute
+- name: create-design-from-brand-template
+  tool: create-design-from-brand-template
+  group: Brand templates
+  plan: Pro and above
+  scope: per user
+  limit_text: create-design-from-brand-template 20 req/min
+  max: 20
+  window: 1 minute
+- name: create-brand-template-draft
+  tool: create-brand-template-draft
+  group: Brand templates
+  plan: Pro and above
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: publish-brand-template
+  tool: publish-brand-template
+  group: Brand templates
+  plan: Pro and above
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: comment-on-design
+  tool: comment-on-design
+  group: Comments
+  plan: All plans
+  scope: per user
+  limit_text: comment-on-design 100 req/min
+  max: 100
+  window: 1 minute
+- name: reply-to-comment
+  tool: reply-to-comment
+  group: Comments
+  plan: All plans
+  scope: per user
+  limit_text: reply-to-comment 20 req/min
+  max: 20
+  window: 1 minute
+- name: list-comments
+  tool: list-comments
+  group: Comments
+  plan: All plans
+  scope: per user
+  limit_text: list-comments 100 req/min
+  max: 100
+  window: 1 minute
+- name: list-replies
+  tool: list-replies
+  group: Comments
+  plan: All plans
+  scope: per user
+  limit_text: list-replies 100 req/min
+  max: 100
+  window: 1 minute
+- name: search-designs
+  tool: search-designs
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: search-designs 100 req/min
+  max: 100
+  window: 1 minute
+- name: get-design
+  tool: get-design
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: get-design 100 req/min
+  max: 100
+  window: 1 minute
+- name: get-design-pages
+  tool: get-design-pages
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: get-design-pages 100 req/min
+  max: 100
+  window: 1 minute
+- name: get-design-content
+  tool: get-design-content
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: get-design-content 100 req/min
+  max: 100
+  window: 1 minute
+- name: get-presenter-notes
+  tool: get-presenter-notes
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: get-presenter-notes 100 req/min
+  max: 100
+  window: 1 minute
+- name: get-export-formats
+  tool: get-export-formats
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: get-export-formats 100 req/min
+  max: 100
+  window: 1 minute
+- name: generate-design
+  tool: generate-design
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: generate-design 20 req/min
+  max: 20
+  window: 1 minute
+- name: create-design-from-candidate
+  tool: create-design-from-candidate
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: create-design-from-candidate 20 req/min
+  max: 20
+  window: 1 minute
+- name: create-design
+  tool: create-design
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: get-create-design-async-job
+  tool: get-create-design-async-job
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: copy-design
+  tool: copy-design
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: copy-design 20 req/min
+  max: 20
+  window: 1 minute
+- name: merge-designs
+  tool: merge-designs
+  group: Designs
+  plan: All plans
+  scope: per user
+  limit_text: merge-designs 100 req/min
+  max: 100
+  window: 1 minute
+- name: import-design-from-url
+  tool: import-design-from-url
+  group: Design imports
+  plan: All plans
+  scope: per user
+  limit_text: import-design-from-url 20 req/min
+  max: 20
+  window: 1 minute
+- name: resolve-shortlink
+  tool: resolve-shortlink
+  group: Shortlinks
+  plan: All plans
+  scope: per user
+  limit_text: No limit
+  note: Published as "No limit".
+- name: export-design
+  tool: export-design
+  group: Exports
+  plan: All plans*
+  scope: per user
+  limit_text: export-design 20 req/min
+  max: 20
+  window: 1 minute
+- name: generate-image
+  tool: generate-image
+  group: Images
+  plan: All plans
+  scope: per user
+  limit_text: generate-image 10 req/min
+  max: 10
+  window: 1 minute
+- name: get-generate-image-job
+  tool: get-generate-image-job
+  group: Images
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: remove-background
+  tool: remove-background
+  group: Images
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: separate-image-layers
+  tool: separate-image-layers
+  group: Images
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: get-separate-image-layers-job
+  tool: get-separate-image-layers-job
+  group: Images
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'
+- name: create-folder
+  tool: create-folder
+  group: Folders
+  plan: All plans
+  scope: per user
+  limit_text: create-folder 20 req/min
+  max: 20
+  window: 1 minute
+- name: list-folder-items
+  tool: list-folder-items
+  group: Folders
+  plan: All plans
+  scope: per user
+  limit_text: list-folder-items 100 req/min
+  max: 100
+  window: 1 minute
+- name: search-folders
+  tool: search-folders
+  group: Folders
+  plan: All plans
+  scope: per user
+  limit_text: search-folders 100 req/min
+  max: 100
+  window: 1 minute
+- name: move-item-to-folder
+  tool: move-item-to-folder
+  group: Folders
+  plan: All plans
+  scope: per user
+  limit_text: move-item-to-folder 100 req/min
+  max: 100
+  window: 1 minute
+- name: resize-design
+  tool: resize-design
+  group: Resizes
+  plan: Pro and above
+  scope: per user
+  limit_text: resize-design 20 req/min
+  max: 20
+  window: 1 minute
+- name: start-editing-transaction
+  tool: start-editing-transaction
+  group: Editing transactions
+  plan: All plans
+  scope: per user
+  limit_text: start-editing-transaction 20 req/min
+  max: 20
+  window: 1 minute
+- name: perform-editing-operations
+  tool: perform-editing-operations
+  group: Editing transactions
+  plan: All plans
+  scope: per user
+  limit_text: perform-editing-operations 50 req/min
+  max: 50
+  window: 1 minute
+- name: commit-editing-transaction
+  tool: commit-editing-transaction
+  group: Editing transactions
+  plan: All plans
+  scope: per user
+  limit_text: commit-editing-transaction 20 req/min
+  max: 20
+  window: 1 minute
+- name: cancel-editing-transaction
+  tool: cancel-editing-transaction
+  group: Editing transactions
+  plan: All plans
+  scope: per user
+  limit_text: cancel-editing-transaction 20 req/min
+  max: 20
+  window: 1 minute
+- name: get-design-thumbnail
+  tool: get-design-thumbnail
+  group: Editing transactions
+  plan: All plans
+  scope: per user
+  limit_text: get-design-thumbnail 100 req/min
+  max: 100
+  window: 1 minute
+- name: help
+  tool: help
+  group: Help
+  plan: All plans
+  scope: per user
+  limit_text: The Canva MCP server's default cap of 300 requests per minute per user applies to them, counted across
+    all of that user's MCP clients.
+  max: 300
+  window: 1 minute
+  note: 'Default: no tool-specific limit; the server-wide default cap applies.'

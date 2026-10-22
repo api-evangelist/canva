@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-design-autofill-job-response-schema.json",
+  "title": "CreateDesignAutofillJobResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-autofill-api-openapi.yml#/components/schemas/CreateDesignAutofillJobResponse",
+  "properties": {
+    "job": {
+      "$ref": "#/$defs/DesignAutofillJob"
+    }
+  },
+  "required": [
+    "job"
+  ],
+  "type": "object",
+  "$defs": {
+    "AutofillError": {
+      "description": "If the autofill job fails, this object provides details about the error.",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/AutofillErrorCode"
+        },
+        "message": {
+          "description": "A human-readable description of what went wrong.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "AutofillErrorCode": {
+      "enum": [
+        "autofill_error",
+        "thumbnail_generation_error",
+        "create_design_error",
+        "design_approval_error",
+        "trial_quota_exceeded",
+        "design_update_error"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "The service encountered an error when autofilling your brand template.",
+        "The service encountered an error when generating a thumbnail for the autofilled design.",
+        "The service encountered an error when saving the autofilled design.",
+        "The service encountered an error when applying design approval settings to the autofilled design.",
+        "The user has exceeded their autofill trial quota.",
+        "The service encountered an error when saving the updated design."
+      ]
+    },
+    "AutofillTrialInformation": {
+      "description": "WARNING: Trials and trial information are a [preview feature](https://www.canva.dev/docs/apps/rest-apis/#preview-apis).\nThere might be unannounced breaking changes to this feature which won't produce a new API version.\n\nTrial information for users on a Canva plan that doesn't include autofill access. These\nusers have a limited number of autofill uses. Once the trial is exhausted, users must\nupgrade their Canva plan (such as to Canva Pro, Canva Teams, or Canva Enterprise) to\ncontinue using the Autofill API.",
+      "properties": {
+        "uses_remaining": {
+          "description": "The number of uses remaining in the free trial.",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "upgrade_url": {
+          "description": "The URL for a user to upgrade their Canva account to a plan with autofill access.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "upgrade_url",
+        "uses_remaining"
+      ],
+      "type": "object"
+    },
+    "CreateDesignAutofillJobResult": {
+      "description": "A new autofilled design has been created and saved to the user's root folder.",
+      "properties": {
+        "type": {
+          "enum": [
+            "create_design"
+          ],
+          "type": "string"
+        },
+        "design": {
+          "$ref": "#/$defs/DesignSummary"
+        },
+        "trial_information": {
+          "$ref": "#/$defs/AutofillTrialInformation"
+        }
+      },
+      "required": [
+        "design",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DesignAutofillJob": {
+      "description": "Details about the autofill job.",
+      "properties": {
+        "id": {
+          "description": "ID of the asynchronous job that is creating the design using the provided data.",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/DesignAutofillStatus"
+        },
+        "result": {
+          "$ref": "#/$defs/DesignAutofillJobResult"
+        },
+        "error": {
+          "$ref": "#/$defs/AutofillError"
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "type": "object"
+    },
+    "DesignAutofillJobResult": {
+      "description": "Result of the design autofill job. Only present if job status is `success`.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CreateDesignAutofillJobResult"
+        },
+        {
+          "$ref": "#/$defs/UpdateDesignAutofillJobResult"
+        }
+      ],
+      "type": "object"
+    },
+    "DesignAutofillStatus": {
+      "description": "Status of the design autofill job.",
+      "enum": [
+        "in_progress",
+        "success",
+        "failed"
+      ],
+      "type": "string"
+    },
+    "DesignLinks": {
+      "description": "A temporary set of URLs for viewing or editing the design.",
+      "properties": {
+        "edit_url": {
+          "description": "A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.\n\nNOTE: This is not a permanent URL, it is only valid for 30 days.",
+          "type": "string"
+        },
+        "view_url": {
+          "description": "A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.\n\nNOTE: This is not a permanent URL, it is only valid for 30 days.\n",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edit_url",
+        "view_url"
+      ],
+      "type": "object"
+    },
+    "DesignSummary": {
+      "description": "Basic details about the design, such as the design's ID, title, and URL.",
+      "properties": {
+        "id": {
+          "description": "The design ID.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The design title.",
+          "type": "string"
+        },
+        "url": {
+          "description": "URL of the design.",
+          "type": "string"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "urls": {
+          "$ref": "#/$defs/DesignLinks"
+        },
+        "created_at": {
+          "description": "When the design was created in Canva, as a Unix timestamp (in seconds since the Unix\nEpoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "updated_at": {
+          "description": "When the design was last updated in Canva, as a Unix timestamp (in seconds since the\nUnix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "page_count": {
+          "description": "The total number of pages in the design. Some design types don't have pages (for example, Canva docs).",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "created_at",
+        "id",
+        "updated_at",
+        "urls"
+      ],
+      "type": "object"
+    },
+    "Thumbnail": {
+      "description": "A thumbnail image representing the object.",
+      "properties": {
+        "width": {
+          "description": "The width of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "url": {
+          "description": "A URL for retrieving the thumbnail image.\nThis URL expires after 15 minutes. This URL includes a query string\nthat's required for retrieving the thumbnail.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "height",
+        "url",
+        "width"
+      ],
+      "type": "object"
+    },
+    "UpdateDesignAutofillJobResult": {
+      "description": "The existing design has been autofilled in place.",
+      "properties": {
+        "type": {
+          "enum": [
+            "update_design"
+          ],
+          "type": "string"
+        },
+        "design": {
+          "$ref": "#/$defs/DesignSummary"
+        }
+      },
+      "required": [
+        "design",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

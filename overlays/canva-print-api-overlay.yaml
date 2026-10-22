@@ -1,0 +1,20 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Canva Print API
+  version: 1.0.0
+  x-generated: '2026-10-20'
+  x-method: generated
+  x-description: Provenance of this split file and, per operation, the documented Canva MCP tools that bind to it
+    (from mcp/canva-tool-crosswalk.yml). The original spec is never mutated.
+extends: openapi/canva-print-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-provenance:
+      harvested-from: https://api.canva.com/print/v1/api-specifications/2025-04-14
+      harvested-on: '2026-10-20'
+      http-status: 200
+      sha256-of-original: a2efd77fbfc47a69a29aed3335ce245cddd2b5b69081feb1c72f61d44c11c3df
+      original: openapi/_original/canva-print-openapi.yml
+      split-file: openapi/canva-print-api-openapi.yml
+      publisher: Canva

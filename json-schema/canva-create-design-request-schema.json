@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-design-request-schema.json",
+  "title": "CreateDesignRequest",
+  "description": "Body parameters for creating a new design. Use the `type` discriminator to choose the creation mode:\n\n- Use `type_and_asset` to create a design by specifying the design type and/or an asset.\n- Use `design` to create a copy of an existing design (currently a [preview feature](https://www.canva.dev/docs/apps/rest-apis/#preview-apis)).\n- Use `brand_template` to create a design from a brand template (currently a [preview feature](https://www.canva.dev/docs/apps/rest-apis/#preview-apis)).\n\nNOTE: For backward compatibility, if `type` isn't specified in the request,\nthe request type will be assumed to be `type_and_asset`.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-api-openapi.yml#/components/schemas/CreateDesignRequest",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/DesignTypeCreateDesignRequest"
+    },
+    {
+      "$ref": "#/$defs/DesignCreateDesignRequest"
+    },
+    {
+      "$ref": "#/$defs/BrandTemplateCreateDesignRequest"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "BrandTemplateCreateDesignRequest": {
+      "description": "<Warning>\n\nCreating a copy from a brand template is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview features won't produce a new [API version](https://www.canva.dev/docs/apps/rest-apis/versions/).\n- Public apps that use preview features will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nBody parameters for creating a copy from a brand template.",
+      "properties": {
+        "type": {
+          "enum": [
+            "brand_template"
+          ],
+          "type": "string"
+        },
+        "brand_template_id": {
+          "description": "The ID of the brand template used to create a design copy.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "page_numbers": {
+          "description": "The pages to copy from the brand template. If not specified, all pages are copied.\nPages are indexed using one-based numbering.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "brand_template_id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "CustomDesignTypeInput": {
+      "description": "Provide the width and height to define a custom design type.\n\nEach dimension must be between 40 and 8000 pixels, and the\ntotal area (width × height) must not exceed 25,000,000 pixels\nsquared. For example, a design with a width of 8000 pixels can\nhave a maximum height of 3125 pixels.",
+      "properties": {
+        "type": {
+          "enum": [
+            "custom"
+          ],
+          "type": "string"
+        },
+        "width": {
+          "description": "The width of the design, in pixels.",
+          "format": "int32",
+          "maximum": 8000,
+          "minimum": 40,
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the design, in pixels.",
+          "format": "int32",
+          "maximum": 8000,
+          "minimum": 40,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "height",
+        "type",
+        "width"
+      ],
+      "type": "object"
+    },
+    "DesignCreateDesignRequest": {
+      "description": "<Warning>\n\nCreating a copy of an existing design is currently provided as a preview. Be aware of the following:\n\n- There might be unannounced breaking changes.\n- Any breaking changes to preview features won't produce a new [API version](https://www.canva.dev/docs/apps/rest-apis/versions/).\n- Public apps that use preview features will not pass the review process, and can't be made available to all Canva users.\n\n</Warning>\n\nBody parameters for creating a copy of an existing design.",
+      "properties": {
+        "type": {
+          "enum": [
+            "design"
+          ],
+          "type": "string"
+        },
+        "design_id": {
+          "description": "The ID of the design to copy.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "page_numbers": {
+          "description": "The pages to copy from the source design. If not specified, all pages are copied.\nPages are indexed using one-based numbering.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "design_id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DesignTypeCreateDesignRequest": {
+      "description": "Create a design by specifying the design type and/or an asset.\nAt least one of `design_type` or `asset_id` must be defined.",
+      "properties": {
+        "type": {
+          "description": "For backward compatibility, if `type` isn't specified in the request, the request type will be assumed to be `type_and_asset`.",
+          "enum": [
+            "type_and_asset"
+          ],
+          "type": "string"
+        },
+        "design_type": {
+          "$ref": "#/$defs/DesignTypeInput"
+        },
+        "asset_id": {
+          "description": "The ID of an asset to insert into the created design. Currently, this only supports image assets.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The name of the design.",
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "DesignTypeInput": {
+      "description": "The desired design type.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/PresetDesignTypeInput"
+        },
+        {
+          "$ref": "#/$defs/CustomDesignTypeInput"
+        }
+      ],
+      "type": "object"
+    },
+    "PresetDesignTypeInput": {
+      "description": "Provide the common design type.",
+      "properties": {
+        "type": {
+          "enum": [
+            "preset"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/$defs/PresetDesignTypeName"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "PresetDesignTypeName": {
+      "description": "The name of the design type.",
+      "enum": [
+        "doc",
+        "email",
+        "presentation",
+        "whiteboard"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "A [Canva doc](https://www.canva.com/docs/); a document for Canva's online text editor.",
+        "An [email](https://www.canva.com/emails/); for creating email campaign designs.",
+        "A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.",
+        "A [whiteboard](https://www.canva.com/online-whiteboard/); a design which gives you infinite space to collaborate."
+      ]
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-design-export-job-response-schema.json",
+  "title": "GetDesignExportJobResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-export-api-openapi.yml#/components/schemas/GetDesignExportJobResponse",
+  "properties": {
+    "job": {
+      "$ref": "#/$defs/ExportJob"
+    }
+  },
+  "required": [
+    "job"
+  ],
+  "type": "object",
+  "$defs": {
+    "DesignExportStatus": {
+      "description": "The export status of the job. A newly created job will be `in_progress` and will eventually\nbecome `success` or `failed`.",
+      "enum": [
+        "failed",
+        "in_progress",
+        "success"
+      ],
+      "type": "string"
+    },
+    "ExportError": {
+      "description": "If the export fails, this object provides details about the error.",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ExportErrorCode"
+        },
+        "message": {
+          "description": "A human-readable description of what went wrong.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "ExportErrorCode": {
+      "description": "If the export failed, this specifies the reason why it failed.",
+      "enum": [
+        "license_required",
+        "approval_required",
+        "internal_failure"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "The design contains [premium elements](https://www.canva.com/help/premium-elements/) that haven't been purchased. You can either buy the elements or upgrade to a Canva plan (such as Canva Pro) that has premium features, then try again. Alternatively, you can set `export_quality` to `regular` to export your document in regular quality.",
+        "The design requires [reviewer approval](https://www.canva.com/en_au/help/design-approval/) before it can be exported.",
+        "The service encountered an error when exporting your design."
+      ]
+    },
+    "ExportJob": {
+      "description": "The status of the export job.",
+      "properties": {
+        "id": {
+          "description": "The export job ID.",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/DesignExportStatus"
+        },
+        "urls": {
+          "description": "Download URL(s) for the completed export job. These URLs expire after 24 hours.\n\nDepending on the design type and export format, there is a download URL for each page in the design. The list is sorted by page order.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "error": {
+          "$ref": "#/$defs/ExportError"
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Canva REST Image Generation API
+  version: 1.0.0
+  x-generated: '2026-10-20'
+  x-method: generated
+  x-description: Provenance of this split file and, per operation, the documented Canva MCP tools that bind to it
+    (from mcp/canva-tool-crosswalk.yml). The original spec is never mutated.
+extends: openapi/canva-image-generation-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-provenance:
+      harvested-from: https://www.canva.dev/sources/connect/api/latest/api.yml
+      harvested-on: '2026-10-19'
+      http-status: 200
+      sha256-of-original: 40ca7f6a753b5601207af343534541c88bfa25688fa12e7f32a84e3ee9a0ed09
+      original: openapi/_original/canva-openapi.yml
+      split-file: openapi/canva-image-generation-api-openapi.yml
+      publisher: Canva
+- target: $
+  update:
+    x-agent-surfaces:
+      mcp-remote: https://mcp.canva.com/mcp
+      mcp-tools-documented: https://www.canva.dev/docs/apps/mcp/tools/
+      crosswalk: mcp/canva-tool-crosswalk.yml
+- target: $.paths['/v1/image-generations'].post
+  update:
+    x-mcp-tools:
+    - tool: generate-image
+      confidence: high
+      binding: async-job
+- target: $.paths['/v1/image-generations/{jobId}'].get
+  update:
+    x-mcp-tools:
+    - tool: get-generate-image-job
+      confidence: high
+      binding: direct

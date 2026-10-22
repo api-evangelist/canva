@@ -3,104 +3,103 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: Canva
 providerId: canva
+name: Canva pricing
+audience: business-product
+pricing_basis: none
+published: false
+delivery:
+  delivery: managed
+  free_edition: null
+  managed_tier: null
 created: '2026-05-04'
-modified: '2026-08-13'
-generated: '2026-08-13'
+modified: '2026-10-20'
+generated: '2026-10-20'
 method: searched
-source: >-
-  https://www.canva.dev/docs/connect/ (public vs private integrations),
-  https://www.canva.dev/docs/connect/capabilities/ (plan-gated capabilities),
-  https://www.canva.dev/docs/connect/api-requests-responses/ (trial quotas),
-  https://www.canva.dev/docs/apps/canva-cli/ (private distribution requires Enterprise),
-  https://www.canva.dev/docs/scim/ (SCIM is Enterprise-only),
-  https://www.canva.dev/docs/audit-logs/ (audit logs are Enterprise-only)
+source: https://www.canva.dev/docs/apps/rest-apis/capabilities/
 reconciled: true
 tags:
-  - Apps
-  - Automation
-  - Brand Management
-  - Collaboration
-  - Design
-  - Graphics
-  - Marketing
-  - Print
-  - Templates
-  - Visual Content
-description: >-
-  Canva does not price its APIs. There is no API price list, no metered tier, no per-call
-  charge and no developer billing surface anywhere on canva.dev. API access rides on the
-  END USER'S Canva subscription, and the developer-facing plan boundary is expressed two
-  ways: (1) integration DISTRIBUTION — a public integration is reviewed by Canva and
-  available to everyone, a private integration requires the developer's team to be on Canva
-  Enterprise; and (2) per-user CAPABILITIES — premium operations declare
-  `x-required-capabilities` and fail with 403 for users whose plan lacks them. What is billed
-  is the seat, not the call.
+- Apps
+- Automation
+- Brand Management
+- Collaboration
+- Design
+- Graphics
+- Marketing
+- Print
+- Templates
+- Visual Content
+description: 'Canva does not price its APIs. There is no API price list, no metered tier, no per-call charge and
+  no developer billing surface anywhere on canva.dev. API access rides on the END USER''S Canva subscription, and
+  the developer-facing plan boundary is expressed two ways: (1) integration DISTRIBUTION — a public integration
+  is reviewed by Canva and available to everyone, a private integration requires the developer''s team to be on
+  Canva Enterprise; and (2) per-user CAPABILITIES — premium operations declare `x-required-capabilities` and fail
+  with 403 for users whose plan lacks them. What is billed is the seat, not the call.'
 plan_count: 0
 pricing_published: false
 api_priced_separately: false
 metered: false
-free_tier: >-
-  Yes for development: a Canva account is enough to build against the Connect APIs and Apps
-  SDK. What a free-plan USER can do through an integration is limited by capabilities.
+free_tier: 'Yes for development: a Canva account is enough to build against the Connect APIs and Apps SDK. What
+  a free-plan USER can do through an integration is limited by capabilities.'
 gating_model:
-  - dimension: distribution
-    values:
-      - name: Public integration / public app
-        requirement: Canva review + integration requirements
-        docs: https://www.canva.dev/docs/connect/submission-checklist/
-        cost: no published fee
-      - name: Private integration / private app
-        requirement: Canva Enterprise plan for the developer's team + team admin approval
-        docs: https://www.canva.com/enterprise/
-        cost: negotiated (Enterprise subscription)
-  - dimension: capabilities
-    description: >-
-      Per-user feature flags tied to the user's Canva plan, checked with
-      GET /v1/users/me/capabilities before calling. Missing capability = HTTP 403 naming the
-      required capabilities.
-    known_capabilities:
-      - resize
-      - analytics
-    docs: https://www.canva.dev/docs/connect/capabilities/
-  - dimension: trial quotas
-    status: preview
-    description: >-
-      Free-plan users receive a limited number of uses of certain premium operations (Canva's
-      own example: 2 lifetime resizes). Responses carry trial_information.uses_remaining plus
-      an upgrade_url; exhaustion returns 403 permission_denied.
-    docs: https://www.canva.dev/docs/connect/api-requests-responses/
+- dimension: distribution
+  values:
+  - name: Public integration / public app
+    requirement: Canva review + integration requirements
+    docs: https://www.canva.dev/docs/connect/submission-checklist/
+    cost: no published fee
+  - name: Private integration / private app
+    requirement: Canva Enterprise plan for the developer's team + team admin approval
+    docs: https://www.canva.com/enterprise/
+    cost: negotiated (Enterprise subscription)
+- dimension: capabilities
+  description: Per-user feature flags tied to the user's Canva plan, checked with GET /v1/users/me/capabilities
+    before calling. Missing capability = HTTP 403 naming the required capabilities.
+  known_capabilities:
+  - resize
+  - analytics
+  docs: https://www.canva.dev/docs/apps/rest-apis/capabilities/
+- dimension: trial quotas
+  status: preview
+  description: 'Free-plan users receive a limited number of uses of certain premium operations (Canva''s own example:
+    2 lifetime resizes). Responses carry trial_information.uses_remaining plus an upgrade_url; exhaustion returns
+    403 permission_denied.'
+  docs: https://www.canva.dev/docs/apps/rest-apis/requests-responses/
 enterprise_only_surfaces:
-  - name: SCIM API
-    url: https://www.canva.dev/docs/scim/
-    note: Canva Enterprise single teams only.
-  - name: Audit Logs
-    url: https://www.canva.dev/docs/audit-logs/
-    note: Canva Enterprise only; delivered to a customer-owned S3 bucket.
-  - name: Private integrations and private apps
-    note: Canva Enterprise plan required.
-  - name: Print API
-    url: https://www.canva.dev/docs/print/
-    note: >-
-      Not plan-gated but PARTNER-gated — only available to print partners in Canva's print
-      fulfillment network.
+- name: SCIM API
+  url: https://www.canva.dev/docs/scim/
+  note: Canva Enterprise single teams only.
+- name: Audit Logs
+  url: https://www.canva.dev/docs/audit-logs/
+  note: Canva Enterprise only; delivered to a customer-owned S3 bucket.
+- name: Private integrations and private apps
+  note: Canva Enterprise plan required.
+- name: Print API
+  url: https://www.canva.dev/docs/print/
+  note: Not plan-gated but PARTNER-gated — only available to print partners in Canva's print fulfillment network.
 end_user_subscriptions:
-  note: >-
-    Canva Free / Pro / Teams / Enterprise gate what a USER can do; they are consumer/business
-    subscriptions rather than API plans, and their prices were NOT captured here because
-    https://www.canva.com/pricing/ returned HTTP 403 to an unauthenticated machine client
-    (Cloudflare bot challenge on the whole www.canva.com marketing surface). Recording the
-    block rather than transcribing remembered prices.
+  note: 'Canva Free / Pro / Teams / Enterprise gate what a USER can do; they are consumer/business subscriptions
+    rather than API plans, and their prices were NOT captured here because https://www.canva.com/pricing/ returned
+    HTTP 403 to an unauthenticated machine client (Cloudflare bot challenge on the whole www.canva.com marketing
+    surface). Recording the block rather than transcribing remembered prices. Re-checked 2026-10-20: https://www.canva.com/pricing/
+    still returns HTTP 403.'
 evidence:
-  - url: https://www.canva.dev/docs/connect/capabilities/
-    status: 200
-  - url: https://www.canva.dev/docs/connect/api-requests-responses/
-    status: 200
-  - url: https://www.canva.com/pricing/
-    status: 403
-  - url: https://www.canva.com/enterprise/
-    status: 403
+- url: https://www.canva.dev/docs/apps/rest-apis/capabilities/
+  status: 200
+- url: https://www.canva.dev/docs/apps/rest-apis/requests-responses/
+  status: 200
+- url: https://www.canva.com/pricing/
+  status: 403
+- url: https://www.canva.com/enterprise/
+  status: 403
 plans: []
-notes: >-
-  plan_count is 0 deliberately: Canva publishes zero API plans. That is the finding. Anyone
-  costing a Canva integration is costing Canva SEATS plus, for private integrations, an
-  Enterprise contract — not API volume.
+notes: 'plan_count is 0 deliberately: Canva publishes zero API plans. That is the finding. Anyone costing a Canva
+  integration is costing Canva SEATS plus, for private integrations, an Enterprise contract — not API volume. 2026-10-20:
+  per the REST API changelog entry of 2026-09-21, the Autofill APIs are now available to apps acting on behalf of
+  users on a Canva Pro or Canva Teams plan, in addition to Canva Enterprise.'
+source_pages:
+- https://www.canva.dev/docs/apps/rest-apis/ (public vs private integrations)
+- https://www.canva.dev/docs/apps/rest-apis/capabilities/ (plan-gated capabilities)
+- https://www.canva.dev/docs/apps/rest-apis/requests-responses/ (trial quotas)
+- https://www.canva.dev/docs/apps/canva-cli/ (private distribution requires Enterprise)
+- https://www.canva.dev/docs/scim/ (SCIM is Enterprise-only)
+- https://www.canva.dev/docs/audit-logs/ (audit logs are Enterprise-only)

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-url-import-job-request-schema.json",
+  "title": "CreateUrlImportJobRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-import-api-openapi.yml#/components/schemas/CreateUrlImportJobRequest",
+  "properties": {
+    "title": {
+      "description": "A title for the design.",
+      "maxLength": 255,
+      "minLength": 1,
+      "type": "string"
+    },
+    "url": {
+      "description": "The URL of the file to import. This URL must be accessible from the internet and be publicly available.",
+      "maxLength": 2048,
+      "minLength": 1,
+      "type": "string"
+    },
+    "mime_type": {
+      "description": "The MIME type of the file being imported. If not provided, Canva attempts to automatically detect the type of the file.",
+      "maxLength": 100,
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "url"
+  ],
+  "type": "object"
+}

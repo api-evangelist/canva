@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-user-request-schema.json",
+  "title": "CreateUserRequest",
+  "description": "Parameters for creating a managed user in the organization.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-admin-api-openapi.yml#/components/schemas/CreateUserRequest",
+  "properties": {
+    "email": {
+      "description": "The email address of the user. The email domain must be a verified domain owned by the\ncaller's organization.",
+      "format": "email",
+      "maxLength": 254,
+      "minLength": 1,
+      "type": "string"
+    },
+    "display_name": {
+      "description": "The display name of the user.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "first_name": {
+      "description": "The first name of the user.",
+      "type": "string"
+    },
+    "last_name": {
+      "description": "The last name of the user.",
+      "type": "string"
+    },
+    "locale": {
+      "default": "en",
+      "description": "The locale of the user, as an IETF BCP 47 language tag. Must be a supported language. Defaults to `en` if not provided.",
+      "type": "string"
+    },
+    "saml_account": {
+      "$ref": "#/$defs/SamlAccount"
+    },
+    "team_memberships": {
+      "description": "The teams the user is added to. At least one team membership is required so that the user is visible in the [Get user](https://www.canva.dev/docs/admin/api-reference/users/get-user/) and [List users](https://www.canva.dev/docs/admin/api-reference/users/list-users/) API responses.",
+      "items": {
+        "$ref": "#/$defs/TeamMembership"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "display_name",
+    "email",
+    "saml_account",
+    "team_memberships"
+  ],
+  "type": "object",
+  "$defs": {
+    "SamlAccount": {
+      "description": "The SAML account details used to link the user to the organization's identity provider for SSO.",
+      "properties": {
+        "idp_issuer": {
+          "description": "The issuer id or entity id of the SAML identity provider. Often a unique URL, but not always. Must resolve to an identity provider owned by the caller's organization.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "name_id": {
+          "description": "The SAML NameID that identifies the user to the identity provider. This value is case sensitive, and shouldn't change.",
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "idp_issuer",
+        "name_id"
+      ],
+      "type": "object"
+    },
+    "TeamMemberRole": {
+      "description": "The role of the member in the team.",
+      "enum": [
+        "admin",
+        "designer",
+        "member"
+      ],
+      "type": "string"
+    },
+    "TeamMembership": {
+      "description": "A team to add the user to on creation, with the user's role in that team.",
+      "properties": {
+        "team_id": {
+          "description": "The team ID.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/TeamMemberRole"
+        }
+      },
+      "required": [
+        "role",
+        "team_id"
+      ],
+      "type": "object"
+    }
+  }
+}

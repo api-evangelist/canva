@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-exchange-access-token-request-schema.json",
+  "title": "ExchangeAccessTokenRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-oauth-api-openapi.yml#/components/schemas/ExchangeAccessTokenRequest",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ExchangeAuthCodeRequest"
+    },
+    {
+      "$ref": "#/$defs/ExchangeRefreshTokenRequest"
+    }
+  ],
+  "type": "object",
+  "$defs": {
+    "ExchangeAuthCodeRequest": {
+      "properties": {
+        "grant_type": {
+          "description": "For exchanging an authorization code for an access token.",
+          "enum": [
+            "authorization_code"
+          ],
+          "type": "string"
+        },
+        "code_verifier": {
+          "description": "The `code_verifier` value that you generated when creating the user authorization URL.",
+          "type": "string"
+        },
+        "code": {
+          "description": "The authorization code you received after the user authorized the app.",
+          "type": "string"
+        },
+        "client_id": {
+          "description": "Your app's unique ID, for authenticating the request.\n\nNOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.\n",
+          "type": "string"
+        },
+        "client_secret": {
+          "description": "Your app's client secret, for authenticating the request. Begins with `cnvca`.\n\nNOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.\n",
+          "type": "string"
+        },
+        "redirect_uri": {
+          "description": "Only required if a redirect URL was supplied when you [created the user authorization URL](https://www.canva.dev/docs/apps/rest-apis/authentication/#create-the-authorization-url).\n\nMust be one of those already specified by the client. If not supplied, the first redirect_uri defined for the client will be used by default.\n",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "code_verifier",
+        "grant_type"
+      ],
+      "type": "object"
+    },
+    "ExchangeRefreshTokenRequest": {
+      "properties": {
+        "grant_type": {
+          "description": "For generating an access token using a refresh token.",
+          "enum": [
+            "refresh_token"
+          ],
+          "type": "string"
+        },
+        "client_id": {
+          "description": "Your app's unique ID, for authenticating the request.\n\nNOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.\n",
+          "type": "string"
+        },
+        "client_secret": {
+          "description": "Your app's client secret, for authenticating the request. Begins with `cnvca`.\n\nNOTE: We recommend that you use basic access authentication instead of specifying `client_id` and `client_secret` as body parameters.\n",
+          "type": "string"
+        },
+        "refresh_token": {
+          "description": "The refresh token to be exchanged. You can copy this value from the successful response received when generating an access token.",
+          "type": "string"
+        },
+        "scope": {
+          "description": "Optional scope value when refreshing an access token. Separate multiple [scopes](https://www.canva.dev/docs/apps/rest-apis/scopes/) with a single space between each scope.\n\nThe requested scope cannot include any permissions not already granted, so this parameter allows you to limit the scope when refreshing a token. If omitted, the scope for the token remains unchanged.\n",
+          "type": "string"
+        }
+      },
+      "required": [
+        "grant_type",
+        "refresh_token"
+      ],
+      "type": "object"
+    }
+  }
+}

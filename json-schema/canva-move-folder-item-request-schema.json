@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-move-folder-item-request-schema.json",
+  "title": "MoveFolderItemRequest",
+  "description": "Body parameters for moving the folder.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-folder-api-openapi.yml#/components/schemas/MoveFolderItemRequest",
+  "properties": {
+    "to_folder_id": {
+      "description": "The ID of the folder you want to move the item to (the destination folder).\nIf you want to move the item to the top level of a Canva user's\n[projects](https://www.canva.com/help/find-designs-and-folders/), use the ID `root`.",
+      "maxLength": 50,
+      "minLength": 1,
+      "type": "string"
+    },
+    "item_id": {
+      "description": "The ID of the item you want to move. Currently, video assets are not supported.",
+      "maxLength": 50,
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "item_id",
+    "to_folder_id"
+  ],
+  "type": "object"
+}

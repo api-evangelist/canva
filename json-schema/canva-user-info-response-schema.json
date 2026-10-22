@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-user-info-response-schema.json",
+  "title": "UserInfoResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-oidc-api-openapi.yml#/components/schemas/UserInfoResponse",
+  "properties": {
+    "sub": {
+      "description": "Identifier for the End-User at the Issuer.",
+      "type": "string"
+    },
+    "name": {
+      "description": "End-User's full name in displayable form including all name parts, possibly including\ntitles and suffixes, ordered according to the End-User's locale and preferences.",
+      "type": "string"
+    },
+    "given_name": {
+      "description": "Given name(s) or first name(s) of the End-User. Note that in some cultures, people can\nhave multiple given names; all can be present, with the names being separated by space\ncharacters.",
+      "type": "string"
+    },
+    "family_name": {
+      "description": "Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have\nmultiple family names or no family name; all can be present, with the names being\nseparated by space characters.",
+      "type": "string"
+    },
+    "email": {
+      "description": "End-User's preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322]\naddr-spec syntax. The RP MUST NOT rely upon this value being unique, as discussed in\nSection 5.7.",
+      "format": "email",
+      "type": "string"
+    },
+    "email_verified": {
+      "description": "True if the End-User's e-mail address has been verified; otherwise false. When this\nClaim Value is true, this means that the OP took affirmative steps to ensure that this\ne-mail address was controlled by the End-User at the time the verification was\nperformed. The means by which an e-mail address is verified is context specific,\nand dependent upon the trust framework or contractual agreements within which the\nparties are operating.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "sub"
+  ],
+  "type": "object"
+}

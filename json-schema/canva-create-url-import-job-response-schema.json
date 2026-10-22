@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-url-import-job-response-schema.json",
+  "title": "CreateUrlImportJobResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-import-api-openapi.yml#/components/schemas/CreateUrlImportJobResponse",
+  "properties": {
+    "job": {
+      "$ref": "#/$defs/DesignImportJob"
+    }
+  },
+  "required": [
+    "job"
+  ],
+  "type": "object",
+  "$defs": {
+    "DesignImportError": {
+      "description": "If the import job fails, this object provides details about the error.",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/DesignImportErrorCode"
+        },
+        "message": {
+          "description": "A human-readable description of what went wrong.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "DesignImportErrorCode": {
+      "description": "A short string about why the import failed. This field can be used to handle errors\nprogrammatically.",
+      "enum": [
+        "design_creation_throttled",
+        "design_import_throttled",
+        "duplicate_import",
+        "internal_error",
+        "invalid_file",
+        "fetch_failed"
+      ],
+      "type": "string"
+    },
+    "DesignImportJob": {
+      "description": "The status of the design import job.",
+      "properties": {
+        "id": {
+          "description": "The ID of the design import job.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/DesignImportStatus"
+        },
+        "result": {
+          "$ref": "#/$defs/DesignImportJobResult"
+        },
+        "error": {
+          "$ref": "#/$defs/DesignImportError"
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "type": "object"
+    },
+    "DesignImportJobResult": {
+      "properties": {
+        "designs": {
+          "description": "A list of designs imported from the external file. It usually contains one item.\nImports with a large number of pages or assets are split into multiple designs.",
+          "items": {
+            "$ref": "#/$defs/DesignSummary"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "designs"
+      ],
+      "type": "object"
+    },
+    "DesignImportStatus": {
+      "description": "The status of the design import job.",
+      "enum": [
+        "failed",
+        "in_progress",
+        "success"
+      ],
+      "type": "string"
+    },
+    "DesignLinks": {
+      "description": "A temporary set of URLs for viewing or editing the design.",
+      "properties": {
+        "edit_url": {
+          "description": "A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.\n\nNOTE: This is not a permanent URL, it is only valid for 30 days.",
+          "type": "string"
+        },
+        "view_url": {
+          "description": "A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.\n\nNOTE: This is not a permanent URL, it is only valid for 30 days.\n",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edit_url",
+        "view_url"
+      ],
+      "type": "object"
+    },
+    "DesignSummary": {
+      "description": "Basic details about the design, such as the design's ID, title, and URL.",
+      "properties": {
+        "id": {
+          "description": "The design ID.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The design title.",
+          "type": "string"
+        },
+        "url": {
+          "description": "URL of the design.",
+          "type": "string"
+        },
+        "thumbnail": {
+          "$ref": "#/$defs/Thumbnail"
+        },
+        "urls": {
+          "$ref": "#/$defs/DesignLinks"
+        },
+        "created_at": {
+          "description": "When the design was created in Canva, as a Unix timestamp (in seconds since the Unix\nEpoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "updated_at": {
+          "description": "When the design was last updated in Canva, as a Unix timestamp (in seconds since the\nUnix Epoch).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "page_count": {
+          "description": "The total number of pages in the design. Some design types don't have pages (for example, Canva docs).",
+          "format": "int32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "created_at",
+        "id",
+        "updated_at",
+        "urls"
+      ],
+      "type": "object"
+    },
+    "Thumbnail": {
+      "description": "A thumbnail image representing the object.",
+      "properties": {
+        "width": {
+          "description": "The width of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the thumbnail image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "url": {
+          "description": "A URL for retrieving the thumbnail image.\nThis URL expires after 15 minutes. This URL includes a query string\nthat's required for retrieving the thumbnail.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "height",
+        "url",
+        "width"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-print-partner-design-export-job-request-schema.json",
+  "title": "CreatePrintPartnerDesignExportJobRequest",
+  "description": "Body parameters for starting a Print Partner export job for a design.\nIt must include a design ID. Canva Docs are not supported for export.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-export-api-openapi.yml#/components/schemas/CreatePrintPartnerDesignExportJobRequest",
+  "properties": {
+    "design_id": {
+      "description": "The design ID.",
+      "type": "string"
+    },
+    "dimensions": {
+      "$ref": "#/$defs/PrintPartnerExportDimensions"
+    },
+    "format": {
+      "$ref": "#/$defs/PrintPartnerExportFormat"
+    },
+    "pages": {
+      "description": "To specify which pages to export in a multi-page design, provide the page\nnumbers as an array. The first page in a design is page `1`.\nIf `pages` isn't specified, all the pages are exported.",
+      "items": {
+        "format": "int32",
+        "minimum": 1,
+        "type": "integer"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "design_id",
+    "format"
+  ],
+  "type": "object",
+  "$defs": {
+    "PrintPartnerExportDimensions": {
+      "description": "Dimensions of the export in the specified units. The design dimensions must be\nwithin a scale factor of 0.3 and 3 of the requested export dimensions.",
+      "properties": {
+        "width": {
+          "description": "The width of the exported image. Note the following behavior:\n\n- If no height or width is specified, the image is exported using the dimensions of the design.\n- If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design's aspect ratio.\n- If both the height and width are specified, but the values don't match the design's aspect ratio, the export defaults to the larger dimension.",
+          "format": "double",
+          "minimum": 1,
+          "type": "number"
+        },
+        "height": {
+          "description": "The height of the exported image.  Note the following behavior:\n\n- If no height or width is specified, the image is exported using the dimensions of the design.\n- If only one of height or width is specified, then the image is scaled to match that dimension, respecting the design's aspect ratio.\n- If both the height and width are specified, but the values don't match the design's aspect ratio, the export defaults to the larger dimension.",
+          "format": "double",
+          "minimum": 1,
+          "type": "number"
+        },
+        "units": {
+          "$ref": "#/$defs/PrintPartnerExportDimensionsUnits"
+        }
+      },
+      "type": "object"
+    },
+    "PrintPartnerExportDimensionsUnits": {
+      "default": "px",
+      "description": "The units of the dimensions. If no units are specified, pixels are used.",
+      "enum": [
+        "px",
+        "in",
+        "cm",
+        "mm"
+      ],
+      "type": "string"
+    },
+    "PrintPartnerExportFormat": {
+      "description": "Details about the desired export format.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/PrintPartnerPdfExportFormat"
+        },
+        {
+          "$ref": "#/$defs/PrintPartnerJpgExportFormat"
+        },
+        {
+          "$ref": "#/$defs/PrintPartnerPngExportFormat"
+        }
+      ],
+      "type": "object"
+    },
+    "PrintPartnerJpgExportFormat": {
+      "description": "Export the design as a print-quality JPEG.",
+      "properties": {
+        "type": {
+          "enum": [
+            "jpg"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "PrintPartnerPdfExportFormat": {
+      "description": "Export the design as a Print-quality PDF.",
+      "properties": {
+        "type": {
+          "enum": [
+            "pdf"
+          ],
+          "type": "string"
+        },
+        "bleed": {
+          "default": 3000,
+          "description": "The size of the bleed that should be added to the design. The units of the bleed must be microns. This should match the bleed value used when creating the design with the [Create print partner design API](https://www.canva.dev/docs/apps/rest-apis/reference/print-partner/create-print-partner-design/). Use 0 for no bleed. If bleed is not specified, a default of 3000 microns is used.",
+          "format": "int32",
+          "maximum": 150000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "crop_marks": {
+          "default": false,
+          "description": "Whether crop marks should be added to the image.",
+          "type": "boolean"
+        },
+        "cmyk": {
+          "default": false,
+          "description": "Whether the PDF color space should be converted to CMYK.",
+          "type": "boolean"
+        },
+        "pdfx": {
+          "default": false,
+          "description": "Whether the PDF standard should be updated to PDF/X, a printer friendly\nstandard.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "PrintPartnerPngExportFormat": {
+      "description": "Export the design as a print-quality PNG.",
+      "properties": {
+        "type": {
+          "enum": [
+            "png"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

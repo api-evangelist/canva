@@ -1,0 +1,602 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-design-autofill-job-request-schema.json",
+  "title": "CreateDesignAutofillJobRequest",
+  "description": "Body parameters for creating a new autofill job. Use the `type` discriminator to choose\nthe autofill mode:\n\n- Use `create_from_brand_template` to create a new design from a brand template.\n\nNOTE: For backward compatibility, if `type` isn't specified in the request,\nthe request type is assumed to be `create_from_brand_template`.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-autofill-api-openapi.yml#/components/schemas/CreateDesignAutofillJobRequest",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/CreateFromBrandTemplateAutofillJobRequest"
+    },
+    {
+      "$ref": "#/$defs/CreateFromDesignAutofillJobRequest"
+    },
+    {
+      "$ref": "#/$defs/UpdateDesignAutofillJobRequest"
+    }
+  ],
+  "$defs": {
+    "BooleanDataTableCell": {
+      "description": "A boolean tabular data cell.",
+      "properties": {
+        "type": {
+          "enum": [
+            "boolean"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ColumnConfig": {
+      "description": "Configuration for a data table column.",
+      "properties": {
+        "name": {
+          "description": "Name for the column, displayed as header text.",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ColumnDataType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ColumnDataType": {
+      "description": "Expected data type for cells in this column.",
+      "enum": [
+        "string",
+        "number",
+        "date",
+        "boolean",
+        "media",
+        "variant"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "String data",
+        "Numeric data",
+        "Date data",
+        "Boolean data",
+        "Media data (such as images, videos, or combinations of both)",
+        "Mixed data types (use where the column contains cells of a combination of data types)"
+      ]
+    },
+    "CreateFromBrandTemplateAutofillJobRequest": {
+      "description": "Create a new autofilled design from a brand template.",
+      "properties": {
+        "type": {
+          "description": "For backward compatibility, if `type` isn't specified in the request, the request type is assumed to be `create_from_brand_template`.",
+          "enum": [
+            "create_from_brand_template"
+          ],
+          "type": "string"
+        },
+        "brand_template_id": {
+          "description": "ID of the input brand template.",
+          "type": "string"
+        },
+        "title": {
+          "description": "Title to use for the autofilled design.\n\nIf no design title is provided, the autofilled design will have the same title as the brand template.",
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {
+            "$ref": "#/$defs/DatasetValue"
+          },
+          "description": "Data object containing the data fields and values to autofill.",
+          "type": "object"
+        }
+      },
+      "required": [
+        "brand_template_id",
+        "data",
+        "type"
+      ],
+      "type": "object"
+    },
+    "CreateFromDesignAutofillJobRequest": {
+      "description": "Create a new autofilled design from an existing design that contains autofill data fields.",
+      "properties": {
+        "type": {
+          "enum": [
+            "create_from_design"
+          ],
+          "type": "string"
+        },
+        "design_id": {
+          "description": "ID of the design to use as the autofill source.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "title": {
+          "description": "Title to use for the autofilled design.\n\nIf no design title is provided, the autofilled design will have the same title as the source design.",
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {
+            "$ref": "#/$defs/DatasetValue"
+          },
+          "description": "Data object containing the data fields and values to autofill.",
+          "type": "object"
+        }
+      },
+      "required": [
+        "data",
+        "design_id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DataTable": {
+      "description": "Tabular data, structured in rows of cells.\n\n- Each cell must have a data type configured.\n- All rows must have the same number of cells.\n- The number of entries in `column_configs` must match the number of columns in the data.",
+      "properties": {
+        "column_configs": {
+          "description": "Column definitions with names and data types.",
+          "items": {
+            "$ref": "#/$defs/ColumnConfig"
+          },
+          "type": "array"
+        },
+        "rows": {
+          "description": "Rows of data.",
+          "items": {
+            "$ref": "#/$defs/DataTableRow"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "rows"
+      ],
+      "type": "object"
+    },
+    "DataTableAiDisclosure": {
+      "description": "A disclosure identifying if the app generated this media asset using AI.",
+      "enum": [
+        "app_generated",
+        "none"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "App creates or significantly alters content using AI",
+        "No AI involvement in creation or alteration"
+      ]
+    },
+    "DataTableCell": {
+      "description": "A single tabular data cell.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/StringDataTableCell"
+        },
+        {
+          "$ref": "#/$defs/NumberDataTableCell"
+        },
+        {
+          "$ref": "#/$defs/BooleanDataTableCell"
+        },
+        {
+          "$ref": "#/$defs/DateDataTableCell"
+        },
+        {
+          "$ref": "#/$defs/MediaCollectionDataTableCell"
+        }
+      ],
+      "type": "object"
+    },
+    "DataTableImageMimeType": {
+      "description": "The MIME type of an image file that's supported by Canva's backend.",
+      "enum": [
+        "image/jpeg",
+        "image/heic",
+        "image/png",
+        "image/svg+xml",
+        "image/webp",
+        "image/tiff"
+      ],
+      "type": "string"
+    },
+    "DataTableImageUpload": {
+      "description": "Options for uploading an image asset.",
+      "properties": {
+        "type": {
+          "enum": [
+            "image_upload"
+          ],
+          "type": "string"
+        },
+        "url": {
+          "description": "The URL of the image file to upload.\nThis can be an external URL or a data URL.",
+          "type": "string"
+        },
+        "thumbnail_url": {
+          "description": "The URL of a thumbnail image to display while the image is queued for upload.\nThis can be an external URL or a data URL.",
+          "type": "string"
+        },
+        "mime_type": {
+          "$ref": "#/$defs/DataTableImageMimeType"
+        },
+        "width": {
+          "description": "The width of the image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the image in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "ai_disclosure": {
+          "$ref": "#/$defs/DataTableAiDisclosure"
+        }
+      },
+      "required": [
+        "ai_disclosure",
+        "mime_type",
+        "thumbnail_url",
+        "type",
+        "url"
+      ],
+      "type": "object"
+    },
+    "DataTableMedia": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DataTableImageUpload"
+        },
+        {
+          "$ref": "#/$defs/DataTableVideoUpload"
+        }
+      ]
+    },
+    "DataTableRow": {
+      "description": "A single row of tabular data.",
+      "properties": {
+        "cells": {
+          "description": "Cells of data in row.\n\nAll rows must have the same number of cells.",
+          "items": {
+            "$ref": "#/$defs/DataTableCell"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "cells"
+      ],
+      "type": "object"
+    },
+    "DataTableVideoMimeType": {
+      "description": "The MIME type of a video file that's supported by Canva's backend.",
+      "enum": [
+        "video/avi",
+        "video/x-msvideo",
+        "image/gif",
+        "video/x-m4v",
+        "video/x-matroska",
+        "video/quicktime",
+        "video/mp4",
+        "video/mpeg",
+        "video/webm",
+        "application/json"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "",
+        "",
+        "GIFs are treated as videos, not images.",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Used for Lottie files."
+      ]
+    },
+    "DataTableVideoUpload": {
+      "description": "Options for uploading a video asset.",
+      "properties": {
+        "type": {
+          "enum": [
+            "video_upload"
+          ],
+          "type": "string"
+        },
+        "url": {
+          "description": "The URL of the video file to upload.",
+          "type": "string"
+        },
+        "thumbnail_image_url": {
+          "description": "The URL of a thumbnail image to use as a fallback if thumbnailVideoUrl isn't provided.\nThis can be an external URL or a data URL.",
+          "type": "string"
+        },
+        "thumbnail_video_url": {
+          "description": "The URL of a thumbnail video to display while the video is queued for upload.",
+          "type": "string"
+        },
+        "mime_type": {
+          "$ref": "#/$defs/DataTableVideoMimeType"
+        },
+        "width": {
+          "description": "The width of the video in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the video in pixels.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "ai_disclosure": {
+          "$ref": "#/$defs/DataTableAiDisclosure"
+        }
+      },
+      "required": [
+        "ai_disclosure",
+        "mime_type",
+        "thumbnail_image_url",
+        "type",
+        "url"
+      ],
+      "type": "object"
+    },
+    "DatasetChartValue": {
+      "description": "If the data field is a chart.\n\nNote the following behavior:\n- If `column_configs` is not provided, the first row is assumed to contain column headers where applicable.\n- Chart autofill supports a maximum of 100 rows and 20 columns.\n- `number` cells with formatting metadata are not currently supported for autofill and will result in an error response.\n- `media` cells are not supported for chart autofill and will result in an error response.",
+      "properties": {
+        "type": {
+          "enum": [
+            "chart"
+          ],
+          "type": "string"
+        },
+        "chart_data": {
+          "$ref": "#/$defs/DataTable"
+        }
+      },
+      "required": [
+        "chart_data",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DatasetImageValue": {
+      "description": "If the data field is an image field.",
+      "properties": {
+        "type": {
+          "enum": [
+            "image"
+          ],
+          "type": "string"
+        },
+        "asset_id": {
+          "description": "`asset_id` of the image to insert into the template element.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DatasetSheetValue": {
+      "description": "If the data field is a sheet element.\n\nNote the following behavior:\n- `number` cells with formatting metadata are not currently supported for autofill and will result in an error response.\n- `media` cells are not supported for sheet autofill and will result in an error response.",
+      "properties": {
+        "type": {
+          "enum": [
+            "sheet"
+          ],
+          "type": "string"
+        },
+        "sheet_data": {
+          "$ref": "#/$defs/DataTable"
+        }
+      },
+      "required": [
+        "sheet_data",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DatasetTextValue": {
+      "description": "If the data field is a text field.",
+      "properties": {
+        "type": {
+          "enum": [
+            "text"
+          ],
+          "type": "string"
+        },
+        "text": {
+          "description": "Text to insert into the template element.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DatasetValue": {
+      "description": "The data field to autofill.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DatasetImageValue"
+        },
+        {
+          "$ref": "#/$defs/DatasetVideoValue"
+        },
+        {
+          "$ref": "#/$defs/DatasetTextValue"
+        },
+        {
+          "$ref": "#/$defs/DatasetChartValue"
+        },
+        {
+          "$ref": "#/$defs/DatasetSheetValue"
+        }
+      ],
+      "type": "object"
+    },
+    "DatasetVideoValue": {
+      "description": "If autofilling a video into an image data field.",
+      "properties": {
+        "type": {
+          "enum": [
+            "video"
+          ],
+          "type": "string"
+        },
+        "asset_id": {
+          "description": "`asset_id` of the video to insert into the template element.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DateDataTableCell": {
+      "description": "A date tabular data cell.\n\nSpecified as a Unix timestamp (in seconds since the Unix Epoch).",
+      "properties": {
+        "type": {
+          "enum": [
+            "date"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "MediaCollectionDataTableCell": {
+      "description": "Cell containing a media collection.",
+      "properties": {
+        "type": {
+          "enum": [
+            "media"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "description": "Media collection values.\n\nProvide an empty array for an empty cell.",
+          "items": {
+            "$ref": "#/$defs/DataTableMedia"
+          },
+          "maxItems": 20,
+          "type": "array"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object"
+    },
+    "NumberCellMetadata": {
+      "description": "Formatting metadata for number cells.",
+      "properties": {
+        "formatting": {
+          "description": "Formatting pattern using Office Open XML Format.\n\nThese patterns control how numbers are displayed to users, including currency symbols,\ndecimal places, and separators.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "NumberDataTableCell": {
+      "description": "A number tabular data cell.",
+      "properties": {
+        "type": {
+          "enum": [
+            "number"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "format": "double",
+          "type": "number"
+        },
+        "metadata": {
+          "$ref": "#/$defs/NumberCellMetadata"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "StringDataTableCell": {
+      "description": "A string tabular data cell.",
+      "properties": {
+        "type": {
+          "enum": [
+            "string"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 10000,
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "UpdateDesignAutofillJobRequest": {
+      "description": "Autofill an existing design in place with the provided data.",
+      "properties": {
+        "type": {
+          "enum": [
+            "update_design"
+          ],
+          "type": "string"
+        },
+        "design_id": {
+          "description": "ID of the design to autofill in place.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {
+            "$ref": "#/$defs/DatasetValue"
+          },
+          "description": "Data object containing the data fields and values to autofill.",
+          "type": "object"
+        }
+      },
+      "required": [
+        "data",
+        "design_id",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

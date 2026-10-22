@@ -1,9 +1,19 @@
 {
   "provider": "canva",
   "sources": [
-    "_original/canva-openapi.yml"
+    "_original/canva-admin-openapi.yml",
+    "_original/canva-openapi.yml",
+    "_original/canva-print-openapi.yml"
   ],
   "outputs": [
+    "canva-audit-event-api-openapi.yml",
+    "canva-group-api-openapi.yml",
+    "canva-group-member-api-openapi.yml",
+    "canva-invitation-api-openapi.yml",
+    "canva-organization-api-openapi.yml",
+    "canva-team-api-openapi.yml",
+    "canva-team-member-api-openapi.yml",
+    "canva-user-api-openapi.yml",
     "canva-analytics-api-openapi.yml",
     "canva-app-api-openapi.yml",
     "canva-asset-api-openapi.yml",
@@ -22,29 +32,46 @@
     "canva-oauth-api-openapi.yml",
     "canva-oidc-api-openapi.yml",
     "canva-resize-api-openapi.yml",
-    "canva-user-api-openapi.yml"
+    "canva-api-specification-api-openapi.yml",
+    "canva-key-api-openapi.yml",
+    "canva-order-cost-api-openapi.yml",
+    "canva-order-event-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 2 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
-    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "canva-admin-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "canva-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "apis.yml register: written (+3 apis, 24 total)"
+    "canva-print-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "tag 'user' spans 2 source specs (canva-admin-openapi.yml, canva-openapi.yml): per-path servers applied",
+    "superseded outputs removed: canva-admin-api-openapi.yml, canva-print-api-openapi.yml",
+    "apis.yml register: written (+11 apis, 34 total)"
   ],
   "skipped": [
+    "canva-admin-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-analytics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-app-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-asset-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canva-autofill-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canva-brand-template-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-comment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-connect-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-design-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canva-design-generation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-design-import-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-export-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-folder-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canva-image-generation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canva-image-transformation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-merge-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-oauth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-oidc-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canva-print-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canva-resize-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "canva-user-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-list-team-invitations-response-schema.json",
+  "title": "ListTeamInvitationsResponse",
+  "description": "Successful response from a `listTeamInvitations` request",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-admin-api-openapi.yml#/components/schemas/ListTeamInvitationsResponse",
+  "properties": {
+    "items": {
+      "items": {
+        "$ref": "#/$defs/TeamInvitation"
+      },
+      "type": "array"
+    },
+    "continuation": {
+      "description": "If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.\n\nTo retrieve all items, you might need to make multiple requests.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "type": "object",
+  "$defs": {
+    "TeamInvitation": {
+      "description": "A pending invitation for an email address to join a team. The invitation record exists only\nwhile the invitation can still be accepted.",
+      "properties": {
+        "team_id": {
+          "description": "The ID of the team the invitation grants access to.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        },
+        "email": {
+          "description": "The invited email address. Only an account with this email can accept.",
+          "format": "email",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/TeamMemberRole"
+        },
+        "expires_at": {
+          "description": "When the invitation expires, as a Unix timestamp (in seconds). This is always 30 days\nafter the create or refresh request that issued it. Expired invitations can't be\naccepted.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "url": {
+          "description": "The invitation URL. Redirect the invitee to this URL to accept the invitation. Treat it\nas a secret: don't log it or send it over insecure channels. Create and a matched find\nresult always return this field. Unfiltered list responses omit it.",
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "expires_at",
+        "role",
+        "team_id"
+      ],
+      "type": "object"
+    },
+    "TeamMemberRole": {
+      "description": "The role of the member in the team.",
+      "enum": [
+        "admin",
+        "designer",
+        "member"
+      ],
+      "type": "string"
+    }
+  }
+}

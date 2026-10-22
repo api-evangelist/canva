@@ -1,0 +1,523 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: REST API for building admin integrations with Canva
+  license:
+    name: ©2025 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Admin Team API
+  version: 2026-08-18
+servers:
+- description: Admin API
+  url: https://api.canva.com/admin
+tags:
+- name: Team
+paths:
+  /v1/teams/{teamId}:
+    delete:
+      description: 'Deletes a team in the organization.
+
+
+        **Warning:** This is a destructive operation. Deleting a team also removes content owned by the team, including folders, documents, and brand kits. Make sure you have transferred any content you want to keep before deleting the team.
+
+
+        After deletion, the team will no longer appear in `getTeam` or `listTeams` responses.'
+      operationId: deleteTeam
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              examples:
+                team_is_default:
+                  $ref: '#/components/examples/TeamIsDefaultError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:write
+      tags:
+      - Team
+      summary: Delete team
+      x-summary-source: derived
+    get:
+      description: Gets metadata for a team.
+      operationId: getTeam
+      parameters:
+      - description: The team ID.
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTeamResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:read
+      tags:
+      - Team
+      summary: Get team
+      x-summary-source: derived
+    patch:
+      description: 'Updates a team in the organization. Only the fields provided in the request are updated.
+
+
+        Team names are not unique within an organization. Multiple teams with the same name are allowed, so you should track teams by their team ID rather than by name.
+
+
+        Providing `saml_team_id` sets or changes the team''s SAML team ID. If omitted, the team''s existing SAML team ID stays intact. You can''t remove a SAML team ID with this API.'
+      operationId: updateTeam
+      parameters:
+      - description: The team ID.
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                updated:
+                  $ref: '#/components/examples/UpdateTeamSuccess'
+              schema:
+                $ref: '#/components/schemas/UpdateTeamResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                team_name_unsafe:
+                  $ref: '#/components/examples/TeamNameUnsafeError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              examples:
+                saml_team_id_conflict:
+                  $ref: '#/components/examples/SamlTeamIdConflictError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:write
+      tags:
+      - Team
+      summary: Update team
+      x-summary-source: derived
+  /v1/teams:
+    get:
+      description: Lists teams.
+      operationId: listTeams
+      parameters:
+      - description: If provided, restricts the results to the team with the specified `saml_team_id`.
+        explode: true
+        in: query
+        name: saml_team_id
+        required: false
+        schema:
+          $ref: '#/components/schemas/SamlTeamId'
+        style: form
+      - description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+          To retrieve all items, you might need to make multiple requests.'
+        explode: true
+        in: query
+        name: continuation
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of teams to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTeamsResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                continuation_not_supported_for_saml_team_id:
+                  $ref: '#/components/examples/ContinuationNotSupportedForSamlTeamIdError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:read
+      tags:
+      - Team
+      summary: List teams
+      x-summary-source: derived
+    post:
+      description: 'Creates a new team in the organization.
+
+
+        Team names are not unique within an organization. Multiple teams with the same name are allowed, so you should track teams by their team ID rather than by name.'
+      operationId: createTeam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTeamRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                created:
+                  $ref: '#/components/examples/CreateTeamSuccess'
+              schema:
+                $ref: '#/components/schemas/CreateTeamResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                team_name_unsafe:
+                  $ref: '#/components/examples/TeamNameUnsafeError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '409':
+          content:
+            application/json:
+              examples:
+                saml_team_id_conflict:
+                  $ref: '#/components/examples/SamlTeamIdConflictError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:write
+      tags:
+      - Team
+      summary: Create team
+      x-summary-source: derived
+components:
+  schemas:
+    GetTeamResponse:
+      description: Successful response from a `getTeam` request
+      properties:
+        team:
+          $ref: '#/components/schemas/Team'
+      required:
+      - team
+      type: object
+    CreateTeamResponse:
+      description: Successful response from a `createTeam` request.
+      properties:
+        team:
+          $ref: '#/components/schemas/Team'
+      required:
+      - team
+      type: object
+    UpdateTeamResponse:
+      description: Successful response from an `updateTeam` request.
+      properties:
+        team:
+          $ref: '#/components/schemas/Team'
+      required:
+      - team
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    CreateTeamRequest:
+      description: Parameters for creating a new team in the organization.
+      properties:
+        name:
+          description: The display name for the team.
+          example: ACME Marketing Team
+          maxLength: 255
+          minLength: 1
+          type: string
+        saml_team_id:
+          description: An identifier you assign to a team. When a user signs in through SSO, Canva reads the SAML `TeamId` attribute and adds them to the team with the matching `saml_team_id`. Must be unique within your organization.
+          example: brokerage-123
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - name
+      type: object
+    Team:
+      description: A team.
+      example:
+        id: BAAAAAAAAA1
+        name: Acme Team
+        created_at: 1601404800
+        updated_at: 1601404900
+      properties:
+        id:
+          description: The team ID.
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        name:
+          description: The name of the team.
+          type: string
+        created_at:
+          description: When the team was created, as a Unix timestamp (in seconds since the Unix Epoch).
+          format: int64
+          type: integer
+        updated_at:
+          description: When the team was last updated, as a Unix timestamp (in seconds since the Unix Epoch).
+          format: int64
+          type: integer
+        saml_team_id:
+          description: An identifier you assign to a team. When a user signs in through SSO, Canva reads the SAML `TeamId` attribute and adds them to the team with the matching `saml_team_id`. Must be unique within your organization.
+          example: brokerage-123
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - created_at
+      - id
+      - name
+      type: object
+    ListTeamsResponse:
+      description: Successful response from a `listTeams` request.
+      properties:
+        continuation:
+          description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+            To retrieve all items, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/Team'
+          type: array
+      required:
+      - items
+      type: object
+    SamlTeamId:
+      description: An identifier you assign to a team. When a user signs in through SSO, Canva reads the SAML `TeamId` attribute and adds them to the team with the matching `saml_team_id`. Must be unique within your organization.
+      example: brokerage-123
+      maxLength: 255
+      minLength: 1
+      type: string
+    UpdateTeamRequest:
+      description: Updates to be made to a team. Only the fields provided in the request are updated.
+      properties:
+        name:
+          description: The display name for the team.
+          example: ACME Marketing Team
+          maxLength: 255
+          minLength: 1
+          type: string
+        saml_team_id:
+          description: An identifier you assign to a team. When a user signs in through SSO, Canva reads the SAML `TeamId` attribute and adds them to the team with the matching `saml_team_id`. Must be unique within your organization.
+          example: brokerage-123
+          maxLength: 255
+          minLength: 1
+          type: string
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - permission_denied
+      - too_many_requests
+      - max_limit_reached
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - invalid_access_token
+      - missing_scope
+      - invalid_field
+      - input_unsafe
+      - display_name_unavailable
+      - team_not_found
+      - group_not_found
+      - team_is_default
+      - user_not_found
+      - saml_team_id_conflict
+      - user_not_managed
+      - saml_name_id_not_available
+      - user_linked_to_another_idp
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      - domain_restricted
+      - user_already_member
+      type: string
+  examples:
+    TeamIsDefaultError:
+      summary: The default team cannot be deleted
+      value:
+        code: team_is_default
+        message: Team {teamId} cannot be deleted as it is the organization's default team.
+    CreateTeamSuccess:
+      summary: A team was successfully created
+      value:
+        team:
+          id: BAAAAAAAAA1
+          name: Acme Team
+          created_at: 1601404800
+          updated_at: 1601404800
+    TeamNameUnsafeError:
+      summary: The team name contains unsafe input
+      value:
+        code: input_unsafe
+        message: Team name contains unsafe input.
+    SamlTeamIdConflictError:
+      summary: A team with the same SAML team ID already exists
+      value:
+        code: saml_team_id_conflict
+        message: A team with this SAML team ID already exists in the organization.
+    UpdateTeamSuccess:
+      summary: A team was successfully updated
+      value:
+        team:
+          id: BAAAAAAAAA1
+          name: Acme Team
+          created_at: 1601404800
+          updated_at: 1601404900
+    TeamNotFoundError:
+      summary: The team was not found
+      value:
+        code: team_not_found
+        message: Team {teamId} not found
+    ContinuationNotSupportedForSamlTeamIdError:
+      summary: Continuation is not supported for listing teams by SAML team ID
+      value:
+        code: bad_query_params
+        message: Continuation is not supported for listing teams by SAML team ID.
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes:
+            admin:user:read: Read information about a Canva user.
+            admin:user:write: Create a managed user in the organization.
+            admin:team:read: Read information about a Canva team and its users.
+            admin:team:write: Create or modify a Canva team, and add or remove its users.
+            admin:group:read: Read information about a Canva group.
+            admin:group:write: Create or modify a Canva group, and add or remove its users.
+            admin:organization:read: Read information about the Canva organization.
+            admin:auditevent:read: List audit events for the Canva organization.
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2

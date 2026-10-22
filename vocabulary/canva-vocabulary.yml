@@ -1,0 +1,421 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/canva-admin-api-openapi.yml
+- openapi/canva-analytics-api-openapi.yml
+- openapi/canva-app-api-openapi.yml
+- openapi/canva-asset-api-openapi.yml
+- openapi/canva-autofill-api-openapi.yml
+vocabulary:
+  name: Canva Domain Vocabulary
+  description: 'Terms declared by Canva''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-20'
+  terms:
+  - term: ListAuditEventsResponse
+    definition: Successful response from a `listAuditEvents` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListAuditEventsResponse
+  - term: Error
+    definition: 'Object declared by the contract with fields: code, message.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/Error
+  - term: ErrorCode
+    definition: A short string indicating what failed. This field can be used to handle errors programmatically.
+    tags:
+    - Enumeration
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ErrorCode
+  - term: CreateGroupRequest
+    definition: 'Object declared by the contract with fields: name, description.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateGroupRequest
+  - term: CreateGroupResponse
+    definition: Successful response from a `createGroup` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateGroupResponse
+  - term: GetGroupResponse
+    definition: Successful response from a `getGroup` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GetGroupResponse
+  - term: ListGroupsResponse
+    definition: Successful response from a `listGroups` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListGroupsResponse
+  - term: UpdateGroupRequest
+    definition: Updates to be made to a group. Only the fields you provide in the request are updated.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateGroupRequest
+  - term: UpdateGroupResponse
+    definition: Successful response from an `updateGroup` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateGroupResponse
+  - term: Group
+    definition: A group.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/Group
+  - term: ListGroupMembersResponse
+    definition: Successful response from a `listGroupMembers` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListGroupMembersResponse
+  - term: CreateGroupMemberRequest
+    definition: 'Object declared by the contract with fields: user_id, role.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateGroupMemberRequest
+  - term: CreateGroupMemberResponse
+    definition: Successful response from a `createGroupMember` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateGroupMemberResponse
+  - term: GetGroupMemberResponse
+    definition: Successful response from a `getGroupMember` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GetGroupMemberResponse
+  - term: UpdateGroupMemberRequest
+    definition: Updates to be made to a group member. Only the provided fields are updated on the group member.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateGroupMemberRequest
+  - term: UpdateGroupMemberResponse
+    definition: Successful response from an `updateGroupMember` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateGroupMemberResponse
+  - term: GroupMember
+    definition: A member in a group.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GroupMember
+  - term: GroupMemberRole
+    definition: The role of the user in the group.
+    tags:
+    - Enumeration
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GroupMemberRole
+  - term: CreateTeamInvitationRequest
+    definition: 'Object declared by the contract with fields: email, role, send_email.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateTeamInvitationRequest
+  - term: ListTeamInvitationsResponse
+    definition: Successful response from a `listTeamInvitations` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListTeamInvitationsResponse
+  - term: CreateTeamInvitationResponse
+    definition: Successful response from a `createTeamInvitation` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateTeamInvitationResponse
+  - term: FindTeamInvitationRequest
+    definition: 'Object declared by the contract with fields: email.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/FindTeamInvitationRequest
+  - term: FindTeamInvitationResponse
+    definition: Successful response from a `findTeamInvitation` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/FindTeamInvitationResponse
+  - term: CancelTeamInvitationRequest
+    definition: 'Object declared by the contract with fields: email.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CancelTeamInvitationRequest
+  - term: TeamInvitation
+    definition: A pending invitation for an email address to join a team. The invitation record exists only while the invitation can still be
+      accepted.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/TeamInvitation
+  - term: GetOrganizationResponse
+    definition: Successful response from a `getOrganization` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GetOrganizationResponse
+  - term: Organization
+    definition: An organization.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/Organization
+  - term: CreateTeamRequest
+    definition: Parameters for creating a new team in the organization.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateTeamRequest
+  - term: CreateTeamResponse
+    definition: Successful response from a `createTeam` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateTeamResponse
+  - term: UpdateTeamRequest
+    definition: Updates to be made to a team. Only the fields provided in the request are updated.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateTeamRequest
+  - term: UpdateTeamResponse
+    definition: Successful response from an `updateTeam` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateTeamResponse
+  - term: GetTeamResponse
+    definition: Successful response from a `getTeam` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GetTeamResponse
+  - term: ListTeamsResponse
+    definition: Successful response from a `listTeams` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListTeamsResponse
+  - term: SamlTeamId
+    definition: An identifier you assign to a team. When a user signs in through SSO, Canva reads the SAML `TeamId` attribute and adds them to
+      the team with the matching `saml_team_id`. Must be unique within your organization.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/SamlTeamId
+  - term: Team
+    definition: A team.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/Team
+  - term: ListTeamMembersResponse
+    definition: Successful response from a `listTeamMembers` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListTeamMembersResponse
+  - term: ListUserTeamMembershipsResponse
+    definition: 'Successful response from a `listUserTeamMemberships` request. Contains every team membership for the user within the caller''s
+      organization. This list is not paginated: a user can belong to at most 100 teams in total, so all memberships are always returned in a single
+      response.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListUserTeamMembershipsResponse
+  - term: GetTeamMemberResponse
+    definition: Successful response from a `getTeamMember` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GetTeamMemberResponse
+  - term: UpdateTeamMemberRequest
+    definition: Updates to be made to a team member. Only the fields provided in the request are updated.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateTeamMemberRequest
+  - term: UpdateTeamMemberResponse
+    definition: Successful response from an `updateTeamMember` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateTeamMemberResponse
+  - term: CreateTeamMemberRequest
+    definition: 'Object declared by the contract with fields: user_id, role.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateTeamMemberRequest
+  - term: CreateTeamMemberResponse
+    definition: Successful response from a `createTeamMember` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateTeamMemberResponse
+  - term: TeamMember
+    definition: A user in a team.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/TeamMember
+  - term: TeamMemberRole
+    definition: The role of the member in the team.
+    tags:
+    - Enumeration
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/TeamMemberRole
+  - term: ListUsersResponse
+    definition: Successful response from a `listUsers` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/ListUsersResponse
+  - term: GetUserResponse
+    definition: Successful response from a `getUser` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/GetUserResponse
+  - term: User
+    definition: A user.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/User
+  - term: OrganizationMemberRole
+    definition: The role of the user in the organization.
+    tags:
+    - Enumeration
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/OrganizationMemberRole
+  - term: CreateUserRequest
+    definition: Parameters for creating a managed user in the organization.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateUserRequest
+  - term: SamlAccount
+    definition: The SAML account details used to link the user to the organization's identity provider for SSO.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/SamlAccount
+  - term: TeamMembership
+    definition: A team to add the user to on creation, with the user's role in that team.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/TeamMembership
+  - term: CreateUserResponse
+    definition: Successful response from a `createUser` request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/CreateUserResponse
+  - term: UpdateUserRequest
+    definition: Updates to be made to a user. Only the fields provided in the request are updated. To update the user's name, provide the `name`
+      object with `display_name`, `first_name`, and `last_name`. To update the user's SAML name ID, provide the `saml_account` object with both
+      `idp_issuer` and `name_id`. The `idp_issuer` must match the user's current identity provider (it acts as a guard and can't be changed
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateUserRequest
+  - term: UserNameUpdate
+    definition: The name fields to update for the user.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UserNameUpdate
+  - term: UpdateUserResponse
+    definition: Successful response from an updateUser request.
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/UpdateUserResponse
+  - term: FindUserRequest
+    definition: 'Object declared by the contract with fields: email.'
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/FindUserRequest
+  - term: FindUserResponse
+    definition: Successful response from a `findUser` request
+    tags:
+    - Object
+    source: openapi/canva-admin-api-openapi.yml#/components/schemas/FindUserResponse
+  - term: PageViewFilter
+    definition: A filter for page view data.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/PageViewFilter
+  - term: PageViewDuration
+    definition: View duration metrics for a single page.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/PageViewDuration
+  - term: DesignAnalyticsViewerType
+    definition: How the viewer accessed the design.
+    tags:
+    - Enumeration
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/DesignAnalyticsViewerType
+  - term: GetDesignAnalyticsPageViewsResponse
+    definition: Successful response from a `getDesignAnalyticsPageViews` request.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsPageViewsResponse
+  - term: Viewer
+    definition: A viewer and their engagement metrics for the design.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/Viewer
+  - term: GetDesignAnalyticsPageViewsRequest
+    definition: Filters and pagination controls for page-level analytics.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsPageViewsRequest
+  - term: PageViewFilterByLink
+    definition: 'Object declared by the contract with fields: type, link_id.'
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/PageViewFilterByLink
+  - term: DesignAnalyticsViewerVisibility
+    definition: How this viewer should be presented to the caller.
+    tags:
+    - Enumeration
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/DesignAnalyticsViewerVisibility
+  - term: ViewsAtTime
+    definition: A single time bucket of view counts.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/ViewsAtTime
+  - term: GetDesignAnalyticsViewsOverTimeResponse
+    definition: Successful response from a `getDesignAnalyticsViewsOverTime` request.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsViewsOverTimeResponse
+  - term: PageViewFilterForEditor
+    definition: 'Object declared by the contract with fields: type.'
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/PageViewFilterForEditor
+  - term: GetDesignAnalyticsViewersResponse
+    definition: Successful response from a `getDesignAnalyticsViewers` request.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsViewersResponse
+  - term: TrackableLink
+    definition: Metrics for a trackable link.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/TrackableLink
+  - term: DesignAnalyticsViewerFormFactor
+    definition: The device form factor used to view the design.
+    tags:
+    - Enumeration
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/DesignAnalyticsViewerFormFactor
+  - term: GetDesignAnalyticsLinksResponse
+    definition: Successful response from a `getDesignAnalyticsLinks` request.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsLinksResponse
+  - term: GetDesignAnalyticsResponse
+    definition: Aggregated analytics metrics for a design.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/GetDesignAnalyticsResponse
+  - term: TeamUser
+    definition: Metadata for the user, consisting of the User ID, Team ID, and display name.
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/TeamUser
+  - term: PageViewFilterByViewer
+    definition: 'Object declared by the contract with fields: type, link_id, viewer_id.'
+    tags:
+    - Object
+    source: openapi/canva-analytics-api-openapi.yml#/components/schemas/PageViewFilterByViewer
+  - term: GetAppJwksResponse
+    definition: 'Object declared by the contract with fields: keys.'
+    tags:
+    - Object
+    source: openapi/canva-app-api-openapi.yml#/components/schemas/GetAppJwksResponse
+  - term: JsonWebKey
+    definition: Standard Json Web Key specification following https://www.rfc-editor.org/rfc/rfc7517 and https://www.rfc-editor.org/rfc/rfc7518.html.
+    tags:
+    - Object
+    source: openapi/canva-app-api-openapi.yml#/components/schemas/JsonWebKey
+  - term: UpdateAssetResponse
+    definition: 'Object declared by the contract with fields: asset.'
+    tags:
+    - Object
+    source: openapi/canva-asset-api-openapi.yml#/components/schemas/UpdateAssetResponse
+  - term: UpdateAssetRequest
+    definition: 'Object declared by the contract with fields: name, tags.'
+    tags:
+    - Object
+    source: openapi/canva-asset-api-openapi.yml#/components/schemas/UpdateAssetRequest
+  - term: ImportStatus
+    definition: The import status of the asset.
+    tags:
+    - Object
+    source: openapi/canva-asset-api-openapi.yml#/components/schemas/ImportStatus

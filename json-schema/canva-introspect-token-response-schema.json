@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-introspect-token-response-schema.json",
+  "title": "IntrospectTokenResponse",
+  "description": "Introspection result of access or refresh tokens",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-oauth-api-openapi.yml#/components/schemas/IntrospectTokenResponse",
+  "properties": {
+    "active": {
+      "description": "Whether the access token is active.\n\nIf `true`, the access token is valid and active. If `false`, the access token is invalid.\n",
+      "type": "boolean"
+    },
+    "scope": {
+      "description": "The [scopes](https://www.canva.dev/docs/apps/rest-apis/scopes/) that the token has been granted.",
+      "type": "string"
+    },
+    "client": {
+      "description": "The ID of the client that requested the token.",
+      "type": "string"
+    },
+    "exp": {
+      "description": "The expiration time of the token, as a [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time) in seconds.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "iat": {
+      "description": "When the token was issued, as a [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time) in seconds.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "nbf": {
+      "description": "The \"not before\" time of the token, which specifies the time before which the access token most not be accepted, as a [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time) in seconds.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "jti": {
+      "description": "A unique ID for the access token.",
+      "type": "string"
+    },
+    "sub": {
+      "description": "The subject of the claim. This is the ID of the Canva user that the access token acts on behalf of.\n\nThis is an obfuscated value, so a single user has a unique ID for each app. If the same user authorizes another app, their ID in that other app is different.\n",
+      "type": "string"
+    }
+  },
+  "required": [
+    "active"
+  ],
+  "type": "object"
+}

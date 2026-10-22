@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-print-partner-design-request-schema.json",
+  "title": "CreatePrintPartnerDesignRequest",
+  "description": "Body parameters for creating a new design for a Print Partner.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-api-openapi.yml#/components/schemas/CreatePrintPartnerDesignRequest",
+  "properties": {
+    "design_source": {
+      "$ref": "#/$defs/PrintPartnerDesignSource"
+    },
+    "title": {
+      "description": "The name of the design.",
+      "maxLength": 255,
+      "minLength": 1,
+      "type": "string"
+    },
+    "bleed": {
+      "default": 3000,
+      "description": "Bleed in microns to apply around the design in the editor. Bleed is the area\noutside the trim line used to avoid white edges after cutting. Use 0 for no bleed. If bleed is not\nspecified, a default of 3000 microns is used.",
+      "format": "int32",
+      "maximum": 150000,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "min_pages": {
+      "description": "Minimum number of pages the design must have in the editor. The user cannot\nreduce the page count below this value. If both min_pages and max_pages are\nprovided, min_pages must be less than or equal to max_pages.",
+      "format": "int32",
+      "maximum": 500,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "max_pages": {
+      "description": "Maximum number of pages the design can have in the editor. The user cannot\nadd pages beyond this value. If both min_pages and max_pages are provided,\nmin_pages must be less than or equal to max_pages.",
+      "format": "int32",
+      "maximum": 500,
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "design_source"
+  ],
+  "type": "object",
+  "$defs": {
+    "PrintPartnerDesignDimensions": {
+      "description": "Dimensions of the design. Used to match a product type, or to create a custom-size design if\nno product matches.",
+      "properties": {
+        "width": {
+          "description": "The width of the design.",
+          "format": "double",
+          "minimum": 1,
+          "type": "number"
+        },
+        "height": {
+          "description": "The height of the design.",
+          "format": "double",
+          "minimum": 1,
+          "type": "number"
+        },
+        "units": {
+          "$ref": "#/$defs/PrintPartnerDesignDimensionsUnits"
+        }
+      },
+      "required": [
+        "height",
+        "units",
+        "width"
+      ],
+      "type": "object"
+    },
+    "PrintPartnerDesignDimensionsUnits": {
+      "description": "The units of the dimensions.",
+      "enum": [
+        "in",
+        "cm",
+        "mm"
+      ],
+      "type": "string"
+    },
+    "PrintPartnerDesignSource": {
+      "description": "The desired source for the design creation.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/PrintPartnerDimensionsDesignSource"
+        },
+        {
+          "$ref": "#/$defs/PrintPartnerProductIdDesignSource"
+        }
+      ],
+      "type": "object"
+    },
+    "PrintPartnerDimensionsDesignSource": {
+      "description": "Creates a design that matches your dimensions. Add a product type for more precise template matches.",
+      "properties": {
+        "type": {
+          "enum": [
+            "dimensions"
+          ],
+          "type": "string"
+        },
+        "dimensions": {
+          "$ref": "#/$defs/PrintPartnerDesignDimensions"
+        },
+        "product_type": {
+          "description": "The product type is used alongside your dimensions to find a matching product in Canva Print's product catalogue, and templates for that product are recommended. If no match is found, only dimensions are used, so templates may include unrelated product types.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dimensions",
+        "type"
+      ],
+      "type": "object"
+    },
+    "PrintPartnerProductIdDesignSource": {
+      "description": "Creates a design using an external partner product ID.",
+      "properties": {
+        "type": {
+          "enum": [
+            "partner_product_id"
+          ],
+          "type": "string"
+        },
+        "partner_product_id": {
+          "description": "The ID of the partner-defined product.",
+          "pattern": "^[a-zA-Z0-9_-]{1,50}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "partner_product_id",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,228 @@
+generated: '2026-10-20'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 17
+  own: 4
+  other_domain: 9
+  platform: 4
+  roles:
+  - api
+  - collections
+  - community
+  - other
+  - partner
+  - portal
+  - source
+  - status
+  - support
+  - website
+hosts:
+- host: api.canva.com
+  found_by:
+  - apis[]
+  - probed
+  - contract-discovery
+  - well-known
+  types: []
+  serves:
+  - api
+  registrable_domain: canva.com
+  role: api
+  relation: other-domain
+- host: api.canva.dev
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: canva.dev
+  role: api
+  relation: own
+- host: api.canvastatus.com
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: canvastatus.com
+  role: api
+  relation: other-domain
+- host: canva.dev
+  found_by:
+  - pointer
+  - probed
+  types:
+  - Website
+  serves: []
+  registrable_domain: canva.dev
+  role: website
+  relation: own
+- host: community.canva.com
+  found_by:
+  - probed
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: canva.com
+  role: community
+  relation: other-domain
+- host: community.canva.dev
+  found_by:
+  - pointer
+  - probed
+  - site-links
+  - well-known
+  types:
+  - Support
+  serves: []
+  registrable_domain: canva.dev
+  role: support
+  relation: own
+- host: docs.developer.canva.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: canva.com
+  role: portal
+  relation: other-domain
+- host: github.com
+  found_by:
+  - pointer
+  - docs-index
+  types:
+  - GitHubOrganization
+  - AgentSkills
+  serves:
+  - docs
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: mcp.canva.com
+  found_by:
+  - probed
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: canva.com
+  role: other
+  relation: other-domain
+- host: partners.canva.com
+  found_by:
+  - probed
+  - site-links
+  - namespace-probe
+  types: []
+  serves: []
+  title: Find a Canva partner | Canva partner directory
+  status: 200
+  registrable_domain: canva.com
+  role: partner
+  relation: other-domain
+- host: status.canva.com
+  found_by:
+  - probed
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: canva.com
+  role: status
+  relation: other-domain
+- host: www.canva.com
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - contract-discovery
+  - well-known
+  - vendor-detect
+  types:
+  - DeveloperPortal
+  - Authentication
+  - SignUp
+  - Login
+  - PrivacyPolicy
+  - TermsOfService
+  - Legal
+  - Documentation
+  - FAQ
+  - Events
+  - Features
+  - UseCases
+  - Integrations
+  - Pricing
+  serves:
+  - docs
+  - api
+  - cdn
+  vendor: cloudflare
+  registrable_domain: canva.com
+  role: portal
+  relation: other-domain
+- host: www.canva.dev
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - docs-index
+  - well-known
+  types:
+  - DeveloperPortal
+  - Blog
+  - Documentation
+  - APIReference
+  - OpenAPI
+  - ChangeLog
+  - Security
+  - RateLimits
+  - BlogRSS
+  - GettingStarted
+  serves:
+  - docs
+  registrable_domain: canva.dev
+  role: portal
+  relation: own
+- host: www.canvastatus.com
+  found_by:
+  - pointer
+  - probed
+  - well-known
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: canvastatus.com
+  role: status
+  relation: other-domain
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: www.npmjs.com
+  found_by:
+  - pointer
+  types:
+  - CLI
+  serves: []
+  registrable_domain: npmjs.com
+  role: other
+  relation: platform
+- host: www.postman.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - PostmanWorkspace
+  - Postman
+  serves:
+  - api-collections
+  vendor: postman
+  registrable_domain: postman.com
+  role: collections
+  relation: platform

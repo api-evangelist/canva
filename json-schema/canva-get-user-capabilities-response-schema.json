@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-user-capabilities-response-schema.json",
+  "title": "GetUserCapabilitiesResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-user-api-openapi.yml#/components/schemas/GetUserCapabilitiesResponse",
+  "properties": {
+    "capabilities": {
+      "items": {
+        "$ref": "#/$defs/Capability"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "Capability": {
+      "description": "Some APIs are annotated with required capabilities. These endpoints require the user to\npossess the required capabilities in order to be called successfully.",
+      "enum": [
+        "analytics",
+        "autofill",
+        "background_removal",
+        "brand_template",
+        "design_generation",
+        "export_png_transparency",
+        "image_to_design_imports",
+        "resize",
+        "team_restricted_app"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "Capability required to call the Design analytics APIs. Users that are members of a [Canva Enterprise](https://www.canva.com/enterprise/) organization have this capability.",
+        "Capability required to call autofill APIs. Users on a Canva plan with access to autofill (such as Canva Pro, Canva Teams, or Canva Enterprise) have this capability.",
+        "Capability required to apply the `background_removal` transformation using the Image transformation APIs. Users on a Canva plan with premium features (such as Canva Pro) have this capability.",
+        "Capability required to use brand template APIs. Users on a Canva plan with access to brand templates (such as Canva Pro, Canva Teams, or Canva Enterprise) have this capability.",
+        "Capability required to call the Design Generation APIs. Users whose feature eligibility and team permissions allow design generation have this capability.",
+        "Capability required to export designs in PNG with a transparent background. Users on a paid Canva plan (such as Canva Pro) have this capability.",
+        "Capability required to call the Image to Design Import APIs. Users whose [team permission settings](https://www.canva.com/en_au/help/setting-up-team-permissions/) allow \"[Magic Layers](https://www.canva.com/magic-layers/)\" have this capability.",
+        "Capability required to create design resize jobs. Users on a Canva plan with premium features (such as Canva Pro) have this capability.",
+        "Capability required to create a team-restricted app. Users that are members of the [Canva Enterprise](https://www.canva.com/enterprise/) or the [Canva for Education](https://www.canva.com/education/) organization have this capability."
+      ]
+    }
+  }
+}

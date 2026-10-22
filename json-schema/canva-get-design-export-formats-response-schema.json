@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-design-export-formats-response-schema.json",
+  "title": "GetDesignExportFormatsResponse",
+  "description": "Successful response from a `getDesignExportFormats` request.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-design-api-openapi.yml#/components/schemas/GetDesignExportFormatsResponse",
+  "properties": {
+    "formats": {
+      "$ref": "#/$defs/ExportFormatOptions"
+    }
+  },
+  "required": [
+    "formats"
+  ],
+  "type": "object",
+  "$defs": {
+    "CsvExportFormatOption": {
+      "description": "Whether the design can be exported as a CSV file.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ExportFormatOptions": {
+      "description": "The available file formats for exporting the design.",
+      "properties": {
+        "pdf": {
+          "$ref": "#/$defs/PdfExportFormatOption"
+        },
+        "jpg": {
+          "$ref": "#/$defs/JpgExportFormatOption"
+        },
+        "png": {
+          "$ref": "#/$defs/PngExportFormatOption"
+        },
+        "svg": {
+          "$ref": "#/$defs/SvgExportFormatOption"
+        },
+        "pptx": {
+          "$ref": "#/$defs/PptxExportFormatOption"
+        },
+        "gif": {
+          "$ref": "#/$defs/GifExportFormatOption"
+        },
+        "mp4": {
+          "$ref": "#/$defs/Mp4ExportFormatOption"
+        },
+        "html_bundle": {
+          "$ref": "#/$defs/HtmlBundleExportFormatOption"
+        },
+        "html_standalone": {
+          "$ref": "#/$defs/HtmlStandaloneExportFormatOption"
+        },
+        "csv": {
+          "$ref": "#/$defs/CsvExportFormatOption"
+        }
+      },
+      "type": "object"
+    },
+    "GifExportFormatOption": {
+      "description": "Whether the design can be exported as a GIF.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "HtmlBundleExportFormatOption": {
+      "description": "Whether the design can be exported as an HTML bundle.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "HtmlStandaloneExportFormatOption": {
+      "description": "Whether the design can be exported as an standalone HTML file.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "JpgExportFormatOption": {
+      "description": "Whether the design can be exported as a JPEG.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Mp4ExportFormatOption": {
+      "description": "Whether the design can be exported as an MP4.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PdfExportFormatOption": {
+      "description": "Whether the design can be exported as a PDF.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PngExportFormatOption": {
+      "description": "Whether the design can be exported as a PNG.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PptxExportFormatOption": {
+      "description": "Whether the design can be exported as a PPTX.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "SvgExportFormatOption": {
+      "description": "Whether the design can be exported as an SVG.",
+      "properties": {
+        "page_numbers": {
+          "description": "The page numbers in the design that support this export format, in ascending order. The first page in a design is page `1`. If omitted, the format is supported by all pages in the design.",
+          "items": {
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

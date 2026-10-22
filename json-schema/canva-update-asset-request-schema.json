@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-update-asset-request-schema.json",
+  "title": "UpdateAssetRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-asset-api-openapi.yml#/components/schemas/UpdateAssetRequest",
+  "properties": {
+    "name": {
+      "description": "The name of the asset. This is shown in the Canva UI.\nWhen this field is undefined or empty, nothing is updated.",
+      "maxLength": 50,
+      "type": "string"
+    },
+    "tags": {
+      "description": "The replacement tags for the asset.\nWhen this field is undefined, nothing is updated.",
+      "items": {
+        "maxLength": 50,
+        "type": "string"
+      },
+      "maxItems": 50,
+      "type": "array"
+    }
+  },
+  "type": "object"
+}

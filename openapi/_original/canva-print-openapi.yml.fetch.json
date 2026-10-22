@@ -1,0 +1,11 @@
+{
+ "url": "https://api.canva.com/print/v1/api-specifications/2025-04-14",
+ "final": "https://api.canva.com/print/v1/api-specifications/2025-04-14",
+ "status": 200,
+ "content_type": "application/yaml;charset=utf-8",
+ "bytes": 135456,
+ "sha256": "a2efd77fbfc47a69a29aed3335ce245cddd2b5b69081feb1c72f61d44c11c3df",
+ "fetched_at": "2026-10-20",
+ "match": "verbatim",
+ "note": "linked from the provider's own llms.txt (www.canva.dev/docs/print/llms.txt); info.title, servers[] api.canva.com, contact community.canva.dev and terms canva.com/trust/legal all name Canva"
+}

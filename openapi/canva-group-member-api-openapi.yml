@@ -1,0 +1,643 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: REST API for building admin integrations with Canva
+  license:
+    name: ©2025 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Admin Group Member API
+  version: 2026-08-18
+servers:
+- description: Admin API
+  url: https://api.canva.com/admin
+tags:
+- name: group_member
+paths:
+  /v1/users/{userId}/group-memberships:
+    get:
+      description: 'Lists the group memberships of a user across all teams and groups in the caller''s organization.
+
+
+        Use this endpoint to discover which groups a user belongs to without having to enumerate teams and groups and list their members individually. Each returned `GroupMember` includes the `team_id` of the team that owns the group, so no additional team context is required to interpret the response. Use the optional `team_id` query parameter to restrict the results to group memberships within a single team.
+
+
+        Access semantics match the Get user API. The API returns a `404` if the user is not in the caller''s organization, regardless of whether the user is managed by the caller''s organization.'
+      operationId: listUserGroupMemberships
+      parameters:
+      - description: The user ID.
+        example: UAAAAAAAAA1
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: If provided, restricts the results to group memberships within the specified team.
+        example: BAAAAAAAAA1
+        explode: true
+        in: query
+        name: team_id
+        required: false
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: form
+      - description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+          To retrieve all items, you might need to make multiple requests.'
+        example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+        explode: true
+        in: query
+        name: continuation
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of group memberships to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupMembersResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                user_not_found:
+                  $ref: '#/components/examples/UserNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:group:read
+      tags:
+      - group_member
+      summary: List user group memberships
+      x-summary-source: derived
+  /v1/teams/{teamId}/groups/{groupId}/members:
+    get:
+      description: Lists members in a group.
+      operationId: listGroupMembers
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The group ID.
+        example: GAAAAAAAAA1
+        explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+          To retrieve all items, you might need to make multiple requests.'
+        example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+        explode: true
+        in: query
+        name: continuation
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of members to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupMembersResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+                group_not_found:
+                  $ref: '#/components/examples/GroupNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:group:read
+      tags:
+      - group_member
+      summary: List group members
+      x-summary-source: derived
+    post:
+      description: Adds a member to a group.
+      operationId: createGroupMember
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The group ID.
+        example: GAAAAAAAAA1
+        explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupMemberRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateGroupMemberResponse'
+          description: OK
+        '403':
+          content:
+            application/json:
+              examples:
+                user_in_max_groups:
+                  $ref: '#/components/examples/UserInMaxGroupsError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+                group_not_found:
+                  $ref: '#/components/examples/GroupNotFoundError'
+                team_member_not_found:
+                  $ref: '#/components/examples/TeamMemberNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:group:write
+      tags:
+      - group_member
+      summary: Create group member
+      x-summary-source: derived
+  /v1/teams/{teamId}/groups/{groupId}/members/{userId}:
+    delete:
+      description: Removes a member from a group.
+      operationId: deleteGroupMember
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The group ID.
+        example: GAAAAAAAAA1
+        explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The user ID.
+        example: UAAAAAAAAA1
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '204':
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+                group_not_found:
+                  $ref: '#/components/examples/GroupNotFoundError'
+                group_member_not_found:
+                  $ref: '#/components/examples/GroupMemberNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:group:write
+      tags:
+      - group_member
+      summary: Delete group member
+      x-summary-source: derived
+    get:
+      description: Gets a group member.
+      operationId: getGroupMember
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The group ID.
+        example: GAAAAAAAAA1
+        explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The user ID.
+        example: UAAAAAAAAA1
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGroupMemberResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+                group_not_found:
+                  $ref: '#/components/examples/GroupNotFoundError'
+                group_member_not_found:
+                  $ref: '#/components/examples/GroupMemberNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:group:read
+      tags:
+      - group_member
+      summary: Get group member
+      x-summary-source: derived
+    patch:
+      description: Updates a member of a group. Currently, you can only update the member's role in the group.
+      operationId: updateGroupMember
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The group ID.
+        example: GAAAAAAAAA1
+        explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: The user ID.
+        example: UAAAAAAAAA1
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGroupMemberRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateGroupMemberResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+                group_not_found:
+                  $ref: '#/components/examples/GroupNotFoundError'
+                group_member_not_found:
+                  $ref: '#/components/examples/GroupMemberNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:group:write
+      tags:
+      - group_member
+      summary: Update group member
+      x-summary-source: derived
+components:
+  examples:
+    TeamMemberNotFoundError:
+      summary: The user is not a member of the team
+      value:
+        code: user_not_found
+        message: User {userId} is not a member of team {teamId}
+    UserInMaxGroupsError:
+      summary: The user has reached the maximum number of groups
+      value:
+        code: max_limit_reached
+        message: User {userId} has reached the maximum number (70) of groups
+    TeamNotFoundError:
+      summary: The team was not found
+      value:
+        code: team_not_found
+        message: Team {teamId} not found
+    UserNotFoundError:
+      summary: The user was not found
+      value:
+        code: user_not_found
+        message: User {userId} not found
+    GroupNotFoundError:
+      summary: The group was not found
+      value:
+        code: group_not_found
+        message: Group {groupId} not found
+    GroupMemberNotFoundError:
+      summary: The user is not a member of the group
+      value:
+        code: user_not_found
+        message: User {userId} is not a member of group {groupId}
+  schemas:
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    UpdateGroupMemberResponse:
+      description: Successful response from an `updateGroupMember` request.
+      properties:
+        group_member:
+          $ref: '#/components/schemas/GroupMember'
+      required:
+      - group_member
+      type: object
+    GroupMember:
+      description: A member in a group.
+      example:
+        user_id: UAAAAAAAAA1
+        group_id: GAAAAAAAAAA
+        team_id: BAAAAAAAAAA
+        role: member
+      properties:
+        user_id:
+          description: The user ID.
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        group_id:
+          description: The group ID.
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        team_id:
+          description: The team ID.
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        role:
+          $ref: '#/components/schemas/GroupMemberRole'
+      required:
+      - group_id
+      - role
+      - team_id
+      - user_id
+      type: object
+    GroupMemberRole:
+      description: The role of the user in the group.
+      enum:
+      - admin
+      - member
+      type: string
+    ListGroupMembersResponse:
+      description: Successful response from a `listGroupMembers` request
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/GroupMember'
+          type: array
+        continuation:
+          description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+            To retrieve all items, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+      required:
+      - items
+      type: object
+    UpdateGroupMemberRequest:
+      description: Updates to be made to a group member. Only the provided fields are updated on the group member.
+      properties:
+        role:
+          $ref: '#/components/schemas/GroupMemberRole'
+      required:
+      - role
+      type: object
+    GetGroupMemberResponse:
+      description: Successful response from a `getGroupMember` request
+      properties:
+        group_member:
+          $ref: '#/components/schemas/GroupMember'
+      required:
+      - group_member
+      type: object
+    CreateGroupMemberRequest:
+      properties:
+        user_id:
+          description: The user ID.
+          example: UAAAAAAAAA1
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        role:
+          $ref: '#/components/schemas/GroupMemberRole'
+      required:
+      - role
+      - user_id
+      type: object
+    CreateGroupMemberResponse:
+      description: Successful response from a `createGroupMember` request
+      properties:
+        group_member:
+          $ref: '#/components/schemas/GroupMember'
+      required:
+      - group_member
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - permission_denied
+      - too_many_requests
+      - max_limit_reached
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - invalid_access_token
+      - missing_scope
+      - invalid_field
+      - input_unsafe
+      - display_name_unavailable
+      - team_not_found
+      - group_not_found
+      - team_is_default
+      - user_not_found
+      - saml_team_id_conflict
+      - user_not_managed
+      - saml_name_id_not_available
+      - user_linked_to_another_idp
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      - domain_restricted
+      - user_already_member
+      type: string
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes:
+            admin:user:read: Read information about a Canva user.
+            admin:user:write: Create a managed user in the organization.
+            admin:team:read: Read information about a Canva team and its users.
+            admin:team:write: Create or modify a Canva team, and add or remove its users.
+            admin:group:read: Read information about a Canva group.
+            admin:group:write: Create or modify a Canva group, and add or remove its users.
+            admin:organization:read: Read information about the Canva organization.
+            admin:auditevent:read: List audit events for the Canva organization.
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2

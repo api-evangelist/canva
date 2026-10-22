@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-order-production-event-schema.json",
+  "title": "OrderProductionEvent",
+  "description": "Event describing a change in the production status or location of items in an order.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-print-api-openapi.yml#/components/schemas/OrderProductionEvent",
+  "properties": {
+    "request_type": {
+      "enum": [
+        "production_event"
+      ],
+      "type": "string"
+    },
+    "order_reference_id": {
+      "description": "A unique, case-sensitive ID of the order in Canva's system. This must be the same value as the `orderReferenceId` path parameter.",
+      "maxLength": 255,
+      "type": "string"
+    },
+    "items": {
+      "description": "A list of updates to items in the order.",
+      "items": {
+        "$ref": "#/$defs/ItemUpdateEvent"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "items",
+    "order_reference_id",
+    "request_type"
+  ],
+  "type": "object",
+  "x-ref-extensions": {
+    "request_type": {
+      "description": "The type of request. Must be `production_event`."
+    }
+  },
+  "$defs": {
+    "ItemUpdateEvent": {
+      "description": "Updates for an item in the order.",
+      "properties": {
+        "item_reference_id": {
+          "description": "A unique, case-sensitive ID for an order item that the print partner can use when communicating with Canva.",
+          "maxLength": 11,
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ItemUpdateStatusEnum"
+        },
+        "production_location_reference": {
+          "description": "The reference ID for the production location for the order.",
+          "maxLength": 255,
+          "type": "string"
+        }
+      },
+      "required": [
+        "item_reference_id",
+        "production_location_reference",
+        "status"
+      ],
+      "type": "object"
+    },
+    "ItemUpdateStatusEnum": {
+      "description": "The updated production status of the item. The values `ready_for_pickup` and `picked_up` are only valid when updating the status of a `PickupOrder`.\n",
+      "enum": [
+        "received",
+        "producing",
+        "produced",
+        "packaging",
+        "ready_for_pickup",
+        "picked_up"
+      ],
+      "type": "string"
+    }
+  }
+}

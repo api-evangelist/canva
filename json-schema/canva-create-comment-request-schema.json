@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-comment-request-schema.json",
+  "title": "CreateCommentRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-comment-api-openapi.yml#/components/schemas/CreateCommentRequest",
+  "properties": {
+    "attached_to": {
+      "$ref": "#/$defs/CommentObjectInput"
+    },
+    "message": {
+      "description": "The comment message. This is the comment body shown in the Canva UI.\n\nYou can also mention users in your message by specifying their User ID and Team ID\nusing the format `[user_id:team_id]`. If the `assignee_id` parameter is specified, you\nmust mention the assignee in the message.",
+      "maxLength": 2048,
+      "minLength": 1,
+      "type": "string"
+    },
+    "assignee_id": {
+      "description": "Lets you assign the comment to a Canva user using their User ID. You _must_ mention the\nassigned user in the `message`.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "attached_to",
+    "message"
+  ],
+  "type": "object",
+  "$defs": {
+    "CommentObjectInput": {
+      "description": "An object containing identifying information for the design or other object you want to\nattach the comment to.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DesignCommentObjectInput"
+        }
+      ],
+      "type": "object"
+    },
+    "DesignCommentObjectInput": {
+      "description": "If the comment is attached to a Canva Design.",
+      "properties": {
+        "type": {
+          "enum": [
+            "design"
+          ],
+          "type": "string"
+        },
+        "design_id": {
+          "description": "The ID of the design you want to attach this comment to.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "design_id",
+        "type"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Canva
+providerId: canva
+name: Canva rate limits (10 requests per minute tier)
+generated: '2026-10-20'
+method: searched
+source: https://www.canva.dev/docs/apps/rest-apis/reference/users/get-user-capabilities/
+description: Canva publishes a per-operation rate limit on every Canva REST API (formerly Connect API) reference
+  page, as the sentence 'This operation is rate limited to N requests per minute for each user of your app.' 57
+  operations carry one, in seven tiers (10, 20, 30, 60, 100, 120, 180 per minute). Because the checker verifies
+  quotes against one source page, the tiers are split across files sharing the same quote; this file holds the 10-per-minute
+  tier (3 operations). Each row's quote was verified verbatim on its own `docs` page on 2026-10-20. Exhaustion returns
+  HTTP 429 with error code `too_many_requests`; no rate-limit response headers (X-RateLimit-*, RateLimit-*, Retry-After)
+  are documented.
+limit_count: 3
+numeric_limits_published: true
+responseCodes:
+  throttled: 429
+  error_code: too_many_requests
+response_headers:
+  published: none
+  x_ratelimit: false
+  ratelimit_draft_headers: false
+  retry_after: not documented
+  note: Neither the requests/responses guide nor the error reference documents any rate-limit response header; the
+    only runtime signal is the 429 itself.
+limits:
+- name: Get user capabilities
+  limit_text: This operation is rate limited to 10 requests per minute for each user of your app.
+  max: 10
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/users/me/capabilities
+  operationId: getUserCapabilities
+  spec: openapi/canva-user-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/users/get-user-capabilities/
+- name: Get details of the current user
+  limit_text: This operation is rate limited to 10 requests per minute for each user of your app.
+  max: 10
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/users/me
+  operationId: usersMe
+  spec: openapi/canva-user-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/users/users-me/
+- name: Get profile of the current user
+  limit_text: This operation is rate limited to 10 requests per minute for each user of your app.
+  max: 10
+  window: 1 minute
+  scope: per user of your app
+  endpoint: GET /v1/users/me/profile
+  operationId: getUserProfile
+  spec: openapi/canva-user-api-openapi.yml
+  docs: https://www.canva.dev/docs/apps/rest-apis/reference/users/users-profile/
+sibling_files:
+- rate-limits/canva-rate-limits.yml
+- rate-limits/canva-rest-rate-limits-20-per-minute.yml
+- rate-limits/canva-rest-rate-limits-120-per-minute.yml
+- rate-limits/canva-rest-rate-limits-30-per-minute.yml
+- rate-limits/canva-rest-rate-limits-180-per-minute.yml
+- rate-limits/canva-rest-rate-limits-60-per-minute.yml
+- rate-limits/canva-mcp-rate-limits.yml

@@ -1,0 +1,647 @@
+openapi: 3.2.0
+info:
+  contact:
+    name: Canva Developer Community
+    url: https://community.canva.dev/
+  description: REST API for building admin integrations with Canva
+  license:
+    name: ©2025 All Rights Reserved
+  termsOfService: https://www.canva.com/trust/legal/
+  title: Canva Admin Invitation API
+  version: 2026-08-18
+servers:
+- description: Admin API
+  url: https://api.canva.com/admin
+tags:
+- name: Invitation
+paths:
+  /v1/teams/{teamId}/invitations:
+    get:
+      description: 'Lists pending single-use email invitations for a team in the caller''s organization.
+
+
+        The response contains pending invitations only. Accepted, cancelled, and expired
+
+        invitations are omitted. Items include team, email, role, and expiry. They never include
+
+        the invitation URL.
+
+
+        Paginate with `limit` and `continuation`. `continuation` is an opaque token. Presence of
+
+        `continuation` means more records exist. The last page omits `continuation`.'
+      operationId: listTeamInvitations
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      - description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+          To retrieve all items, you might need to make multiple requests.'
+        example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+        explode: true
+        in: query
+        name: continuation
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of invitations to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTeamInvitationsResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Too many requests
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:read
+      tags:
+      - Invitation
+      summary: List team invitations
+      x-summary-source: derived
+    post:
+      description: 'Creates a unique, email-bound, single-use invitation to join a team in the caller''s
+
+        organization, and returns the invitation URL for the caller to deliver to the invitee. Canva
+
+        doesn''t send an email unless the caller explicitly requests it.
+
+
+        Unlike `createTeamMember`, the invitee doesn''t need to be managed by the organization: any
+
+        email address can be invited, including addresses on domains the organization hasn''t
+
+        verified. The invitee consents by accepting the invitation, logging in to their existing
+
+        Canva account or signing up with the invited email, and then joins the team.
+
+
+        Treat the returned `url` as a secret. Anyone with the URL can start the acceptance flow,
+
+        although only an account with the invited email address can complete it. Don''t log the URL
+
+        or send it over insecure channels.
+
+
+        This operation is create-or-refresh per team and email: if a pending invitation already
+
+        exists for the invitee, it''s returned with its expiry reset to 30 days from the request and
+
+        its role updated to the requested role, rather than a duplicate being created. Callers must
+
+        not assume the response is byte-for-byte immutable, because an expired-and-reaped
+
+        invitation yields a new URL. It sends another email and replaces the reminder schedule when
+
+        `send_email` is true. A call within the cooldown period returns a `429` without refreshing
+
+        the invitation, sending email, or changing reminders.'
+      operationId: createTeamInvitation
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTeamInvitationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTeamInvitationResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmailError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              examples:
+                team_at_max_capacity:
+                  $ref: '#/components/examples/TeamAtMaxCapacityError'
+                domain_restricted:
+                  $ref: '#/components/examples/DomainRestrictedError'
+                invitation_not_allowed:
+                  $ref: '#/components/examples/InvitationNotAllowedError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              examples:
+                user_already_member:
+                  $ref: '#/components/examples/UserAlreadyMemberError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+        '429':
+          content:
+            application/json:
+              examples:
+                rate_limit_exceeded:
+                  $ref: '#/components/examples/RateLimitExceededError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Too many requests
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:write
+      tags:
+      - Invitation
+      summary: Create team invitation
+      x-summary-source: derived
+  /v1/teams/{teamId}/invitations/find:
+    post:
+      description: 'Finds a pending single-use email invitation for a team in the caller''s organization.
+
+
+        The email address is restricted data and is accepted only in the JSON request body. The
+
+        response contains zero or one invitation. A matching invitation includes the invitation URL
+
+        so the caller can deliver it without refreshing the invitation.
+
+
+        Treat the returned `url` as a secret. Don''t log the URL or send it over insecure channels.'
+      operationId: findTeamInvitation
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindTeamInvitationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                found:
+                  $ref: '#/components/examples/FindTeamInvitationFound'
+                no_match:
+                  $ref: '#/components/examples/FindTeamInvitationNoMatch'
+              schema:
+                $ref: '#/components/schemas/FindTeamInvitationResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmailError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:read
+      tags:
+      - Invitation
+      summary: Find team invitation
+      x-summary-source: derived
+  /v1/teams/{teamId}/invitations/cancel:
+    post:
+      description: 'Cancels the pending invitation for an email address in a team, so it can
+
+        no longer be accepted. Any invitation URL previously issued for that
+
+        team and email stops working, and Canva sends no further reminders for
+
+        it.
+
+
+        The invitation is identified by `email` because invitations have no
+
+        public ID in this version of the API.
+
+
+        Cancelling is idempotent and always succeeds for a team you own,
+
+        whether or not a pending invitation existed. The response doesn''t
+
+        reveal whether there was anything to cancel, so it''s safe to retry. To
+
+        find out whether an invitation is still pending, use
+
+        `listTeamInvitations`; to find out whether the invitee already joined,
+
+        use `listTeamMembers`.
+
+
+        Cancelling doesn''t affect a user who has already accepted. If
+
+        acceptance happens first, this operation has no effect and the invitee
+
+        remains a team member. If cancellation happens first, the invitee sees
+
+        the standard invalid-invitation page when they follow their URL.
+
+
+        To re-invite the same address after cancelling, call
+
+        `createTeamInvitation` again. This issues a new invitation with a new
+
+        URL.'
+      operationId: cancelTeamInvitation
+      parameters:
+      - description: The team ID.
+        example: BAAAAAAAAA1
+        explode: false
+        in: path
+        name: teamId
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelTeamInvitationRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              examples:
+                invalid_email:
+                  $ref: '#/components/examples/InvalidEmailError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              examples:
+                team_not_found:
+                  $ref: '#/components/examples/TeamNotFoundError'
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error Response
+      security:
+      - oauthClientCredentials:
+        - admin:team:write
+      tags:
+      - Invitation
+      summary: Cancel team invitation
+      x-summary-source: derived
+components:
+  examples:
+    UserAlreadyMemberError:
+      summary: The invitee is already a member of the team
+      value:
+        code: user_already_member
+        message: A user with this email is already a member of team {teamId}
+    TeamNotFoundError:
+      summary: The team was not found
+      value:
+        code: team_not_found
+        message: Team {teamId} not found
+    InvalidEmailError:
+      summary: The email address is not valid
+      value:
+        code: invalid_field
+        message: '''email'' must be a valid email address.'
+    FindTeamInvitationFound:
+      summary: A pending invitation matches the email
+      value:
+        invitation:
+          team_id: BAAAAAAAAA1
+          email: drsmith@brightsmiledental.com
+          role: member
+          expires_at: 1788499200
+          url: https://www.canva.com/brand/join?token=EXAMPLEQi1pbnZpdGU&referrer=team-invite
+    InvitationNotAllowedError:
+      summary: An invitation can't be created for this team or recipient
+      value:
+        code: permission_denied
+        message: An invitation can't be created for this team or recipient
+    DomainRestrictedError:
+      summary: The organization restricts invitations to email domains it owns
+      value:
+        code: domain_restricted
+        message: An invitation can't be created for this email because only users with an email owned by the organization can be invited
+    FindTeamInvitationNoMatch:
+      summary: No pending invitation matches the email
+      value: {}
+    TeamAtMaxCapacityError:
+      summary: A target team has reached its maximum member capacity
+      value:
+        code: max_limit_reached
+        message: One or more provided teams have reached its maximum member capacity
+    RateLimitExceededError:
+      summary: An invitation email can't be resent for this recipient
+      value:
+        code: too_many_requests
+        message: Email can't be resent for this recipient within the resend cooldown
+  schemas:
+    CreateTeamInvitationRequest:
+      example:
+        email: drsmith@brightsmiledental.com
+        role: member
+      properties:
+        email:
+          description: 'The email address to invite. The email domain doesn''t need to be verified by the
+
+            organization.'
+          example: drsmith@brightsmiledental.com
+          format: email
+          maxLength: 254
+          minLength: 1
+          type: string
+        role:
+          $ref: '#/components/schemas/TeamMemberRole'
+        send_email:
+          default: false
+          description: 'When true, Canva sends the invitation email and its standard reminders. When false or
+
+            omitted, Canva sends no email or reminder.'
+          type: boolean
+      required:
+      - email
+      - role
+      type: object
+    TeamMemberRole:
+      description: The role of the member in the team.
+      enum:
+      - admin
+      - designer
+      - member
+      type: string
+    CreateTeamInvitationResponse:
+      description: Successful response from a `createTeamInvitation` request
+      properties:
+        invitation:
+          $ref: '#/components/schemas/TeamInvitation'
+      required:
+      - invitation
+      type: object
+    FindTeamInvitationRequest:
+      example:
+        email: drsmith@brightsmiledental.com
+      properties:
+        email:
+          description: The email address associated with the invitation.
+          example: drsmith@brightsmiledental.com
+          format: email
+          maxLength: 254
+          minLength: 1
+          type: string
+      required:
+      - email
+      type: object
+    FindTeamInvitationResponse:
+      description: Successful response from a `findTeamInvitation` request
+      example:
+        invitation:
+          team_id: BAAAAAAAAA1
+          email: drsmith@brightsmiledental.com
+          role: member
+          expires_at: 1788499200
+          url: https://www.canva.com/brand/join?token=EXAMPLEQi1pbnZpdGU&referrer=team-invite
+      properties:
+        invitation:
+          $ref: '#/components/schemas/TeamInvitation'
+      type: object
+    ErrorCode:
+      description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
+
+        '
+      enum:
+      - permission_denied
+      - too_many_requests
+      - max_limit_reached
+      - bad_request_body
+      - bad_http_method
+      - bad_request_params
+      - bad_query_params
+      - endpoint_not_found
+      - invalid_access_token
+      - missing_scope
+      - invalid_field
+      - input_unsafe
+      - display_name_unavailable
+      - team_not_found
+      - group_not_found
+      - team_is_default
+      - user_not_found
+      - saml_team_id_conflict
+      - user_not_managed
+      - saml_name_id_not_available
+      - user_linked_to_another_idp
+      - user_email_unverified
+      - user_not_active
+      - user_pending_consent
+      - account_exists
+      - domain_restricted
+      - user_already_member
+      type: string
+    CancelTeamInvitationRequest:
+      example:
+        email: drsmith@brightsmiledental.com
+      properties:
+        email:
+          description: The email address associated with the invitation.
+          example: drsmith@brightsmiledental.com
+          format: email
+          maxLength: 254
+          minLength: 1
+          type: string
+      required:
+      - email
+      type: object
+    ListTeamInvitationsResponse:
+      description: Successful response from a `listTeamInvitations` request
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/TeamInvitation'
+          type: array
+        continuation:
+          description: 'If the success response contains a continuation token, the list contains more items you can list. You can use this token as a query parameter and retrieve more items from the list, for example `?continuation={continuation}`.
+
+
+            To retrieve all items, you might need to make multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+      required:
+      - items
+      type: object
+    TeamInvitation:
+      description: 'A pending invitation for an email address to join a team. The invitation record exists only
+
+        while the invitation can still be accepted.'
+      example:
+        team_id: BAAAAAAAAA1
+        email: drsmith@brightsmiledental.com
+        role: member
+        expires_at: 1788499200
+        url: https://www.canva.com/brand/join?token=EXAMPLEQi1pbnZpdGU&referrer=team-invite
+      properties:
+        team_id:
+          description: The ID of the team the invitation grants access to.
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        email:
+          description: The invited email address. Only an account with this email can accept.
+          format: email
+          type: string
+        role:
+          $ref: '#/components/schemas/TeamMemberRole'
+        expires_at:
+          description: 'When the invitation expires, as a Unix timestamp (in seconds). This is always 30 days
+
+            after the create or refresh request that issued it. Expired invitations can''t be
+
+            accepted.'
+          format: int64
+          type: integer
+        url:
+          description: 'The invitation URL. Redirect the invitee to this URL to accept the invitation. Treat it
+
+            as a secret: don''t log it or send it over insecure channels. Create and a matched find
+
+            result always return this field. Unfiltered list responses omit it.'
+          format: uri
+          type: string
+      required:
+      - email
+      - expires_at
+      - role
+      - team_id
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+  securitySchemes:
+    oauthClientCredentials:
+      flows:
+        clientCredentials:
+          scopes:
+            admin:user:read: Read information about a Canva user.
+            admin:user:write: Create a managed user in the organization.
+            admin:team:read: Read information about a Canva team and its users.
+            admin:team:write: Create or modify a Canva team, and add or remove its users.
+            admin:group:read: Read information about a Canva group.
+            admin:group:write: Create or modify a Canva group, and add or remove its users.
+            admin:organization:read: Read information about the Canva organization.
+            admin:auditevent:read: List audit events for the Canva organization.
+          tokenUrl: https://api.canva.com/auth/v1/oauth/token
+      type: oauth2

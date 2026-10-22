@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-users-me-response-schema.json",
+  "title": "UsersMeResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-user-api-openapi.yml#/components/schemas/UsersMeResponse",
+  "properties": {
+    "team_user": {
+      "$ref": "#/$defs/TeamUserSummary"
+    }
+  },
+  "required": [
+    "team_user"
+  ],
+  "type": "object",
+  "$defs": {
+    "TeamUserSummary": {
+      "description": "Metadata for the user, consisting of the User ID and Team ID.",
+      "properties": {
+        "user_id": {
+          "description": "The ID of the user.",
+          "type": "string"
+        },
+        "team_id": {
+          "description": "The ID of the user's Canva Team.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "team_id",
+        "user_id"
+      ],
+      "type": "object"
+    }
+  }
+}

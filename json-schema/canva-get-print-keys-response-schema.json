@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-print-keys-response-schema.json",
+  "title": "GetPrintKeysResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-print-api-openapi.yml#/components/schemas/GetPrintKeysResponse",
+  "properties": {
+    "keys": {
+      "description": "A JSON Web Key Set (JWKS) with public keys used for signing requests. You can use this JWKS to verify that a request was sent from Canva.",
+      "items": {
+        "$ref": "#/$defs/EdDsaJwk"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "keys"
+  ],
+  "type": "object",
+  "$defs": {
+    "EdDsaJwk": {
+      "description": "A JSON Web Key Set (JWKS) using the Edwards-curve Digital Signature Algorithm (EdDSA), as\ndescribed in [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#appendix-A).",
+      "properties": {
+        "kid": {
+          "description": "The key ID, a unique identifier for the public key. When the keys used to sign requests are rotated, you can use this ID to select the correct key within a JWKS during the key rollover. This value is case-sensitive.",
+          "type": "string"
+        },
+        "kty": {
+          "description": "The key type, which identifies the cryptographic algorithm family used with the key, such as `RSA` or `EC`. Only Octet Key Pairs (OKPs) are supported.\nThis value is case-sensitive. For more information, see [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).",
+          "type": "string"
+        },
+        "crv": {
+          "description": "The curve property, which identifies the curve used for elliptical curve encryptions. Only `Ed25519` is supported. For more information, see [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).",
+          "type": "string"
+        },
+        "x": {
+          "description": "The public key of an elliptical curve encryption. The key\nis encoded with `Base64urlUInt`. For more information, see [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037#section-2).",
+          "type": "string"
+        }
+      },
+      "required": [
+        "crv",
+        "kid",
+        "kty",
+        "x"
+      ],
+      "type": "object"
+    }
+  }
+}

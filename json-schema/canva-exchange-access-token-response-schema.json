@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-exchange-access-token-response-schema.json",
+  "title": "ExchangeAccessTokenResponse",
+  "description": "Exchange auth token to access token.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-oauth-api-openapi.yml#/components/schemas/ExchangeAccessTokenResponse",
+  "properties": {
+    "access_token": {
+      "description": "The bearer access token to use to authenticate to Canva REST API endpoints. If requested using a `authorization_code` or `refresh_token`, this allows you to act on behalf of a user.",
+      "type": "string"
+    },
+    "refresh_token": {
+      "description": "The token that you can use to refresh the access token.",
+      "type": "string"
+    },
+    "token_type": {
+      "description": "The token type returned. This is always `Bearer`.",
+      "type": "string"
+    },
+    "expires_in": {
+      "description": "The expiry time (in seconds) for the access token.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "scope": {
+      "description": "The [scopes](https://www.canva.dev/docs/apps/rest-apis/scopes/) that the token has been granted.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "access_token",
+    "expires_in",
+    "refresh_token",
+    "token_type"
+  ],
+  "type": "object"
+}

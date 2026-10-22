@@ -361,56 +361,11 @@ paths:
       x-summary-source: derived
 components:
   examples:
-    GetBrandTemplatePermissionDeniedError:
-      summary: Not allowed to access the brand template
-      value:
-        code: permission_denied
-        message: Not allowed to access brand template with id '{brandTemplateId}'
-    ListDesignsForbiddenError:
-      summary: Not allowed to access the design list
-      value:
-        code: permission_denied
-        message: Not allowed to access design list
-    GetBrandTemplateDatasetNotFoundError:
-      summary: Brand template not found
-      value:
-        code: not_found
-        message: Brand template with id '{brandTemplateId}' not found
-    UnableToFetchDesignsError:
-      summary: Unable to fetch designs
-      value:
-        code: bad_query_params
-        message: Unable to fetch designs
-    InvalidContinuationError:
-      summary: The continuation token is invalid
-      value:
-        code: bad_query_params
-        message: 'Invalid continuation: {continuation}'
-    ResourceLimitExceededError:
-      summary: Validation error - resource limit exceeded
-      value:
-        code: bad_request_params
-        message: Design contains {count} {resource_name}, but brand templates can only contain up to {max}. Reduce the number and try again.
-    GetBrandTemplateDatasetPermissionDeniedError:
-      summary: Not allowed to access the brand template
-      value:
-        code: permission_denied
-        message: User does not have permission to access brand template with id '{brandTemplateId}'
     GetBrandTemplateNotFoundError:
       summary: Brand template not found
       value:
         code: not_found
         message: Brand template with id '{brandTemplateId}' not found
-    PublishBrandTemplateDesignNotFoundError:
-      summary: The design was not found
-      value:
-        code: not_found
-        message: Design with id {designId} not found
-    InvalidDesignIdError:
-      summary: The design ID format is invalid
-      value:
-        code: bad_request_params
-        message: Design ID '{designId}' is not valid
     PublishBrandTemplateSuccessExample:
       description: Response from successfully publishing a brand template. Note that the thumbnail might be null initially and will be available after async processing completes.
       summary: Successful brand template publishing
@@ -422,11 +377,11 @@ components:
           create_url: https://www.canva.com/design/EABCtemplate789/remix
           created_at: 1704110400
           updated_at: 1704110400
-    PublishPermissionDeniedError:
-      summary: User does not have permission to publish the design as a brand template
+    UnableToFetchDesignsError:
+      summary: Unable to fetch designs
       value:
-        code: permission_denied
-        message: User does not have permission to publish design {designId} as a brand template
+        code: bad_query_params
+        message: Unable to fetch designs
     FindBrandTemplatesForbiddenError:
       summary: Not allowed to find metadata for brand templates
       value:
@@ -437,84 +392,86 @@ components:
       value:
         code: invalid_field
         message: '''design_types'' contains a design type that isn''t available: {designType}.'
+    GetBrandTemplatePermissionDeniedError:
+      summary: Not allowed to access the brand template
+      value:
+        code: permission_denied
+        message: Not allowed to access brand template with id '{brandTemplateId}'
+    PublishBrandTemplateDesignNotFoundError:
+      summary: The design was not found
+      value:
+        code: not_found
+        message: Design with id {designId} not found
+    PublishPermissionDeniedError:
+      summary: User does not have permission to publish the design as a brand template
+      value:
+        code: permission_denied
+        message: User does not have permission to publish design {designId} as a brand template
+    GetBrandTemplateDatasetPermissionDeniedError:
+      summary: Not allowed to access the brand template
+      value:
+        code: permission_denied
+        message: User does not have permission to access brand template with id '{brandTemplateId}'
+    ResourceLimitExceededError:
+      summary: Validation error - resource limit exceeded
+      value:
+        code: bad_request_params
+        message: Design contains {count} {resource_name}, but brand templates can only contain up to {max}. Reduce the number and try again.
+    ListDesignsForbiddenError:
+      summary: Not allowed to access the design list
+      value:
+        code: permission_denied
+        message: Not allowed to access design list
+    InvalidDesignIdError:
+      summary: The design ID format is invalid
+      value:
+        code: bad_request_params
+        message: Design ID '{designId}' is not valid
+    GetBrandTemplateDatasetNotFoundError:
+      summary: Brand template not found
+      value:
+        code: not_found
+        message: Brand template with id '{brandTemplateId}' not found
+    InvalidContinuationError:
+      summary: The continuation token is invalid
+      value:
+        code: bad_query_params
+        message: 'Invalid continuation: {continuation}'
   schemas:
-    PublishBrandTemplateResponse:
-      description: Response from a successful publishBrandTemplate request. Contains the published brand template with all its metadata. Note that the `thumbnail` field might be `null` initially as thumbnails are generated asynchronously.
+    TextDataField:
+      description: A text data field. You can autofill it with a text value.
       properties:
-        brand_template:
-          $ref: '#/components/schemas/BrandTemplate'
-      required:
-      - brand_template
-      type: object
-    GetBrandTemplateDatasetResponse:
-      description: Successful response from a `getBrandTemplateDataset` request.
-      properties:
-        dataset:
-          additionalProperties:
-            $ref: '#/components/schemas/DataField'
-          description: 'The dataset definition. It contains the data inputs available for use with the
-
-            [Create design autofill job API](https://www.canva.dev/docs/apps/rest-apis/reference/autofills/create-design-autofill-job/).'
-          example:
-            cute_pet_image_of_the_day:
-              type: image
-            cute_pet_witty_pet_says:
-              type: text
-            cute_pet_sales_chart:
-              type: chart
-          type: object
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
+        type:
+          enum:
+          - text
           type: string
       required:
-      - code
-      - message
+      - type
       type: object
-    DataField:
-      description: A named data field that can be autofilled.
-      discriminator:
-        mapping:
-          image: '#/components/schemas/ImageDataField'
-          text: '#/components/schemas/TextDataField'
-          chart: '#/components/schemas/ChartDataField'
-          sheet: '#/components/schemas/SheetDataField'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/ImageDataField'
-      - $ref: '#/components/schemas/TextDataField'
-      - $ref: '#/components/schemas/ChartDataField'
-      - $ref: '#/components/schemas/SheetDataField'
-      type: object
-    Thumbnail:
-      description: A thumbnail image representing the object.
+    SortByType:
+      default: relevance
+      enum:
+      - relevance
+      - modified_descending
+      - modified_ascending
+      - title_descending
+      - title_ascending
+      type: string
+      x-enum-descriptions:
+      - Sort results using a relevance algorithm.
+      - Sort results by the date last modified in descending order.
+      - Sort results by the date last modified in ascending order.
+      - Sort results by title in descending order.
+      - Sort results by title in ascending order
+    SheetDataField:
+      description: A sheet data field. You can autofill it with tabular sheet data.
       properties:
-        width:
-          description: The width of the thumbnail image in pixels.
-          example: 595
-          format: int32
-          type: integer
-        height:
-          description: The height of the thumbnail image in pixels.
-          example: 335
-          format: int32
-          type: integer
-        url:
-          description: 'A URL for retrieving the thumbnail image.
-
-            This URL expires after 15 minutes. This URL includes a query string
-
-            that''s required for retrieving the thumbnail.'
-          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+        type:
+          enum:
+          - sheet
           type: string
       required:
-      - height
-      - url
-      - width
+      - type
       type: object
     BrandTemplate:
       description: An object representing a brand template with associated metadata.
@@ -560,15 +517,70 @@ components:
       - updated_at
       - view_url
       type: object
-    TextDataField:
-      description: A text data field. You can autofill it with a text value.
+    Thumbnail:
+      description: A thumbnail image representing the object.
       properties:
-        type:
-          enum:
-          - text
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
           type: string
       required:
-      - type
+      - height
+      - url
+      - width
+      type: object
+    DataField:
+      description: A named data field that can be autofilled.
+      discriminator:
+        mapping:
+          image: '#/components/schemas/ImageDataField'
+          text: '#/components/schemas/TextDataField'
+          chart: '#/components/schemas/ChartDataField'
+          sheet: '#/components/schemas/SheetDataField'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ImageDataField'
+      - $ref: '#/components/schemas/TextDataField'
+      - $ref: '#/components/schemas/ChartDataField'
+      - $ref: '#/components/schemas/SheetDataField'
+      type: object
+    ListBrandTemplatesResponse:
+      properties:
+        continuation:
+          description: 'If the success response contains a continuation token, the user has access to more
+
+            brand templates you can list. You can use this token as a query parameter and retrieve
+
+            more templates from the list, for example
+
+            `/v1/brand-templates?continuation={continuation}`.
+
+            To retrieve all the brand templates available to the user, you might need to make
+
+            multiple requests.'
+          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
+          type: string
+        items:
+          description: The list of brand templates.
+          items:
+            $ref: '#/components/schemas/BrandTemplate'
+          type: array
+      required:
+      - items
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -659,85 +671,6 @@ components:
       - domain_restricted
       - user_already_member
       type: string
-    DatasetFilter:
-      default: any
-      enum:
-      - any
-      - non_empty
-      type: string
-      x-enum-descriptions:
-      - Brand templates with and without dataset definitions.
-      - Brand templates with one or more data fields defined.
-    OwnershipType:
-      default: any
-      enum:
-      - any
-      - owned
-      - shared
-      type: string
-      x-enum-descriptions:
-      - Owned by and shared with the user.
-      - Owned by the user.
-      - Shared with the user.
-    SheetDataField:
-      description: A sheet data field. You can autofill it with tabular sheet data.
-      properties:
-        type:
-          enum:
-          - sheet
-          type: string
-      required:
-      - type
-      type: object
-    ListBrandTemplatesResponse:
-      properties:
-        continuation:
-          description: 'If the success response contains a continuation token, the user has access to more
-
-            brand templates you can list. You can use this token as a query parameter and retrieve
-
-            more templates from the list, for example
-
-            `/v1/brand-templates?continuation={continuation}`.
-
-            To retrieve all the brand templates available to the user, you might need to make
-
-            multiple requests.'
-          example: RkFGMgXlsVTDbMd:MR3L0QjiaUzycIAjx0yMyuNiV0OildoiOwL0x32G4NjNu4FwtAQNxowUQNMMYN
-          type: string
-        items:
-          description: The list of brand templates.
-          items:
-            $ref: '#/components/schemas/BrandTemplate'
-          type: array
-      required:
-      - items
-      type: object
-    ChartDataField:
-      description: A chart data field. You can autofill it with tabular data.
-      properties:
-        type:
-          enum:
-          - chart
-          type: string
-      required:
-      - type
-      type: object
-    SortByType:
-      default: relevance
-      enum:
-      - relevance
-      - modified_descending
-      - modified_ascending
-      - title_descending
-      - title_ascending
-      type: string
-      x-enum-descriptions:
-      - Sort results using a relevance algorithm.
-      - Sort results by the date last modified in descending order.
-      - Sort results by the date last modified in ascending order.
-      - Sort results by title in descending order.
-      - Sort results by title in ascending order
     ImageDataField:
       description: 'An image data field. You can autofill it with an image by providing its `asset_id`.
 
@@ -762,8 +695,75 @@ components:
       required:
       - design_id
       type: object
+    ChartDataField:
+      description: A chart data field. You can autofill it with tabular data.
+      properties:
+        type:
+          enum:
+          - chart
+          type: string
+      required:
+      - type
+      type: object
+    GetBrandTemplateDatasetResponse:
+      description: Successful response from a `getBrandTemplateDataset` request.
+      properties:
+        dataset:
+          additionalProperties:
+            $ref: '#/components/schemas/DataField'
+          description: 'The dataset definition. It contains the data inputs available for use with the
+
+            [Create design autofill job API](https://www.canva.dev/docs/apps/rest-apis/reference/autofills/create-design-autofill-job/).'
+          example:
+            cute_pet_image_of_the_day:
+              type: image
+            cute_pet_witty_pet_says:
+              type: text
+            cute_pet_sales_chart:
+              type: chart
+          type: object
+      type: object
+    OwnershipType:
+      default: any
+      enum:
+      - any
+      - owned
+      - shared
+      type: string
+      x-enum-descriptions:
+      - Owned by and shared with the user.
+      - Owned by the user.
+      - Shared with the user.
     GetBrandTemplateResponse:
       description: Successful response from a `getBrandTemplate` request.
+      properties:
+        brand_template:
+          $ref: '#/components/schemas/BrandTemplate'
+      required:
+      - brand_template
+      type: object
+    DatasetFilter:
+      default: any
+      enum:
+      - any
+      - non_empty
+      type: string
+      x-enum-descriptions:
+      - Brand templates with and without dataset definitions.
+      - Brand templates with one or more data fields defined.
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    PublishBrandTemplateResponse:
+      description: Response from a successful publishBrandTemplate request. Contains the published brand template with all its metadata. Note that the `thumbnail` field might be `null` initially as thumbnails are generated asynchronously.
       properties:
         brand_template:
           $ref: '#/components/schemas/BrandTemplate'

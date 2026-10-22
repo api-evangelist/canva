@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-create-design-resize-job-request-schema.json",
+  "title": "CreateDesignResizeJobRequest",
+  "description": "Body parameters for starting a resize job for a design.\nIt must include a design ID, and one of the supported design type.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-resize-api-openapi.yml#/components/schemas/CreateDesignResizeJobRequest",
+  "properties": {
+    "design_id": {
+      "description": "The design ID.",
+      "type": "string"
+    },
+    "design_type": {
+      "$ref": "#/$defs/DesignTypeInput"
+    }
+  },
+  "required": [
+    "design_id",
+    "design_type"
+  ],
+  "type": "object",
+  "$defs": {
+    "CustomDesignTypeInput": {
+      "description": "Provide the width and height to define a custom design type.\n\nEach dimension must be between 40 and 8000 pixels, and the\ntotal area (width × height) must not exceed 25,000,000 pixels\nsquared. For example, a design with a width of 8000 pixels can\nhave a maximum height of 3125 pixels.",
+      "properties": {
+        "type": {
+          "enum": [
+            "custom"
+          ],
+          "type": "string"
+        },
+        "width": {
+          "description": "The width of the design, in pixels.",
+          "format": "int32",
+          "maximum": 8000,
+          "minimum": 40,
+          "type": "integer"
+        },
+        "height": {
+          "description": "The height of the design, in pixels.",
+          "format": "int32",
+          "maximum": 8000,
+          "minimum": 40,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "height",
+        "type",
+        "width"
+      ],
+      "type": "object"
+    },
+    "DesignTypeInput": {
+      "description": "The desired design type.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/PresetDesignTypeInput"
+        },
+        {
+          "$ref": "#/$defs/CustomDesignTypeInput"
+        }
+      ],
+      "type": "object"
+    },
+    "PresetDesignTypeInput": {
+      "description": "Provide the common design type.",
+      "properties": {
+        "type": {
+          "enum": [
+            "preset"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/$defs/PresetDesignTypeName"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "PresetDesignTypeName": {
+      "description": "The name of the design type.",
+      "enum": [
+        "doc",
+        "email",
+        "presentation",
+        "whiteboard"
+      ],
+      "type": "string",
+      "x-enum-descriptions": [
+        "A [Canva doc](https://www.canva.com/docs/); a document for Canva's online text editor.",
+        "An [email](https://www.canva.com/emails/); for creating email campaign designs.",
+        "A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.",
+        "A [whiteboard](https://www.canva.com/online-whiteboard/); a design which gives you infinite space to collaborate."
+      ]
+    }
+  }
+}

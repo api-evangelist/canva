@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/canva/main/json-schema/canva-get-signing-public-keys-response-schema.json",
+  "title": "GetSigningPublicKeysResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/canva-connect-api-openapi.yml#/components/schemas/GetSigningPublicKeysResponse",
+  "properties": {
+    "keys": {
+      "description": "A Json Web Key Set (JWKS) with public keys used for signing webhooks. You can use this JWKS\nto verify that a webhook was sent from Canva.",
+      "items": {
+        "$ref": "#/$defs/EdDsaJwk"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "keys"
+  ],
+  "type": "object",
+  "$defs": {
+    "EdDsaJwk": {
+      "description": "A JSON Web Key Set (JWKS) using the Edwards-curve Digital Signature Algorithm (EdDSA), as\ndescribed in [RFC-8037](https://www.rfc-editor.org/rfc/rfc8037.html#appendix-A).",
+      "properties": {
+        "kid": {
+          "description": "The `kid` (key ID) is a unique identifier for a public key. When the keys used\nto sign webhooks are rotated, you can use this ID to select the correct key\nwithin a JWK Set during the key rollover. The `kid` value is case-sensitive.",
+          "type": "string"
+        },
+        "kty": {
+          "description": "The `kty` (key type) identifies the cryptographic algorithm family used with\nthe key, such as \"RSA\" or \"EC\". Only Octet Key Pairs\n(`OKPs`) are supported.\nThe `kty` value is case-sensitive. For more information on the `kty` property\nand OKPs, see [RFC-8037 — \"kty\" (Key Type)\nParameter](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).",
+          "type": "string"
+        },
+        "crv": {
+          "description": "The `crv` (curve) property identifies the curve used for elliptical curve\nencryptions. Only \"Ed25519\" is supported. For more information on the `crv`\nproperty, see [RFC-8037 — Key Type\n\"OKP\"](https://www.rfc-editor.org/rfc/rfc8037.html#section-2).",
+          "type": "string"
+        },
+        "x": {
+          "description": "The `x` property is the public key of an elliptical curve encryption. The key\nis Base64urlUInt-encoded. For more information on the `x` property, see\n[RFC-8037 — \"x\" (X Coordinate)\nParameter](https://www.rfc-editor.org/rfc/rfc8037#section-2).",
+          "type": "string"
+        }
+      },
+      "required": [
+        "crv",
+        "kid",
+        "kty",
+        "x"
+      ],
+      "type": "object"
+    }
+  }
+}
