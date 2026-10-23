@@ -19,29 +19,29 @@ artifacts:
     method: searched
     evidence: declared in the artifact
   collections/canva-assets-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-assets-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-assets-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-assets-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-autofills-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-autofills-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-autofills-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-autofills-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-brand-templates-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-brand-templates-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-brand-templates-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-brand-templates-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-comments-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-comments-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-comments-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-comments-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-connect-api.opencollection.json:
     method: derived
     evidence: openapi/canva-connect-api
@@ -49,35 +49,35 @@ artifacts:
     method: derived
     evidence: openapi/canva-connect-api
   collections/canva-designs-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-designs-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-designs-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-designs-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-exports-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-exports-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-exports-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-exports-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-folders-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-folders-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-folders-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-folders-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-resizes-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-resizes-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-resizes-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-resizes-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-users-api.opencollection.json:
-    method: derived
-    evidence: openapi/canva-users-api
+    method: unknown
+    evidence: no authorship recorded
   collections/canva-users-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-users-api
+    method: unknown
+    evidence: no authorship recorded
   components/canva-components.yml:
     method: searched
     evidence: declared in the artifact
@@ -264,6 +264,15 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  hosts/canva-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
+    method: generated
+    evidence: carries an API Evangelist house phrase
+  integrations/canva-integration-edges.yml:
+    method: searched
+    evidence: declared in the artifact
   json-ld/canva-connect-context.jsonld:
     method: unknown
     evidence: no authorship recorded
@@ -435,7 +444,238 @@ artifacts:
   json-schema/canva-connect-users-me-response-schema.json:
     method: unknown
     evidence: no authorship recorded
+  json-schema/canva-create-asset-upload-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-comment-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-autofill-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-autofill-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-export-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-export-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-import-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-merge-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-merge-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-resize-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-design-resize-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-folder-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-image-to-design-import-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-image-to-design-import-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-print-partner-design-export-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-print-partner-design-export-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-print-partner-design-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-reply-v2-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-thread-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-url-asset-upload-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-url-asset-upload-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-url-import-job-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-url-import-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-create-user-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   json-schema/canva-design-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-exchange-access-token-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-exchange-access-token-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-app-jwks-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-asset-upload-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-brand-template-dataset-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-brand-template-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-analytics-links-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-analytics-page-views-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-analytics-page-views-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-analytics-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-analytics-viewers-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-analytics-views-over-time-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-autofill-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-dataset-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-export-formats-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-export-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-merge-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-pages-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-design-resize-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-image-to-design-import-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-list-design-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-print-keys-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-reply-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-signing-public-keys-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-thread-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-url-asset-upload-job-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-get-user-capabilities-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-introspect-token-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-introspect-token-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-json-web-key-set-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-list-audit-events-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-list-brand-templates-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-list-folder-items-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-list-group-members-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-list-replies-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-list-team-invitations-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-list-team-members-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-move-folder-item-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-order-cost-summary-event-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-order-error-event-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-order-production-event-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-order-shipment-event-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-publish-brand-template-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-publish-brand-template-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-revoke-tokens-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-revoke-tokens-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-update-asset-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-update-folder-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-update-user-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-user-info-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-user-profile-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/canva-users-me-response-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-structure/canva-connect-asset-response-structure.json:
@@ -603,127 +843,7 @@ artifacts:
   json-structure/canva-connect-users-me-response-structure.json:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -807,15 +927,36 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/canva-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
+  llms/canva-apps-llms.txt:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   llms/canva-connect-llms.txt:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
   llms/canva-llms-index.yml:
     method: searched
     evidence: declared in the artifact
+  llms/canva-llms-provenance.yml:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   llms/canva-llms.txt:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
@@ -825,86 +966,244 @@ artifacts:
   mcp/canva-tool-crosswalk.yml:
     method: derived
     evidence: declared in the artifact
-  openapi/_original/canva-connect-api-openapi.yml:
+  openapi/_original/canva-admin-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: fetched from https://www.canva.dev/sources/admin/api/latest/api.yml (sha256 c55a0ee210bf,
+      fetched 2026-10-20)
+  openapi/_original/canva-openapi.yml:
+    method: harvested
+    evidence: byte-identical to https://www.canva.dev/sources/connect/api/latest/api.yml (sha256 40ca7f6a753b,
+      fetched 2026-10-19)
+  openapi/_original/canva-print-openapi.yml:
+    method: harvested
+    evidence: fetched from https://api.canva.com/print/v1/api-specifications/2025-04-14 (sha256 a2efd77fbfc4,
+      fetched 2026-10-20)
   openapi/canva-analytics-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-api-specification-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-app-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-asset-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-assets-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-audit-event-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-autofill-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-autofills-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-brand-template-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-brand-templates-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-comment-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-comments-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-connect-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-design-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-design-generation-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-design-import-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-designs-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-export-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-exports-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-folder-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-folders-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-group-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-group-member-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-image-generation-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-image-transformation-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-invitation-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-key-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-merge-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-oauth-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-oidc-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-order-cost-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-order-event-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-organization-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-resize-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-resizes-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-team-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/canva-team-member-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/canva-user-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/canva-users-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  overlays/canva-admin-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-analytics-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-analytics-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-app-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-app-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-asset-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-asset-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-assets-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-autofill-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-autofill-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-autofills-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-brand-template-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-brand-template-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-brand-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-comment-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-comment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-comments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/canva-connect-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-connect-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-design-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-design-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-design-generation-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-design-import-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-design-import-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-designs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-export-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-export-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-exports-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-folder-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-folder-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-folders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-image-generation-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-image-transformation-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-merge-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-merge-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-oauth-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-oauth-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-oidc-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-oidc-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-print-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-resize-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-resize-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-resizes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-user-api-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/canva-user-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/canva-users-api-phrasing-overlay.yaml:
     method: generated
     evidence: declared in the artifact
   packages/canva-packages.yml:
@@ -914,36 +1213,63 @@ artifacts:
     method: searched
     evidence: declared in the artifact
   postman/canva-assets-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-assets-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-autofills-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-autofills-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-brand-templates-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-brand-templates-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-comments-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-comments-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-designs-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-designs-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-exports-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-exports-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-folders-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-folders-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-resizes-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-resizes-api
+    method: unknown
+    evidence: no authorship recorded
   postman/canva-users-api.postman_collection.json:
-    method: derived
-    evidence: openapi/canva-users-api
+    method: unknown
+    evidence: no authorship recorded
+  rate-limits/canva-mcp-rate-limits.yml:
+    method: searched
+    evidence: declared in the artifact
   rate-limits/canva-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
+  rate-limits/canva-rest-rate-limits-10-per-minute.yml:
+    method: searched
+    evidence: declared in the artifact
+  rate-limits/canva-rest-rate-limits-120-per-minute.yml:
+    method: searched
+    evidence: declared in the artifact
+  rate-limits/canva-rest-rate-limits-180-per-minute.yml:
+    method: searched
+    evidence: declared in the artifact
+  rate-limits/canva-rest-rate-limits-20-per-minute.yml:
+    method: searched
+    evidence: declared in the artifact
+  rate-limits/canva-rest-rate-limits-30-per-minute.yml:
+    method: searched
+    evidence: declared in the artifact
+  rate-limits/canva-rest-rate-limits-60-per-minute.yml:
+    method: searched
+    evidence: declared in the artifact
+  regulatory/canva-regulatory-posture.yml:
+    method: searched
+    evidence: declared in the artifact
   rules/canva-jsonschema-spectral-rules.yml:
+    method: generated
+    evidence: declared in the artifact
+  rules/canva-rules.yml:
     method: generated
     evidence: declared in the artifact
   rules/canva-spectral-rules.yml:
@@ -964,9 +1290,24 @@ artifacts:
   skills/_index.yml:
     method: searched
     evidence: declared in the artifact
+  skills/canva-autofill-brand-template.md:
+    method: generated
+    evidence: declared in the artifact
+  skills/canva-export-design.md:
+    method: generated
+    evidence: declared in the artifact
+  skills/canva-upload-asset-from-url.md:
+    method: generated
+    evidence: declared in the artifact
+  vendors/canva-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
   vocabulary/canva-vocabulary.yaml:
     method: unknown
     evidence: no authorship recorded
+  vocabulary/canva-vocabulary.yml:
+    method: derived
+    evidence: declared in the artifact
   well-known/canva-mcp-oauth-authorization-server.json:
     method: unknown
     evidence: no authorship recorded
