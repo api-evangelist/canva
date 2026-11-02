@@ -1,0 +1,94 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://www.canva.com/pricing/
+sources:
+- https://www.canva.com/pricing/
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T120612
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: tiered-subscription
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+  managed_tier: Pro
+published: true
+note: Consumer/business subscription pricing page with monthly/yearly toggle (yearly prices shown); Enterprise
+  is contact sales. No API pricing stated.
+plan_count: 4
+currency: USD
+plans:
+- name: Free
+  price_text: US$ 0 /year for one person
+  price: 0
+  currency: USD
+  period: year
+  unit: per person
+  included_quota: 1.6M+ templates, 4.7M+ photos/videos/graphics/audio, 1 Brand Kit, 5GB cloud storage,
+    Up to 20 Standard or Premium AI uses
+- name: Pro
+  price_text: US$ 144 /year for one person
+  price: 144
+  currency: USD
+  period: year
+  unit: per person
+  included_quota: 3.6M+ templates, 141M+ premium assets, 5 Brand Kits, 100GB cloud storage, 10x more AI
+    than Canva Free
+  overage: AI Pass add-on available (extra cost)
+- name: Business
+  price_text: US$ 250 /year per person
+  price: 250
+  currency: USD
+  period: year
+  unit: per person
+  included_quota: 100 Brand Kits and approvals, 500GB of cloud storage, 20x more AI than Canva Free
+  overage: AI Pass add-on and AI top-ups available (extra cost)
+- name: Enterprise
+  price_text: Let’s talk
+  period: none
+  included_quota: SSO and SCIM, 1000 Brand Kits, 1TB of cloud storage, 20x more AI than Canva Free
+rate_limit_statements:
+- Fair use limits apply. See Help Centre for details.
+- Up to 20 Standard or Premium AI uses
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - free
+  - hybrid
+  units: []
+  plans:
+  - name: Free
+    access: other
+    model: free
+    model_how: derived
+    units:
+    - other
+    periods:
+    - year
+  - name: Pro
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - year
+  - name: Business
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - year
+  - name: Enterprise
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
