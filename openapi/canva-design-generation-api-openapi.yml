@@ -283,7 +283,323 @@ paths:
       summary: Get design generation job V2
       x-summary-source: derived
 components:
+  examples:
+    DesignGenerationJobForbiddenErrorV2:
+      summary: The caller didn't create this job
+      value:
+        code: permission_denied
+        message: The user doesn't have access to this design generation job.
+    InvalidDesignGenerationRequestErrorV2:
+      summary: The request contains an invalid field
+      value:
+        code: invalid_field
+        message: The presentation outline can only be used with the presentation design type.
+    MalformedAuthorizationHeaderComponents:
+      summary: Authorization header has wrong number of components
+      value:
+        code: invalid_access_token
+        message: 'Malformed Authorization header: wrong number of components'
+    CreditQuotaExceededError:
+      summary: User has reached their credit quota limit
+      value:
+        code: credit_quota_exceeded
+        message: User has exceeded their credit quota
+        quota_usage:
+          used_percentage: 100
+          resets_at: 1735689600
+          using_bonus_credits: false
+          upgrade_url: https://www.canva.com/upgrade
+          is_admin: false
+          generation_pending: false
+    ContentNotAllowedDesignGenerationJobExampleV2:
+      summary: Design generation rejected by content-safety checks
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: failed
+          error:
+            code: content_not_allowed
+            message: The design couldn't be generated because the request didn't meet Canva's content guidelines.
+    MissingClientCredentialsOrBodyAuthError:
+      summary: Client credentials or body auth are missing from the request
+      value:
+        code: invalid_client
+        message: Client credentials or body auth are missing from the request.
+    MalformedAuthorizationHeader:
+      summary: Malformed Authorization header
+      value:
+        code: invalid_access_token
+        message: Malformed Authorization header
+    DesignGenerationInputForbiddenErrorV2:
+      summary: The user can't access an attachment
+      value:
+        code: permission_denied
+        message: The user doesn't have access to the specified attachment.
+    InProgressDesignGenerationJobExampleV2:
+      summary: In-progress design generation job
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: in_progress
+    InvalidClientError:
+      summary: The OAuth client credentials are invalid
+      value:
+        code: invalid_client
+        message: Client {clientId} not available
+    DesignGenerationInputNotFoundErrorV2:
+      summary: An attachment wasn't found
+      value:
+        code: not_found
+        message: The specified attachment wasn't found.
+    TooManyDesignGenerationInputsErrorV2:
+      summary: Too many generation inputs
+      value:
+        code: invalid_field
+        message: At most 20 inputs are allowed across images and brand_templates combined.
+    UnsupportedDesignGenerationTypeErrorV2:
+      summary: The design type isn't supported for generation
+      value:
+        code: invalid_field
+        message: Design generation supports doc, presentation, and whiteboard presets.
+    MalformedAuthorizationHeaderMode:
+      summary: Authorization header has invalid mode
+      value:
+        code: invalid_access_token
+        message: 'Malformed Authorization header: invalid mode'
+    TokenIntrospectionFailed:
+      summary: Token couldn't be introspected
+      value:
+        code: invalid_access_token
+        message: Token couldn't be introspected
+    RevokedAccessToken:
+      summary: Access token is revoked
+      value:
+        code: revoked_access_token
+        message: Access token is revoked
+    DesignGenerationJobNotFoundErrorV2:
+      summary: The job wasn't found
+      value:
+        code: not_found
+        message: The design generation job wasn't found.
+    InvalidDesignGenerationJobIdErrorV2:
+      summary: The job ID is invalid
+      value:
+        code: invalid_field
+        message: The design generation job ID is invalid.
+    TooManyRequestsError:
+      summary: Rate limit exceeded
+      value:
+        code: too_many_requests
+        message: Too many requests to {operation}
+    MissingAuthorizationHeader:
+      summary: Missing Authorization header
+      value:
+        code: invalid_access_token
+        message: Missing Authorization header
+    InvalidDesignGenerationInputErrorV2:
+      summary: An attachment is invalid or unsupported
+      value:
+        code: invalid_field
+        message: The specified attachment must identify a supported image or brand template.
+    AcceptedDesignGenerationJobExampleV2:
+      summary: Accepted job with available credit quota information
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: in_progress
+        quota_usage:
+          used_percentage: 25
+          resets_at: 1789257600
+          using_bonus_credits: false
+    SuccessDesignGenerationJobExampleV2:
+      summary: Successfully completed design generation job
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: success
+          result:
+            design:
+              id: DAFVztcvd9z
+              title: SolarNow Seed Pitch
+              urls:
+                edit_url: https://www.canva.com/api/design/example/edit
+                view_url: https://www.canva.com/api/design/example/view
+              thumbnail:
+                width: 800
+                height: 450
+                url: https://document-export.canva.com/example/thumbnail/0001.png?signature=example
+              created_at: 1788768000
+              updated_at: 1788768000
+              page_count: 3
+        quota_usage:
+          used_percentage: 25
+          resets_at: 1789257600
+          using_bonus_credits: false
+    FailedDesignGenerationJobExampleV2:
+      summary: Design generation failed
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: failed
+          error:
+            code: generation_failed
+            message: The design couldn't be generated. Please try again.
+    DesignGenerationNotAvailableErrorV2:
+      summary: Design generation isn't available to the user
+      value:
+        code: permission_denied
+        message: Design generation isn't available for this user.
+    InvalidAccessToken:
+      summary: Access token could not be decoded or signature could not be verified.
+      value:
+        code: invalid_access_token
+        message: Access token is invalid
+    ThrottledTooManyRequests:
+      summary: Throttled because too many requests
+      value:
+        code: too_many_requests
+        message: Throttled because too many requests
+    CreditQuotaCooldownError:
+      summary: User is in a cooldown period after heavy credit usage
+      value:
+        code: credit_quota_cooldown
+        message: Credit quota cooldown is active
+        quota_usage:
+          used_percentage: 100
+          resets_at: 1735689600
+          using_bonus_credits: false
+          upgrade_url: https://www.canva.com/upgrade
+          cooldown_ends_at: 1767182400
+          is_admin: false
+          generation_pending: true
   schemas:
+    DesignGenerationJobResultV2:
+      description: Present only when the job status is `success`.
+      properties:
+        design:
+          $ref: '#/components/schemas/DesignSummary'
+      required:
+      - design
+      type: object
+    DesignGenerationJobErrorV2:
+      description: Details about a failed design generation job.
+      properties:
+        code:
+          $ref: '#/components/schemas/DesignGenerationJobErrorCodeV2'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    CreateDesignGenerationJobResponseV2:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignGenerationJobV2'
+        quota_usage:
+          allOf:
+          - $ref: '#/components/schemas/CreditQuotaSuccessInfo'
+          description: Credit quota usage after reserving credits for this job. Omitted if unavailable.
+      required:
+      - job
+      type: object
+    DesignGenerationJobStatusV2:
+      description: 'The public status of the job. `result` is present only for `success`, and
+
+        `error` is present only for `failed`.'
+      enum:
+      - failed
+      - in_progress
+      - success
+      type: string
+      x-enum-descriptions:
+      - The design couldn't be generated.
+      - The design is still being generated.
+      - The design was generated and saved to the user's Canva account.
+    DesignSummary:
+      description: Basic details about the design, such as the design's ID, title, and URL.
+      properties:
+        id:
+          description: The design ID.
+          example: DAFVztcvd9z
+          type: string
+        title:
+          description: The design title.
+          example: My summer holiday
+          type: string
+        url:
+          description: URL of the design.
+          example: https://www.canva.com/design/DAFVztcvd9z/edit
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        urls:
+          $ref: '#/components/schemas/DesignLinks'
+        created_at:
+          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
+
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
+
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        page_count:
+          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
+          example: 3
+          format: int32
+          minimum: 0
+          type: integer
+      required:
+      - created_at
+      - id
+      - updated_at
+      - urls
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    CreditQuotaError:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          quota_usage:
+            allOf:
+            - $ref: '#/components/schemas/CreditQuotaErrorInfo'
+            description: Credit quota usage at the time of the error. Not present if quota data is unavailable.
+        type: object
+      description: 'Returned when a request is rejected because the caller has exceeded their credit quota
+
+        or is in a cooldown period after heavy usage.'
     CreditQuotaUsageSummary:
       description: A summary of the caller's credit quota usage at the time of the request.
       properties:
@@ -307,6 +623,77 @@ components:
             plan allocation).'
           type: boolean
       type: object
+    CreditQuotaErrorInfo:
+      allOf:
+      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
+      - properties:
+          upgrade_url:
+            description: 'URL built from the user''s current plan and eligibility for an AI pass. Not present
+
+              if no upgrade path is available (e.g. already on highest plan or ineligible for AI pass).'
+            type: string
+          cooldown_ends_at:
+            description: 'Unix timestamp (seconds from the Unix epoch) of when the cooldown period ends. Only
+
+              set when `code` is `credit_quota_cooldown`. Not present for `credit_quota_exceeded`
+
+              errors.'
+            format: int64
+            type: integer
+          is_admin:
+            description: 'Whether the caller is a team admin. Allows clients to tailor error messaging
+
+              (e.g. "contact your admin" vs "upgrade your plan").'
+            type: boolean
+          generation_pending:
+            description: 'True if another generation is currently in flight and consuming quota. Only
+
+              meaningful for paid users with cooldown enabled. Not present for free users where this
+
+              cannot be determined.'
+            type: boolean
+        required:
+        - is_admin
+        type: object
+      description: 'Credit quota information returned when a request is rejected due to quota exhaustion
+
+        or a cooldown period.'
+    CreateDesignGenerationJobRequestV2:
+      description: The brief, design type, and optional presentation outline for generation.
+      properties:
+        brief:
+          description: 'A description of the design to generate, including its subject, purpose,
+
+            required wording, tone, and visual direction.'
+          example: A 3-slide pitch deck for a solar-panel startup with an energetic, modern, blue-and-white visual direction.
+          maxLength: 5000
+          minLength: 1
+          type: string
+        design_type:
+          allOf:
+          - $ref: '#/components/schemas/DesignGenerationDesignTypeInputV2'
+          description: The preset Canva design type to generate. Supports `doc` and `presentation`.
+        outline:
+          allOf:
+          - $ref: '#/components/schemas/DesignGenerationOutlineV2'
+          description: 'The slide structure to follow. This property is supported only when
+
+            `design_type.name` is `presentation`.'
+      required:
+      - brief
+      - design_type
+      type: object
+    CreditQuotaSuccessInfo:
+      allOf:
+      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
+      - properties:
+          usage_review_link:
+            description: 'A URL to the Canva credit usage dashboard where the caller can review their
+
+              current credit consumption. Not present if unavailable.'
+            type: string
+        type: object
+      description: Credit quota usage information returned on a successful generation request.
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
 
@@ -396,26 +783,15 @@ components:
       - domain_restricted
       - user_already_member
       type: string
-    CreditQuotaSuccessInfo:
-      allOf:
-      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
-      - properties:
-          usage_review_link:
-            description: 'A URL to the Canva credit usage dashboard where the caller can review their
-
-              current credit consumption. Not present if unavailable.'
-            type: string
-        type: object
-      description: Credit quota usage information returned on a successful generation request.
-    DesignGenerationJobErrorCodeV2:
-      description: The reason the design generation job failed.
+    DesignGenerationDesignTypeNameV2:
+      description: The name of the design type to generate.
       enum:
-      - content_not_allowed
-      - generation_failed
+      - doc
+      - presentation
       type: string
       x-enum-descriptions:
-      - The brief or generated content didn't pass Canva's content-safety checks.
-      - Canva couldn't complete the design generation job.
+      - A [Canva doc](https://www.canva.com/docs/); a document for Canva's online text editor.
+      - A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.
     DesignGenerationOutlineV2:
       description: The ordered slide structure for a generated presentation.
       properties:
@@ -428,59 +804,27 @@ components:
       required:
       - sections
       type: object
-    CreateDesignGenerationJobRequestV2:
-      description: The brief, design type, and optional presentation outline for generation.
-      properties:
-        brief:
-          description: 'A description of the design to generate, including its subject, purpose,
-
-            required wording, tone, and visual direction.'
-          example: A 3-slide pitch deck for a solar-panel startup with an energetic, modern, blue-and-white visual direction.
-          maxLength: 5000
-          minLength: 1
-          type: string
-        design_type:
-          allOf:
-          - $ref: '#/components/schemas/DesignGenerationDesignTypeInputV2'
-          description: The preset Canva design type to generate. Supports `doc` and `presentation`.
-        outline:
-          allOf:
-          - $ref: '#/components/schemas/DesignGenerationOutlineV2'
-          description: 'The slide structure to follow. This property is supported only when
-
-            `design_type.name` is `presentation`.'
-      required:
-      - brief
-      - design_type
-      type: object
-    CreateDesignGenerationJobResponseV2:
+    GetDesignGenerationJobResponseV2:
       properties:
         job:
           $ref: '#/components/schemas/DesignGenerationJobV2'
         quota_usage:
           allOf:
           - $ref: '#/components/schemas/CreditQuotaSuccessInfo'
-          description: Credit quota usage after reserving credits for this job. Omitted if unavailable.
+          description: Credit quota snapshot when available. Polling does not reserve or consume credits; omitted if unavailable.
       required:
       - job
       type: object
-    DesignGenerationDesignTypeV2:
-      description: The kind of design type to generate.
-      enum:
-      - preset
-      type: string
-      x-enum-descriptions:
-      - A preset Canva design type.
-    DesignGenerationDesignTypeInputV2:
-      description: The preset Canva design type to generate.
+    Error:
       properties:
-        type:
-          $ref: '#/components/schemas/DesignGenerationDesignTypeV2'
-        name:
-          $ref: '#/components/schemas/DesignGenerationDesignTypeNameV2'
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
       required:
-      - name
-      - type
+      - code
+      - message
       type: object
     DesignLinks:
       description: A temporary set of URLs for viewing or editing the design.
@@ -504,122 +848,6 @@ components:
       required:
       - edit_url
       - view_url
-      type: object
-    DesignGenerationDesignTypeNameV2:
-      description: The name of the design type to generate.
-      enum:
-      - doc
-      - presentation
-      type: string
-      x-enum-descriptions:
-      - A [Canva doc](https://www.canva.com/docs/); a document for Canva's online text editor.
-      - A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.
-    DesignSummary:
-      description: Basic details about the design, such as the design's ID, title, and URL.
-      properties:
-        id:
-          description: The design ID.
-          example: DAFVztcvd9z
-          type: string
-        title:
-          description: The design title.
-          example: My summer holiday
-          type: string
-        url:
-          description: URL of the design.
-          example: https://www.canva.com/design/DAFVztcvd9z/edit
-          type: string
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        urls:
-          $ref: '#/components/schemas/DesignLinks'
-        created_at:
-          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
-
-            Epoch).'
-          example: 1377396000
-          format: int64
-          type: integer
-        updated_at:
-          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
-
-            Unix Epoch).'
-          example: 1692928800
-          format: int64
-          type: integer
-        page_count:
-          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
-          example: 3
-          format: int32
-          minimum: 0
-          type: integer
-      required:
-      - created_at
-      - id
-      - updated_at
-      - urls
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    DesignGenerationJobStatusV2:
-      description: 'The public status of the job. `result` is present only for `success`, and
-
-        `error` is present only for `failed`.'
-      enum:
-      - failed
-      - in_progress
-      - success
-      type: string
-      x-enum-descriptions:
-      - The design couldn't be generated.
-      - The design is still being generated.
-      - The design was generated and saved to the user's Canva account.
-    Thumbnail:
-      description: A thumbnail image representing the object.
-      properties:
-        width:
-          description: The width of the thumbnail image in pixels.
-          example: 595
-          format: int32
-          type: integer
-        height:
-          description: The height of the thumbnail image in pixels.
-          example: 335
-          format: int32
-          type: integer
-        url:
-          description: 'A URL for retrieving the thumbnail image.
-
-            This URL expires after 15 minutes. This URL includes a query string
-
-            that''s required for retrieving the thumbnail.'
-          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-          type: string
-      required:
-      - height
-      - url
-      - width
-      type: object
-    DesignGenerationJobErrorV2:
-      description: Details about a failed design generation job.
-      properties:
-        code:
-          $ref: '#/components/schemas/DesignGenerationJobErrorCodeV2'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
       type: object
     DesignGenerationOutlineSectionV2:
       description: One slide in a presentation outline.
@@ -665,261 +893,33 @@ components:
       - id
       - status
       type: object
-    CreditQuotaErrorInfo:
-      allOf:
-      - $ref: '#/components/schemas/CreditQuotaUsageSummary'
-      - properties:
-          upgrade_url:
-            description: 'URL built from the user''s current plan and eligibility for an AI pass. Not present
-
-              if no upgrade path is available (e.g. already on highest plan or ineligible for AI pass).'
-            type: string
-          cooldown_ends_at:
-            description: 'Unix timestamp (seconds from the Unix epoch) of when the cooldown period ends. Only
-
-              set when `code` is `credit_quota_cooldown`. Not present for `credit_quota_exceeded`
-
-              errors.'
-            format: int64
-            type: integer
-          is_admin:
-            description: 'Whether the caller is a team admin. Allows clients to tailor error messaging
-
-              (e.g. "contact your admin" vs "upgrade your plan").'
-            type: boolean
-          generation_pending:
-            description: 'True if another generation is currently in flight and consuming quota. Only
-
-              meaningful for paid users with cooldown enabled. Not present for free users where this
-
-              cannot be determined.'
-            type: boolean
-        required:
-        - is_admin
-        type: object
-      description: 'Credit quota information returned when a request is rejected due to quota exhaustion
-
-        or a cooldown period.'
-    GetDesignGenerationJobResponseV2:
+    DesignGenerationDesignTypeV2:
+      description: The kind of design type to generate.
+      enum:
+      - preset
+      type: string
+      x-enum-descriptions:
+      - A preset Canva design type.
+    DesignGenerationDesignTypeInputV2:
+      description: The preset Canva design type to generate.
       properties:
-        job:
-          $ref: '#/components/schemas/DesignGenerationJobV2'
-        quota_usage:
-          allOf:
-          - $ref: '#/components/schemas/CreditQuotaSuccessInfo'
-          description: Credit quota snapshot when available. Polling does not reserve or consume credits; omitted if unavailable.
+        type:
+          $ref: '#/components/schemas/DesignGenerationDesignTypeV2'
+        name:
+          $ref: '#/components/schemas/DesignGenerationDesignTypeNameV2'
       required:
-      - job
+      - name
+      - type
       type: object
-    DesignGenerationJobResultV2:
-      description: Present only when the job status is `success`.
-      properties:
-        design:
-          $ref: '#/components/schemas/DesignSummary'
-      required:
-      - design
-      type: object
-    CreditQuotaError:
-      allOf:
-      - $ref: '#/components/schemas/Error'
-      - properties:
-          quota_usage:
-            allOf:
-            - $ref: '#/components/schemas/CreditQuotaErrorInfo'
-            description: Credit quota usage at the time of the error. Not present if quota data is unavailable.
-        type: object
-      description: 'Returned when a request is rejected because the caller has exceeded their credit quota
-
-        or is in a cooldown period after heavy usage.'
-  examples:
-    TokenIntrospectionFailed:
-      summary: Token couldn't be introspected
-      value:
-        code: invalid_access_token
-        message: Token couldn't be introspected
-    ContentNotAllowedDesignGenerationJobExampleV2:
-      summary: Design generation rejected by content-safety checks
-      value:
-        job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: failed
-          error:
-            code: content_not_allowed
-            message: The design couldn't be generated because the request didn't meet Canva's content guidelines.
-    CreditQuotaExceededError:
-      summary: User has reached their credit quota limit
-      value:
-        code: credit_quota_exceeded
-        message: User has exceeded their credit quota
-        quota_usage:
-          used_percentage: 100
-          resets_at: 1735689600
-          using_bonus_credits: false
-          upgrade_url: https://www.canva.com/upgrade
-          is_admin: false
-          generation_pending: false
-    UnsupportedDesignGenerationTypeErrorV2:
-      summary: The design type isn't supported for generation
-      value:
-        code: invalid_field
-        message: Design generation supports doc, presentation, and whiteboard presets.
-    FailedDesignGenerationJobExampleV2:
-      summary: Design generation failed
-      value:
-        job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: failed
-          error:
-            code: generation_failed
-            message: The design couldn't be generated. Please try again.
-    DesignGenerationJobForbiddenErrorV2:
-      summary: The caller didn't create this job
-      value:
-        code: permission_denied
-        message: The user doesn't have access to this design generation job.
-    TooManyDesignGenerationInputsErrorV2:
-      summary: Too many generation inputs
-      value:
-        code: invalid_field
-        message: At most 20 inputs are allowed across images and brand_templates combined.
-    DesignGenerationInputForbiddenErrorV2:
-      summary: The user can't access an attachment
-      value:
-        code: permission_denied
-        message: The user doesn't have access to the specified attachment.
-    DesignGenerationNotAvailableErrorV2:
-      summary: Design generation isn't available to the user
-      value:
-        code: permission_denied
-        message: Design generation isn't available for this user.
-    InvalidDesignGenerationRequestErrorV2:
-      summary: The request contains an invalid field
-      value:
-        code: invalid_field
-        message: The presentation outline can only be used with the presentation design type.
-    MalformedAuthorizationHeaderMode:
-      summary: Authorization header has invalid mode
-      value:
-        code: invalid_access_token
-        message: 'Malformed Authorization header: invalid mode'
-    InvalidClientError:
-      summary: The OAuth client credentials are invalid
-      value:
-        code: invalid_client
-        message: Client {clientId} not available
-    DesignGenerationInputNotFoundErrorV2:
-      summary: An attachment wasn't found
-      value:
-        code: not_found
-        message: The specified attachment wasn't found.
-    AcceptedDesignGenerationJobExampleV2:
-      summary: Accepted job with available credit quota information
-      value:
-        job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: in_progress
-        quota_usage:
-          used_percentage: 25
-          resets_at: 1789257600
-          using_bonus_credits: false
-    InvalidDesignGenerationJobIdErrorV2:
-      summary: The job ID is invalid
-      value:
-        code: invalid_field
-        message: The design generation job ID is invalid.
-    MalformedAuthorizationHeaderComponents:
-      summary: Authorization header has wrong number of components
-      value:
-        code: invalid_access_token
-        message: 'Malformed Authorization header: wrong number of components'
-    SuccessDesignGenerationJobExampleV2:
-      summary: Successfully completed design generation job
-      value:
-        job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: success
-          result:
-            design:
-              id: DAFVztcvd9z
-              title: SolarNow Seed Pitch
-              urls:
-                edit_url: https://www.canva.com/api/design/example/edit
-                view_url: https://www.canva.com/api/design/example/view
-              thumbnail:
-                width: 800
-                height: 450
-                url: https://document-export.canva.com/example/thumbnail/0001.png?signature=example
-              created_at: 1788768000
-              updated_at: 1788768000
-              page_count: 3
-        quota_usage:
-          used_percentage: 25
-          resets_at: 1789257600
-          using_bonus_credits: false
-    DesignGenerationJobNotFoundErrorV2:
-      summary: The job wasn't found
-      value:
-        code: not_found
-        message: The design generation job wasn't found.
-    InProgressDesignGenerationJobExampleV2:
-      summary: In-progress design generation job
-      value:
-        job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: in_progress
-    InvalidDesignGenerationInputErrorV2:
-      summary: An attachment is invalid or unsupported
-      value:
-        code: invalid_field
-        message: The specified attachment must identify a supported image or brand template.
-    TooManyRequestsError:
-      summary: Rate limit exceeded
-      value:
-        code: too_many_requests
-        message: Too many requests to {operation}
-    MalformedAuthorizationHeader:
-      summary: Malformed Authorization header
-      value:
-        code: invalid_access_token
-        message: Malformed Authorization header
-    RevokedAccessToken:
-      summary: Access token is revoked
-      value:
-        code: revoked_access_token
-        message: Access token is revoked
-    InvalidAccessToken:
-      summary: Access token could not be decoded or signature could not be verified.
-      value:
-        code: invalid_access_token
-        message: Access token is invalid
-    ThrottledTooManyRequests:
-      summary: Throttled because too many requests
-      value:
-        code: too_many_requests
-        message: Throttled because too many requests
-    MissingClientCredentialsOrBodyAuthError:
-      summary: Client credentials or body auth are missing from the request
-      value:
-        code: invalid_client
-        message: Client credentials or body auth are missing from the request.
-    CreditQuotaCooldownError:
-      summary: User is in a cooldown period after heavy credit usage
-      value:
-        code: credit_quota_cooldown
-        message: Credit quota cooldown is active
-        quota_usage:
-          used_percentage: 100
-          resets_at: 1735689600
-          using_bonus_credits: false
-          upgrade_url: https://www.canva.com/upgrade
-          cooldown_ends_at: 1767182400
-          is_admin: false
-          generation_pending: true
-    MissingAuthorizationHeader:
-      summary: Missing Authorization header
-      value:
-        code: invalid_access_token
-        message: Missing Authorization header
+    DesignGenerationJobErrorCodeV2:
+      description: The reason the design generation job failed.
+      enum:
+      - content_not_allowed
+      - generation_failed
+      type: string
+      x-enum-descriptions:
+      - The brief or generated content didn't pass Canva's content-safety checks.
+      - Canva couldn't complete the design generation job.
   securitySchemes:
     basicAuth:
       scheme: basic

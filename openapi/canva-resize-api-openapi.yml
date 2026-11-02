@@ -232,134 +232,127 @@ paths:
       summary: Get design resize job
       x-summary-source: derived
 components:
-  examples:
-    AreaAboveMaximumError:
-      summary: The requested dimensions exceed the maximum design area
-      value:
-        code: invalid_request
-        message: width and height is above the maximum allowed area for a design
-    InProgressResizeJobExample:
-      summary: In progress job
-      value:
-        job:
-          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
-          status: in_progress
-    ResponsivePagesNotSupportedError:
-      summary: Responsive pages can't be resized
-      value:
-        code: bad_request_params
-        message: Responsive type pages are not supported to Magic Resize
-    DimensionsBelowMinimumError:
-      summary: The requested dimensions are below the minimum size
-      value:
-        code: invalid_request
-        message: width or height cannot be less than {minDimension}px
-    InvalidDesignTypeInputError:
-      summary: The design type must be custom or preset
-      value:
-        code: bad_request_params
-        message: Invalid design type provided. Design type must be one of custom or preset, but was {designType}
-    ControlledPagesNotSupportedError:
-      summary: Controlled pages can't be resized
-      value:
-        code: bad_request_params
-        message: Controlled type pages are not supported to Magic Resize
-    DimensionsAboveMaximumError:
-      summary: The requested dimensions are above the maximum size
-      value:
-        code: invalid_request
-        message: width or height cannot be more than {maxDimension}px
-    ResizeJobNotFoundError:
-      summary: The design resize job was not found
-      value:
-        code: not_found
-        message: Job {jobId} not found
-    InvalidDesignTypeError:
-      summary: The requested preset design type is not available.
-      value:
-        code: bad_request_body
-        message: Design type '{name}' is invalid.
-    MissingResizeCapabilityError:
-      summary: The user's plan does not include the resize feature
-      value:
-        code: permission_denied
-        message: Not allowed to access createDesignResizeJob, requires one of capabilities [resize].
-    FeatureQuotaExceededError:
-      summary: Feature quota exceeded
-      value:
-        code: quota_exceeded
-        message: Free resize quota has been exceeded. Present the `upsell_url` to the user and prompt them to upgrade their Canva account to continue using the resize feature.
-        upsell_url: '{upsellUrl}'
-    UnsupportedDesignTypeError:
-      summary: Unsupported design type
-      value:
-        code: bad_request_params
-        message: 'Canva designs can''t be resized to the selected design type: `{designTypeName}`'
-    DesignNotResizableError:
-      summary: The design can't be resized to the desired type
-      value:
-        code: bad_request_params
-        message: The Canva design provided can't be resized to the desired type
-    SuccessResizeJobExample:
-      summary: Successfully completed job
-      value:
-        job:
-          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
-          status: success
-          result:
-            design:
-              id: DAGirp_1ZUA
-              title: My summer holiday
-              thumbnail:
-                width: 595
-                height: 335
-                url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-              urls:
-                edit_url: https://www.canva.com/design/DAGhRehVa2c/0L_1s4UXSpZhls8EtPaRKw/edit
-                view_url: https://www.canva.com/design/DAGhRehVa2c/0L_1s4UXSpZhls8EtPaRKw/view
-              created_at: 1742856750
-              updated_at: 1742856752
-              page_count: 5
-            trial_information:
-              uses_remaining: 0
-              upgrade_url: https://www.canva.com/?tailoringUpsellDialog=GENERIC_C4W
-    ResizeDesignNotFoundError:
-      summary: The design to resize was not found
-      value:
-        code: design_not_found
-        message: Design with id '{designId}' not found
-    PageIndexOutOfBoundsError:
-      summary: The page number is out of bounds
-      value:
-        code: bad_request_params
-        message: The page number provided is out of bounds.
-    FailedResizeJobExample:
-      summary: Failed job
-      value:
-        job:
-          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
-          status: failed
-          error:
-            code: design_resize_error
-            message: Failed to resize the design
-    DesignResizeNotAllowedError:
-      summary: Not allowed to resize the design
-      value:
-        code: permission_denied
-        message: Not allowed to resize document with ID {designId}
   schemas:
-    PresetDesignTypeInput:
-      description: Provide the common design type.
+    DesignResizeStatus:
+      description: Status of the design resize job.
+      enum:
+      - in_progress
+      - success
+      - failed
+      example: success
+      type: string
+    FeatureQuotaExceededError:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - properties:
+          upsell_url:
+            description: URL to redirect users to upgrade their Canva account and reset their quota.
+            type: string
+        required:
+        - upsell_url
+        type: object
+      description: Feature quota exceeded
+    DesignSummary:
+      description: Basic details about the design, such as the design's ID, title, and URL.
       properties:
-        type:
-          enum:
-          - preset
+        id:
+          description: The design ID.
+          example: DAFVztcvd9z
           type: string
-        name:
-          $ref: '#/components/schemas/PresetDesignTypeName'
+        title:
+          description: The design title.
+          example: My summer holiday
+          type: string
+        url:
+          description: URL of the design.
+          example: https://www.canva.com/design/DAFVztcvd9z/edit
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        urls:
+          $ref: '#/components/schemas/DesignLinks'
+        created_at:
+          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
+
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
+
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        page_count:
+          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
+          example: 3
+          format: int32
+          minimum: 0
+          type: integer
       required:
-      - name
-      - type
+      - created_at
+      - id
+      - updated_at
+      - urls
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    CreateDesignResizeJobRequest:
+      description: 'Body parameters for starting a resize job for a design.
+
+        It must include a design ID, and one of the supported design type.'
+      properties:
+        design_id:
+          description: The design ID.
+          type: string
+        design_type:
+          $ref: '#/components/schemas/DesignTypeInput'
+      required:
+      - design_id
+      - design_type
+      type: object
+    DesignResizeJob:
+      description: Details about the design resize job.
+      properties:
+        id:
+          description: The design resize job ID.
+          example: bbd8dfcd-ead1-4871-81d5-962bfec82274
+          type: string
+        status:
+          $ref: '#/components/schemas/DesignResizeStatus'
+        result:
+          $ref: '#/components/schemas/DesignResizeJobResult'
+        error:
+          $ref: '#/components/schemas/DesignResizeError'
+      required:
+      - id
+      - status
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -450,38 +443,91 @@ components:
       - domain_restricted
       - user_already_member
       type: string
-    CreateDesignResizeJobRequest:
-      description: 'Body parameters for starting a resize job for a design.
-
-        It must include a design ID, and one of the supported design type.'
+    DesignResizeError:
+      description: If the design resize job fails, this object provides details about the error.
       properties:
-        design_id:
-          description: The design ID.
+        code:
+          $ref: '#/components/schemas/DesignResizeErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
           type: string
-        design_type:
-          $ref: '#/components/schemas/DesignTypeInput'
       required:
-      - design_id
-      - design_type
+      - code
+      - message
       type: object
-    DesignResizeStatus:
-      description: Status of the design resize job.
-      enum:
-      - in_progress
-      - success
-      - failed
-      example: success
-      type: string
-    DesignTypeInput:
-      description: The desired design type.
-      discriminator:
-        mapping:
-          preset: '#/components/schemas/PresetDesignTypeInput'
-          custom: '#/components/schemas/CustomDesignTypeInput'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/PresetDesignTypeInput'
-      - $ref: '#/components/schemas/CustomDesignTypeInput'
+    GetDesignResizeJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignResizeJob'
+      required:
+      - job
+      type: object
+    TrialInformation:
+      description: 'WARNING: Trials and trial information are a [preview feature](https://www.canva.dev/docs/apps/rest-apis/#preview-apis).
+
+        There might be unannounced breaking changes to this feature which won''t produce a new API version.
+
+
+        Trial information for non-qualifying users. Non-qualifying users have a limited number of
+
+        resize uses. Once the trial is exhausted, users must upgrade to a Canva plan with premium
+
+        features (such as Canva Pro) to continue using the Resize API.'
+      properties:
+        uses_remaining:
+          description: The number of uses remaining in the free trial.
+          example: 0
+          format: int32
+          minimum: 0
+          type: integer
+        upgrade_url:
+          description: The URL for a user to upgrade their Canva account.
+          example: https://www.canva.com/?tailoringUpsellDialog=GENERIC_C4W
+          type: string
+      required:
+      - upgrade_url
+      - uses_remaining
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    CreateDesignResizeJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignResizeJob'
+      required:
+      - job
+      type: object
+    DesignLinks:
+      description: A temporary set of URLs for viewing or editing the design.
+      properties:
+        edit_url:
+          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.'
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+          type: string
+        view_url:
+          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.
+
+            '
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
+          type: string
+      required:
+      - edit_url
+      - view_url
       type: object
     CustomDesignTypeInput:
       description: 'Provide the width and height to define a custom design type.
@@ -518,147 +564,18 @@ components:
       - type
       - width
       type: object
-    DesignLinks:
-      description: A temporary set of URLs for viewing or editing the design.
+    PresetDesignTypeInput:
+      description: Provide the common design type.
       properties:
-        edit_url:
-          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.'
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+        type:
+          enum:
+          - preset
           type: string
-        view_url:
-          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.
-
-            '
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
-          type: string
+        name:
+          $ref: '#/components/schemas/PresetDesignTypeName'
       required:
-      - edit_url
-      - view_url
-      type: object
-    FeatureQuotaExceededError:
-      allOf:
-      - $ref: '#/components/schemas/Error'
-      - properties:
-          upsell_url:
-            description: URL to redirect users to upgrade their Canva account and reset their quota.
-            type: string
-        required:
-        - upsell_url
-        type: object
-      description: Feature quota exceeded
-    CreateDesignResizeJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/DesignResizeJob'
-      required:
-      - job
-      type: object
-    GetDesignResizeJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/DesignResizeJob'
-      required:
-      - job
-      type: object
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    DesignSummary:
-      description: Basic details about the design, such as the design's ID, title, and URL.
-      properties:
-        id:
-          description: The design ID.
-          example: DAFVztcvd9z
-          type: string
-        title:
-          description: The design title.
-          example: My summer holiday
-          type: string
-        url:
-          description: URL of the design.
-          example: https://www.canva.com/design/DAFVztcvd9z/edit
-          type: string
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        urls:
-          $ref: '#/components/schemas/DesignLinks'
-        created_at:
-          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
-
-            Epoch).'
-          example: 1377396000
-          format: int64
-          type: integer
-        updated_at:
-          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
-
-            Unix Epoch).'
-          example: 1692928800
-          format: int64
-          type: integer
-        page_count:
-          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
-          example: 3
-          format: int32
-          minimum: 0
-          type: integer
-      required:
-      - created_at
-      - id
-      - updated_at
-      - urls
-      type: object
-    DesignResizeError:
-      description: If the design resize job fails, this object provides details about the error.
-      properties:
-        code:
-          $ref: '#/components/schemas/DesignResizeErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    Thumbnail:
-      description: A thumbnail image representing the object.
-      properties:
-        width:
-          description: The width of the thumbnail image in pixels.
-          example: 595
-          format: int32
-          type: integer
-        height:
-          description: The height of the thumbnail image in pixels.
-          example: 335
-          format: int32
-          type: integer
-        url:
-          description: 'A URL for retrieving the thumbnail image.
-
-            This URL expires after 15 minutes. This URL includes a query string
-
-            that''s required for retrieving the thumbnail.'
-          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-          type: string
-      required:
-      - height
-      - url
-      - width
+      - name
+      - type
       type: object
     DesignResizeJobResult:
       description: 'Design has been created and saved to user''s root
@@ -672,48 +589,23 @@ components:
       required:
       - design
       type: object
-    DesignResizeJob:
-      description: Details about the design resize job.
-      properties:
-        id:
-          description: The design resize job ID.
-          example: bbd8dfcd-ead1-4871-81d5-962bfec82274
-          type: string
-        status:
-          $ref: '#/components/schemas/DesignResizeStatus'
-        result:
-          $ref: '#/components/schemas/DesignResizeJobResult'
-        error:
-          $ref: '#/components/schemas/DesignResizeError'
-      required:
-      - id
-      - status
-      type: object
-    TrialInformation:
-      description: 'WARNING: Trials and trial information are a [preview feature](https://www.canva.dev/docs/apps/rest-apis/#preview-apis).
-
-        There might be unannounced breaking changes to this feature which won''t produce a new API version.
-
-
-        Trial information for non-qualifying users. Non-qualifying users have a limited number of
-
-        resize uses. Once the trial is exhausted, users must upgrade to a Canva plan with premium
-
-        features (such as Canva Pro) to continue using the Resize API.'
-      properties:
-        uses_remaining:
-          description: The number of uses remaining in the free trial.
-          example: 0
-          format: int32
-          minimum: 0
-          type: integer
-        upgrade_url:
-          description: The URL for a user to upgrade their Canva account.
-          example: https://www.canva.com/?tailoringUpsellDialog=GENERIC_C4W
-          type: string
-      required:
-      - upgrade_url
-      - uses_remaining
+    DesignResizeErrorCode:
+      enum:
+      - thumbnail_generation_error
+      - design_resize_error
+      - create_design_error
+      - trial_quota_exceeded
+      type: string
+    DesignTypeInput:
+      description: The desired design type.
+      discriminator:
+        mapping:
+          preset: '#/components/schemas/PresetDesignTypeInput'
+          custom: '#/components/schemas/CustomDesignTypeInput'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/PresetDesignTypeInput'
+      - $ref: '#/components/schemas/CustomDesignTypeInput'
       type: object
     PresetDesignTypeName:
       description: The name of the design type.
@@ -728,13 +620,121 @@ components:
       - An [email](https://www.canva.com/emails/); for creating email campaign designs.
       - A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.
       - A [whiteboard](https://www.canva.com/online-whiteboard/); a design which gives you infinite space to collaborate.
-    DesignResizeErrorCode:
-      enum:
-      - thumbnail_generation_error
-      - design_resize_error
-      - create_design_error
-      - trial_quota_exceeded
-      type: string
+  examples:
+    SuccessResizeJobExample:
+      summary: Successfully completed job
+      value:
+        job:
+          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          status: success
+          result:
+            design:
+              id: DAGirp_1ZUA
+              title: My summer holiday
+              thumbnail:
+                width: 595
+                height: 335
+                url: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+              urls:
+                edit_url: https://www.canva.com/design/DAGhRehVa2c/0L_1s4UXSpZhls8EtPaRKw/edit
+                view_url: https://www.canva.com/design/DAGhRehVa2c/0L_1s4UXSpZhls8EtPaRKw/view
+              created_at: 1742856750
+              updated_at: 1742856752
+              page_count: 5
+            trial_information:
+              uses_remaining: 0
+              upgrade_url: https://www.canva.com/?tailoringUpsellDialog=GENERIC_C4W
+    FeatureQuotaExceededError:
+      summary: Feature quota exceeded
+      value:
+        code: quota_exceeded
+        message: Free resize quota has been exceeded. Present the `upsell_url` to the user and prompt them to upgrade their Canva account to continue using the resize feature.
+        upsell_url: '{upsellUrl}'
+    DesignNotResizableError:
+      summary: The design can't be resized to the desired type
+      value:
+        code: bad_request_params
+        message: The Canva design provided can't be resized to the desired type
+    UnsupportedDesignTypeError:
+      summary: Unsupported design type
+      value:
+        code: bad_request_params
+        message: 'Canva designs can''t be resized to the selected design type: `{designTypeName}`'
+    MissingResizeCapabilityError:
+      summary: The user's plan does not include the resize feature
+      value:
+        code: permission_denied
+        message: Not allowed to access createDesignResizeJob, requires one of capabilities [resize].
+    PageIndexOutOfBoundsError:
+      summary: The page number is out of bounds
+      value:
+        code: bad_request_params
+        message: The page number provided is out of bounds.
+    ResizeDesignNotFoundError:
+      summary: The design to resize was not found
+      value:
+        code: design_not_found
+        message: Design with id '{designId}' not found
+    InvalidDesignTypeInputError:
+      summary: The design type must be custom or preset
+      value:
+        code: bad_request_params
+        message: Invalid design type provided. Design type must be one of custom or preset, but was {designType}
+    ResponsivePagesNotSupportedError:
+      summary: Responsive pages can't be resized
+      value:
+        code: bad_request_params
+        message: Responsive type pages are not supported to Magic Resize
+    ControlledPagesNotSupportedError:
+      summary: Controlled pages can't be resized
+      value:
+        code: bad_request_params
+        message: Controlled type pages are not supported to Magic Resize
+    DimensionsAboveMaximumError:
+      summary: The requested dimensions are above the maximum size
+      value:
+        code: invalid_request
+        message: width or height cannot be more than {maxDimension}px
+    InvalidDesignTypeError:
+      summary: The requested preset design type is not available.
+      value:
+        code: bad_request_body
+        message: Design type '{name}' is invalid.
+    InProgressResizeJobExample:
+      summary: In progress job
+      value:
+        job:
+          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          status: in_progress
+    DesignResizeNotAllowedError:
+      summary: Not allowed to resize the design
+      value:
+        code: permission_denied
+        message: Not allowed to resize document with ID {designId}
+    FailedResizeJobExample:
+      summary: Failed job
+      value:
+        job:
+          id: 450a76e7-f96f-43ae-9c37-0e1ce492ac72
+          status: failed
+          error:
+            code: design_resize_error
+            message: Failed to resize the design
+    DimensionsBelowMinimumError:
+      summary: The requested dimensions are below the minimum size
+      value:
+        code: invalid_request
+        message: width or height cannot be less than {minDimension}px
+    AreaAboveMaximumError:
+      summary: The requested dimensions exceed the maximum design area
+      value:
+        code: invalid_request
+        message: width and height is above the maximum allowed area for a design
+    ResizeJobNotFoundError:
+      summary: The design resize job was not found
+      value:
+        code: not_found
+        message: Job {jobId} not found
   securitySchemes:
     basicAuth:
       scheme: basic

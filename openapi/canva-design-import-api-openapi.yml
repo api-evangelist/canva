@@ -487,24 +487,289 @@ paths:
       summary: Get image to design import job
       x-summary-source: derived
 components:
+  examples:
+    AssetAccessNotAllowedError:
+      summary: Not allowed to access the asset
+      value:
+        code: permission_denied
+        message: Not allowed to access this asset
+    InProgressDesignImportJobExample:
+      summary: In progress job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: in_progress
+    DesignCreationThrottledError:
+      summary: Design creation throttling threshold reached
+      value:
+        code: too_many_requests
+        message: You have reached the design creation throttling threshold.
+    DesignImportAlreadyInProgressError:
+      summary: A design import for the URL is already in progress
+      value:
+        code: invalid_request
+        message: Design import for url {url} already in progress
+    SuccessDesignImportJobExample:
+      summary: Successfully completed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: success
+          result:
+            designs:
+            - id: DAGQm2AkzOk
+              title: My Awesome Design
+              thumbnail:
+                width: 376
+                height: 531
+                url: https://document-export.canva.com/...
+              urls:
+                edit_url: https://www.canva.com/api/design/...
+                view_url: https://www.canva.com/api/design/...
+              created_at: 1726198998
+              updated_at: 1726199000
+    AssetNotFoundError:
+      summary: The asset was not found
+      value:
+        code: asset_not_found
+        message: Asset not found
+    JobIdNotFoundError:
+      summary: Job ID not found
+      value:
+        code: not_found
+        message: Job ID {jobId} not found
+    SuccessImageToDesignImportJobExample:
+      summary: Successfully completed image-to-design import job
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: success
+          result:
+            design:
+              id: DAFVztcvd9z
+              title: My Image Design
+              thumbnail:
+                width: 800
+                height: 600
+                url: https://document-export.canva.com/...
+              urls:
+                edit_url: https://www.canva.com/design/DAFVztcvd9z/edit
+                view_url: https://www.canva.com/design/DAFVztcvd9z/view
+              created_at: 1726198998
+              updated_at: 1726199000
+    GetJobStatusNotAllowedError:
+      summary: Not allowed to get the job status
+      value:
+        code: permission_denied
+        message: Not allowed to get the job status.
+    JobIdInvalidError:
+      summary: The job ID is invalid
+      value:
+        code: bad_request_params
+        message: The jobId is invalid.
+    ImageToDesignCreditQuotaExceededError:
+      summary: User has reached their credit quota limit
+      value:
+        code: credit_quota_exceeded
+        message: User has exceeded their credit quota
+    JobNotCreatorError:
+      summary: Calling user was not the creator of the job
+      value:
+        code: permission_denied
+        message: Calling user was not the creator of the job
+    JobNotFoundError:
+      summary: Job not found
+      value:
+        code: not_found
+        message: Job {jobId} not found
+    JobWithIdNotFoundError:
+      summary: Job with ID not found
+      value:
+        code: not_found
+        message: Job with Id {jobId} not found
+    FailedDesignImportJobExample:
+      summary: Failed job
+      value:
+        job:
+          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
+          status: failed
+          error:
+            code: invalid_file
+            message: Document could not be imported because the file is corrupt.
+    UnsupportedAssetError:
+      summary: The provided asset is not a supported image type
+      value:
+        code: unsupported_asset
+        message: '''asset_id'' must refer to an asset of one of the following types: png, jpeg, gif, webp, heic, heif, avif, tiff, jp2, jpx, jpm, jxr.'
+    BadRequestFieldError:
+      summary: The request field does not match expected format
+      value:
+        code: invalid_request
+        message: '{fieldValue} does not match expected format for {fieldName}'
+    JobNotCreatedViaConnectApiError:
+      summary: The job is not created via Connect API
+      value:
+        code: invalid_request
+        message: The job is not created via Connect API.
+    FailedImageToDesignImportJobExample:
+      summary: Failed image-to-design import job
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: failed
+          error:
+            code: internal_error
+            message: An unexpected error occurred while converting the image. Please try again.
+    InProgressImageToDesignImportJobExample:
+      summary: In progress image-to-design import job
+      value:
+        job:
+          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          status: in_progress
+    DesignImportJobNotCreatorError:
+      summary: Calling user was not the creator of the design import job
+      value:
+        code: permission_denied
+        message: Calling user was not the creator of the design import job
   schemas:
-    ImageSource:
-      description: The image to convert into a design.
+    DesignImportError:
+      description: If the import job fails, this object provides details about the error.
       properties:
-        asset_id:
-          description: 'The ID of an image asset in the user''s Canva account.
-
-
-            The asset must be one of the following image types: `png`, `jpeg`, `gif`,
-
-            `webp`, `heic`, `heif`, `avif`, `tiff`, `jp2`, `jpx`, `jpm`, or `jxr`. Video
-
-            assets are not supported.'
-          example: Msd59349ff
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
+        code:
+          $ref: '#/components/schemas/DesignImportErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          example: We're sorry, but the file upload quota has exceeded. Please try again later.
           type: string
       required:
-      - asset_id
+      - code
+      - message
+      type: object
+    GetImageToDesignImportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/ImageToDesignImportJob'
+      required:
+      - job
+      type: object
+    CreateUrlImportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignImportJob'
+      required:
+      - job
+      type: object
+    DesignSummary:
+      description: Basic details about the design, such as the design's ID, title, and URL.
+      properties:
+        id:
+          description: The design ID.
+          example: DAFVztcvd9z
+          type: string
+        title:
+          description: The design title.
+          example: My summer holiday
+          type: string
+        url:
+          description: URL of the design.
+          example: https://www.canva.com/design/DAFVztcvd9z/edit
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        urls:
+          $ref: '#/components/schemas/DesignLinks'
+        created_at:
+          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
+
+            Epoch).'
+          example: 1377396000
+          format: int64
+          type: integer
+        updated_at:
+          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
+
+            Unix Epoch).'
+          example: 1692928800
+          format: int64
+          type: integer
+        page_count:
+          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
+          example: 3
+          format: int32
+          minimum: 0
+          type: integer
+      required:
+      - created_at
+      - id
+      - updated_at
+      - urls
+      type: object
+    Thumbnail:
+      description: A thumbnail image representing the object.
+      properties:
+        width:
+          description: The width of the thumbnail image in pixels.
+          example: 595
+          format: int32
+          type: integer
+        height:
+          description: The height of the thumbnail image in pixels.
+          example: 335
+          format: int32
+          type: integer
+        url:
+          description: 'A URL for retrieving the thumbnail image.
+
+            This URL expires after 15 minutes. This URL includes a query string
+
+            that''s required for retrieving the thumbnail.'
+          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
+          type: string
+      required:
+      - height
+      - url
+      - width
+      type: object
+    ImageToDesignImportJob:
+      description: The status and result of an image-to-design import job.
+      properties:
+        id:
+          description: The ID of the image-to-design import job.
+          example: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+        status:
+          $ref: '#/components/schemas/DesignImportStatus'
+        result:
+          $ref: '#/components/schemas/ImageToDesignImportJobResult'
+        error:
+          $ref: '#/components/schemas/ImageToDesignImportError'
+      required:
+      - id
+      - status
+      type: object
+    CreateUrlImportJobRequest:
+      properties:
+        title:
+          description: A title for the design.
+          example: My Awesome Design
+          maxLength: 255
+          minLength: 1
+          type: string
+        url:
+          description: The URL of the file to import. This URL must be accessible from the internet and be publicly available.
+          maxLength: 2048
+          minLength: 1
+          type: string
+        mime_type:
+          description: The MIME type of the file being imported. If not provided, Canva attempts to automatically detect the type of the file.
+          example: application/vnd.apple.keynote
+          maxLength: 100
+          minLength: 1
+          type: string
+      required:
+      - title
+      - url
       type: object
     ErrorCode:
       description: 'A short string indicating what failed. This field can be used to handle errors programmatically.
@@ -595,113 +860,12 @@ components:
       - domain_restricted
       - user_already_member
       type: string
-    ImageToDesignImportJob:
-      description: The status and result of an image-to-design import job.
-      properties:
-        id:
-          description: The ID of the image-to-design import job.
-          example: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          pattern: ^[a-zA-Z0-9_-]{1,50}$
-          type: string
-        status:
-          $ref: '#/components/schemas/DesignImportStatus'
-        result:
-          $ref: '#/components/schemas/ImageToDesignImportJobResult'
-        error:
-          $ref: '#/components/schemas/ImageToDesignImportError'
-      required:
-      - id
-      - status
-      type: object
     ImageToDesignImportJobResult:
       properties:
         design:
           $ref: '#/components/schemas/DesignSummary'
       required:
       - design
-      type: object
-    GetDesignImportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/DesignImportJob'
-      required:
-      - job
-      type: object
-    CreateImageToDesignImportJobRequest:
-      properties:
-        image:
-          $ref: '#/components/schemas/ImageSource'
-        title:
-          description: A title for the created design. If not provided, Canva generates a title.
-          example: My Image Design
-          maxLength: 255
-          minLength: 1
-          type: string
-      required:
-      - image
-      type: object
-    DesignImportErrorCode:
-      description: 'A short string about why the import failed. This field can be used to handle errors
-
-        programmatically.'
-      enum:
-      - design_creation_throttled
-      - design_import_throttled
-      - duplicate_import
-      - internal_error
-      - invalid_file
-      - fetch_failed
-      example: design_creation_throttled
-      type: string
-    DesignImportError:
-      description: If the import job fails, this object provides details about the error.
-      properties:
-        code:
-          $ref: '#/components/schemas/DesignImportErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          example: We're sorry, but the file upload quota has exceeded. Please try again later.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    CreateUrlImportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/DesignImportJob'
-      required:
-      - job
-      type: object
-    GetUrlImportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/DesignImportJob'
-      required:
-      - job
-      type: object
-    DesignLinks:
-      description: A temporary set of URLs for viewing or editing the design.
-      properties:
-        edit_url:
-          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.'
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
-          type: string
-        view_url:
-          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
-
-
-            NOTE: This is not a permanent URL, it is only valid for 30 days.
-
-            '
-          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
-          type: string
-      required:
-      - edit_url
-      - view_url
       type: object
     DesignImportJobResult:
       properties:
@@ -714,138 +878,6 @@ components:
           type: array
       required:
       - designs
-      type: object
-    DesignSummary:
-      description: Basic details about the design, such as the design's ID, title, and URL.
-      properties:
-        id:
-          description: The design ID.
-          example: DAFVztcvd9z
-          type: string
-        title:
-          description: The design title.
-          example: My summer holiday
-          type: string
-        url:
-          description: URL of the design.
-          example: https://www.canva.com/design/DAFVztcvd9z/edit
-          type: string
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        urls:
-          $ref: '#/components/schemas/DesignLinks'
-        created_at:
-          description: 'When the design was created in Canva, as a Unix timestamp (in seconds since the Unix
-
-            Epoch).'
-          example: 1377396000
-          format: int64
-          type: integer
-        updated_at:
-          description: 'When the design was last updated in Canva, as a Unix timestamp (in seconds since the
-
-            Unix Epoch).'
-          example: 1692928800
-          format: int64
-          type: integer
-        page_count:
-          description: The total number of pages in the design. Some design types don't have pages (for example, Canva docs).
-          example: 3
-          format: int32
-          minimum: 0
-          type: integer
-      required:
-      - created_at
-      - id
-      - updated_at
-      - urls
-      type: object
-    DesignImportStatus:
-      description: The status of the design import job.
-      enum:
-      - failed
-      - in_progress
-      - success
-      example: success
-      type: string
-    Error:
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          description: A human-readable description of what went wrong.
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    Thumbnail:
-      description: A thumbnail image representing the object.
-      properties:
-        width:
-          description: The width of the thumbnail image in pixels.
-          example: 595
-          format: int32
-          type: integer
-        height:
-          description: The height of the thumbnail image in pixels.
-          example: 335
-          format: int32
-          type: integer
-        url:
-          description: 'A URL for retrieving the thumbnail image.
-
-            This URL expires after 15 minutes. This URL includes a query string
-
-            that''s required for retrieving the thumbnail.'
-          example: https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>
-          type: string
-      required:
-      - height
-      - url
-      - width
-      type: object
-    ImageToDesignImportErrorCode:
-      description: 'A short string about why the import failed. This field can be used to handle errors
-
-        programmatically.'
-      enum:
-      - bad_input
-      - moderation_error
-      - quota_exceeded
-      - design_creation_throttled
-      - internal_error
-      example: bad_input
-      type: string
-    CreateUrlImportJobRequest:
-      properties:
-        title:
-          description: A title for the design.
-          example: My Awesome Design
-          maxLength: 255
-          minLength: 1
-          type: string
-        url:
-          description: The URL of the file to import. This URL must be accessible from the internet and be publicly available.
-          maxLength: 2048
-          minLength: 1
-          type: string
-        mime_type:
-          description: The MIME type of the file being imported. If not provided, Canva attempts to automatically detect the type of the file.
-          example: application/vnd.apple.keynote
-          maxLength: 100
-          minLength: 1
-          type: string
-      required:
-      - title
-      - url
-      type: object
-    GetImageToDesignImportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/ImageToDesignImportJob'
-      required:
-      - job
       type: object
     ImageToDesignImportError:
       description: If the import job fails, this object provides details about the error.
@@ -860,17 +892,42 @@ components:
       - code
       - message
       type: object
-    CreateDesignImportJobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/DesignImportJob'
-      required:
-      - job
-      type: object
+    ImageToDesignImportErrorCode:
+      description: 'A short string about why the import failed. This field can be used to handle errors
+
+        programmatically.'
+      enum:
+      - bad_input
+      - moderation_error
+      - quota_exceeded
+      - design_creation_throttled
+      - internal_error
+      example: bad_input
+      type: string
     CreateImageToDesignImportJobResponse:
       properties:
         job:
           $ref: '#/components/schemas/ImageToDesignImportJob'
+      required:
+      - job
+      type: object
+    DesignImportErrorCode:
+      description: 'A short string about why the import failed. This field can be used to handle errors
+
+        programmatically.'
+      enum:
+      - design_creation_throttled
+      - design_import_throttled
+      - duplicate_import
+      - internal_error
+      - invalid_file
+      - fetch_failed
+      example: design_creation_throttled
+      type: string
+    GetUrlImportJobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/DesignImportJob'
       required:
       - job
       type: object
@@ -891,6 +948,30 @@ components:
       required:
       - id
       - status
+      type: object
+    Error:
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          description: A human-readable description of what went wrong.
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    CreateImageToDesignImportJobRequest:
+      properties:
+        image:
+          $ref: '#/components/schemas/ImageSource'
+        title:
+          description: A title for the created design. If not provided, Canva generates a title.
+          example: My Image Design
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - image
       type: object
     DesignImportMetadata:
       description: Metadata about the design that you include as a header parameter when importing a design.
@@ -919,150 +1000,69 @@ components:
       required:
       - title_base64
       type: object
-  examples:
-    GetJobStatusNotAllowedError:
-      summary: Not allowed to get the job status
-      value:
-        code: permission_denied
-        message: Not allowed to get the job status.
-    JobWithIdNotFoundError:
-      summary: Job with ID not found
-      value:
-        code: not_found
-        message: Job with Id {jobId} not found
-    InProgressImageToDesignImportJobExample:
-      summary: In progress image-to-design import job
-      value:
+    DesignLinks:
+      description: A temporary set of URLs for viewing or editing the design.
+      properties:
+        edit_url:
+          description: 'A temporary editing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.'
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/edit
+          type: string
+        view_url:
+          description: 'A temporary viewing URL for the design. This URL is only accessible to the user that made the API request, and is designed to support [return navigation](https://www.canva.dev/docs/apps/rest-apis/return-navigation-guide/) workflows.
+
+
+            NOTE: This is not a permanent URL, it is only valid for 30 days.
+
+            '
+          example: https://www.canva.com/api/design/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiZXhwaXJ5IjoxNzQyMDk5NDAzMDc5fQ..GKLx2hrJa3wSSDKQ.hk3HA59qJyxehR-ejzt2DThBW0cbRdMBz7Fb5uCpwD-4o485pCf4kcXt_ypUYX0qMHVeZ131YvfwGPIhbk-C245D8c12IIJSDbZUZTS7WiCOJZQ.sNz3mPSQxsETBvl_-upMYA/view
+          type: string
+      required:
+      - edit_url
+      - view_url
+      type: object
+    GetDesignImportJobResponse:
+      properties:
         job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: in_progress
-    UnsupportedAssetError:
-      summary: The provided asset is not a supported image type
-      value:
-        code: unsupported_asset
-        message: '''asset_id'' must refer to an asset of one of the following types: png, jpeg, gif, webp, heic, heif, avif, tiff, jp2, jpx, jpm, jxr.'
-    JobNotCreatorError:
-      summary: Calling user was not the creator of the job
-      value:
-        code: permission_denied
-        message: Calling user was not the creator of the job
-    DesignCreationThrottledError:
-      summary: Design creation throttling threshold reached
-      value:
-        code: too_many_requests
-        message: You have reached the design creation throttling threshold.
-    JobNotCreatedViaConnectApiError:
-      summary: The job is not created via Connect API
-      value:
-        code: invalid_request
-        message: The job is not created via Connect API.
-    DesignImportAlreadyInProgressError:
-      summary: A design import for the URL is already in progress
-      value:
-        code: invalid_request
-        message: Design import for url {url} already in progress
-    AssetAccessNotAllowedError:
-      summary: Not allowed to access the asset
-      value:
-        code: permission_denied
-        message: Not allowed to access this asset
-    ImageToDesignCreditQuotaExceededError:
-      summary: User has reached their credit quota limit
-      value:
-        code: credit_quota_exceeded
-        message: User has exceeded their credit quota
-    JobNotFoundError:
-      summary: Job not found
-      value:
-        code: not_found
-        message: Job {jobId} not found
-    AssetNotFoundError:
-      summary: The asset was not found
-      value:
-        code: asset_not_found
-        message: Asset not found
-    FailedDesignImportJobExample:
-      summary: Failed job
-      value:
+          $ref: '#/components/schemas/DesignImportJob'
+      required:
+      - job
+      type: object
+    DesignImportStatus:
+      description: The status of the design import job.
+      enum:
+      - failed
+      - in_progress
+      - success
+      example: success
+      type: string
+    ImageSource:
+      description: The image to convert into a design.
+      properties:
+        asset_id:
+          description: 'The ID of an image asset in the user''s Canva account.
+
+
+            The asset must be one of the following image types: `png`, `jpeg`, `gif`,
+
+            `webp`, `heic`, `heif`, `avif`, `tiff`, `jp2`, `jpx`, `jpm`, or `jxr`. Video
+
+            assets are not supported.'
+          example: Msd59349ff
+          pattern: ^[a-zA-Z0-9_-]{1,50}$
+          type: string
+      required:
+      - asset_id
+      type: object
+    CreateDesignImportJobResponse:
+      properties:
         job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: failed
-          error:
-            code: invalid_file
-            message: Document could not be imported because the file is corrupt.
-    BadRequestFieldError:
-      summary: The request field does not match expected format
-      value:
-        code: invalid_request
-        message: '{fieldValue} does not match expected format for {fieldName}'
-    SuccessImageToDesignImportJobExample:
-      summary: Successfully completed image-to-design import job
-      value:
-        job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: success
-          result:
-            design:
-              id: DAFVztcvd9z
-              title: My Image Design
-              thumbnail:
-                width: 800
-                height: 600
-                url: https://document-export.canva.com/...
-              urls:
-                edit_url: https://www.canva.com/design/DAFVztcvd9z/edit
-                view_url: https://www.canva.com/design/DAFVztcvd9z/view
-              created_at: 1726198998
-              updated_at: 1726199000
-    SuccessDesignImportJobExample:
-      summary: Successfully completed job
-      value:
-        job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: success
-          result:
-            designs:
-            - id: DAGQm2AkzOk
-              title: My Awesome Design
-              thumbnail:
-                width: 376
-                height: 531
-                url: https://document-export.canva.com/...
-              urls:
-                edit_url: https://www.canva.com/api/design/...
-                view_url: https://www.canva.com/api/design/...
-              created_at: 1726198998
-              updated_at: 1726199000
-    FailedImageToDesignImportJobExample:
-      summary: Failed image-to-design import job
-      value:
-        job:
-          id: f81b26fd-a33d-4c2d-9e8c-4a7aca798b17
-          status: failed
-          error:
-            code: internal_error
-            message: An unexpected error occurred while converting the image. Please try again.
-    InProgressDesignImportJobExample:
-      summary: In progress job
-      value:
-        job:
-          id: e08861ae-3b29-45db-8dc1-1fe0bf7f1cc8
-          status: in_progress
-    JobIdInvalidError:
-      summary: The job ID is invalid
-      value:
-        code: bad_request_params
-        message: The jobId is invalid.
-    DesignImportJobNotCreatorError:
-      summary: Calling user was not the creator of the design import job
-      value:
-        code: permission_denied
-        message: Calling user was not the creator of the design import job
-    JobIdNotFoundError:
-      summary: Job ID not found
-      value:
-        code: not_found
-        message: Job ID {jobId} not found
+          $ref: '#/components/schemas/DesignImportJob'
+      required:
+      - job
+      type: object
   securitySchemes:
     basicAuth:
       scheme: basic
