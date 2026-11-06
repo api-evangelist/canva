@@ -192,38 +192,103 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    Owner:
+      type: object
+      description: The owner of a resource
+      properties:
+        user_id:
+          type: string
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
+      required:
+      - user_id
+      - team_id
+    FolderItem:
+      type: object
+      description: An item within a folder (design, folder, or image)
+      properties:
+        type:
+          type: string
+          description: The type of folder item
+          enum:
+          - design
+          - folder
+          - image
+          example: design
+        design:
+          $ref: '#/components/schemas/Design'
+        folder:
+          $ref: '#/components/schemas/Folder'
+        image:
+          $ref: '#/components/schemas/Asset'
+      required:
+      - type
+    Folder:
+      type: object
+      description: A Canva folder
+      properties:
+        id:
+          type: string
+          description: The folder ID
+          example: abc123
+        name:
+          type: string
+          description: The folder name
+          example: Example Title
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the folder was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+    FolderResponse:
+      type: object
+      properties:
+        folder:
+          $ref: '#/components/schemas/Folder'
+      required:
+      - folder
+    ImportStatus:
+      type: object
+      description: The import status of an asset (deprecated)
+      deprecated: true
+      properties:
+        state:
+          type: string
+          description: The current import state
+          enum:
+          - failed
+          - in_progress
+          - success
+          example: failed
+        error:
+          type: object
+          description: Error details if the import failed
+          properties:
+            message:
+              type: string
+              description: Human-readable error message
+            code:
+              type: string
+              description: Error code
+              enum:
+              - file_too_big
+              - import_failed
+          example: example_value
     Thumbnail:
       type: object
       description: A thumbnail image for a resource (URL expires in 15 minutes)
@@ -245,6 +310,21 @@ components:
       - width
       - height
       - url
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
     ListFolderItemsResponse:
       type: object
       properties:
@@ -259,6 +339,42 @@ components:
           example: example_value
       required:
       - items
+    DesignUrls:
+      type: object
+      description: Temporary URLs for accessing a design (expire after 30 days)
+      properties:
+        edit_url:
+          type: string
+          format: uri
+          description: URL to edit the design (expires in 30 days)
+          example: https://www.example.com
+        view_url:
+          type: string
+          format: uri
+          description: URL to view the design (expires in 30 days)
+          example: https://www.example.com
+      required:
+      - edit_url
+      - view_url
+    MoveFolderItemRequest:
+      type: object
+      description: Request body for moving an item to a folder
+      properties:
+        item_id:
+          type: string
+          description: The ID of the item to move
+          example: '500123'
+        item_type:
+          type: string
+          description: The type of item to move
+          enum:
+          - design
+          - folder
+          - image
+          example: design
+      required:
+      - item_id
+      - item_type
     Design:
       type: object
       description: A Canva design
@@ -294,33 +410,6 @@ components:
       - title
       - owner
       - urls
-      - created_at
-      - updated_at
-    Folder:
-      type: object
-      description: A Canva folder
-      properties:
-        id:
-          type: string
-          description: The folder ID
-          example: abc123
-        name:
-          type: string
-          description: The folder name
-          example: Example Title
-        created_at:
-          type: integer
-          description: Unix timestamp in seconds when the folder was created
-          example: '2026-01-15T10:30:00Z'
-        updated_at:
-          type: integer
-          description: Unix timestamp in seconds when the folder was last updated
-          example: '2026-01-15T10:30:00Z'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-      required:
-      - id
-      - name
       - created_at
       - updated_at
     Asset:
@@ -369,126 +458,37 @@ components:
       - created_at
       - updated_at
       - owner
-    ImportStatus:
-      type: object
-      description: The import status of an asset (deprecated)
-      deprecated: true
-      properties:
-        state:
-          type: string
-          description: The current import state
-          enum:
-          - failed
-          - in_progress
-          - success
-          example: failed
-        error:
-          type: object
-          description: Error details if the import failed
-          properties:
-            message:
-              type: string
-              description: Human-readable error message
-            code:
-              type: string
-              description: Error code
-              enum:
-              - file_too_big
-              - import_failed
-          example: example_value
-    Owner:
-      type: object
-      description: The owner of a resource
-      properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
-      required:
-      - user_id
-      - team_id
-    DesignUrls:
-      type: object
-      description: Temporary URLs for accessing a design (expire after 30 days)
-      properties:
-        edit_url:
-          type: string
-          format: uri
-          description: URL to edit the design (expires in 30 days)
-          example: https://www.example.com
-        view_url:
-          type: string
-          format: uri
-          description: URL to view the design (expires in 30 days)
-          example: https://www.example.com
-      required:
-      - edit_url
-      - view_url
-    Error:
-      type: object
-      description: An error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
-      required:
-      - code
-      - message
-    FolderItem:
-      type: object
-      description: An item within a folder (design, folder, or image)
-      properties:
-        type:
-          type: string
-          description: The type of folder item
-          enum:
-          - design
-          - folder
-          - image
-          example: design
-        design:
-          $ref: '#/components/schemas/Design'
-        folder:
-          $ref: '#/components/schemas/Folder'
-        image:
-          $ref: '#/components/schemas/Asset'
-      required:
-      - type
-    MoveFolderItemRequest:
-      type: object
-      description: Request body for moving an item to a folder
-      properties:
-        item_id:
-          type: string
-          description: The ID of the item to move
-          example: '500123'
-        item_type:
-          type: string
-          description: The type of item to move
-          enum:
-          - design
-          - folder
-          - image
-          example: design
-      required:
-      - item_id
-      - item_type
-    FolderResponse:
-      type: object
-      properties:
-        folder:
-          $ref: '#/components/schemas/Folder'
-      required:
-      - folder
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     FolderId:
       name: folderId

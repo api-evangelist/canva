@@ -201,54 +201,22 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    DesignId:
-      name: designId
-      in: path
-      required: true
-      description: The design ID
-      schema:
-        type: string
   schemas:
-    CreateDesignRequest:
+    Owner:
       type: object
-      description: Request body for creating a new design
+      description: The owner of a resource
       properties:
-        design_type:
-          $ref: '#/components/schemas/DesignType'
-        asset_id:
+        user_id:
           type: string
-          description: An image asset ID to insert into the design
+          description: The user ID of the owner
           example: '500123'
-        title:
+        team_id:
           type: string
-          description: The design title (1-255 characters)
-          minLength: 1
-          maxLength: 255
-          example: Example Title
+          description: The team ID of the owner
+          example: '500123'
       required:
-      - design_type
-    Thumbnail:
-      type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
-      properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
-          type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
-      required:
-      - width
-      - height
-      - url
+      - user_id
+      - team_id
     Design:
       type: object
       description: A Canva design
@@ -291,28 +259,42 @@ components:
       - $ref: '#/components/schemas/PresetDesignType'
       - $ref: '#/components/schemas/CustomDesignType'
       description: The type and dimensions for a new design
-    DesignResponse:
+    Thumbnail:
       type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
       properties:
-        design:
-          $ref: '#/components/schemas/Design'
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
       required:
-      - design
-    Owner:
+      - width
+      - height
+      - url
+    Error:
       type: object
-      description: The owner of a resource
+      description: An error response
       properties:
-        user_id:
+        code:
           type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
+          description: Machine-readable error code
+          example: example_value
+        message:
           type: string
-          description: The team ID of the owner
-          example: '500123'
+          description: Human-readable error message
+          example: example_value
       required:
-      - user_id
-      - team_id
+      - code
+      - message
     DesignUrls:
       type: object
       description: Temporary URLs for accessing a design (expire after 30 days)
@@ -344,21 +326,13 @@ components:
           example: example_value
       required:
       - items
-    Error:
+    DesignResponse:
       type: object
-      description: An error response
       properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
+        design:
+          $ref: '#/components/schemas/Design'
       required:
-      - code
-      - message
+      - design
     CustomDesignType:
       type: object
       description: A custom design type with specific dimensions
@@ -404,9 +378,27 @@ components:
       required:
       - type
       - name
+    CreateDesignRequest:
+      type: object
+      description: Request body for creating a new design
+      properties:
+        design_type:
+          $ref: '#/components/schemas/DesignType'
+        asset_id:
+          type: string
+          description: An image asset ID to insert into the design
+          example: '500123'
+        title:
+          type: string
+          description: The design title (1-255 characters)
+          minLength: 1
+          maxLength: 255
+          example: Example Title
+      required:
+      - design_type
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
+    BadRequest:
+      description: Bad request - invalid parameters or request body
       content:
         application/json:
           schema:
@@ -417,24 +409,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    DesignId:
+      name: designId
+      in: path
+      required: true
+      description: The design ID
+      schema:
+        type: string
   securitySchemes:
     oauth2:
       type: oauth2

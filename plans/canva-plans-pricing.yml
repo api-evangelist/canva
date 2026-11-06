@@ -54,35 +54,36 @@ rate_limit_statements:
 - Fair use limits apply. See Help Centre for details.
 - Up to 20 Standard or Premium AI uses
 x-canonical:
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   vocabulary: engine/economics/plans-canonical.yml
   models:
   - free
-  - hybrid
-  units: []
+  - seat
+  units:
+  - seat
   plans:
   - name: Free
     access: other
     model: free
     model_how: derived
     units:
-    - other
+    - seat
     periods:
     - year
   - name: Pro
     access: other
-    model: hybrid
+    model: seat
     model_how: derived
     units:
-    - other
+    - seat
     periods:
     - year
   - name: Business
     access: other
-    model: hybrid
+    model: seat
     model_how: derived
     units:
-    - other
+    - seat
     periods:
     - year
   - name: Enterprise

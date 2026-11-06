@@ -40,7 +40,7 @@ accessModel:
   - scopes
   - rate-limits
   - security
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   method: derived
 image: https://www.canva.com/favicon.ico
 created: '2024-01-01'
@@ -953,6 +953,8 @@ apis:
   humanURL: https://www.canva.com/developers/apps
   baseURL: https://api.canva.com
   tags:
+  - Autofill
+  tags_raw:
   - autofill
   properties:
   - type: OpenAPI

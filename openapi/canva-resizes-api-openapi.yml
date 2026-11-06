@@ -115,96 +115,22 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Thumbnail:
+    Owner:
       type: object
-      description: A thumbnail image for a resource (URL expires in 15 minutes)
+      description: The owner of a resource
       properties:
-        width:
-          type: integer
-          description: Thumbnail width in pixels
-          example: 10
-        height:
-          type: integer
-          description: Thumbnail height in pixels
-          example: 10
-        url:
+        user_id:
           type: string
-          format: uri
-          description: Thumbnail URL (expires in 15 minutes)
-          example: https://www.example.com
+          description: The user ID of the owner
+          example: '500123'
+        team_id:
+          type: string
+          description: The team ID of the owner
+          example: '500123'
       required:
-      - width
-      - height
-      - url
-    Design:
-      type: object
-      description: A Canva design
-      properties:
-        id:
-          type: string
-          description: The design ID
-          example: abc123
-        title:
-          type: string
-          description: The design title
-          example: Example Title
-        owner:
-          $ref: '#/components/schemas/Owner'
-        urls:
-          $ref: '#/components/schemas/DesignUrls'
-        created_at:
-          type: integer
-          description: Unix timestamp in seconds when the design was created
-          example: '2026-01-15T10:30:00Z'
-        updated_at:
-          type: integer
-          description: Unix timestamp in seconds when the design was last updated
-          example: '2026-01-15T10:30:00Z'
-        thumbnail:
-          $ref: '#/components/schemas/Thumbnail'
-        page_count:
-          type: integer
-          description: The number of pages in the design
-          example: 10
-      required:
-      - id
-      - title
-      - owner
-      - urls
-      - created_at
-      - updated_at
+      - user_id
+      - team_id
     DesignType:
       oneOf:
       - $ref: '#/components/schemas/PresetDesignType'
@@ -223,21 +149,6 @@ components:
       required:
       - design_id
       - design_type
-    Owner:
-      type: object
-      description: The owner of a resource
-      properties:
-        user_id:
-          type: string
-          description: The user ID of the owner
-          example: '500123'
-        team_id:
-          type: string
-          description: The team ID of the owner
-          example: '500123'
-      required:
-      - user_id
-      - team_id
     ResizeJob:
       type: object
       description: A resize job for creating a resized copy of a design
@@ -278,13 +189,42 @@ components:
       required:
       - id
       - status
-    ResizeJobResponse:
+    Thumbnail:
       type: object
+      description: A thumbnail image for a resource (URL expires in 15 minutes)
       properties:
-        job:
-          $ref: '#/components/schemas/ResizeJob'
+        width:
+          type: integer
+          description: Thumbnail width in pixels
+          example: 10
+        height:
+          type: integer
+          description: Thumbnail height in pixels
+          example: 10
+        url:
+          type: string
+          format: uri
+          description: Thumbnail URL (expires in 15 minutes)
+          example: https://www.example.com
       required:
-      - job
+      - width
+      - height
+      - url
+    Error:
+      type: object
+      description: An error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example_value
+        message:
+          type: string
+          description: Human-readable error message
+          example: example_value
+      required:
+      - code
+      - message
     DesignUrls:
       type: object
       description: Temporary URLs for accessing a design (expire after 30 days)
@@ -302,21 +242,13 @@ components:
       required:
       - edit_url
       - view_url
-    Error:
+    ResizeJobResponse:
       type: object
-      description: An error response
       properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example_value
-        message:
-          type: string
-          description: Human-readable error message
-          example: example_value
+        job:
+          $ref: '#/components/schemas/ResizeJob'
       required:
-      - code
-      - message
+      - job
     CustomDesignType:
       type: object
       description: A custom design type with specific dimensions
@@ -362,6 +294,74 @@ components:
       required:
       - type
       - name
+    Design:
+      type: object
+      description: A Canva design
+      properties:
+        id:
+          type: string
+          description: The design ID
+          example: abc123
+        title:
+          type: string
+          description: The design title
+          example: Example Title
+        owner:
+          $ref: '#/components/schemas/Owner'
+        urls:
+          $ref: '#/components/schemas/DesignUrls'
+        created_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was created
+          example: '2026-01-15T10:30:00Z'
+        updated_at:
+          type: integer
+          description: Unix timestamp in seconds when the design was last updated
+          example: '2026-01-15T10:30:00Z'
+        thumbnail:
+          $ref: '#/components/schemas/Thumbnail'
+        page_count:
+          type: integer
+          description: The number of pages in the design
+          example: 10
+      required:
+      - id
+      - title
+      - owner
+      - urls
+      - created_at
+      - updated_at
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or scopes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     JobId:
       name: jobId
